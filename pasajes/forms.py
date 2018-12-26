@@ -97,7 +97,7 @@ class formularioPasaje(forms.ModelForm):
 
 	fecha_viaje=forms.DateField(widget=forms.DateInput(attrs=
                                 {
-                                    'class':'datepicker',
+                                    'class':'datepickerPasaje',
                                     'name':'fecha_viaje',
                                     'placeholder':'Fecha de viaje'
                                 }))

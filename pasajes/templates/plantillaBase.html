@@ -32,18 +32,30 @@
   	
 	<script>
 
-	  //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker'-->
+	  //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker',con el atributo maxDate indico que la fecha maxima es pasado 18 años desde el dia actual-->
 	  $( function(){
 	    $( ".datepicker" ).datepicker({
 	    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 	    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 	    	prevText:'<',
 	    	nextText:'>',
-	    	dateFormat: 'dd/mm/yy'
+	    	dateFormat: 'dd/mm/yy',
+	    	maxDate:-6570
 	    	
 	    });
 	  });
-
+	  //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker',con el atributo minDate indico que se puede seleccionar una fecha a partir del dia actual-->
+	  $( function(){
+	    $( ".datepickerPasaje" ).datepicker({
+	    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+	    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+	    	prevText:'<',
+	    	nextText:'>',
+	    	dateFormat: 'dd/mm/yy',
+	    	minDate:0
+	    	
+	    });
+	  });
 
 	  //Agrego funcion que carga los datatables
 	  $(document).ready(function(){
