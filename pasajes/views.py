@@ -185,7 +185,7 @@ def modificacionLocalidad(request,idLocalidad):
 		#Agrego un mensaje en caso de que se modifique correctamente
 		messages.success(request,"Se ha modificado la localidad '"+localidad.nombre+ "',con id "+str(localidad.id))
 		if(form.is_valid()):
-			form.save()		
+			form.save()
 			return redirect('localidad')
 
 	titulo="Modificar localidad"
@@ -445,4 +445,3 @@ def altaPasaje(request,idPasajero):
 	return render(request,'formularios/pasaje.html',{'form':form,'titulo':titulo,'pasajero':pasajero})
 
 #*************FIN formulario pasajes*************#
-
