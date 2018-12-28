@@ -18,15 +18,20 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
-<body class="container">
-	
-	<h2>Inicio sesion</h2>
-	<form method="post">
-	  {% csrf_token %}
-	  {{ form.as_p }}
-	  <button type="submit">Login</button>
-	</form>
-
+<body class="container" id="bodyLogin">
+	<center>
+		<div style="margin-top: 170px;">
+			<div style="border: solid 12px #F7D403;padding: 8px;display: inline-block;margin-left: 400px;float: left;">
+				<h2 style="color:#37898a">Inicio de sesion</h2>
+				<form method="post">
+				  {% csrf_token %}
+				  {{ form.as_p }}
+				  <br>
+				  <button type="submit" class="btn btn-info">Ingresar</button>
+				</form>
+			</div>
+		</div>
+	</center>
 
 <!-- Javascript de bootstrap Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

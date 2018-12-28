@@ -46,8 +46,6 @@ urlpatterns = [
     #Url para generar el reporte en pdf de un pasaje
     path('reportePasaje/<int:idPasaje>/', views.reportePasaje, name='reportePasaje'),
 
-    #Login
-   # path('login',views.loginView,name='login'),
 
 ]
 

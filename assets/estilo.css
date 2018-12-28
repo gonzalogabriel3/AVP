@@ -29,3 +29,7 @@
 .titulo_columna{
 	color:#2f5e6f;
 }
+
+#bodyLogin{
+	background-image: url("fondo.png");
+}
