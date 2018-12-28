@@ -445,3 +445,6 @@ def altaPasaje(request,idPasajero):
 	return render(request,'formularios/pasaje.html',{'form':form,'titulo':titulo,'pasajero':pasajero})
 
 #*************FIN formulario pasajes*************#
+
+def loginView(request):
+	return render(request,'registration/login.html')

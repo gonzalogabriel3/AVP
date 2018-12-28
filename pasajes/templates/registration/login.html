@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	
+
+	<title>Pasajes</title>
+	
+
+	<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
+
+	<link rel="stylesheet" href="{% static 'estilo.css' %}" type="text/css">
+
+	<!-- Css de Bootstrap -Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- Importo jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body class="container">
+	
+	<h2>Inicio sesion</h2>
+	<form method="post">
+	  {% csrf_token %}
+	  {{ form.as_p }}
+	  <button type="submit">Login</button>
+	</form>
+
+
+<!-- Javascript de bootstrap Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+</body>
+</html>
