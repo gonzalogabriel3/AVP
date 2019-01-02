@@ -35,7 +35,7 @@ class Familiar(models.Model):
 class Empresa(models.Model):
 	id=models.AutoField(unique=True,primary_key=True)
 	nombre=models.CharField(max_length=200)
-	cuit=models.IntegerField(unique=True)
+	cuit=models.BigIntegerField(unique=True)
 	id_localidad=models.ForeignKey(Localidad, on_delete=models.CASCADE,verbose_name="Localidad")
 	
 

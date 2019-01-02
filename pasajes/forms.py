@@ -79,7 +79,7 @@ class formularioEmpresa(forms.ModelForm):
 		widget = forms.TextInput(attrs = {'class': 'form-control','placeholder':'Nombre de la nueva empresa','oninput':"this.setCustomValidity('')",'oninvalid':"this.setCustomValidity('Por favor ingrese el nombre de la nueva empresa')"}))
 
 	cuit = forms.IntegerField(label="Cuit",min_value=20000000000,max_value=99999999999,
-		widget = forms.NumberInput(attrs = {'class': 'form-control','placeholder':'N° de Cuit de la nueva empresa','oninput':"this.setCustomValidity('')",'oninvalid':"this.setCustomValidity('Por favor ingrese un N° de CUIT válido(sin puntos)')"}))
+			widget = forms.NumberInput(attrs = {'class': 'form-control','placeholder':'N° de Cuit de la nueva empresa','oninput':"this.setCustomValidity('')",'oninvalid':"this.setCustomValidity('Por favor ingrese un N° de CUIT válido(sin puntos)')"}))
 
 	class Meta:
 		model=Empresa
