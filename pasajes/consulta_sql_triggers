@@ -1,0 +1,24 @@
+#####Funcion y trigger para insertar un nuevo registro en la tabla "pasajero" una vez que se crea un nuevo agente
+CREATE OR REPLACE FUNCTION agente_pasajero() RETURNS TRIGGER AS $body$
+  DECLARE
+  BEGIN
+    INSERT INTO pasajes_pasajero(id_agente_id) VALUES (NEW.id);
+   
+   RETURN NULL;
+  END;
+$body$ LANGUAGE plpgsql;
+
+CREATE TRIGGER agente_pasajero_trigger AFTER INSERT ON pasajes_agente FOR EACH ROW EXECUTE PROCEDURE agente_pasajero();
+
+
+#####Funcion y trigger para insertar un nuevo registro en la tabla "pasajero" una vez que se crea un nuevo familiar
+CREATE OR REPLACE FUNCTION familiar_pasajero() RETURNS TRIGGER AS $body$
+  DECLARE
+  BEGIN
+    INSERT INTO pasajes_pasajero(id_agente_id,id_familiar_id) VALUES (NEW.id_agente_id,NEW.id);
+   
+   RETURN NULL;
+  END;
+$body$ LANGUAGE plpgsql;
+
+CREATE TRIGGER familiar_pasajero_trigger AFTER INSERT ON pasajes_familiar FOR EACH ROW EXECUTE PROCEDURE familiar_pasajero();

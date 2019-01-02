@@ -26,10 +26,16 @@
 <!--Datos del pasaje emitido-->
 <div>
 	<p style="padding-left: 20px">La Empresa: {{ pasaje.id_empresa.nombre }}</p>
-	<p style="display: inline-block;padding-left: 20px">Entregar&aacute a: {{ pasaje.id_agente.apellido }},{{ pasaje.id_agente.nombre }}</p>
-	<p style="display: inline-block;padding-left: 250px;">D.N.I: {{ pasaje.id_agente.documento }}</p>
+	{% if pasaje.id_familiar %}
+		<p style="display: inline-block;padding-left: 20px">Entregar&aacute a: {{ pasaje.id_familiar.apellido }},{{ pasaje.id_familiar.nombre }}</p>
+		<p style="display: inline-block;padding-left: 250px;">D.N.I: {{ pasaje.id_familiar.documento }}</p>
+		<p style="display: inline-block;padding-left: 20px;">Familiar del agente: {{ pasaje.id_agente.apellido }} {{ pasaje.id_agente.nombre }}</p>
+	{% else %}
+		<p style="display: inline-block;padding-left: 20px">Entregar&aacute a: {{ pasaje.id_agente.apellido }},{{ pasaje.id_agente.nombre }}</p>
+		<p style="display: inline-block;padding-left: 250px;">D.N.I: {{ pasaje.id_agente.documento }}</p>
+	{% endif %}
 	<br>
-	<p style="display: inline-block;padding-left: 20px">Un Pasaje V&Iacutea: {{pasaje.via}}</p>
+	<p style="display: inline-block;padding-left: 20px">Un Pasaje V&iacutea: {{pasaje.via}}</p>
 	<p style="display: inline-block;margin-left: 100px">Clase: </p>
 	<p style="padding-left: 20px">Desde: {{pasaje.origen}}</p>
 	<p style="padding-left: 20px">Hasta: {{ pasaje.destino }}</p>
@@ -39,14 +45,14 @@
 <p>Firma del funcionario responsable: _____________________________________________</p>
 <p>Cargo que desempeña: ______________________________________________________</p>
 <p>Recibo por el Servicio BOLETO N°: ____________________________________________</p>
-<p style="display: inline-block;">Fecha pasaje: {{pasaje.fecha_viaje}} &nbsp;&nbsp;&nbsp;</p>
+<p style="display: inline-block;">Fecha de pasaje: {{pasaje.fecha_viaje}} &nbsp;&nbsp;&nbsp;&nbsp;</p>
 <p style="display: inline-block;">Firma: __________________</p>	
 
 
-<br><br><br><br>
+<br><br><br>
 
-<center><b>RESERVADO PARA LA EMPRESA<b></center>
+<center><b style="margin-bottom: 10px">RESERVADO PARA LA EMPRESA<b></center>
 
-<img src="{% static 'parte_empresa.jpg' %}" alt="imagenLogo" style="width:780px;height:230px;" />
+<img src="{% static 'parte_empresa.jpg' %}" alt="imagenLogo" style="margin-top: 5px;width:780px;height:210px;" />
 
 {% endblock %}

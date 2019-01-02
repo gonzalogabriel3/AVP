@@ -4,7 +4,7 @@
 <!--Cargo el load static por si hay que mostrar alguna imagen desde el directorio assets-->
 {% load static %}
 <br>
-<center><h2 style="color:#03585a">Adm.Familiares</h2></center>
+<center><h2 class="titulo">Administraci&oacuten de Familiares</h2></center>
 <!--Valido si se recibe algun mensjae para mostrar-->
 {% if messages %}
 	<div class="alert alert-success">
@@ -20,10 +20,10 @@
 	{% if familiares %}
 	<table class="datatable display" style="width:100%">
 		<thead>
-			<tr>
+			<tr class="titulo_columna">
 				<th>Id familiar</th>
-				<th>Nombre</th>
 				<th>Apellido</th>
+				<th>Nombre</th>
 				<th>DNI</th>
 				<th>Fecha nacimiento</th>
 				<th>Localidad</th>
@@ -35,13 +35,13 @@
 		<tbody>
 	    {% for familiar in familiares %}
 	    	<tr>
-	        	<td>{{ familiar.id }}</td>
-	        	<td>{{ familiar.nombre }}</td>
-	        	<td>{{ familiar.apellido }}</td>
-	        	<td>{{ familiar.documento }}</td>
-	        	<td>{{ familiar.fecha_nacimiento }}</td>
-	        	<td>{{ familiar.id_localidad.nombre }}</td>
-	        	<td>{{ familiar.id_agente.apellido  }} {{ familiar.id_agente.nombre }}</td>
+	        	<td><b>{{ familiar.id }}</b></td>
+	        	<td><b>{{ familiar.apellido }}</b></td>
+	        	<td><b>{{ familiar.nombre }}</b></td>
+	        	<td><b>{{ familiar.documento }}</b></td>
+	        	<td><b>{{ familiar.fecha_nacimiento }}</b></td>
+	        	<td><b>{{ familiar.id_localidad.nombre }}</b></td>
+	        	<td><b>{{ familiar.id_agente.apellido  }} {{ familiar.id_agente.nombre }}</b></td>
 	        	<td>
 	        		<a href="{% url 'modificacionFamiliar' familiar.id %}" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Editar</a>
 	        		<a href="{% url 'bajaFamiliar' familiar.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
@@ -50,10 +50,10 @@
 	    {% endfor %}
 	    </tbody>
 	    <tfoot>
-			<tr>
+			<tr class="titulo_columna">
 				<th>Id familiar</th>
-				<th>Nombre</th>
 				<th>Apellido</th>
+				<th>Nombre</th>
 				<th>DNI</th>
 				<th>Fecha nacimiento</th>
 				<th>Localidad</th>

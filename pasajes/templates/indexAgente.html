@@ -4,7 +4,7 @@
 <!--Cargo el load static por si hay que mostrar alguna imagen desde el directorio assets-->
 {% load static %}
 <br>
-<center><h2 style="color:#03585a">Adm.Agentes</h2></center>
+<center><h2 class="titulo">Administraci&oacuten de Agentes</h2></center>
 <!--Valido si se recibe algun mensjae para mostrar-->
 {% if messages %}
 	<div class="alert alert-success">
@@ -20,10 +20,10 @@
 {% if agentes %}
 	<table class="datatable display" style="width:100%">
 		<thead>
-			<tr>
+			<tr class="titulo_columna">
 				<th>Id agente</th>
-				<th>Nombre</th>
 				<th>Apellido</th>
+				<th>Nombre</th>
 				<th>DNI</th>
 				<th>Fecha nacimiento</th>
 				<th>Localidad</th>
@@ -33,25 +33,24 @@
 		<tbody>
 	    {% for agen in agentes %}
 	    	<tr>
-	        	<td>{{ agen.id }}</td>
-	        	<td>{{ agen.nombre }}</td>
-	        	<td>{{ agen.apellido }}</td>
-	        	<td>{{ agen.documento }}</td>
-	        	<td>{{ agen.fecha_nacimiento }}</td>
-	        	<td>{{ agen.id_localidad.nombre }}</td>
+	        	<td><b>{{ agen.id }}</b></td>
+	        	<td><b>{{ agen.apellido }}</b></td>
+	        	<td><b>{{ agen.nombre }}</b></td>
+	        	<td><b>{{ agen.documento }}</b></td>
+	        	<td><b>{{ agen.fecha_nacimiento }}</b></td>
+	        	<td><b>{{ agen.id_localidad.nombre }}</b></td>
 	        	<td>
 	        		<a href="{% url 'modificacionAgente' agen.id %}" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Editar</a>
 	        		<a href="{% url 'bajaAgente' agen.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
-	        		<a href="{% url 'agentePasaje' agen.id %}" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Generar Pasaje</a>
 	        	</td>
 	    	</tr>
 	    {% endfor %}
 	    </tbody>
 	    <tfoot>
-			<tr>
+			<tr class="titulo_columna">
 				<th>Id agente</th>
-				<th>Nombre</th>
 				<th>Apellido</th>
+				<th>Nombre</th>
 				<th>DNI</th>
 				<th>Fecha nacimiento</th>
 				<th>Localidad</th>

@@ -3,10 +3,17 @@
 <head>
 	{% load static %}
 
+	<!--Si el usuario no esta registrado,redirecciono a la url de login -->
+	{% if user.is_authenticated is False %}
+		<meta http-equiv="refresh" content="0; url=login">
+	{% endif %}
+
 	<title>Pasajes</title>
 	
 
 	<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
+
+	<link rel="stylesheet" href="{% static 'estilo.css' %}" type="text/css">
 
 	<!-- Css de Bootstrap -Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -16,9 +23,6 @@
 	
 	<!-- Importo jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	
-	<!--Importo iconos de Google para usar en el inicio de la pagina-->
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 	<!--Importo script para usar datatables-->
 	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -33,18 +37,30 @@
   	
 	<script>
 
-	  //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker'-->
+	  //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker',con el atributo maxDate indico que la fecha maxima es pasado 18 años desde el dia actual-->
 	  $( function(){
 	    $( ".datepicker" ).datepicker({
 	    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 	    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 	    	prevText:'<',
 	    	nextText:'>',
-	    	dateFormat: 'dd/mm/yy'
+	    	dateFormat: 'dd/mm/yy',
+	    	maxDate:-6570
 	    	
 	    });
 	  });
-
+	  //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker',con el atributo minDate indico que se puede seleccionar una fecha a partir del dia actual-->
+	  $( function(){
+	    $( ".datepickerPasaje" ).datepicker({
+	    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+	    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+	    	prevText:'<',
+	    	nextText:'>',
+	    	dateFormat: 'dd/mm/yy',
+	    	minDate:0
+	    	
+	    });
+	  });
 
 	  //Agrego funcion que carga los datatables
 	  $(document).ready(function(){
@@ -53,7 +69,7 @@
 		    	order: [[0,'desc']],
 		        dom: 'Bfrtip',
 		        language:{
-		        	search:"<span class='glyphicon glyphicon-search'></span> Buscar",
+		        	search:"<span style='color:#1093c1;' class='glyphicon glyphicon-search'></span><p style='display:inline-block;color:#1093c1'>&nbsp;Buscar</p>",
 		        	info:"<i>Mostrando _START_-_END_ de _TOTAL_ resultados</i>",
 		        	paginate:{
 		        		previous:"Anterior",
@@ -131,20 +147,21 @@
 
 </head>
 <body class="container">
-{% load static %}
-	<nav class="navbar navbar-inverse" style="background-color: #03585a;">
+	
+	<nav class="navbar navbar-inverse" id="navbarAvp">
 	  	<div class="container-fluid">
-	     <div class="navbar-header" style="padding-bottom: 0px">
-	      <a class="navbar-brand" href="{% url 'index' %}"><span style="display: inline-block;" class="glyphicon glyphicon-home"><p style="display: inline-block;margin-left: 3px;">INICIO</p></a>
+	     <div class="navbar-header" >
+	      <a class="navbar-brand" href="{% url 'index' %}" id="link_navbar"><span  style="display: inline-block;" class="glyphicon glyphicon-home"></a>
 	    </div>
 	    <div class="collapse navbar-collapse" id="myNavbar">
 	      <ul class="nav navbar-nav">
-	        <li><a href="{% url 'agente' %}"><b>Agentes</b></a></li>
-	        <li><a href="{% url 'localidad' %}"><b>Localidades</b></a></li>
-	        <li><a href="{% url 'familiar' %}"><b>Familiares</b></a></li>
-	        <li><a href="{% url 'empresa' %}"><b>Empresas</b></a></li>
-	        <li><a href="{% url 'pasaje' %}"><b>Pasajes</b></a></li>
-	        
+	        <li><a href="{% url 'agente' %}" id="link_navbar"><b>Agentes</b></a></li>
+	        <li><a href="{% url 'localidad' %}" id="link_navbar"><b>Localidades</b></a></li>
+	        <li><a href="{% url 'familiar' %}" id="link_navbar"><b>Familiares</b></a></li>
+	        <li><a href="{% url 'empresa' %}" id="link_navbar"><b>Empresas</b></a></li>
+	        <li><a href="{% url 'pasajero' %}" id="link_navbar"><b>Pasajeros</b></a></li>
+	        <li><a href="{% url 'pasaje' %}" id="link_navbar"><b>Pasajes emitidos</b></a></li>
+	        <li style="margin-left: 341px;" ><a href="{% url 'logout' %}" id="link_navbar"><span style="display: inline-block;" class="glyphicon glyphicon-log-out"></span> <b>Salir</b></a></li>
 	      </ul>
 	    </div>
 	  </div>

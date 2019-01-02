@@ -3,24 +3,23 @@ from django.urls import path
 from . import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-
 urlpatterns = [
-    path('reportePasaje/<int:idPasaje>/', views.reportePasaje, name='reportePasaje'),
     
+    #################INDEX'S#####################
     path('', views.index, name='index'),
     path('agente', views.indexAgenteView, name='agente'),
     path('localidad', views.indexLocalidadView, name='localidad'),
     path('familiar', views.indexFamiliarView, name='familiar'),
     path('empresa', views.indexEmpresaView, name='empresa'),
     path('pasaje', views.indexPasajeView, name='pasaje'),
+    path('pasajero', views.indexPasajeroView, name='pasajero'),
 
-    ####Formularios#####
+    #################ABM'S#####################
 
     #**ABM Agente**#
     path('altaAgente', views.altaAgente, name='altaAgente'),
     path('modificacionAgente/<int:idAgente>/', views.modificacionAgente, name='modificacionAgente'),
     path('bajaAgente/<int:idAgente>/', views.bajaAgente, name='bajaAgente'),
-    path('agentePasaje/<int:idAgente>/',views.agentePasaje, name='agentePasaje'),
 
     #**ABM Localidad**#
     path('altaLocalidad', views.altaLocalidad, name='altaLocalidad'),
@@ -42,7 +41,12 @@ urlpatterns = [
     path('bajaPasaje/<int:idPasaje>/', views.bajaPasaje, name='bajaPasaje'),
     path('modificacionPasaje/<int:idPasaje>/', views.modificacionPasaje, name='modificacionPasaje'),
 
-    #path('generate_pdf', views.generate_pdf, name='generate_pdf'),
+    #Url para formulario de un nuevo pasaje
+    path('altaPasaje/<int:idPasajero>', views.altaPasaje, name='altaPasaje'),
+    #Url para generar el reporte en pdf de un pasaje
+    path('reportePasaje/<int:idPasaje>/', views.reportePasaje, name='reportePasaje'),
+
+
 ]
 
 urlpatterns+= staticfiles_urlpatterns()

@@ -4,7 +4,7 @@
 <!--Cargo el load static por si hay que mostrar alguna imagen desde el directorio assets-->
 {% load static %}
 <br>
-<center><h2 style="color:#03585a">Adm.Empresas</h2></center>
+<center><h2 class="titulo">Administraci&oacuten de Empresas</h2></center>
 <!--Valido si se recibe algun mensjae para mostrar-->
 {% if messages %}
 	<div class="alert alert-success">
@@ -20,7 +20,7 @@
 	{% if empresas %}
 	<table class="datatable display" style="width:100%">
 		<thead>
-			<tr>
+			<tr class="titulo_columna">
 				<th>Id empresa</th>
 				<th>Nombre</th>
 				<th>Localidad</th>
@@ -32,10 +32,10 @@
 		<tbody>
 	    {% for empresa in empresas %}
 	    	<tr>
-	        	<td>{{ empresa.id }}</td>
-	        	<td>{{ empresa.nombre }}</td>
-	        	<td>{{ empresa.id_localidad.nombre }}</td>
-	        	<td>{{ empresa.cuit}}</td>
+	        	<td><b>{{ empresa.id }}</b></td>
+	        	<td><b>{{ empresa.nombre }}</b></td>
+	        	<td><b>{{ empresa.id_localidad.nombre }}</b></td>
+	        	<td><b>{{ empresa.cuit}}</b></td>
 	        	<td>
 	        		<a href="{% url 'modificacionEmpresa' empresa.id %}" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Editar</a>
 	        		<a href="{% url 'bajaEmpresa' empresa.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
@@ -44,7 +44,7 @@
 	    {% endfor %}
 	    </tbody>
 	    <tfoot>
-			<tr>
+			<tr class="titulo_columna">
 				<th>Id empresa</th>
 				<th>Nombre</th>
 				<th>Localidad</th>

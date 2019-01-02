@@ -46,6 +46,7 @@ class Pasaje(models.Model):
     id=models.AutoField(unique=True,primary_key=True)
     id_agente=models.ForeignKey(Agente, on_delete=models.CASCADE,verbose_name="Agente")
     id_empresa=models.ForeignKey(Empresa, on_delete=models.CASCADE,verbose_name="Empresa")
+    id_familiar=models.ForeignKey(Familiar, on_delete=models.CASCADE, verbose_name="Familiar", blank=True, null=True)
     via=models.CharField(max_length=200,null=False)
     fecha_viaje=models.DateField()
     fecha_emision=models.DateTimeField(default=datetime.datetime.now()-datetime.timedelta(hours=3))

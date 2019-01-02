@@ -1,14 +1,14 @@
 {% extends "plantillaBase.html" %}
 
 {% block contenido %}
-	<center><h2 style="color:grey">{{titulo}}</h2></center>
+	<center><h3 class="titulo_formulario">{{titulo}}</h3></center>
 	<br>
 	<form action="" method="POST">{% csrf_token %}
 		{{form.as_p}}
 		<br>
 		<center>
-			<input type="submit" value="Guardar" class="btn btn-success">
-			<a href="{% url 'familiar' %}"  class="btn btn-danger">Cancelar</a>
+			<button type="submit" class="btn btn-success">Guardar <span class="glyphicon glyphicon-ok"></span></button>
+			<a href="{% url 'familiar' %}"  class="btn btn-danger">Cancelar <span class="glyphicon glyphicon-remove"></span></a>
 		</center>
 	</form>
 

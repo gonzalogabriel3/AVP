@@ -68,7 +68,14 @@ def indexPasajeView(request):
 	
 	return render(request, 'indexPasaje.html', context)
 
-
+def indexPasajeroView(request):
+	pasajeros=Pasajero.objects.all().order_by('-id')
+	
+	context={
+		'pasajeros':pasajeros,
+	}
+	
+	return render(request, 'indexPasajero.html', context)
 ################FIN DE INDEX'S########################################
 
 
@@ -178,7 +185,7 @@ def modificacionLocalidad(request,idLocalidad):
 		#Agrego un mensaje en caso de que se modifique correctamente
 		messages.success(request,"Se ha modificado la localidad '"+localidad.nombre+ "',con id "+str(localidad.id))
 		if(form.is_valid()):
-			form.save()		
+			form.save()
 			return redirect('localidad')
 
 	titulo="Modificar localidad"
@@ -335,7 +342,7 @@ def bajaPasaje(request,idPasaje):
 		pasaje.delete()
 		return redirect('pasaje')
 
-	texto="el pasaje '"+str(pasaje.id)+"',emitido el dia "+str(pasaje.fecha_emision.strftime('%Y-%m-%d %H:%M'))+"?"
+	texto="el pasaje 'N°"+str(pasaje.id)+"',emitido el dia "+str(pasaje.fecha_emision.strftime('%Y-%m-%d %H:%M'))+"?"
 	nombreUrl="pasaje"
 
 	return render(request,'confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
@@ -361,8 +368,6 @@ def modificacionPasaje(request,idPasaje):
 
 
 #********FIN ABM PASAJE***********#
-
-
 
 #********REPORTES********************#
 def reportePasaje(request,idPasaje):
@@ -390,20 +395,18 @@ def reportePasaje(request,idPasaje):
 		response.write(output.read())
 
 	return response
+########FIN REPORTES##############
 
-def agentePasaje(request,idAgente):
-
-	agente=Agente.objects.get(id=idAgente)
-
+##########Formulario pasajes######################
+def altaPasaje(request,idPasajero):
+	pasajero=Pasajero.objects.get(id=idPasajero)
+	#form=formularioPasaje()
 	#Si se recibe por POST creo una nueva instancia de Pasaje()
 	if(request.method == 'POST'):
-		form=formularioPasajeAgente(request.POST)
+		form=formularioPasaje(request.POST)
 		
 		pasaje=Pasaje()
 		
-		#El id del agente le indico que es el objeto "agente" que busque previamente(si indico agente.id tira error)
-		pasaje.id_agente = agente
-
 		#Obtengo la fecha del formulario y le cambio el formato para poder guardarlo en el campor "fecha_viaje"
 		fecha=request.POST.get('fecha_viaje')
 		fecha = datetime.datetime.strptime(fecha,"%d/%m/%Y").strftime("%Y-%m-%d") 
@@ -413,6 +416,13 @@ def agentePasaje(request,idAgente):
 		id_empresa=request.POST.get('id_empresa')
 		empresa=Empresa.objects.get(id=id_empresa)
 		pasaje.id_empresa=empresa
+
+		#Valido si es un familiar o un agente
+		if(pasajero.id_familiar):
+			pasaje.id_agente=pasajero.id_agente
+			pasaje.id_familiar=pasajero.id_familiar
+		else:
+			pasaje.id_agente=pasajero.id_agente
 
 		#Indico la fecha de emision
 		pasaje.fecha_emision=datetime.datetime.now()-datetime.timedelta(hours=3)
@@ -426,16 +436,15 @@ def agentePasaje(request,idAgente):
 		pasaje.save()
 		
 		return reportePasaje(request,pasaje.id)
-		
-		
-	
 	#Si el request no es POST(GET) creo el formulario y lo renderizo en una vista
 	else:
-		form=formularioPasajeAgente()
+		form=formularioPasaje()
 		
 	titulo="Generar nuevo pasaje"
 
-	return render(request,'formularios/agentePasaje.html',{'form':form,'titulo':titulo,'agente':agente})
+	return render(request,'formularios/pasaje.html',{'form':form,'titulo':titulo,'pasajero':pasajero})
 
-#*************FIN REPORTES*************#
+#*************FIN formulario pasajes*************#
 
+def loginView(request):
+	return render(request,'registration/login.html')

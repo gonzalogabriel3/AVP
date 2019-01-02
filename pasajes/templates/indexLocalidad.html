@@ -4,7 +4,7 @@
 <!--Cargo el load static por si hay que mostrar alguna imagen desde el directorio assets-->
 {% load static %}
 <br>
-<center><h2 style="color:#03585a">Adm.Localidades</h2></center>
+<center><h2 class="titulo">Administraci&oacuten de Localidades</h2></center>
 <!--Valido si se recibe algun mensjae para mostrar-->
 {% if messages %}
 	<div class="alert alert-success">
@@ -20,7 +20,7 @@
 {% if localidades %}
 	<table class="datatable display" style="width:100%">
 		<thead>
-		<tr>
+		<tr class="titulo_columna">
 			<th>Id localidad</th>
 			<th>Nombre localidad</th>
 			<th>Acciones</th>
@@ -30,8 +30,8 @@
 		<tbody>
 	    {% for localidad in localidades %}
 	    	<tr>
-	        	<td>{{ localidad.id }}</td>
-	        	<td>{{ localidad.nombre }}</td>
+	        	<td><b>{{ localidad.id }}</b></td>
+	        	<td><b>{{ localidad.nombre }}</b></td>
 	        	<td>
 	        		<a href="{% url 'modificacionLocalidad' localidad.id %}" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Editar</a>
 	        		<a href="{% url 'bajaLocalidad' localidad.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
@@ -41,7 +41,7 @@
 	    {% endfor %}
 	    </tbody>
 	    <tfoot>
-			<tr>
+			<tr class="titulo_columna">
 				<th>Id localidad</th>
 				<th>Nombre localidad</th>
 				<th>Acciones</th>
