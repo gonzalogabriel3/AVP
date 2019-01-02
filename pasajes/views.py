@@ -86,10 +86,11 @@ def altaAgente(request):
 
 	#Recibo el request,si es un request de tipo POST lo valido y guardo el nuevo agente
 	if(request.method == 'POST'):
-		messages.success(request,"Se ha creado un nuevo agente")
+		
 		form=formularioAgente(request.POST)	
 		#Valido el formulario
 		if(form.is_valid()):
+				messages.success(request,"Se ha creado un nuevo agente")
 				agente=form.save(commit=False)
 				agente.save()
 				return redirect('agente')
@@ -124,9 +125,10 @@ def modificacionAgente(request,idAgente):
 		
 	#Si por el contrario se ingresa por POST valido el formulario y guardo los datos en el agente	
 	elif(request.method == "POST"):
-		messages.success(request,"Se ha modificado al agente '"+agente.apellido+" "+agente.nombre+"' con id "+str(agente.id))
+		
 		form=formularioAgente(request.POST, instance = agente)
 		if(form.is_valid()):
+			messages.success(request,"Se ha modificado al agente '"+agente.apellido+" "+agente.nombre+"' con id "+str(agente.id))
 			form.save()
 			return redirect('agente')
 
@@ -141,10 +143,11 @@ def altaLocalidad(request):
 
 	#Recibo el request,si es un request de tipo POST lo valido y guardo el nuevo agente
 	if(request.method == 'POST'):
-		messages.success(request,"Se ha creado nueva localidad")
+		
 		form=formularioLocalidad(request.POST)	
 		#Valido el formulario
 		if(form.is_valid()):
+				messages.success(request,"Se ha creado nueva localidad")
 				localidad=form.save(commit=False)
 				localidad.save()
 				return redirect('localidad')
@@ -182,9 +185,10 @@ def modificacionLocalidad(request,idLocalidad):
 	#Si por el contrario se ingresa por POST valido el formulario y guardo los datos en el Localidad	
 	elif(request.method == "POST"):
 		form=formularioLocalidad(request.POST, instance = localidad)
-		#Agrego un mensaje en caso de que se modifique correctamente
-		messages.success(request,"Se ha modificado la localidad '"+localidad.nombre+ "',con id "+str(localidad.id))
+		
 		if(form.is_valid()):
+			#Agrego un mensaje en caso de que se modifique correctamente
+			messages.success(request,"Se ha modificado la localidad '"+localidad.nombre+ "',con id "+str(localidad.id))
 			form.save()
 			return redirect('localidad')
 
@@ -199,10 +203,11 @@ def modificacionLocalidad(request,idLocalidad):
 def altaFamiliar(request):
 
 	if(request.method == 'POST'):
-		messages.success(request,"Se ha creado un nuevo familiar")
+		
 		form=formularioFamiliar(request.POST)	
 		#Valido el formulario
 		if(form.is_valid()):
+				messages.success(request,"Se ha creado un nuevo familiar")
 				familiar=form.save(commit=False)
 				familiar.save()
 				return redirect('familiar')
@@ -238,9 +243,10 @@ def modificacionFamiliar(request,idFamiliar):
 		
 	#Si por el contrario se ingresa por POST valido el formulario y guardo los datos en el Familiar	
 	elif(request.method == "POST"):
-		messages.success(request,"Se ha modificado al familiar '"+familiar.apellido+" "+familiar.nombre+"' con id "+str(familiar.id))
+		
 		form=formularioFamiliar(request.POST, instance = familiar)
 		if(form.is_valid()):
+			messages.success(request,"Se ha modificado al familiar '"+familiar.apellido+" "+familiar.nombre+"' con id "+str(familiar.id))
 			form.save()
 			return redirect('familiar')
 
@@ -256,10 +262,12 @@ def modificacionFamiliar(request,idFamiliar):
 def altaEmpresa(request):
 
 	if(request.method == 'POST'):
-		messages.success(request,"Se ha creado una nueva empresa")
-		form=formularioEmpresa(request.POST)	
+		
+		form=formularioEmpresa(request.POST)
+		
 		#Valido el formulario
 		if(form.is_valid()):
+				messages.success(request,"Se ha creado una nueva empresa")
 				empresa=form.save(commit=False)
 				empresa.save()
 				return redirect('empresa')
@@ -295,9 +303,10 @@ def modificacionEmpresa(request,idEmpresa):
 		
 	#Si por el contrario se ingresa por POST valido el formulario y guardo los datos en el Empresa	
 	elif(request.method == "POST"):
-		messages.success(request,"Se ha modificado la empresa '"+empresa.nombre+"' con id "+str(empresa.id))
+		
 		form=formularioEmpresa(request.POST, instance = empresa)
 		if(form.is_valid()):
+			messages.success(request,"Se ha modificado la empresa '"+empresa.nombre+"' con id "+str(empresa.id))
 			form.save()
 			return redirect('empresa')
 
@@ -313,10 +322,11 @@ def altaPasaje(request):
 
 	
 	if(request.method == 'POST'):
-		messages.success(request,"Se ha creado un nuevo pasaje")
+		
 		form=formularioPasaje(request.POST)	
 		#Valido el formulario
 		if(form.is_valid()):
+				messages.success(request,"Se ha creado un nuevo pasaje")
 				pasaje=form.save(commit=False)
 				#Digo que la fecha de emision es la fecha/hora actual,le resto 3 horas con timedelta porque datetime.now() guarda la hora
 				#con 3 horas de adelanto
@@ -356,9 +366,10 @@ def modificacionPasaje(request,idPasaje):
 		
 	#Si por el contrario se ingresa por POST valido el formulario y guardo los datos en el Pasaje	
 	elif(request.method == "POST"):
-		messages.success(request,"Se ha modificado el pasaje con id '"+str(pasaje.id)+"'")
+		
 		form=formularioPasaje(request.POST, instance = pasaje)
 		if(form.is_valid()):
+			messages.success(request,"Se ha modificado el pasaje con id '"+str(pasaje.id)+"'")
 			pasaje.fecha_emision=datetime.datetime.now()-datetime.timedelta(hours=3)
 			form.save()
 			return redirect('pasaje')
