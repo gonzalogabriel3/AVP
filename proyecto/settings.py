@@ -83,10 +83,8 @@ DATABASES = {
         'NAME': 'deposito',
         'USER': 'postgres',
         'PASSWORD': 'sistemasavp',
-        #'HOST': 'sysavp.chubut.gov.ar',
-        #'PORT': '33060',
-        'HOST': '172.155.0.8',
-        'PORT': '5432',
+        'HOST': 'sysavp.chubut.gov.ar',
+        'PORT': '33060',
     },
     'pasajes': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
