@@ -80,22 +80,24 @@ WSGI_APPLICATION = 'proyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'deposito',
+        'USER': 'postgres',
+        'PASSWORD': 'sistemasavp',
+        #'HOST': 'sysavp.chubut.gov.ar',
+        #'PORT': '33060',
+        'HOST': '172.155.0.8',
+        'PORT': '5432',
+    },
+    'pasajes': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'pasajes',
         'USER': 'postgres',
         'PASSWORD': 'sistemasavp',
         'HOST': '172.155.0.8',
         'PORT': '5432',
     },
-    'deposito': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'deposito',
-        'USER': 'postgres',
-        'PASSWORD': 'sistemasavp',
-        'HOST': 'sysavp.chubut.gov.ar',
-        'PORT': '33060',
-    }
 }
-DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito']
+DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito','proyecto.routerPasajes.RouterPasajes']
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators

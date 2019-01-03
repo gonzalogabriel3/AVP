@@ -276,14 +276,14 @@ class VwArticulos(models.Model):
 
 #----------------------------------------------------------------------------------------------------
 class Ciudad(models.Model):
-    idciudad = models.AutoField(primary_key=True, db_column='idCiudad',verbose_name='Ciudad')
-    codigopostal = models.SmallIntegerField(db_column='codigoPostal',verbose_name='Cód.Postal')
-    nombre = models.CharField(max_length=200)
+    idciudad = models.AutoField(db_column='idCiudad', primary_key=True)  # Field name made lowercase.
+    codigopostal = models.SmallIntegerField(db_column='codigoPostal', blank=True, null=True)  # Field name made lowercase.
+    nombre = models.CharField(max_length=200, blank=True, null=True)
+
 
     class Meta:
-        db_table = u'ciudad'
-        verbose_name_plural ="Ciudad"
-    
+        managed = False
+        db_table = 'ciudad'
 
         
 #----------------------------------------------------------------------------------------------------
