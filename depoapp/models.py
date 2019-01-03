@@ -3,17 +3,12 @@ from django.db import models
 from django import forms
 
 
-# Create your models here.
-
-#def prueba():
-#	return
 
 TEST = (
 	("Uno","1"), 
 	("Dos","2"), 
 	("Tres","3"),
 )
-
 
 #----------------------------------------------------------------------------------------------------------------------------------
 
@@ -30,9 +25,9 @@ class MinMaxFloat(models.FloatField):
 #----------------------------------------------------------------------------------------------------
 
 class Barras(models.Model):
-     idbarra = models.IntegerField("Código de barras",primary_key=True, db_column='idBarra')
-     codigo = models.CharField("Descripción",max_length=200)
-     class Meta:
+    idbarra = models.IntegerField("Código de barras",primary_key=True, db_column='idBarra')
+    codigo = models.CharField("Descripción",max_length=200)
+    class Meta:
         db_table = u'barras'
         verbose_name_plural = "Código de Barra"
 
@@ -54,24 +49,24 @@ class Unidadesmedidas(models.Model):
 
 
 class ArticuloDepositoAd(models.Model):
-     idarticulodeposito = models.AutoField(primary_key=True, db_column='idArticuloDeposito')
-     idarticulo = models.SmallIntegerField(db_column='idArticulo')
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem',verbose_name='Articulo') 
-     direccion = models.CharField(max_length=200, db_column='direccion',verbose_name='Deposito')
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='Unidad Medida')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial', verbose_name='Nro Cta.Patrim')
-     nroficha = models.SmallIntegerField(db_column='nroFicha',verbose_name='Nro Ficha')
-     mueble = models.CharField(max_length=200,verbose_name='Mueble')
-     casillero = models.CharField(max_length=200,verbose_name='Casillero')
-     stmin = MinMaxFloat(db_column='stmin',max_value=1000000000000, min_value=0.0, verbose_name='Stock Min')
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cod Barra')
-     stock = models.FloatField()
-     stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='Stock Entrada')
-     stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='Stock Salida')
+    idarticulodeposito = models.AutoField(primary_key=True, db_column='idArticuloDeposito')
+    idarticulo = models.SmallIntegerField(db_column='idArticulo')
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem',verbose_name='Articulo') 
+    direccion = models.CharField(max_length=200, db_column='direccion',verbose_name='Deposito')
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='Unidad Medida',on_delete=models.CASCADE)
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial', verbose_name='Nro Cta.Patrim',on_delete=models.CASCADE)
+    nroficha = models.SmallIntegerField(db_column='nroFicha',verbose_name='Nro Ficha')
+    mueble = models.CharField(max_length=200,verbose_name='Mueble')
+    casillero = models.CharField(max_length=200,verbose_name='Casillero')
+    stmin = MinMaxFloat(db_column='stmin',max_value=1000000000000, min_value=0.0, verbose_name='Stock Min')
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cod Barra',on_delete=models.CASCADE)
+    stock = models.FloatField()
+    stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='Stock Entrada')
+    stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='Stock Salida')
 
-     class Meta:
-         db_table = u'depoAdmin'
-         verbose_name_plural ="Listado Articulos (Stock depositos)"
+    class Meta:
+        db_table = u'depoAdmin'
+        verbose_name_plural ="Listado Articulos (Stock depositos)"
 
 
 #----------------------------------------------------------------------------------------------------
@@ -79,170 +74,170 @@ class ArticuloDepositoAd(models.Model):
 #--------------------------------------Movimiento de Articulos---------------------------------------
 
 class ArticuloMov(models.Model):
-     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0) 
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True) 
-     class Meta:
+    idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True,on_delete=models.CASCADE) 
+    class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos"
 
 #----------------------------------------------------------------------------------------------------
 
 class MovArt(models.Model):
-     idarticulo = models.ForeignKey(ArticuloMov, db_column='idArticulo', primary_key=True, verbose_name='Artículo')
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
-     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-     descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
-     direccion = models.CharField(max_length=200,verbose_name='Depósito')
-     origdest = models.CharField(max_length=200, db_column='origdest') 
-     deposito = models.CharField(max_length=200, db_column='deposito') 
-     idaccion = models.CharField(max_length=200, db_column='id')
-     nrocuentapatrimonial = models.CharField(max_length=200, db_column='nroCuentaPatrimonial')
-     class Meta:
+    idarticulo = models.ForeignKey(ArticuloMov, db_column='idArticulo', primary_key=True, verbose_name='Artículo',on_delete=models.CASCADE)
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
+    cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
+    descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
+    direccion = models.CharField(max_length=200,verbose_name='Depósito')
+    origdest = models.CharField(max_length=200, db_column='origdest') 
+    deposito = models.CharField(max_length=200, db_column='deposito') 
+    idaccion = models.CharField(max_length=200, db_column='id')
+    nrocuentapatrimonial = models.CharField(max_length=200, db_column='nroCuentaPatrimonial')
+    class Meta:
         db_table = u'movArt'
         verbose_name_plural ="Movimiento de Artículos"
 
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovRw(models.Model):
-     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0) 
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True) 
-     class Meta:
+    idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True,on_delete=models.CASCADE) 
+    class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Rawson"
 
 #----------------------------------------------------------------------------------------------------
 
 class MovArtRw(models.Model):
-     idarticulo = models.ForeignKey(ArticuloMovRw, db_column='idArticulo', primary_key=True, verbose_name='Artículo')
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
-     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-     descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
-     class Meta:
+    idarticulo = models.ForeignKey(ArticuloMovRw, db_column='idArticulo', primary_key=True, verbose_name='Artículo',on_delete=models.CASCADE)
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
+    cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
+    descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
+    class Meta:
         db_table = u'movArtRw'
         verbose_name_plural ="Movimiento de Artículos"
 
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovTrevelin(models.Model):
-     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0) 
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True) 
-     class Meta:
+    idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True,on_delete=models.CASCADE) 
+    class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Trevelin"
 
 #----------------------------------------------------------------------------------------------------
 
 class MovArtTrevelin(models.Model):
-     idarticulo = models.ForeignKey(ArticuloMovTrevelin, db_column='idArticulo', primary_key=True, verbose_name='Artículo')
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
-     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-     descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
-     class Meta:
+    idarticulo = models.ForeignKey(ArticuloMovTrevelin, db_column='idArticulo', primary_key=True, verbose_name='Artículo',on_delete=models.CASCADE)
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
+    cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
+    descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
+    class Meta:
         db_table = u'movArtTrevelin'
         verbose_name_plural ="Movimiento de Artículos"
 
 #----------------------------------------------------------------------------------------------------
 
 class ArticuloMovGaiman(models.Model):
-     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0) 
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True) 
-     class Meta:
+    idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True,on_delete=models.CASCADE) 
+    class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Gaiman"
 
 #----------------------------------------------------------------------------------------------------
 
 class MovArtGaiman(models.Model):
-     idarticulo = models.ForeignKey(ArticuloMovGaiman, db_column='idArticulo', primary_key=True, verbose_name='Artículo')
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
-     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-     descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
-     class Meta:
+    idarticulo = models.ForeignKey(ArticuloMovGaiman, db_column='idArticulo', primary_key=True, verbose_name='Artículo',on_delete=models.CASCADE)
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
+    cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
+    descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
+    class Meta:
         db_table = u'movArtGaiman'
         verbose_name_plural ="Movimiento de Artículos"
 
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovEsquel(models.Model):
-     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0) 
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True) 
-     class Meta:
+    idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True,on_delete=models.CASCADE) 
+    class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Esquel"
 
 #----------------------------------------------------------------------------------------------------
 
 class MovArtEsquel(models.Model):
-     idarticulo = models.ForeignKey(ArticuloMovEsquel, db_column='idArticulo', primary_key=True, verbose_name='Artículo')
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
-     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-     descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
-     class Meta:
+    idarticulo = models.ForeignKey(ArticuloMovEsquel, db_column='idArticulo', primary_key=True, verbose_name='Artículo',on_delete=models.CASCADE)
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
+    cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
+    descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
+    class Meta:
         db_table = u'movArtEsquel'
         verbose_name_plural ="Movimiento de Artículos"
 
 
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovMadryn(models.Model):
-     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0) 
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True) 
-     class Meta:
+    idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True,on_delete=models.CASCADE) 
+    class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Madryn"
 
 #----------------------------------------------------------------------------------------------------
 
 class MovArtMadryn(models.Model):
-     idarticulo = models.ForeignKey(ArticuloMovMadryn, db_column='idArticulo', primary_key=True, verbose_name='Artículo')
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
-     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-     descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
-     class Meta:
+    idarticulo = models.ForeignKey(ArticuloMovMadryn, db_column='idArticulo', primary_key=True, verbose_name='Artículo',on_delete=models.CASCADE)
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
+    cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
+    descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
+    class Meta:
         db_table = u'movArtMadryn'
         verbose_name_plural ="Movimiento de Artículos"
 
 
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovSarmiento(models.Model):
-     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0) 
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True) 
-     class Meta:
+    idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True,on_delete=models.CASCADE) 
+    class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Sarmiento"
 
 #----------------------------------------------------------------------------------------------------
 
 class MovArtSarmiento(models.Model):
-     idarticulo = models.ForeignKey(ArticuloMovSarmiento, db_column='idArticulo', primary_key=True, verbose_name='Artículo')
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
-     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-     descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
-     class Meta:
+    idarticulo = models.ForeignKey(ArticuloMovSarmiento, db_column='idArticulo', primary_key=True, verbose_name='Artículo',on_delete=models.CASCADE)
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    fecha = models.DateField(db_column='fecha',verbose_name='Fecha') 
+    cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
+    descripcion = models.CharField(max_length=200, db_column='descripcion', verbose_name=u'Acción') 
+    class Meta:
         db_table = u'movArtSarmiento'
         verbose_name_plural ="Movimiento de Artículos"
 
@@ -252,10 +247,10 @@ class MovArtSarmiento(models.Model):
 #----------------------------------------------------------------------------------------------------
 class Articulo(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True) 
-    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True) 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida', blank=True,on_delete=models.CASCADE) 
     equivalencia = models.CharField(max_length=200, db_column='equivalencia', blank=True, verbose_name=u'Equivalencia')
     class Meta:
         db_table = u'articulo'
@@ -267,13 +262,13 @@ class Articulo(models.Model):
         get_unidadmedida.short_description = 'Unidad Medida'
 
 class VwArticulos(models.Model):
-     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
-     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') 
-     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
-     idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0, null=True) 
-     unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida')
-     equivalencia = models.CharField(max_length=200, db_column='equivalencia', verbose_name=u'Equivalencia', blank=True)
-     class Meta:
+    idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
+    descripcionitem = models.CharField(max_length=200, db_column='descripcionItem', verbose_name=u'Descripción') 
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Código de barra', blank=True, default = 0, null=True,on_delete=models.CASCADE) 
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida', verbose_name='Unidad Medida',on_delete=models.CASCADE)
+    equivalencia = models.CharField(max_length=200, db_column='equivalencia', verbose_name=u'Equivalencia', blank=True)
+    class Meta:
         db_table = u'VW_articulos'
         verbose_name_plural ="Artículo - (Altas, Bajas, Modificaciones)"
         verbose_name = "Artículo"
@@ -294,7 +289,7 @@ class Ciudad(models.Model):
 #----------------------------------------------------------------------------------------------------
 class Deposito(models.Model):
     iddeposito = models.AutoField(primary_key=True, db_column='idDeposito', editable=False,verbose_name='Depósito')
-    idciudad = models.ForeignKey(Ciudad, db_column='idCiudad',verbose_name='Ciudad') 
+    idciudad = models.ForeignKey(Ciudad, db_column='idCiudad',verbose_name='Ciudad',on_delete=models.CASCADE) 
     telefono = models.CharField(max_length=200,verbose_name='Tel.')
     direccion = models.CharField(max_length=200,verbose_name='Dirección')
 
@@ -308,7 +303,7 @@ class Proveedor(models.Model):
     idproveedor = models.AutoField(primary_key=True, db_column='idProveedor') 
     razonsocial = models.CharField(max_length=200, db_column='razonSocial') 
     domicilio = models.CharField(max_length=200)
-    ciudad =  models.ForeignKey(Ciudad, db_column='ciudad')
+    ciudad =  models.ForeignKey(Ciudad, db_column='ciudad',on_delete=models.CASCADE)
     telefono = models.CharField(max_length=200)
 
     class Meta:
@@ -326,9 +321,9 @@ class Transferencia(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',verbose_name='FechaSalida') 
     fechaentrada = models.DateField(db_column='fechaEntrada', blank=True,verbose_name='FechaEntrada') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOut',verbose_name='DepoSalida') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOut',verbose_name='DepoSalida',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoIn',verbose_name='DepoEntrada') 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoIn',verbose_name='DepoEntrada',on_delete=models.CASCADE) 
     entrega = models.CharField(max_length=200, db_column='entrega', blank=True, verbose_name='Entregado por')
     recibe  = models.CharField(max_length=200, db_column='recibe', blank=True, verbose_name='Recibido por')
 
@@ -339,8 +334,8 @@ class Transferencia(models.Model):
 
 class Detalletrasferencia(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey(Transferencia, db_column='idTransferencia',verbose_name='Transferencia') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idtransferencia = models.ForeignKey(Transferencia, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     cantidadconfirmada = MinMaxFloat(max_value=10000000000000, min_value=0.0, db_column='cantidadConfirmada',verbose_name='Cant.Confirmada')
     confirmado = models.BooleanField()
@@ -358,9 +353,9 @@ class VwTransfEntRw(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',editable=False,verbose_name='FechaSalida') 
     fechaentrada = models.DateField(db_column='fechaEntrada',verbose_name='FechaEntrada') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntRw',editable=False,verbose_name='Depo.Salida') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntRw',editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntRw',editable=False,verbose_name='Depo.Entrada') 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntRw',editable=False,verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     entrega = models.CharField(max_length=200, db_column='entrega', blank=True, verbose_name='Entregado por', default='-')
     recibe  = models.CharField(max_length=200, db_column='recibe', blank=False, verbose_name='Recibido por' )
     class Meta:
@@ -372,8 +367,8 @@ class VwTransfEntRw(models.Model):
 class VwTransfSalRw(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',verbose_name='FechaSalida') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalRw', default=5, editable=False,verbose_name='Depo.Salida') 
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalRw',verbose_name='Depo.Entrada') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalRw', default=5, editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalRw',verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
     entrega = models.CharField(max_length=200, db_column='entrega', blank=False, verbose_name='Entregado por')
     #recibe  = models.CharField(max_length=200, db_column='recibe', blank=True, verbose_name='Recibido por', editable=False, default='-')
@@ -386,8 +381,8 @@ class VwTransfSalRw(models.Model):
 
 class DetalleTransfEntRw(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey(VwTransfEntRw, db_column='idTransferencia',verbose_name='Transferencia') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idtransferencia = models.ForeignKey(VwTransfEntRw, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     cantidadconfirmada = MinMaxFloat(max_value=10000000000000, min_value=0.0, db_column='cantidadConfirmada',verbose_name='Cant.Confirmada')
     confirmado = models.BooleanField()
@@ -401,8 +396,8 @@ class DetalleTransfEntRw(models.Model):
 
 class DetalleTransfSalRw(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey( VwTransfSalRw, db_column='idTransferencia',verbose_name='Transferencia')
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idtransferencia = models.ForeignKey( VwTransfSalRw, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE)
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
@@ -418,9 +413,9 @@ class VwTransfEntTrevelin(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',editable=False,verbose_name='FechaSalida') 
     fechaentrada = models.DateField(db_column='fechaEntrada',verbose_name='FechaEntrada') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntTrevelin',editable=False,verbose_name='Depo.Salida') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntTrevelin',editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntTrevelin',editable=False,verbose_name='Depo.Entrada') 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntTrevelin',editable=False,verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     entrega = models.CharField(max_length=200, db_column='entrega', blank=True, verbose_name='Entregado por', default='-')
     recibe  = models.CharField(max_length=200, db_column='recibe', blank=False, verbose_name='Recibido por' )
     class Meta:
@@ -432,8 +427,8 @@ class VwTransfEntTrevelin(models.Model):
 class VwTransfSalTrevelin(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',verbose_name='FechaSalida') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalTrevelin', default=6, editable=False,verbose_name='Depo.Salida') 
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalTrevelin',verbose_name='Depo.Entrada') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalTrevelin', default=6, editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalTrevelin',verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
     entrega = models.CharField(max_length=200, db_column='entrega', blank=False, verbose_name='Entregado por')
     #recibe  = models.CharField(max_length=200, db_column='recibe', blank=True, verbose_name='Recibido por', editable=False, default='-')
@@ -443,11 +438,10 @@ class VwTransfSalTrevelin(models.Model):
         verbose_name = "Transferencia Salida"
 
 
-
 class DetalleTransfEntTrevelin(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey(VwTransfEntTrevelin, db_column='idTransferencia',verbose_name='Transferencia') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idtransferencia = models.ForeignKey(VwTransfEntTrevelin, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     cantidadconfirmada = MinMaxFloat(max_value=10000000000000, min_value=0.0, db_column='cantidadConfirmada',verbose_name='Cant.Confirmada')
     confirmado = models.BooleanField()
@@ -460,8 +454,8 @@ class DetalleTransfEntTrevelin(models.Model):
 
 class DetalleTransfSalTrevelin(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey( VwTransfSalTrevelin, db_column='idTransferencia',verbose_name='Transferencia')
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idtransferencia = models.ForeignKey( VwTransfSalTrevelin, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE)
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
@@ -473,14 +467,13 @@ class DetalleTransfSalTrevelin(models.Model):
         unique_together = ("idtransferencia","idarticulo")
 
 
-        
 class VwTransfEntMadryn(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',editable=False,verbose_name='FechaSalida') 
     fechaentrada = models.DateField(db_column='fechaEntrada',verbose_name='FechaEntrada') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntMadryn',editable=False,verbose_name='Depo.Salida') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntMadryn',editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntMadryn',editable=False,verbose_name='Depo.Entrada') 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntMadryn',editable=False,verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     entrega = models.CharField(max_length=200, db_column='entrega', blank=True, verbose_name='Entregado por', default='-')
     recibe  = models.CharField(max_length=200, db_column='recibe', blank=False, verbose_name='Recibido por' )
     class Meta:
@@ -492,8 +485,8 @@ class VwTransfEntMadryn(models.Model):
 class VwTransfSalMadryn(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',verbose_name='FechaSalida') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalMadryn',default=2, editable=False,verbose_name='Depo.Salida') 
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalMadryn',verbose_name='Depo.Entrada') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalMadryn',default=2, editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalMadryn',verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
     entrega = models.CharField(max_length=200, db_column='entrega', blank=False, verbose_name='Entregado por')
     #recibe  = models.CharField(max_length=200, db_column='recibe', blank=True, verbose_name='Recibido por', editable=False, default='-')
@@ -503,11 +496,10 @@ class VwTransfSalMadryn(models.Model):
         verbose_name = "Transferencia Salida"
 
 
-
 class DetalleTransfEntMadryn(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey(VwTransfEntMadryn, db_column='idTransferencia',verbose_name='Transferencia') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idtransferencia = models.ForeignKey(VwTransfEntMadryn, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     cantidadconfirmada = MinMaxFloat(max_value=10000000000000, min_value=0.0, db_column='cantidadConfirmada',verbose_name='Cant.Confirmada')
     confirmado = models.BooleanField()
@@ -520,8 +512,8 @@ class DetalleTransfEntMadryn(models.Model):
 
 class DetalleTransfSalMadryn(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey( VwTransfSalMadryn, db_column='idTransferencia',verbose_name='Transferencia')
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idtransferencia = models.ForeignKey( VwTransfSalMadryn, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE)
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
@@ -537,9 +529,9 @@ class VwTransfEntGaiman(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',editable=False,verbose_name='FechaSalida') 
     fechaentrada = models.DateField("Fecha de Entrada",db_column='fechaEntrada') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntGaiman',editable=False,verbose_name='Depo.Salida') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntGaiman',editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntGaiman',editable=False,verbose_name='Depo.Entrada') 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntGaiman',editable=False,verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     entrega = models.CharField(max_length=200, db_column='entrega', blank=True, verbose_name='Entregado por', default='-')
     recibe  = models.CharField(max_length=200, db_column='recibe', blank=False, verbose_name='Recibido por' )
 
@@ -552,8 +544,8 @@ class VwTransfEntGaiman(models.Model):
 class VwTransfSalGaiman(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',verbose_name='FechaSalida') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalGaiman',default=4, editable=False,verbose_name='Depo.Salida') 
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalGaiman',verbose_name='Depo.Entrada') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalGaiman',default=4, editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalGaiman',verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
     entrega = models.CharField(max_length=200, db_column='entrega', blank=False, verbose_name='Entregado por')
     #recibe  = models.CharField(max_length=200, db_column='recibe', blank=True, verbose_name='Recibido por', editable=False, default='-')
@@ -565,8 +557,8 @@ class VwTransfSalGaiman(models.Model):
 
 class DetalleTransfEntGaiman(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey(VwTransfEntGaiman, db_column='idTransferencia',verbose_name='Transferencia') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idtransferencia = models.ForeignKey(VwTransfEntGaiman, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     cantidadconfirmada = MinMaxFloat(max_value=10000000000000, min_value=0.0, db_column='cantidadConfirmada',verbose_name='Cant.Confirmada')
     confirmado = models.BooleanField()
@@ -578,11 +570,10 @@ class DetalleTransfEntGaiman(models.Model):
         unique_together = ("idtransferencia","idarticulo")
 
 
-
 class DetalleTransfSalGaiman(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey( VwTransfSalGaiman, db_column='idTransferencia',verbose_name='Transferencia')
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idtransferencia = models.ForeignKey( VwTransfSalGaiman, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE)
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
@@ -598,9 +589,9 @@ class VwTransfEntSarmiento(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',editable=False,verbose_name='FechaSalida') 
     fechaentrada = models.DateField(db_column='fechaEntrada',verbose_name='FechaEntrada') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntSarmiento',editable=False,verbose_name='Depo.Salida') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntSarmiento',editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntSarmiento',editable=False,verbose_name='Depo.Entrada') 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntSarmiento',editable=False,verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     entrega = models.CharField(max_length=200, db_column='entrega', blank=True, verbose_name='Entregado por', default='-')
     recibe  = models.CharField(max_length=200, db_column='recibe', blank=False, verbose_name='Recibido por' )
     class Meta:
@@ -611,8 +602,8 @@ class VwTransfEntSarmiento(models.Model):
 class VwTransfSalSarmiento(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',verbose_name='FechaSalida') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalSarmiento',default=1, editable=False,verbose_name='Depo.Salida') 
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalSarmiento',verbose_name='Depo.Entrada') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalSarmiento',default=1, editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalSarmiento',verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False) 
     entrega = models.CharField(max_length=200, db_column='entrega', blank=False, verbose_name='Entregado por')
     #recibe  = models.CharField(max_length=200, db_column='recibe', blank=True, verbose_name='Recibido por', editable=False, default='-')
@@ -624,8 +615,8 @@ class VwTransfSalSarmiento(models.Model):
 
 class DetalleTransfEntSarmiento(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey(VwTransfEntSarmiento, db_column='idTransferencia',verbose_name='Transferencia') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idtransferencia = models.ForeignKey(VwTransfEntSarmiento, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     cantidadconfirmada = MinMaxFloat(max_value=10000000000000, min_value=0.0, db_column='cantidadConfirmada',verbose_name='Cant.Confirmada')
     confirmado = models.BooleanField()
@@ -636,10 +627,11 @@ class DetalleTransfEntSarmiento(models.Model):
         verbose_name='Detalle Transferencia Entrada'
         unique_together = ("idtransferencia","idarticulo")
 
+
 class DetalleTransfSalSarmiento(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey( VwTransfSalSarmiento, db_column='idTransferencia',verbose_name='Transferencia')
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idtransferencia = models.ForeignKey( VwTransfSalSarmiento, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE)
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
@@ -650,13 +642,14 @@ class DetalleTransfSalSarmiento(models.Model):
         verbose_name='Detalle Transferencia Salida'
         unique_together = ("idtransferencia","idarticulo")
 
+
 class VwTransfEntEsquel(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',editable=False,verbose_name='FechaSalida') 
     fechaentrada = models.DateField(db_column='fechaEntrada',verbose_name='FechaEntrada') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntEsquel',editable=False,verbose_name='Depo.Salida') 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfEntEsquel',editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntEsquel',editable=False,verbose_name='Depo.Entrada') 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfEntEsquel',editable=False,verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
     entrega = models.CharField(max_length=200, db_column='entrega', blank=True, verbose_name='Entregado por', default='-')
     recibe  = models.CharField(max_length=200, db_column='recibe', blank=False, verbose_name='Recibido por' )
 
@@ -669,8 +662,8 @@ class VwTransfEntEsquel(models.Model):
 class VwTransfSalEsquel(models.Model):
     idtransferencia = models.AutoField(primary_key=True, db_column='idTransferencia',verbose_name='Transferencia')
     fechasalida = models.DateField(db_column='fechaSalida',verbose_name='FechaSalida') 
-    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalEsquel',verbose_name='Depo.Entrada') 
-    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalEsquel',default=3, editable=False,verbose_name='Depo.Salida') 
+    depositoentrada = models.ForeignKey(Deposito,db_column='depositoEntrada', related_name = 'depoInTransfSalEsquel',verbose_name='Depo.Entrada',on_delete=models.CASCADE) 
+    depositosalida = models.ForeignKey(Deposito, db_column='depositoSalida', related_name = 'depoOutTransfSalEsquel',default=3, editable=False,verbose_name='Depo.Salida',on_delete=models.CASCADE) 
     confirmado = models.BooleanField(default=False)
     entrega = models.CharField(max_length=200, db_column='entrega', blank=False, verbose_name='Entregado por')
     #recibe  = models.CharField(max_length=200, db_column='recibe', blank=True, verbose_name='Recibido por', editable=False, default='-')
@@ -682,8 +675,8 @@ class VwTransfSalEsquel(models.Model):
 
 class DetalleTransfEntEsquel(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey(VwTransfEntEsquel, db_column='idTransferencia',verbose_name='Transferencia') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idtransferencia = models.ForeignKey(VwTransfEntEsquel, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     cantidadconfirmada = MinMaxFloat(max_value=10000000000000, min_value=0.0, db_column='cantidadConfirmada',verbose_name='Cant.Confirmada')
     confirmado = models.BooleanField()
@@ -697,8 +690,8 @@ class DetalleTransfEntEsquel(models.Model):
 
 class DetalleTransfSalEsquel(models.Model):
     iddettransferencia = models.AutoField(primary_key=True, db_column='idDetTransferencia',verbose_name='Det.Transferencia')
-    idtransferencia = models.ForeignKey( VwTransfSalEsquel, db_column='idTransferencia',verbose_name='Transferencia')
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idtransferencia = models.ForeignKey( VwTransfSalEsquel, db_column='idTransferencia',verbose_name='Transferencia',on_delete=models.CASCADE)
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
@@ -725,8 +718,8 @@ class Compra(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
     tipo = models.CharField(max_length=200, choices=TIPO_COMPRA)
     fecha = models.DateField()
-    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     nroactuacion = models.CharField(max_length=200,db_column='nroActuacion',verbose_name='Nro.Actuación', blank=True)
     nroremito = models.CharField(max_length=200,db_column='nroRemito',verbose_name='Nro.Remito')
     nroordencompra = models.CharField(max_length=200,db_column='nroOrdenCompra',verbose_name='OrdenCompra', blank=True)
@@ -743,8 +736,8 @@ class VwComprasrw(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
     tipo = models.CharField(max_length=200, choices=TIPO_COMPRA)
     fecha = models.DateField()
-    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=5, editable=False,verbose_name='Depósito')
+    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=5, editable=False,verbose_name='Depósito',on_delete=models.CASCADE)
     nroactuacion = models.CharField(max_length=200,db_column='nroActuacion',verbose_name='Nro.Actuación', blank=True)
     nroremito = models.CharField(max_length=200,db_column='nroRemito',verbose_name='Nro.Remito')
     nroordencompra = models.CharField(max_length=200,db_column='nroOrdenCompra',verbose_name='OrdenCompra', blank=True)
@@ -759,8 +752,8 @@ class VwComprastrevelin(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
     tipo = models.CharField(max_length=200, choices=TIPO_COMPRA)
     fecha = models.DateField()
-    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=6, editable=False,verbose_name='Depósito')
+    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=6, editable=False,verbose_name='Depósito',on_delete=models.CASCADE)
     nroactuacion = models.CharField(max_length=200,db_column='nroActuacion',verbose_name='Nro.Actuación', blank=True)
     nroremito = models.CharField(max_length=200,db_column='nroRemito',verbose_name='Nro.Remito')
     nroordencompra = models.CharField(max_length=200,db_column='nroOrdenCompra',verbose_name='OrdenCompra', blank=True)
@@ -775,8 +768,8 @@ class VwComprassarmiento(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
     tipo = models.CharField(max_length=200, choices=TIPO_COMPRA)
     fecha = models.DateField()
-    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=1, editable=False,verbose_name='Depósito')
+    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=1, editable=False,verbose_name='Depósito',on_delete=models.CASCADE)
     nroactuacion = models.CharField(max_length=200,db_column='nroActuacion',verbose_name='Nro.Actuación', blank=True)
     nroremito = models.CharField(max_length=200,db_column='nroRemito',verbose_name='NroRemito')
     nroordencompra = models.CharField(max_length=200,db_column='nroOrdenCompra',verbose_name='OrdenCompra', blank=True)
@@ -787,14 +780,12 @@ class VwComprassarmiento(models.Model):
         verbose_name_plural ="Compra Sarmiento"
         verbose_name = "Compra"
 
-
-
 class VwCompraspmadryn(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
     tipo = models.CharField(max_length=200, choices=TIPO_COMPRA)
     fecha = models.DateField()
-    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=2, editable=False,verbose_name='Depósito')
+    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=2, editable=False,verbose_name='Depósito',on_delete=models.CASCADE)
     nroactuacion = models.CharField(max_length=200,db_column='nroActuacion',verbose_name='Nro.Actuación', blank=True)
     nroremito = models.CharField(max_length=200,db_column='nroRemito',verbose_name='Nro.Remito')
     nroordencompra = models.CharField(max_length=200,db_column='nroOrdenCompra',verbose_name='OrdenCompra', blank=True)
@@ -810,8 +801,8 @@ class VwComprasesquel(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
     tipo = models.CharField(max_length=200, choices=TIPO_COMPRA)
     fecha = models.DateField()
-    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=3, editable=False,verbose_name='Depósito')
+    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=3, editable=False,verbose_name='Depósito',on_delete=models.CASCADE)
     nroactuacion = models.CharField(max_length=200,db_column='nroActuacion',verbose_name='Nro.Actuación', blank=True)
     nroremito = models.CharField(max_length=200,db_column='nroRemito',verbose_name='Nro.Remito')
     nroordencompra = models.CharField(max_length=200,db_column='nroOrdenCompra',verbose_name='OrdenCompra', blank=True)
@@ -827,8 +818,8 @@ class VwComprasgaiman(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
     tipo = models.CharField(max_length=200, choices=TIPO_COMPRA)
     fecha = models.DateField()
-    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor', verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=4, editable=False,verbose_name='Depósito')
+    idproveedor = models.ForeignKey(Proveedor,db_column='idProveedor', verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito', default=4, editable=False,verbose_name='Depósito',on_delete=models.CASCADE)
     nroactuacion = models.CharField(max_length=200,db_column='nroActuacion',verbose_name='Nro.Actuación', blank=True)
     nroremito = models.CharField(max_length=200,db_column='nroRemito',verbose_name='Nro.Remito')
     nroordencompra = models.CharField(max_length=200,db_column='nroOrdenCompra',verbose_name='OrdenCompra', blank=True)
@@ -842,8 +833,8 @@ class VwComprasgaiman(models.Model):
 
 class Detallecomprarw(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
-    idcompra = models.ForeignKey(VwComprasrw, db_column='idCompra',verbose_name='Compra') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idcompra = models.ForeignKey(VwComprasrw, db_column='idCompra',verbose_name='Compra',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='PrecioUnitario')
 
@@ -855,8 +846,8 @@ class Detallecomprarw(models.Model):
 
 class Detallecompratrevelin(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
-    idcompra = models.ForeignKey(VwComprastrevelin, db_column='idCompra',verbose_name='Compra') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idcompra = models.ForeignKey(VwComprastrevelin, db_column='idCompra',verbose_name='Compra',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='PrecioUnitario')
 
@@ -868,8 +859,8 @@ class Detallecompratrevelin(models.Model):
         
 class Detallecomprasarmiento(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
-    idcompra = models.ForeignKey(VwComprassarmiento, db_column='idCompra',verbose_name='Compra') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idcompra = models.ForeignKey(VwComprassarmiento, db_column='idCompra',verbose_name='Compra',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='PrecioUnitario')
 
@@ -881,8 +872,8 @@ class Detallecomprasarmiento(models.Model):
         
 class Detallecompramadryn(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
-    idcompra = models.ForeignKey(VwCompraspmadryn, db_column='idCompra',verbose_name='Compra') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idcompra = models.ForeignKey(VwCompraspmadryn, db_column='idCompra',verbose_name='Compra',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='PrecioUnitario')
     #preciounitario = PriceField('Precio unitario', db_column='preciounitario', currency='BTC')
@@ -895,8 +886,8 @@ class Detallecompramadryn(models.Model):
         
 class Detallecompragaiman(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
-    idcompra = models.ForeignKey(VwComprasgaiman, db_column='idCompra',verbose_name='Compra') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idcompra = models.ForeignKey(VwComprasgaiman, db_column='idCompra',verbose_name='Compra',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='PrecioUnitario')
 
@@ -908,8 +899,8 @@ class Detallecompragaiman(models.Model):
          
 class Detallecompraesquel(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
-    idcompra = models.ForeignKey(VwComprasesquel, db_column='idCompra',verbose_name='Compra') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idcompra = models.ForeignKey(VwComprasesquel, db_column='idCompra',verbose_name='Compra',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='PrecioUnitario')
     #preciounitario = models.PriceField(db_column='precioUnitario',verbose_name='PrecioUnitario')
@@ -921,8 +912,8 @@ class Detallecompraesquel(models.Model):
 
 class Detallecompra(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
-    idcompra = models.ForeignKey(Compra, db_column='idCompra',verbose_name='Compra') 
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
+    idcompra = models.ForeignKey(Compra, db_column='idCompra',verbose_name='Compra',on_delete=models.CASCADE) 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
     preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='PrecioUnitario')
 
@@ -937,9 +928,9 @@ class Detallecompra(models.Model):
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 class Devoluciones(models.Model):
     iddevolucion = models.AutoField(primary_key=True, db_column='idDevolucion',verbose_name='Devolución')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200)
-    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
+    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
     fecha = models.DateField()
 
     class Meta:
@@ -950,9 +941,9 @@ class Devoluciones(models.Model):
 
 class Devoluciongaiman(models.Model):
     iddevolucion = models.AutoField(primary_key=True, db_column='idDevolucion',verbose_name='Devolución')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=4,verbose_name='Depósito') # Field name made lowercase.
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=4,verbose_name='Depósito',on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200)
-    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
+    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
     fecha = models.DateField()
 
     class Meta:
@@ -964,9 +955,9 @@ class Devoluciongaiman(models.Model):
          
 class Devoluciontrevelin(models.Model):
     iddevolucion = models.AutoField(primary_key=True, db_column='idDevolucion',verbose_name='Devolución')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=4,verbose_name='Depósito') # Field name made lowercase.
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=4,verbose_name='Depósito',on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200)
-    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
+    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
     fecha = models.DateField()
 
     class Meta:
@@ -992,9 +983,9 @@ class Devoluciontrevelin(models.Model):
 """         
 class Devolucionmadryn(models.Model):
     iddevolucion = models.AutoField(primary_key=True, db_column='idDevolucion',verbose_name='Devolución')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=2) # Field name made lowercase.
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=2,on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200)
-    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
+    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
     fecha = models.DateField()
 
     class Meta:
@@ -1005,9 +996,9 @@ class Devolucionmadryn(models.Model):
 
 class Devolucionrw(models.Model):
     iddevolucion = models.AutoField(primary_key=True, db_column='idDevolucion',verbose_name='Devolución')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=5,verbose_name='Depósito') # Field name made lowercase.
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=5,verbose_name='Depósito',on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200)
-    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
+    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
     fecha = models.DateField()
 
     class Meta:
@@ -1019,9 +1010,9 @@ class Devolucionrw(models.Model):
 
 class Devolucionsarmiento(models.Model):
     iddevolucion = models.AutoField(primary_key=True, db_column='idDevolucion',verbose_name='Devolución')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=1,verbose_name='Depósito') # Field name made lowercase.
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=1,verbose_name='Depósito',on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200)
-    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
+    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
     fecha = models.DateField()
 
     class Meta:
@@ -1033,9 +1024,9 @@ class Devolucionsarmiento(models.Model):
 
 class Devolucionesquel(models.Model):
     iddevolucion = models.AutoField(primary_key=True, db_column='idDevolucion',verbose_name='Devolución')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=3,verbose_name='Depósito')
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',editable=False,default=3,verbose_name='Depósito',on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200)
-    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
+    idproveedor =  models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
     fecha = models.DateField()
 
     class Meta:
@@ -1047,9 +1038,9 @@ class Devolucionesquel(models.Model):
 
 class DetalledevolucionRw(models.Model):
     iddetdevolucion = models.AutoField(primary_key=True, db_column='idDetDevolucion',verbose_name='Det.Devolución')
-    iddevolucion = models.ForeignKey(Devolucionrw,db_column='idDevolucion',verbose_name='Devolución') # Field name made lowercase.
+    iddevolucion = models.ForeignKey(Devolucionrw,db_column='idDevolucion',verbose_name='Devolución',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo') # Field name made lowercase.
+    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     observacion = models.CharField(max_length=200,verbose_name='Observaciones')
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
@@ -1064,9 +1055,9 @@ class DetalledevolucionRw(models.Model):
          
 class DetalledevolucionTrevelin(models.Model):
     iddetdevolucion = models.AutoField(primary_key=True, db_column='idDetDevolucion',verbose_name='Det.Devolución')
-    iddevolucion = models.ForeignKey(Devoluciontrevelin,db_column='idDevolucion',verbose_name='Devolución') # Field name made lowercase.
+    iddevolucion = models.ForeignKey(Devoluciontrevelin,db_column='idDevolucion',verbose_name='Devolución',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo') # Field name made lowercase.
+    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     observacion = models.CharField(max_length=200,verbose_name='Observaciones')
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
@@ -1080,9 +1071,9 @@ class DetalledevolucionTrevelin(models.Model):
          
 class DetalledevolucionMadryn(models.Model):
     iddetdevolucion = models.AutoField(primary_key=True, db_column='idDetDevolucion',verbose_name='Det.Devolución')
-    iddevolucion = models.ForeignKey(Devolucionmadryn,db_column='idDevolucion',verbose_name='Devolución') # Field name made lowercase.
+    iddevolucion = models.ForeignKey(Devolucionmadryn,db_column='idDevolucion',verbose_name='Devolución',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo') # Field name made lowercase.
+    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     observacion = models.CharField(max_length=200,verbose_name='Observaciones')
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles !')
@@ -1096,9 +1087,9 @@ class DetalledevolucionMadryn(models.Model):
 
 class DetalledevolucionSarmiento(models.Model):
     iddetdevolucion = models.AutoField(primary_key=True, db_column='idDetDevolucion',verbose_name='Det.Devolución')
-    iddevolucion = models.ForeignKey(Devolucionsarmiento,db_column='idDevolucion',verbose_name='Devolución') # Field name made lowercase.
+    iddevolucion = models.ForeignKey(Devolucionsarmiento,db_column='idDevolucion',verbose_name='Devolución',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo') # Field name made lowercase.
+    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     observacion = models.CharField(max_length=200,verbose_name='Observaciones')
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalle !')
@@ -1111,9 +1102,9 @@ class DetalledevolucionSarmiento(models.Model):
 
 class DetalledevolucionGaiman(models.Model):
     iddetdevolucion = models.AutoField(primary_key=True, db_column='idDetDevolucion',verbose_name='Det.Devolución')
-    iddevolucion = models.ForeignKey(Devoluciongaiman,db_column='idDevolucion',verbose_name='Devolución') # Field name made lowercase.
+    iddevolucion = models.ForeignKey(Devoluciongaiman,db_column='idDevolucion',verbose_name='Devolución',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo') # Field name made lowercase.
+    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     observacion = models.CharField(max_length=200,verbose_name='Observaciones')
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles !')
@@ -1127,9 +1118,9 @@ class DetalledevolucionGaiman(models.Model):
 
 class DetalledevolucionEsquel(models.Model):
     iddetdevolucion = models.AutoField(primary_key=True, db_column='idDetDevolucion',verbose_name='Det.Devolución')
-    iddevolucion = models.ForeignKey(Devolucionesquel,db_column='idDevolucion',verbose_name='Devolución') # Field name made lowercase.
+    iddevolucion = models.ForeignKey(Devolucionesquel,db_column='idDevolucion',verbose_name='Devolución',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo') # Field name made lowercase.
+    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     observacion = models.CharField(max_length=200,verbose_name='Observaciones')
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles !')
@@ -1142,9 +1133,9 @@ class DetalledevolucionEsquel(models.Model):
 
 class Detalledevolucion(models.Model):
     iddetdevolucion = models.AutoField(primary_key=True, db_column='idDetDevolucion',verbose_name='Det.Devolución')
-    iddevolucion = models.ForeignKey(Devoluciones,db_column='idDevolucion',verbose_name='Devolución') # Field name made lowercase.
+    iddevolucion = models.ForeignKey(Devoluciones,db_column='idDevolucion',verbose_name='Devolución',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo') # Field name made lowercase.
+    idarticulo = models.ForeignKey(Articulo,db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     observacion = models.CharField(max_length=200,verbose_name='Observaciones')
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles !')
@@ -1159,8 +1150,8 @@ class Detalledevolucion(models.Model):
          
 class Articulodeposito(models.Model):
     idarticulodeposito = models.AutoField(primary_key=True, db_column='idArticuloDeposito',verbose_name = 'Art.Depósito')
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Articulo') # Field name made lowercase.
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Deposito') # Field name made lowercase.
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Articulo',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Deposito',on_delete=models.CASCADE)
     stock = models.FloatField()
     stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='StockEntrada')
     stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='StockSalida')
@@ -1181,15 +1172,15 @@ class Articulodeposito(models.Model):
 class ArticuloDepositoRawson(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
 
-    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE)
     nroficha = models.SmallIntegerField(db_column='nroFicha',verbose_name='NroFicha')
 
     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem',verbose_name='Descripción')
     mueble = models.CharField(max_length=200,verbose_name='Mueble')
     casillero = models.CharField(max_length=200,verbose_name='Casillero')
     stmin = MinMaxFloat(db_column='stmin',max_value=1000000000000, min_value=0.0, verbose_name='Stock Min')
-    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cód.Barra')
-    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida')
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cód.Barra',on_delete=models.CASCADE)
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida',on_delete=models.CASCADE)
     stock = models.FloatField()
     stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='StockEntrante')
     stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='StockSaliente')
@@ -1203,15 +1194,15 @@ class ArticuloDepositoRawson(models.Model):
 class ArticuloDepositoTrevelin(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
 
-    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial')
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE)
     nroficha = models.SmallIntegerField(db_column='nroFicha',verbose_name='NroFicha')
 
     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem',verbose_name='Descripción')
     mueble = models.CharField(max_length=200,verbose_name='Mueble')
     casillero = models.CharField(max_length=200,verbose_name='Casillero')
     stmin = MinMaxFloat(db_column='stmin',max_value=1000000000000, min_value=0.0, verbose_name='Stock Min')
-    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cód.Barra')
-    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida')
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cód.Barra',on_delete=models.CASCADE)
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida',on_delete=models.CASCADE)
     stock = models.FloatField()
     stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='StockEntrante')
     stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='StockSaliente')
@@ -1225,15 +1216,15 @@ class ArticuloDepositoTrevelin(models.Model):
 class ArticuloDepositoSarmiento(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
 
-    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') # Field n$
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE)
     nroficha = models.SmallIntegerField(db_column='nroFicha',verbose_name='NroFicha') # Field name made lowercase.
 
     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem',verbose_name='Descripción') # Field name made lowercas$
     mueble = models.CharField(max_length=200,verbose_name='Mueble')
     casillero = models.CharField(max_length=200,verbose_name='Casillero')
     stmin = MinMaxFloat(db_column='stmin',max_value=1000000000000, min_value=0.0, verbose_name='Stock Min')
-    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cód.Barra') # Field name made lowercase.
-    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida') # Field name made lowercase.
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cód.Barra',on_delete=models.CASCADE)
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida',on_delete=models.CASCADE)
     stock = models.FloatField()
     stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='StockEntrante')
     stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='StockSaliente')
@@ -1249,15 +1240,15 @@ class ArticuloDepositoSarmiento(models.Model):
 class ArticuloDepositoEsquel(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
 
-    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') # Field n$
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE)
     nroficha = models.SmallIntegerField(db_column='nroFicha',verbose_name='NroFicha') # Field name made lowercase.
 
     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem',verbose_name='Descripción') # Field name made lowercas$
     mueble = models.CharField(max_length=200,verbose_name='Mueble')
     casillero = models.CharField(max_length=200,verbose_name='Casillero')
     stmin = MinMaxFloat(db_column='stmin',max_value=1000000000000, min_value=0.0, verbose_name='Stock Min')
-    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cod.Barra') # Field name made lowercase.
-    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida') # Field name made lowercase.
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cod.Barra',on_delete=models.CASCADE)
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida',on_delete=models.CASCADE)
     stock = models.FloatField()
     stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='StockEntrante')
     stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='StockSaliente')
@@ -1272,15 +1263,15 @@ class ArticuloDepositoEsquel(models.Model):
 class ArticuloDepositoGaiman(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
 
-    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') # Field n$
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE)
     nroficha = models.SmallIntegerField(db_column='nroFicha',verbose_name='NroFicha') # Field name made lowercase.
 
     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem',verbose_name='Descripción') # Field name made lowercas$
     mueble = models.CharField(max_length=200,verbose_name='Mueble')
     casillero = models.CharField(max_length=200,verbose_name='Casillero')
     stmin = MinMaxFloat(db_column='stmin',max_value=1000000000000, min_value=0.0, verbose_name='Stock Min')
-    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cod.Barra') # Field name made lowercase.
-    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida') # Field name made lowercase.
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cod.Barra',on_delete=models.CASCADE)
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida',on_delete=models.CASCADE)
     stock = models.FloatField()
     stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='StockEntrante')
     stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='StockSaliente')
@@ -1295,15 +1286,15 @@ class ArticuloDepositoGaiman(models.Model):
 class ArticuloDepositoMadryn(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
 
-    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial') # Field n$
+    nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE)
     nroficha = models.SmallIntegerField(db_column='nroFicha',verbose_name='NroFicha') # Field name made lowercase.
 
     descripcionitem = models.CharField(max_length=200, db_column='descripcionItem',verbose_name='Descripción') # Field name made lowercas$
     mueble = models.CharField(max_length=200,verbose_name='Mueble')
     casillero = models.CharField(max_length=200,verbose_name='Casillero')
     stmin = MinMaxFloat(db_column='stmin',max_value=1000000000000, min_value=0.0, verbose_name='Stock Min')
-    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cod.Barra') # Field name made lowercase.
-    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida') # Field name made lowercase.
+    idbarra = models.ForeignKey(Barras, db_column='idBarra',verbose_name='Cod.Barra',on_delete=models.CASCADE)
+    unidadmedida = models.ForeignKey(Unidadesmedidas, db_column='unidadMedida',verbose_name='UnidadMedida',on_delete=models.CASCADE)
     stock = models.FloatField()
     stockentrante = models.FloatField(db_column='stockEntrante',verbose_name='StockEntrante')
     stocksaliente = models.FloatField(db_column='stockSaliente',verbose_name='StockSaliente')
@@ -1318,11 +1309,11 @@ class ArticuloDepositoMadryn(models.Model):
 #----------------------------Historial Precio-----------------------------------------------------------
 class HistorialPrecios(models.Model):
     idhistorialprecios = models.AutoField(primary_key=True, db_column='idHistorialPrecios',verbose_name='HistorialPrecio')
-    idarticulo =  models.ForeignKey(ArticuloDepositoRawson, db_column='idArticulo',verbose_name='Artículo')
-    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idarticulo =  models.ForeignKey(ArticuloDepositoRawson, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
+    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     fecha = models.DateField(db_column='Fecha')
-    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra')
+    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra',on_delete=models.CASCADE)
     precio = models.CharField(max_length=200, db_column='precio',verbose_name='Precio')
     class Meta:
         db_table = u'historialPrecios'
@@ -1332,11 +1323,11 @@ class HistorialPrecios(models.Model):
 
 class HistorialPreciosArticulo(models.Model):
     idhistorialprecios = models.AutoField(primary_key=True, db_column='idHistorialPrecios',verbose_name='HistorialPrecio')
-    idarticulo =  models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo')
-    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idarticulo =  models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
+    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     fecha = models.DateField(db_column='Fecha')
-    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra')
+    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra',on_delete=models.CASCADE)
     precio = models.CharField(max_length=200, db_column='precio',verbose_name='Precio')
     class Meta:
         db_table = u'historialPrecios'
@@ -1347,11 +1338,11 @@ class HistorialPreciosArticulo(models.Model):
 
 class HistorialPreciosrw(models.Model):
     idhistorialprecios = models.AutoField(primary_key=True, db_column='idHistorialPrecios',verbose_name='HistorialPrecio')
-    idarticulo =  models.ForeignKey(ArticuloDepositoRawson, db_column='idArticulo',verbose_name='Artículo')
-    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idarticulo =  models.ForeignKey(ArticuloDepositoRawson, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
+    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     fecha = models.DateField(db_column='Fecha')
-    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra')
+    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra',on_delete=models.CASCADE)
     precio = models.CharField(max_length=200, db_column='precio',verbose_name='Precio')
     class Meta:
         db_table = u'historialPrecios'
@@ -1362,11 +1353,11 @@ class HistorialPreciosrw(models.Model):
 
 class HistorialPreciostrevelin(models.Model):
     idhistorialprecios = models.AutoField(primary_key=True, db_column='idHistorialPrecios',verbose_name='HistorialPrecio')
-    idarticulo =  models.ForeignKey(ArticuloDepositoTrevelin, db_column='idArticulo',verbose_name='Artículo')
-    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idarticulo =  models.ForeignKey(ArticuloDepositoTrevelin, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
+    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     fecha = models.DateField(db_column='Fecha')
-    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra')
+    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra',on_delete=models.CASCADE)
     precio = models.CharField(max_length=200, db_column='precio',verbose_name='Precio')
     class Meta:
         db_table = u'historialPrecios'
@@ -1376,11 +1367,11 @@ class HistorialPreciostrevelin(models.Model):
 #--------------------------------------------
 class HistorialPreciosmadryn(models.Model):
     idhistorialprecios = models.AutoField(primary_key=True, db_column='idHistorialPrecios',verbose_name='HistorialPrecio')
-    idarticulo =  models.ForeignKey(ArticuloDepositoMadryn, db_column='idArticulo',verbose_name='Artículo')
-    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idarticulo =  models.ForeignKey(ArticuloDepositoMadryn, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
+    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     fecha = models.DateField(db_column='Fecha')
-    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra')
+    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra',on_delete=models.CASCADE)
     precio = models.CharField(max_length=200, db_column='precio',verbose_name='Precio')
     class Meta:
         db_table = u'historialPrecios'
@@ -1390,11 +1381,11 @@ class HistorialPreciosmadryn(models.Model):
 #--------------------------------------------
 class HistorialPreciosgaiman(models.Model):
     idhistorialprecios = models.AutoField(primary_key=True, db_column='idHistorialPrecios',verbose_name='HistorialPrecio')
-    idarticulo =  models.ForeignKey(ArticuloDepositoGaiman, db_column='idArticulo',verbose_name='Artículo')
-    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idarticulo =  models.ForeignKey(ArticuloDepositoGaiman, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
+    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     fecha = models.DateField(db_column='Fecha')
-    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra')
+    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra',on_delete=models.CASCADE)
     precio = models.CharField(max_length=200, db_column='precio')
     class Meta:
         db_table = u'historialPrecios'
@@ -1404,11 +1395,11 @@ class HistorialPreciosgaiman(models.Model):
 #--------------------------------------------
 class HistorialPreciossarmiento(models.Model):
     idhistorialprecios = models.AutoField(primary_key=True, db_column='idHistorialPrecios',verbose_name='HistorialPrecio')
-    idarticulo =  models.ForeignKey(ArticuloDepositoSarmiento, db_column='idArticulo',verbose_name='Artículo')
-    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idarticulo =  models.ForeignKey(ArticuloDepositoSarmiento, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
+    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     fecha = models.DateField(db_column='Fecha')
-    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra')
+    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra',on_delete=models.CASCADE)
     precio = models.CharField(max_length=200, db_column='precio',verbose_name='Precio')
     class Meta:
         db_table = u'historialPrecios'
@@ -1418,11 +1409,11 @@ class HistorialPreciossarmiento(models.Model):
 #--------------------------------------------
 class HistorialPreciosesquel(models.Model):
     idhistorialprecios = models.AutoField(primary_key=True, db_column='idHistorialPrecios',verbose_name='HistorialPrecio')
-    idarticulo =  models.ForeignKey(ArticuloDepositoEsquel, db_column='idArticulo',verbose_name='Artículo')
-    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor')
-    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito')
+    idarticulo =  models.ForeignKey(ArticuloDepositoEsquel, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
+    idproveedor = models.ForeignKey(Proveedor, db_column='idProveedor',verbose_name='Proveedor',on_delete=models.CASCADE)
+    iddeposito = models.ForeignKey(Deposito, db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE)
     fecha = models.DateField(db_column='Fecha')
-    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra')
+    iddetcompra = models.ForeignKey(Detallecompra, db_column='idDetCompra', editable=False,verbose_name='Det.Compra',on_delete=models.CASCADE)
     precio = models.CharField(max_length=200, db_column='precio',verbose_name='Precio')
     class Meta:
         db_table = u'historialPrecios'
@@ -1441,7 +1432,7 @@ class Salida(models.Model):
     entregadoa = models.CharField(max_length=200, db_column='entregadoA',verbose_name='Entregado a') 
     destino = models.CharField(max_length=200)
     observaciones = models.CharField(max_length=200, blank=True,)
-    iddeposito =models.ForeignKey(Deposito,db_column='idDeposito',verbose_name='Depósito') 
+    iddeposito =models.ForeignKey(Deposito,db_column='idDeposito',verbose_name='Depósito',on_delete=models.CASCADE) 
 
     class Meta:
         db_table = u'salida'
@@ -1451,9 +1442,9 @@ class Salida(models.Model):
 
 class Detallesalida(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
-    idsalida = models.ForeignKey(Salida, db_column='idSalida',verbose_name='Salida') 
+    idsalida = models.ForeignKey(Salida, db_column='idSalida',verbose_name='Salida',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
 
@@ -1471,7 +1462,7 @@ class VwSalidaesquel(models.Model):
     entregadoa = models.CharField(max_length=200, db_column='entregadoA',verbose_name='Entregado a') # Field name made lowercase.
     destino = models.CharField(max_length=200)
     observaciones = models.CharField(max_length=200,blank=True,)
-    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=3, editable=False,verbose_name='Depósito') # Field name made lowercase.
+    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=3, editable=False,verbose_name='Depósito',on_delete=models.CASCADE)
     
     class Meta:
         db_table = u'VW_salidaEsquel'
@@ -1481,9 +1472,9 @@ class VwSalidaesquel(models.Model):
 
 class DetallesalidaEsquel(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
-    idsalida = models.ForeignKey(VwSalidaesquel, db_column='idSalida',verbose_name='Salida') 
+    idsalida = models.ForeignKey(VwSalidaesquel, db_column='idSalida',verbose_name='Salida',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
 
@@ -1499,7 +1490,7 @@ class VwSalidatrevelin(models.Model):
     entregadoa = models.CharField(max_length=200, db_column='entregadoA',verbose_name='Entregado a') # Field name made lowercase.
     destino = models.CharField(max_length=200)
     observaciones = models.CharField(max_length=200,blank=True,)
-    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=6, editable=False,verbose_name='Depósito') # Field name made lowercase.
+    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=6, editable=False,verbose_name='Depósito',on_delete=models.CASCADE)
     
     class Meta:
         db_table = u'VW_salidaTrevelin'
@@ -1508,9 +1499,9 @@ class VwSalidatrevelin(models.Model):
 
 class DetallesalidaTrevelin(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
-    idsalida = models.ForeignKey(VwSalidatrevelin, db_column='idSalida',verbose_name='Salida') 
+    idsalida = models.ForeignKey(VwSalidatrevelin, db_column='idSalida',verbose_name='Salida',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
 
@@ -1527,7 +1518,7 @@ class VwSalidagaiman(models.Model):
     entregadoa = models.CharField(max_length=200, db_column='entregadoA',verbose_name='Entregado a') 
     destino = models.CharField(max_length=200)
     observaciones = models.CharField(max_length=200,blank=True,)
-    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=4, editable=False,verbose_name='Depósito') 
+    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=4, editable=False,verbose_name='Depósito',on_delete=models.CASCADE) 
     
     class Meta:
         db_table = u'VW_salidaGaiman'
@@ -1536,9 +1527,9 @@ class VwSalidagaiman(models.Model):
 
 class DetallesalidaGaiman(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
-    idsalida = models.ForeignKey(VwSalidagaiman, db_column='idSalida',verbose_name='Salida') 
+    idsalida = models.ForeignKey(VwSalidagaiman, db_column='idSalida',verbose_name='Salida',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
 
@@ -1555,7 +1546,7 @@ class VwSalidasarmiento(models.Model):
     entregadoa = models.CharField(max_length=200, db_column='entregadoA',verbose_name='Entregado a') 
     destino = models.CharField(max_length=200)
     observaciones = models.CharField(max_length=200, blank=True,)
-    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=1, editable=False,verbose_name='Depósito') 
+    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=1, editable=False,verbose_name='Depósito',on_delete=models.CASCADE) 
     
     class Meta:
         db_table = u'VW_salidaSarmiento'
@@ -1564,9 +1555,9 @@ class VwSalidasarmiento(models.Model):
 
 class DetallesalidaSarmiento(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
-    idsalida = models.ForeignKey(VwSalidasarmiento, db_column='idSalida',verbose_name='Salida') 
+    idsalida = models.ForeignKey(VwSalidasarmiento, db_column='idSalida',verbose_name='Salida',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo') 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',on_delete=models.CASCADE) 
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
 
@@ -1591,9 +1582,9 @@ class VwSalidamadryn(models.Model):
 
 class DetallesalidaMadryn(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
-    idsalida = models.ForeignKey(VwSalidamadryn, db_column='idSalida',verbose_name='Salida') 
+    idsalida = models.ForeignKey(VwSalidamadryn, db_column='idSalida',verbose_name='Salida',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
 
@@ -1609,7 +1600,7 @@ class VwSalidarw(models.Model):
     entregadoa = models.CharField(max_length=200, db_column='entregadoA',verbose_name='Entregado a') 
     destino = models.CharField(max_length=200)
     observaciones = models.CharField(max_length=200,blank=True,)
-    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=5, editable=False,verbose_name='Depósito') 
+    iddeposito = models.ForeignKey(Deposito,db_column='idDeposito',default=5, editable=False,verbose_name='Depósito',on_delete=models.CASCADE) 
     
     class Meta:
         db_table = u'VW_salidaRw'
@@ -1618,9 +1609,9 @@ class VwSalidarw(models.Model):
 
 class DetallesalidaRw(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
-    idsalida = models.ForeignKey(VwSalidarw, db_column='idSalida',verbose_name='Salida') 
+    idsalida = models.ForeignKey(VwSalidarw, db_column='idSalida',verbose_name='Salida',on_delete=models.CASCADE) 
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo') 
+    idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE) 
     err = models.BooleanField(default=True,verbose_name='!')
     deterr = models.CharField(max_length=200,verbose_name='Detalles err')
 
@@ -1667,8 +1658,8 @@ class DjangoSession(models.Model):
 class Log(models.Model):
     id = models.IntegerField(primary_key=True)
     action_time = models.DateTimeField()
-    user = models.ForeignKey(AuthUser)
-    content_type = models.ForeignKey(DjangoContentType)
+    user = models.ForeignKey(AuthUser,on_delete=models.CASCADE)
+    content_type = models.ForeignKey(DjangoContentType,on_delete=models.CASCADE)
     object_id = models.TextField()
     object_repr = models.CharField(max_length=200)
     action_flag = models.SmallIntegerField()

@@ -95,7 +95,7 @@ DATABASES = {
         'PORT': '33060',
     }
 }
-
+DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito']
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
