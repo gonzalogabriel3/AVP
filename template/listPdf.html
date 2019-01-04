@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block content %}
+	<div id="content-main">
+
+	<div class="results">
+		<table id="result_list">
+			<thead>
+				<tr>
+					{%for lc in campos%}
+						<th>{{lc}}</th>
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				{%for list in lista%}
+					<tr class="{% cycle 'row1' 'row2' %}">
+							{% ifequal modelo|lower "proveedor"%}
+	 							<td>{{list.idproveedor}}</td>
+	 							<td>{{list.razonsocial}}</td>
+								<td>{{list.domicilio}}</td>
+								<td>{{list.ciudad}}</td>
+								<td>{{list.telefono}}</td>
+							{% endifequal %}
+							{% ifequal modelo|lower "articulo"%}
+								<td>{{list.idarticulo}}</td>
+								<td>{{list.nrocuentapatrimonial}}</td>
+								<td>{{list.descripcionitem}}</td>
+								<td>{{list.stmin}}</td>
+								<td>{{list.idbarra}}</td>
+								<td>{{list.unidadmedida}}</td>
+							{% endifequal %}
+
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	
+	
+{% endblock %}
+

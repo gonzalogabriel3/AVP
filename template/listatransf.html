@@ -1,0 +1,46 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block content %}
+	<div id="content-main">
+
+	<div class="results">
+
+		<table id="result_list">
+			<thead>
+				<tr>
+					<th>Articulo</th>
+					<th>Cantidad Saliente</th>
+					<th>Deposito Saliente</th>
+					<th>Cantidad Entrante</th>
+					<th>Deposito Entrante</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+				{%for list in lista2%}
+					<tr class="{% cycle 'row1' 'row2' %}">
+							<td>{{list.0.idarticulo}}</td>
+							<td>{{list.0.cantidad}}</td>
+							<td>{{list.2}}</td>
+							<td>{{list.0.cantidadconfirmada}}</td>
+							<td>{{list.1}}</td>
+	 				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	
+	
+{% endblock %}
+

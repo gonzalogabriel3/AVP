@@ -1,62 +1,50 @@
-from django.conf.urls import patterns, include, url
-#
-from django.conf.urls import *
-from django.contrib.auth.views import login, logout
-#
+from django.urls import path,include
+from . import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
 from depoapp.views import *
 
-urlpatterns = patterns('',
-    (r'^listado/(\w{3,25})$',listado),
-    (r'^listado/pdf/(\w{3,25})$',listPdf),
-    (r'^lista/Compra/',listaCompra),
-    (r'^lista/Salida/',listaSalida),
-    (r'^lista/Transf/',listaTransf),
-    
-      
-    (r'^listado/stockactual/$',stockactual),
-    (r'^listado/stockactualdepo/$',stockactualdepo),
-    (r'^listado/ingstockactual/$',ingopcliststockactual),
-    (r'^listado/stockcero/',stockcero),
-    
-    (r'^listado/graficocombustibles/$',graficocombustibles),
-    
-    (r'^listado/ingopclistegresos/$',ingopclistegresos),
-    (r'^listado/listegresos/$',listegresos),
-    
-    (r'^listado/ingopclistingresos/$',ingopclistingresos),
-    (r'^listado/listingresos/$',listingresos),
-    
-    
-    (r'^listado/ingopccombustibles/$',ingopccombustibles),
-    (r'^listado/listcombustibles/$',listcombustibles),
-    (r'^combustockindex/$',combustockindex),
-    (r'^listado/combustock/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)$',combustock),
-    
-    
-    #(r'^depos/',depos),
-    #(r'^$',index),
-    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    (r'^site_media/(?P<path>.*)$','django.views.static.serve',
-        {'document_root': '/var/www/avp/media'}),
-    (r'^static/(?P<path>.*)$','django.views.static.serve',
-        {'document_root': '/var/www/avp/media'}),
-
+urlpatterns = [
+    path('listado/(\w{3,25})',listado),
+    path('listado/pdf/(\w{3,25})',listPdf),
+    path('lista/Compra/',listaCompra),
+    path('lista/Salida/',listaSalida),
+    path('lista/Transf/',listaTransf),
+    #path('listado/stockactual/$',stockactual),
+    #path('listado/stockactualdepo/$',stockactualdepo),
+    path('listado/ingstockactual/',ingopcliststockactual),
+    path('listado/stockcero/',stockcero),
+    path('listado/graficocombustibles/',graficocombustibles),
+    path('listado/ingopclistegresos/',ingopclistegresos),
+    path('listado/listegresos/',listegresos),
+    path('listado/ingopclistingresos/',ingopclistingresos),
+    path('listado/listingresos/',listingresos),
+    path('listado/ingopccombustibles/',ingopccombustibles),
+    path('listado/listcombustibles/',listcombustibles),
+    path('combustockindex/',combustockindex),
+    path('listado/combustock/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)/(\d+)',combustock),
+    #('depos/',depos),
+    #('',index),
+    #path('accounts/login/$', include('django.contrib.auth.views.login')),
+    #path('site_media/(?P<path>.*)$','django.views.static.serve',
+    #    {'document_root': '/var/www/avp/media'}),
+    #path('static/(?P<path>.*)$','django.views.static.serve',
+    #    {'document_root': '/var/www/avp/media'}),
     #GENERAR PDF ->
-    (r'^pdfcompra/(\d+)/$',pdfcompra),
-    (r'^pdfarticulo/(\d+)/$',pdfarticulo),
-    (r'^pdftransferencia/(\d+)/$',pdftransferencia),
-    (r'^pdftransferenciaent/(\d+)/(\d+)/$',pdftransferenciaent),
-    (r'^pdftransferenciasal/(\d+)/(\d+)/$',pdftransferenciasal),
-    (r'^pdfarticulodeposito/(\d+)/(\d+)/$',pdfarticulodeposito),
-    (r'^pdfarticulodepositoad/(\d+)/$',pdfarticulodepositoad),
-    (r'^pdfdevolucionesdepo/(\d+)/(\d+)/$',pdfdevolucionesdepo),
-    (r'^pdfdevoluciones/(\d+)/$',pdfdevoluciones),
-    (r'^pdfarticulomovdepo/(\d+)/(\d+)/$',pdfarticulomovdepo),
-    (r'^pdfarticulomov/(\d+)/$',pdfarticulomov),
-    (r'^pdfsalida/(\d+)/$',pdfsalida),
-    (r'^pdfsalidadepo/(\d+)/(\d+)/$',pdfsalidadepo),
-)
+    path('pdfcompra/(\d+)/',pdfcompra),
+    path('pdfarticulo/(\d+)/',pdfarticulo),
+    path('pdftransferencia/(\d+)/',pdftransferencia),
+    path('pdftransferenciaent/(\d+)/(\d+)/',pdftransferenciaent),
+    path('pdftransferenciasal/(\d+)/(\d+)/',pdftransferenciasal),
+    path('pdfarticulodeposito/(\d+)/(\d+)/',pdfarticulodeposito),
+    path('pdfarticulodepositoad/(\d+)/',pdfarticulodepositoad),
+    path('pdfdevolucionesdepo/(\d+)/(\d+)/',pdfdevolucionesdepo),
+    path('pdfdevoluciones/(\d+)/',pdfdevoluciones),
+    path('pdfarticulomovdepo/(\d+)/(\d+)/',pdfarticulomovdepo),
+    path('pdfarticulomov/(\d+)/',pdfarticulomov),
+    path('pdfsalida/(\d+)/',pdfsalida),
+    path('pdfsalidadepo/(\d+)/(\d+)/',pdfsalidadepo),
+]

@@ -1,0 +1,62 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />
+
+{% endblock %}
+
+{% block branding %}{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block content %}
+
+<head>
+<link rel="stylesheet" type="text/css" href="/site_media/css/view.css" media="all">
+
+</head>
+	<div id="form_container">
+	
+		<h1><a>Stock combustibles Esquel</a></h1>
+		<form id="form_597362" class="appnitro"  method="post" action="">
+			<div class="form_description">
+				<h2>Listado consumo de combustibles</h2>
+			</div>
+			<p><strong>Nafta:</strong> {{nafta}}</p>
+			<p><strong>Gasoil:</strong> {{gasoil}}</p>
+							
+			<table id="result_list">
+				<thead>
+					<tr>
+						<th>Articulo</th>
+						<th>Cantidad</th>
+						<th>Fecha</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for c in combus%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td>{{c.idarticulo}}</td>
+								<td>{{c.cantidad}}</td>
+								<td>{{c.idsalida.fecha}}</td>
+	 					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</form>	
+		
+		<input type="button" value="Volver Atrás" name="Back2" onclick="history.back()" style="
+			  margin-left: 10px;
+			  margin-bottom: 10px;
+		  	width: 80px;
+		  	height: 22px;
+		" />
+	</div>	
+
+{% endblock %}

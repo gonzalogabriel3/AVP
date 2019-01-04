@@ -1,0 +1,20 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load url from future %}
+{% block footer %}{% endblock %}
+
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="{% url 'admin:index' %}">{% trans 'Inicio' %}</a></div>{% endblock %}
+
+{% block content %}
+
+<p>{% trans "Gracias por el tiempo que ha dedicado al sitio web hoy." %}</p>
+
+<p>
+
+<span class="button"><a href="{% url 'admin:index' %}"  >{% trans 'Identificarse de Nuevo' %}</a></span>
+
+
+
+</p>
+
+{% endblock %}

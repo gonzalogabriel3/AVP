@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
-
-#IMPORTS PARA PDF
-#====================================================
-#pisa requiere ReportLab Toolkit, HTML5lib, pyPdf y PIL para instalarlos:
-#sudo apt-get install python-html5lib
-#sudo apt-get install python-pypdf
-#sudo apt-get install python-reportlab
-#sudo apt-get install python-imagin
-
-#import ho.pisa as pisa #esto hay que bajarlo de internet, se puede instalar con easy install - http://pypi.python.org/pypi/pisa/
-import cStringIO as StringIO
+#import cStringIO as StringIO
 import cgi
 from django.template import RequestContext, Template, Context
 from django.template.loader import *
@@ -22,7 +12,7 @@ import psycopg2
 from django.shortcuts import render_to_response
 #===================================================
 from django import http
-from django.core.context_processors import csrf #para formularios
+#from django.core.context_processors import csrf #para formularios
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 #from django.views.generic.list import ListView
@@ -152,7 +142,6 @@ def listPdf(peticion,Nmodelo):
 
 @login_required
 def listaCompra(peticion):
-
     c={}
     c.update(csrf(peticion))
     start_date = date(2005, 1, 1)
@@ -161,25 +150,21 @@ def listaCompra(peticion):
     listacompra = list(Compra.objects.all())
     listadcompra = []
     for a in listacompra:
-	listadcompraaux = list(Detallecompra.objects.filter(idcompra__exact=a.idcompra))
-	if len(listadcompra) == 0:
-		for b in listadcompraaux:
-			listadcompra.append(b)
-	else:	
-		for b in listadcompraaux:
-			w = 0
-			for c in listadcompra:
-				if c.idarticulo == b.idarticulo:
-					c.cantidad += b.cantidad
-					w = 1				
-			if w == 0:
-				listadcompra.append(b)
+        listadcompraaux = list(Detallecompra.objects.filter(idcompra__exact=a.idcompra))
+        if len(listadcompra) == 0:
+        	for b in listadcompraaux:
+        		listadcompra.append(b)
+        else:	
+        	for b in listadcompraaux:
+        		w = 0
+        		for c in listadcompra:
+        			if c.idarticulo == b.idarticulo:
+        				c.cantidad += b.cantidad
+        				w = 1				
+        		if w == 0:
+        			listadcompra.append(b)
 	
-	
-		
-		
     user = peticion.user
-
     return generar_pdf(render_to_response('listacompra.html',{'lista':listadcompra,'user':user,},))
 
 @login_required
@@ -193,22 +178,19 @@ def listaSalida(peticion):
     #listasalida = list(Salida.objects.filter(fecha__range=(start_date, end_date)).filter(iddeposito__exact=3))   
     listadsalida = []
     for a in listasalida:
-	listadsalidaaux = list(Detallesalida.objects.filter(idsalida__exact=a.idsalida))
-	if len(listadsalida) == 0:
-		for b in listadsalidaaux:
-			listadsalida.append(b)
-	else:	
-		for b in listadsalidaaux:
-			w = 0
-			for c in listadsalida:
-				if c.idarticulo == b.idarticulo:
-					c.cantidad += b.cantidad
-					w = 1				
-			if w == 0:
-				listadsalida.append(b)
-	
-	
-		
+    	listadsalidaaux = list(Detallesalida.objects.filter(idsalida__exact=a.idsalida))
+    	if len(listadsalida) == 0:
+    		for b in listadsalidaaux:
+    			listadsalida.append(b)
+    	else:	
+    		for b in listadsalidaaux:
+    			w = 0
+    			for c in listadsalida:
+    				if c.idarticulo == b.idarticulo:
+    					c.cantidad += b.cantidad
+    					w = 1				
+    			if w == 0:
+    				listadsalida.append(b)
 		
     user = peticion.user
 
@@ -227,22 +209,22 @@ def listaTransf(peticion):
     listadtransf = []
     lista2dtransf = []
     for a in listatransf:
-	listadtransfaux = list(Detalletrasferencia.objects.filter(idtransferencia__exact=a.idtransferencia))
-	if len(listadtransf) == 0:
-		for b in listadtransfaux:
-			listadtransf.append(b)
-			lista2dtransf.append([b,a.depositoentrada,a.depositosalida])
-	else:
-		for b in listadtransfaux:
-			w = 0
-			for c in listadtransf:
-				if c.idarticulo == b.idarticulo:
-					c.cantidadconfirmada += b.cantidadconfirmada
-					c.cantidad += b.cantidad
-					w = 1
-			if w == 0:
-				listadtransf.append(b)
-				lista2dtransf.append([b,a.depositoentrada,a.depositosalida])
+    	listadtransfaux = list(Detalletrasferencia.objects.filter(idtransferencia__exact=a.idtransferencia))
+    	if len(listadtransf) == 0:
+    		for b in listadtransfaux:
+    			listadtransf.append(b)
+    			lista2dtransf.append([b,a.depositoentrada,a.depositosalida])
+    	else:
+    		for b in listadtransfaux:
+    			w = 0
+    			for c in listadtransf:
+    				if c.idarticulo == b.idarticulo:
+    					c.cantidadconfirmada += b.cantidadconfirmada
+    					c.cantidad += b.cantidad
+    					w = 1
+    			if w == 0:
+    				listadtransf.append(b)
+    				lista2dtransf.append([b,a.depositoentrada,a.depositosalida])
     user = peticion.user
 
     return render_to_response('listatransf.html',{'lista':listatransf,'lista2':lista2dtransf,'user':user,},)
@@ -295,15 +277,15 @@ def pdfarticulomov (peticion,id):
 
 def pdfarticulomovdepo (peticion,id,depo):
     if (int(depo) == 3):
-	aux = "Esquel" 
+        aux = "Esquel"
     if (int(depo) == 4):
-	aux = "Gaiman"
+        aux = "Gaiman"
     if (int(depo) == 2):
-	aux = "Pto. Madryn"
+        aux = "Pto. Madryn"
     if (int(depo) == 5):
-	aux = "Rawson"
+        aux = "Rawson"
     if (int(depo) == 1):
-	aux = "Sarmiento"
+        aux = "Sarmiento"
   
     articulomov = ArticuloMov.objects.get(idarticulo=id)
     movart = MovArt.objects.filter(idarticulo__exact=id, direccion=aux)
