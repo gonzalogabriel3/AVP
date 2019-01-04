@@ -4,10 +4,10 @@
 
 {% block footer %}{% endblock %}
 {% block extrastyle %}
-   {{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
+{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static '/admin/css/login.css' %}" />
    <div id="content-images">
-      <img src="/site_media/admin/img/logo-stock.png" alt="logo-stock" style="margin: 2px 0px 0px 16px;float: left; " />
-      <img src="/site_media/admin/img/logo-avp.png" alt="logo-avp" style="margin: 12px 15px 0px 0px;float: right; "  />
+      <img src="{% static '/admin/img/logo-stock.png' %} " alt="logo-stock" style="margin: 2px 0px 0px 16px;float: left; " />
+      <img src="{% static '/admin/img/logo-avp.png' %} " alt="logo-avp" style="margin: 12px 15px 0px 0px;float: right; "  />
    </div>
  {% endblock %}
 

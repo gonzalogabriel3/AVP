@@ -1,0 +1,49 @@
+.body {
+    text-align: center;
+    font-family: Times;
+    font-size: 16px;
+}
+.bold {
+    font-weight: bold;
+}
+.italics {
+    font-style: italic;
+}
+footer {
+    clear: both;
+    width:100%;
+    font-size: 80%;
+}
+#logo {
+    font-size: 150%;
+    font-weight: bold;
+    font-style: italic;
+}
+.logo-part1 {
+    color: #ADD8E6;
+}
+.logo-part2 {
+    color: orange;
+}
+nav#main {
+    float: left;
+    width: 40%;
+    height: 30px;
+    border: 2px solid #ADD8E6;
+    padding: 5px;
+    font-size: 120%;
+    margin: 5px;
+}
+div#user-links {
+    float: right;
+    width:30%;
+    height: 20px;
+    padding: 5px;
+    margin: 5px;
+    border: 2px dotted orange;
+    font-size: 120%;
+}
+hr#separator {
+    clear: both;
+    width: 100%;
+}
