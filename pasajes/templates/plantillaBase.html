@@ -62,6 +62,19 @@
 	    });
 	  });
 
+	  $( function(){
+	    $( ".datepickerFamiliar" ).datepicker({
+	    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+	    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+	    	prevText:'<',
+	    	nextText:'>',
+	    	dateFormat: 'dd/mm/yy',
+	    	maxDate:0,
+	    	defaultDate:-6570
+	    	
+	    });
+	  });
+
 	  //Agrego funcion que carga los datatables
 	  $(document).ready(function(){
 		    $('.datatable').DataTable({
@@ -166,9 +179,12 @@
 	    </div>
 	  </div>
 	</nav>
-
-	{% block contenido %}{% endblock %}
-
+	
+	{% block contenido %}
+		
+	{% endblock %}
+	
+	
 	<!-- Javascript de bootstrap Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	

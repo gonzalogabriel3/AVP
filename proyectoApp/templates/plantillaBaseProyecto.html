@@ -6,9 +6,6 @@
 <head>
 	{% load static %}
 
-	
-	
-
 	<title>Inicio</title>
 	
 
@@ -28,13 +25,15 @@
 	{% if user.is_authenticated is True %}
 		
 		<meta http-equiv="refresh" content="0; url=/pasajes">
-		
+	
+	<!--Si el usuario NO esta registrado,muestro el menu principal del proyecto -->
 	{% else %}
 
-	<!--Si el usuario NO esta registrado,muestro el menu principal del proyecto -->
-	{% block contenido %}
-	
-	{% endblock %}
+		
+		{% block contenido %}
+		
+		{% endblock %}
+
 
 	{% endif %}
 </body>
