@@ -29,7 +29,7 @@ urlpatterns = [
     #('depos/',depos),
     #('',index),
     #path('accounts/login/$', include('django.contrib.auth.views.login')),
-    #path('site_media/(?P<path>.*)$','django.views.static.serve',
+    #path('assets/(?P<path>.*)$','django.views.static.serve',
     #    {'document_root': '/var/www/avp/media'}),
     #path('static/(?P<path>.*)$','django.views.static.serve',
     #    {'document_root': '/var/www/avp/media'}),

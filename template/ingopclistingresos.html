@@ -1,0 +1,318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />
+
+{% endblock %}
+
+{% block branding %}{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+
+
+{% block footer %}{% endblock %}
+
+{% block content %}
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Untitled Form</title>
+<link rel="stylesheet" type="text/css" href="/assets/css/view.css" media="all">
+<script type="text/javascript" src="/assets/js/view.js"></script>
+<script type="text/javascript" src="/assets/js/calendar/calendar.js"></script>
+
+<script>
+		
+	function listingresosadmin(){
+	
+	
+		
+		  
+		dias = document.getElementById("element_1_2").value;
+		mes = document.getElementById("element_1_1").value;
+		anio = document.getElementById("element_1_3").value;
+		
+		dias2 = document.getElementById("element_2_2").value;
+		mes2 = document.getElementById("element_2_1").value;
+		anio2 = document.getElementById("element_2_3").value;
+		
+		desde = anio + "-" + mes +"-"+ dias;
+		hasta = anio2 + "-" + mes2 +"-"+ dias2;
+	       	
+		posicion1 = document.getElementById("select1").options.selectedIndex;
+		opcion1 = document.getElementById("select1").options[posicion1].text;
+		n=opcion1.split(" ");
+		
+		if (posicion1 == 0){
+		  dato = 0;
+		}else{
+		  dato = n[0];
+		}
+		
+		//posicion2 = document.getElementById("select3").options.selectedIndex;
+		//destino = document.getElementById("select3").options[posicion2].text;
+		
+		posicion3 = document.getElementById("select4").options.selectedIndex;
+		listopc = document.getElementById("select4").options[posicion3].text;
+		
+		
+		
+		//alert("Fecha desde: "+desde +"/// Fecha Hasta: "+hasta );
+		//alert("opcion: "+n[0]);
+		
+		pdf = 1;
+			
+		posiciondepo = document.getElementById("select2").options.selectedIndex;
+		
+		alert("pase el select2");
+						
+		//open("/deposito/listado/listingresos/?dato="+dato+"&listopc="+listopc+"&desde="+desde+"&hasta="+hasta+"&opciondepo="+posiciondepo+"&pdf="+pdf+"&destino="+destino,"_self");	
+		open("/deposito/listado/listingresos/?dato="+dato+"&listopc="+listopc+"&desde="+desde+"&hasta="+hasta+"&opciondepo="+posiciondepo+"&pdf="+pdf,"_self");	
+		
+		
+		//alert("Fecha desde: "+desde +"/// Fecha Hasta: "+hasta );
+		//alert("opcion: "+n[0]);
+				
+		return false;
+	}
+	
+	function listingresos(){
+	
+	
+		
+		  
+		dias = document.getElementById("element_1_2").value;
+		mes = document.getElementById("element_1_1").value;
+		anio = document.getElementById("element_1_3").value;
+		
+		dias2 = document.getElementById("element_2_2").value;
+		mes2 = document.getElementById("element_2_1").value;
+		anio2 = document.getElementById("element_2_3").value;
+		
+		desde = anio + "-" + mes +"-"+ dias;
+		hasta = anio2 + "-" + mes2 +"-"+ dias2;
+	       	
+		posicion1 = document.getElementById("select1").options.selectedIndex;
+		opcion1 = document.getElementById("select1").options[posicion1].text;
+		n=opcion1.split(" ");
+		
+		if (posicion1 == 0){
+		  dato = 0;
+		}else{
+		  dato = n[0];
+		}
+		
+		//posicion2 = document.getElementById("select3").options.selectedIndex;
+		//destino = document.getElementById("select3").options[posicion2].text;
+		
+		posicion3 = document.getElementById("select4").options.selectedIndex;
+		listopc = document.getElementById("select4").options[posicion3].text;
+		
+		
+		
+		//alert("Fecha desde: "+desde +"/// Fecha Hasta: "+hasta );
+		//alert("opcion: "+n[0]);
+		
+		pdf = 1;
+			
+		posiciondepo = 0;
+						
+		//open("/deposito/listado/listingresos/?dato="+dato+"&listopc="+listopc+"&desde="+desde+"&hasta="+hasta+"&opciondepo="+posiciondepo+"&pdf="+pdf+"&destino="+destino,"_self");	
+		open("/deposito/listado/listingresos/?dato="+dato+"&listopc="+listopc+"&desde="+desde+"&hasta="+hasta+"&opciondepo="+posiciondepo+"&pdf="+pdf,"_self");	
+		
+		
+		//alert("Fecha desde: "+desde +"/// Fecha Hasta: "+hasta );
+		//alert("opcion: "+n[0]);
+				
+		return false;
+	}
+		
+	
+</script>
+
+
+</head>
+
+	<img id="top" src="/assets/img/top.png" alt="">
+	<div id="form_container">
+	
+		<h1><a>Untitled Form</a></h1>
+		<form id="form_597362" name="formulario1" class="appnitro" action="">{% csrf_token %}
+		
+		<table>
+			<div class="form_description">
+			<h2>Listado Ingresos.</h2>
+			<p>Seleccione entre las distintas opciones, para generar el listado correspondiente.</p>
+			</div>
+			
+			<ul >
+			
+					<li id="li_1" >
+			<label class="description" for="element_1">Fecha Desde </label>
+			
+			<span>
+				<input id="element_1_2" name="element_1_2" class="element text" size="2" maxlength="2" value="" type="text"> /
+				<label for="element_1_2">DD</label>
+			</span>
+			<span>
+				<input id="element_1_1" name="element_1_1" class="element text" size="2" maxlength="2" value="" type="text"> /
+				<label for="element_1_1">MM</label>
+			</span>
+			<span>
+				<input id="element_1_3" name="element_1_3" class="element text" size="4" maxlength="4" value="" type="text">
+				<label for="element_1_3">YYYY</label>
+			</span>
+		
+			<span id="calendar_1">
+				<img id="cal_img_1" class="datepicker" src="/assets/img/calendar.gif" alt="Pick a date.">	
+			</span>
+			<script type="text/javascript">
+				Calendar.setup({
+				inputField	 : "element_1_3",
+				baseField    : "element_1",
+				displayArea  : "calendar_1",
+				button		 : "cal_img_1",
+				ifFormat	 : "%B %e, %Y",
+				onSelect	 : selectDate
+				});
+			</script>
+			
+			</li>		<li id="li_2" >
+			<label class="description" for="element_2">Fecha Hasta </label>
+			
+			<span>
+				<input id="element_2_2" name="element_2_2" class="element text" size="2" maxlength="2" value="" type="text"> /
+				<label for="element_2_2">DD</label>
+			</span>
+			<span>
+				<input id="element_2_1" name="element_2_1" class="element text" size="2" maxlength="2" value="" type="text"> /
+				<label for="element_2_1">MM</label>
+			</span>
+			<span>
+				<input id="element_2_3" name="element_2_3" class="element text" size="4" maxlength="4" value="" type="text">
+				<label for="element_2_3">YYYY</label>
+			</span>
+		
+			<span id="calendar_2">
+				<img id="cal_img_2" class="datepicker" src="/assets/img/calendar.gif" alt="Pick a date.">	
+			</span>
+			<script type="text/javascript">
+				Calendar.setup({
+				inputField	 : "element_2_3",
+				baseField    : "element_2",
+				displayArea  : "calendar_2",
+				button		 : "cal_img_2",
+				ifFormat	 : "%B %e, %Y",
+				onSelect	 : selectDate
+				});
+			</script>
+			
+			</li>
+			
+		
+			</ul>
+			
+			<ul >
+		
+			  
+			{% if opcion == 0 %}
+			<p>
+			Depósito:
+			    <select id="select2" name="select2">
+			   
+				<option>Ninguno</option>
+				<option>Sarmiento</option>
+				<option>Pto. Madryn</option> 
+				<option>Esquel</option> 
+				<option>Gaiman</option> 
+				<option>Rawson</option>
+				<option>Trevelin</option>
+						    
+			    </select>
+			</p>
+			{% endif %}
+			
+			<p>
+			Ordenar Por:
+			    <select id="select4" name="select4">
+			   
+				<option>Nada</option>
+				<option>Fecha</option>
+				<option>Articulo</option> 
+				<option>Menor-Mayor Cantidad</option> 
+				<option>Mayor-Menor Cantidad</option> 
+				<option>Cuenta Patrimonial</option> 
+									    
+			    </select>
+			</p>  
+			
+			<!--
+			<p>  Destino:
+			<select id="select3" name="select3">
+			<option>Ninguno</option>
+			{% for od in origdest %}
+			    <option>{{od}}</option> 
+			{% endfor %}
+			</select>
+			</p>
+			-->
+		
+			<p>
+			Cuenta Patrimonial:
+			<select id="select1" name="select1">
+			    <option>Todas</option>
+			{% for elemento in datos %}
+			    <option>{{elemento.codigocuenta}}  -  {{elemento.descripcioncuenta}}</option> 
+			{% endfor %}
+			</select>
+			</p>
+			
+					
+			</ul>
+		</table>	
+		</form>
+		
+		<table>	
+		<tr>
+		<td>
+		{% if opcion != 0 %}
+		<input id="saveForm" class="button_text" type="submit" name="submit" value="Listar" onclick="javascript:listingresos()" style="
+		  margin-left: 30px;
+		  margin-bottom: 10px;
+		  width: 80px;
+		  height: 22px;
+		" />
+				
+		{% else %}
+		<input id="saveForm" class="button_text" type="submit" name="submit" value="Listar" onclick="javascript:listingresosadmin()" style="
+		  margin-left: 30px;
+		  margin-bottom: 10px;
+		  width: 80px;
+		  height: 22px;
+		" />
+		
+		{% endif %}
+		</td>
+		<td>
+		<input type="button" value="Volver Atrás" name="Back2" onclick="history.back()" style="
+		  margin-left: 10px;
+		  margin-bottom: 10px;
+		  width: 80px;
+		  height: 22px;
+		" />
+		</td>
+		</tr>
+		</table>
+	</div>
+	
+	<img id="bottom" src="/assets/img/bottom.png" alt=""> 
+	
+	
+</html>
+{% endblock %}

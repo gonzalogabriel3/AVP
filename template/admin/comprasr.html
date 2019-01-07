@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="/assets/css/naranja.css"/>
+</head>
+<body>
+        <h1><img src='/assets/admin/img/logo-avp.png' width="180" height="90" align="middle"/>      Administracion de Vialidad Provincial.</h1>
+        <!-- <h2>Reporte de Ausentismo Fecha: {{fecha}}</h2> -->
+	<h2>Reporte de Compra</h2>
+	
+	       
+        <table border=0,1>
+	    <tr>
+		<th scope="col" style="padding-top: 2px;">Id Compra</th>
+		<th scope="col" style="padding-top: 2px;">Remito</th>
+		<th scope="col" style="padding-top: 2px;">Orden Compra</th>
+		<th scope="col" style="padding-top: 2px;">Expediente</th>
+		<th scope="col" style="padding-top: 2px;">Fecha</th>
+	    </tr>
+	    <tr>
+		<td align="center" style="padding-top: 2px;">{{objcompra.idcompra}}</td>
+		<td align="center" style="padding-top: 2px;">{{objcompra.nroremito}}</td>
+		<td align="center" style="padding-top: 2px;">{{objcompra.nroordencompra}}</td>
+		<td align="center" style="padding-top: 2px;">{{objcompra.nroexpediente}}</td>
+		<td align="center" style="padding-top: 2px;">{{objcompra.fecha}}</td>
+	    </tr>
+	    <tr>
+		<td style="padding-top: 2px;">Observaciones:</td>
+		<td colspan="4" style="padding-top: 2px;"> {{objcompra.observaciones}} </td>
+	    </tr>
+	    
+	</table>
+        <table border=0,1>
+                
+                <h2>Lista Articulos</h2>
+		
+                <thead>
+                        <tr>
+                                <th align="center" style="padding-top: 2px;">Articulo</th>
+                                <th align="center" style="padding-top: 2px;">Cantidad</th>
+                                <th align="center" style="padding-top: 2px;">precioUnitario</th>
+                                 
+	                </tr>
+                </thead>
+                <tbody>
+                        {% for art in detcompra%}
+                        <tr class="{% cycle 'row0' 'row1' %}">
+                                
+                                <td align="center" style="padding-top: 2px;"> {{art.idarticulo}}</td>
+                                <td align="center" style="padding-top: 2px;"> {{art.cantidad}}</td>
+				<td align="center" style="padding-top: 2px;"> {{art.preciounitario}}</td>
+				
+                        </tr>
+                        {%endfor%}
+
+                </tbody>
+        </table>
+        Pagina: <pdf:pagenumber>
+
+</body>
+</html>
+

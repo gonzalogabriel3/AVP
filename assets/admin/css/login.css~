@@ -2,7 +2,7 @@
 
 body.login {
     background: #FFC200;
-    background-image: url(/site_media/admin/img/avplogin-bg.png);
+    background-image: url(/assets/admin/img/avplogin-bg.png);
     background-repeat: repeat;
   
 }

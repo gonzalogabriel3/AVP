@@ -58,7 +58,7 @@ ROOT_URLCONF = 'proyecto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/pasajes/templates', '/depoapp/template','/depoapp/template/admin/'],
+        'DIRS': ['/pasajes/templates', '/template','/template/admin/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

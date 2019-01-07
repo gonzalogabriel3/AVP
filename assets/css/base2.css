@@ -11,7 +11,7 @@ body {
     font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
     color: #333;
     background: #fff;
-    background-image:url('/site_media/css/fondo3.gif');/*"url(/site_media/img/fondo1.png)";*/
+    background-image:url('/assets/css/fondo3.gif');/*"url(/assets/img/fondo1.png)";*/
     /*background-image: url('maquinas.jpg');
     background-attachment: fixed; */
 

@@ -1,0 +1,167 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />
+
+{% endblock %}
+
+{% block branding %}{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+
+
+{% block footer %}{% endblock %}
+
+{% block content %}
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" type="text/css" href="/assets/css/view.css" media="all">
+<script type="text/javascript" src="/assets/js/view.js"></script>
+<script type="text/javascript" src="/assets/js/calendar/calendar.js"></script>
+
+<script>
+		
+	function listcombustibles(){
+			
+		d1 = document.getElementById("element_1_2").value;
+		m1 = document.getElementById("element_1_1").value;
+		a1 = document.getElementById("element_1_3").value;
+		
+		d2 = document.getElementById("element_2_2").value;
+		m2 = document.getElementById("element_2_1").value;
+		a2 = document.getElementById("element_2_3").value;
+	
+	        var de = document.getElementById("select2");
+	        var depo = de.options[de.selectedIndex].value;
+		open("/deposito/listado/combustock/"+depo+"/"+a1+"/"+m1+"/"+d1+"/"+a2+"/"+m2+"/"+d2,"_self");
+
+		return false;
+	}
+	
+</script>
+
+</head>
+	<img id="top" src="/assets/img/top.png" alt="">
+	<div id="form_container">
+		<form id="form_597362" name="formulario1" class="appnitro" action="">{% csrf_token %}
+		<table>
+			<div class="form_description">
+				<h2>Listado Combustibles - Lubricantes.</h2>
+				<p>Seleccione entre las distintas opciones, para generar el listado correspondiente.</p>
+			</div>
+				<!-- # FECHA DESDE -->
+			<ul >
+			
+				<li id="li_1" >
+					<label class="description" for="element_1">Fecha Desde </label>
+					<span>
+						<input id="element_1_2" name="element_1_2" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_1_2">DD</label>
+					</span>
+					<span>
+						<input id="element_1_1" name="element_1_1" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_1_1">MM</label>
+					</span>
+					<span>
+						<input id="element_1_3" name="element_1_3" class="element text" size="4" maxlength="4" value="" type="text">
+						<label for="element_1_3">YYYY</label>
+					</span>
+					<span id="calendar_1">
+						<img id="cal_img_1" class="datepicker" src="/assets/img/calendar.gif" alt="Pick a date.">	
+					</span>
+					<script type="text/javascript">
+						Calendar.setup({
+							inputField	 : "element_1_3",
+							baseField    : "element_1",
+							displayArea  : "calendar_1",
+							button		 : "cal_img_1",
+							ifFormat	 : "%B %e, %Y",
+							onSelect	 : selectDate
+						});
+					</script>
+				</li> 
+				<!-- # FECHA HASTA -->
+	
+				<li id="li_2" >
+					<label class="description" for="element_2">Fecha Hasta </label>
+					<span>
+						<input id="element_2_2" name="element_2_2" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_2_2">DD</label>
+					</span>
+					<span>
+						<input id="element_2_1" name="element_2_1" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_2_1">MM</label>
+					</span>
+					<span>
+						<input id="element_2_3" name="element_2_3" class="element text" size="4" maxlength="4" value="" type="text">
+						<label for="element_2_3">YYYY</label>
+					</span>
+					<span id="calendar_2">
+						<img id="cal_img_2" class="datepicker" src="/assets/img/calendar.gif" alt="Pick a date.">	
+					</span>
+					<script type="text/javascript">
+						Calendar.setup({
+							inputField	 : "element_2_3",
+							baseField    : "element_2",
+							displayArea  : "calendar_2",
+							button		 : "cal_img_2",
+							ifFormat	 : "%B %e, %Y",
+							onSelect	 : selectDate
+						});
+					</script>
+				</li>
+				<table>
+					<p>
+						<tr>
+							<td>Depósito:</td>
+							<td>    
+								<select id="select2" name="select2">
+				   					<option value="1">Sarmiento</option>
+									<option value="2">Pto. Madryn</option> 
+									<option value="3">Esquel</option> 
+									<option value="4">Gaiman</option> 
+									<option value="5">Rawson</option>
+									<option value="6">Trevelin</option>	    
+			    					</select>
+							</td>
+						</tr>
+					</p>
+				</table>
+					
+			</ul>
+		</table>	
+		
+		
+		<table>	
+			<tr>
+				<td>
+					<input id="saveForm" class="button_text" type="button" name="submit" value="Listar" onclick="javascript:listcombustibles()" style="
+		  			margin-left: 30px;
+		  			margin-bottom: 10px;
+		  			width: 80px;
+		  			height: 22px;
+					" />			
+				</td>
+				<td>
+					<input type="button" value="Volver Atrás" name="Back2" onclick="history.back()" style="
+		  			margin-left: 10px;
+		  			margin-bottom: 10px;
+		  			width: 80px;
+		  			height: 22px;
+					" />
+				</td>			
+			</tr>
+		</table>
+		</form>
+	</div>
+	
+	<img id="bottom" src="/assets/img/bottom.png" alt=""> 
+	
+{% endblock %}
