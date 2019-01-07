@@ -459,3 +459,6 @@ def altaPasaje(request,idPasajero):
 
 def loginView(request):
 	return render(request,'registration/login.html')
+
+def indexProyecto(request):
+	return render(request,'proyecto/indexProyecto.html')
