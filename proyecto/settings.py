@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django_select2',
     'proyectoApp',
     'pasajes',
-    'depoapp',
+    #'depoapp',
 
 
 ]
