@@ -6,11 +6,6 @@
 <head>
 	{% load static %}
 
-	<!--Si el usuario no esta registrado,redirecciono a la url de login -->
-	{% if user.is_authenticated is False %}
-		<meta http-equiv="refresh" content="0; url=login">
-	{% endif %}
-	
 	<title>Inicio</title>
 	
 
@@ -25,12 +20,21 @@
 	<!-- Importo jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
-<body>
-	<a href="{% url 'logout' %}" id="link_navbar"><span style="display: inline-block;" class="glyphicon glyphicon-log-out"></span> <b>Salir</b></a>
-	<br>
-	{% block contenido %}
+<body style="background-image: url('{% static 'fondo2.png' %}');background-repeat: no-repeat;">
+	<!--Si el usuario esta registrado,redirecciono a la url de pasajes -->
+	{% if user.is_authenticated is True %}
+		
+		<meta http-equiv="refresh" content="0; url=/pasajes">
+	
+	<!--Si el usuario NO esta registrado,muestro el menu principal del proyecto -->
+	{% else %}
 
-	{% endblock %}
+		
+		{% block contenido %}
+		
+		{% endblock %}
 
+
+	{% endif %}
 </body>
 </html>

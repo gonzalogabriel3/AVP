@@ -60,7 +60,7 @@ class formularioFamiliar(forms.ModelForm):
 
 	fecha_nacimiento=forms.DateField(widget=forms.DateInput(attrs=
                                 {
-                                    'class':'datepicker',
+                                    'class':'datepickerFamiliar',
                                     'placeholder':'Fecha de nacimiento'
                                 }))
 
