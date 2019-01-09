@@ -62,12 +62,12 @@ def searchagente(request,opc):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         if int(opc) == 9:
-	    aux = Agente.objects.all().order_by('apellido')
-	else:
-	    aux = Agente.objects.filter(situacion=opc).order_by('apellido')
-        agentes = aux.filter(nombres__icontains=q) | aux.filter(apellido__icontains=q)
-        return render_to_response('personal/search_results_agentes.html',
-            {'agentes': agentes, 'query': q,'opc':opc})
+            aux = Agente.objects.all().order_by('apellido')
+        else:
+            aux = Agente.objects.filter(situacion=opc).order_by('apellido')
+            agentes = aux.filter(nombres__icontains=q) | aux.filter(apellido__icontains=q)
+            return render_to_response('personal/search_results_agentes.html',
+                {'agentes': agentes, 'query': q,'opc':opc})
     else:
         return HttpResponse('Por favor ingrese un termino de busqueda.')
 
@@ -213,11 +213,11 @@ def cantClases(peticion):
     
     for a in age:
         for i in range(0,len(lis)):
-	    try:
-		if a.clase.pk == lis[i][0].idclase:
-		    lis[i][1] = lis[i][1] + 1
+            try:
+                if a.clase.pk == lis[i][0].idclase:
+                    lis[i][1] = lis[i][1] + 1
             except AttributeError:
-	        pass
+                pass
     return render_to_response('personal/cantclase.html',{'lista':lis,'user':user,'grupos':grupos},)
 
 @login_required(login_url='/personal/accounts/login')   
@@ -239,7 +239,7 @@ def cantAgrupamiento(peticion):
     agent = Agente.objects.filter(agrupamiento=agrup,situacion=2).order_by('apellido')
     cantidad = agent.count()
     for a in agent:
-	zona = Zona.objects.get(pk=a.idzona.pk)
+        zona = Zona.objects.get(pk=a.idzona.pk)
         lista.append([a.apellido,a.nombres,a.nrodocumento,a.fechaalta,zona.descripcion])
     
     lista = paginar(lista,peticion)
@@ -305,8 +305,8 @@ def fechaEnRango(anio,mes,fi,ff):
     rango = list()
     cant = 0;
     if mes !=0:
-	for i in range(1,diasMes(anio,mes)+1):
-	    rango.append(datetime.date(anio, mes, i))
+        for i in range(1,diasMes(anio,mes)+1):
+            rango.append(datetime.date(anio, mes, i))
     #en caso de querer verificar el ausentismo de un año entero, se envia el mes en 0
     else:
         for m in range(1,12+1):
@@ -315,7 +315,7 @@ def fechaEnRango(anio,mes,fi,ff):
                 
     for r in rango:
         if fi <= r <=ff:
-	   cant = cant+1
+            cant = cant+1
 	   
     return cant
 
@@ -338,15 +338,15 @@ def ausReportMensual(peticion):
     for a in aus:
         cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
         if cant !=0 :
-	    agente = a.idagente.apellido +' '+ a.idagente.nombres
-	    if a.idarticulo.pk==3:
-	        try:
-		    articulo = a.idarticulo.descripcion + " - " +a.tiempolltarde.strftime("%H:%M:%S")
-		except AttributeError:
-		    articulo = a.idarticulo.descripcion + " "
-	    else:
-		articulo = a.idarticulo.descripcion	  
-	    listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
+            agente = a.idagente.apellido +' '+ a.idagente.nombres
+        if a.idarticulo.pk==3:
+            try:
+                articulo=a.idarticulo.descripcion+" - "+a.tiempolltarde.strftime("%H:%M:%S")
+            except AttributeError:
+                articulo=a.idarticulo.descripcion+" "
+        else:
+            articulo = a.idarticulo.descripcion
+    listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
     lista=sorted(listaAus, key=lambda agen: agen[0])
     lista = paginar(lista,peticion)
     return render_to_response('personal/ausReportMensual.html',{'user':user, 'grupos':grupos, 'lista':lista,'anio':anio,'mes':mes})
@@ -365,20 +365,20 @@ def ausReportMensualCMO(peticion):
     anio = int(peticion.GET.get('anio'))
     listaAus = list()
     if permisoEstadistica(user):
-	return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/personal/error/')
     aus = Ausent.objects.filter(Q(idarticulo=1011)|Q(idarticulo=1021)|Q(idarticulo=1811))
     for a in aus:
         cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
-        if cant !=0 :
-	    agente = a.idagente.apellido +' '+ a.idagente.nombres
-	    if a.idarticulo.pk==3:
-	        try:
-		    articulo = a.idarticulo.descripcion + " - " +a.tiempolltarde.strftime("%H:%M:%S")
-		except AttributeError:
-		    articulo = a.idarticulo.descripcion + " "
-	    else:
-		articulo = a.idarticulo.descripcion	  
-	    listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
+        if cant !=0:
+            agente = a.idagente.apellido +' '+ a.idagente.nombres
+        if a.idarticulo.pk==3:
+            try:
+                articulo=a.idarticulo.descripcion+" - "+a.tiempolltarde.strftime("%H:%M:%S")
+            except Exception as e:
+                articulo = a.idarticulo.descripcion + " "
+        else:
+            articulo = a.idarticulo.descripcion
+            listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
 	    
     lista=sorted(listaAus, key=lambda agen: agen[0])
     lista = paginar(lista,peticion)
@@ -400,81 +400,78 @@ def procesaPresen(listaPre):
         mesAnte= diasTom - diasMes # La cantidad de dias del mes anterior
 	#--------------------------------------------------------------------------------------------------------------
         #articulo 101 -------------------------------------------------------------------------------------------------
-        if articulo.idarticulo == 101:
-	    #if diasTom > 30:
-            if mesAnte >= 30:
-	        #a partir de 30 dias se decuenta el 100% de haberes sumado el 50% de los diez dias anterirores
-	        #5 = 10/2
-	        #lis[3] = "Descuenta "+ str(diasTom - 5) + " dias "
-                lis[3] = "Descuenta "+str(diasMes) +" dias"
-	    #elif diasTom > 20:
-            elif mesAnte >= 20 and diasTom > 30:
-		descuento100 = diasTom - 30
-		descuento50 = float((diasMes - descuento100)/2)
-                lis[3] = "Descuenta "+str(descuento100+descuento50) +" dias"
+    if articulo.idarticulo == 101:
+    #if diasTom > 30:
+        if mesAnte >= 30:
+        #a partir de 30 dias se decuenta el 100% de haberes sumado el 50% de los diez dias anterirores
+        #5 = 10/2
+        #lis[3] = "Descuenta "+ str(diasTom - 5) + " dias "
+            lis[3] = "Descuenta "+str(diasMes) +" dias"
+    #elif diasTom > 20:
+        elif mesAnte >= 20 and diasTom > 30:
+            descuento100 = diasTom - 30
+            descuento50 = float((diasMes - descuento100)/2)
+            lis[3] = "Descuenta "+str(descuento100+descuento50) +" dias"
+        else:
+            if mesAnte >= 20:
+    		#a partir de 20 dias se descuenta el 50% de haberes
+                lis[3] = "Descuenta "+str((float(diasMes)) / 2) +" dias"
+    		#lis[3] = "Descuenta "+str((float(diasTom - 20)) / 2) +" dias"
             else:
-		    if mesAnte >= 20:
-			#a partir de 20 dias se descuenta el 50% de haberes
-		        lis[3] = "Descuenta "+str((float(diasMes)) / 2) +" dias"
-			#lis[3] = "Descuenta "+str((float(diasTom - 20)) / 2) +" dias"
-		    else:
-			if diasTom-20 > 0:
-		            lis[3] = "Descuenta "+str((float(diasTom-20)) / 2) +" dias"
+               if diasTom-20 > 0:
+    	            lis[3] = "Descuenta "+str((float(diasTom-20)) / 2) +" dias"
 	#--------------------------------------------------------------------------------------------------------------	
 	#articulo 18 --------------------------------------------------------------------------------------------------
-	elif articulo.idarticulo == 18:
-	    #if diasTom > 12:
-            if mesAnte >= 12:
+    elif articulo.idarticulo == 18:
+        if mesAnte >= 12:
 	        lis[3] = "Descuenta "+str(diasMes)+" dias"
-            elif mesAnte < 12:
-                if diasTom - 12 > 0:
-                    lis[3] = "Descuenta "+str(diasTom - 12)+" dias"
+        elif mesAnte < 12:
+            if diasTom - 12 > 0:
+                lis[3] = "Descuenta "+str(diasTom - 12)+" dias"
 	#--------------------------------------------------------------------------------------------------------------
 	#Inasistencias injustificadas ---------------------------------------------------------------------------------
-	elif articulo.idarticulo == 2:
-	    if diasMes >= 3:
+    elif articulo.idarticulo == 2:
+        if diasMes >= 3:
 	        lis[3] = "Descuenta "+ str(diasTom) + " dias y 100%  de presentismo"
-	    elif diasMes == 2:
+        elif diasMes == 2:
 	        lis[3] = "Descuenta 2 dias y 66%  de presentismo"
-            elif diasMes == 1:
+        elif diasMes == 1:
 	        lis[3] = "Descuenta 1 dias y 33%  de presentismo"
-	#--------------------------------------------------------------------------------------------------------------	
-	#LLegadas tarde ------------------------------------------------------------------------------------------------
-	elif articulo.idarticulo == 3:
-	    if diasMes >= 5:
+    #-------------------------------------------------------------------------------------------------------------- 
+    #LLegadas tarde ------------------------------------------------------------------------------------------------
+    elif articulo.idarticulo == 3:
+        if diasMes >= 5:
 	        lis[3] = "Descuenta 100% presentismo "
-	    elif diasMes == 4:
+        elif diasMes == 4:
 	        lis[3] = "Descuenta 66% presentismo "
-	    elif diasMes == 3:
+        elif diasMes == 3:
 	        lis[3] = "Descuenta 33% presentismo "
-	    #try:
-	    ausent = Ausent.objects.filter(idagente__pk=agent.pk,fechainicio__year=lis[6],fechainicio__month=lis[7],idarticulo__pk=3)
-	    acum = 0
-	    acum2 = time(0,0,0)
-	    
-	    for a in ausent:
-		  if a.tiempolltarde >= datetime.time(0,50,0):
-		      acum = acum + 1
-		  elif a.tiempolltarde >= datetime.time(0,30,0):
-		      acum = acum + 0.5
-		  else:
-		      acum2 = datetime.time(acum2.hour + a.tiempolltarde.hour, acum2.minute + a.tiempolltarde.minute, acum2.second + a.tiempolltarde.second)
-		      if acum2 >= datetime.time(0,30,0):
-			    acum = acum + 0.5
-			    dif = datetime.time(0,30,0)
-			    acum2 = datetime.time(acum2.hour - dif.hour, acum2.minute - dif.minute, acum2.second - dif.second)
-	    if acum > 0:
-		if acum > 1:
-		    lis[3] = lis[3]+" Descuenta " + str(acum) + " dias"
-		else:
-		    lis[3] = lis[3]+" Descuenta " + str(acum) + " dia"
-	    #except TypeError:
-	        #pass
+        ausent = Ausent.objects.filter(idagente__pk=agent.pk,fechainicio__year=lis[6],fechainicio__month=lis[7],idarticulo__pk=3)
+        acum = 0
+        acum2 = time(0,0,0)
 
+        for a in ausent:
+            if a.tiempolltarde >= datetime.time(0,50,0):
+                acum = acum + 1
+            elif a.tiempolltarde >= datetime.time(0,30,0):
+                acum = acum + 0.5
+            else:
+                acum2 = datetime.time(acum2.hour + a.tiempolltarde.hour, acum2.minute + a.tiempolltarde.minute, acum2.second + a.tiempolltarde.second)
+                if acum2 >= datetime.time(0,30,0):
+                    acum = acum + 0.5
+                    dif = datetime.time(0,30,0)
+                    acum2 = datetime.time(acum2.hour - dif.hour, acum2.minute - dif.minute, acum2.second - dif.second)
+        if acum > 0:
+            #NO HABIA CODIGO!!!!!!!!!!!
+            variable=0
+        if acum>1:
+            lis[3] = lis[3]+" Descuenta " + str(acum) + " dias"
+        else:
+            lis[3] = lis[3]+" Descuenta " + str(acum) + " dia"
 	      
     for l in listaPre:
         if l[3]!= "" :
-	  listaNew.append(l)
+            listaNew.append(l)
      
     return listaNew
     
@@ -513,20 +510,18 @@ def presentismoReport(peticion):
             at.diastomados = 0
         #----------------------------------------------------------------------------------------
         
-        if (at.idagente,at.idarticulo) not in listAux:
-	    if at.idarticulo.pk == 3 and at.tiempolltarde == datetime.time(0,0,0):
-	        pass
-	    else:
-		try:
+    if (at.idagente,at.idarticulo) not in listAux:
+        if at.idarticulo.pk == 3 and at.tiempolltarde == datetime.time(0,0,0):
+            pass
+        else:
+            try:
 	    	    #artitomado = ArtiTomados.objects.filter(idagente=at.idagente,anio=year, mes=month, idarticulo = at.idarticulo)
-	    	    artitomado = ArtiTomados.objects.get(idagente=at.idagente,anio=year, mes=month, idarticulo = at.idarticulo)
-                    listaPre.append([at.idagente,at.idarticulo,at.diastomados,"",artitomado.tiempolltarde,artitomado.diastomados,year,month])
-	        except ArtiTomados.DoesNotExist:
+                artitomado = ArtiTomados.objects.get(idagente=at.idagente,anio=year, mes=month, idarticulo = at.idarticulo)
+                listaPre.append([at.idagente,at.idarticulo,at.diastomados,"",artitomado.tiempolltarde,artitomado.diastomados,year,month])
+            except ArtiTomados.DoesNotExist:
                     pass
-    
-                
-	        listAux.append((at.idagente,at.idarticulo))
-	else:
+            listAux.append((at.idagente,at.idarticulo))
+    else:
 	    for l in listaPre:
 	        if (at.idagente.pk == l[0].idagente) and (at.idarticulo.pk==l[1].idarticulo):    
 	            l[2] = l[2] + at.diastomados
@@ -536,51 +531,47 @@ def presentismoReport(peticion):
     lista = paginar(listaPre,peticion)
     
     if excel == 0:
-	return render_to_response('personal/presentismoReport.html',{'user':user,'grupos':grupos,'lista':lista,'anio':year,'mes':month})
+	       return render_to_response('personal/presentismoReport.html',{'user':user,'grupos':grupos,'lista':lista,'anio':year,'mes':month})
     else:
-	book = xlwt.Workbook(encoding='utf8')
-	
-	sheet = book.add_sheet('Presentismo')
-	
-	default_style = xlwt.Style.default_style
-	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
-	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
-	time_style = xlwt.easyxf(num_format_str='hh:mm:ss')
-			
-	i = 0
-	sheet.write(i, 0, 'Agente', style=default_style)
-	sheet.write(i, 1, 'Artículo', style=default_style)
-	sheet.write(i, 2, 'Cantidad', style=default_style)
-	sheet.write(i, 3, 'Ll.Tarde', style=default_style)
-	sheet.write(i, 4, 'Presentismo', style=default_style)
-	
-	for le in listaPre:
-	      
-	    nombres = le[0].nombres
-	    sincodnombres = nombres.encode('ascii','ignore')
-		
-	    apellido = le[0].apellido
-	    sincodapellido = apellido.encode('ascii','ignore')
-		
-	    nombre = sincodapellido+", "+sincodnombres
-	  
-	    i = i + 1
-	    sheet.write(i, 0, nombre, style=default_style)
-	    sheet.write(i, 1, le[1].descripcion, style=default_style)
-	    sheet.write(i, 2, le[2], style=default_style)
-	    sheet.write(i, 3, le[4], style=time_style)
-	    sheet.write(i, 4, le[3], style=default_style)
-	
-	now = datetime.datetime.now()
-	
-	dia = now.day
-	mes = now.month
-	anio = now.year
-	
-	response = HttpResponse(mimetype='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=presentismoReport_'+str(dia)+"-"+str(mes)+"-"+str(anio)+'_excel.xls'
-	book.save(response)
-	return response
+    	book = xlwt.Workbook(encoding='utf8')
+    	
+    	sheet = book.add_sheet('Presentismo')
+    	
+    	default_style = xlwt.Style.default_style
+    	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+    	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+    	time_style = xlwt.easyxf(num_format_str='hh:mm:ss')
+    			
+    	i = 0
+    	sheet.write(i, 0, 'Agente', style=default_style)
+    	sheet.write(i, 1, 'Artículo', style=default_style)
+    	sheet.write(i, 2, 'Cantidad', style=default_style)
+    	sheet.write(i, 3, 'Ll.Tarde', style=default_style)
+    	sheet.write(i, 4, 'Presentismo', style=default_style)
+
+    for le in listaPre:
+        nombres = le[0].nombres
+        sincodnombres = nombres.encode('ascii','ignore')
+        apellido = le[0].apellido
+        sincodapellido = apellido.encode('ascii','ignore')
+        nombre = sincodapellido+", "+sincodnombres
+        i = i + 1
+        sheet.write(i, 0, nombre, style=default_style)
+        sheet.write(i, 1, le[1].descripcion, style=default_style)
+        sheet.write(i, 2, le[2], style=default_style)
+        sheet.write(i, 3, le[4], style=time_style)
+        sheet.write(i, 4, le[3], style=default_style)
+
+    now = datetime.datetime.now()
+
+    dia = now.day
+    mes = now.month
+    anio = now.year
+
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=presentismoReport_'+str(dia)+"-"+str(mes)+"-"+str(anio)+'_excel.xls'
+    book.save(response)
+    return response
     
     
 #--------------------------------------------------------------------------
@@ -592,8 +583,8 @@ def listadoPDAusentes(aux,aus):
         agente = Agente.objects.get(idagente=a)
         cantidad = aus.filter(idagente=a).count()
         if cantidad != 0:
-	    arti = aus.filter(idagente=a)[0].idarticulo
-	    listado.append((agente,arti))
+    	    arti = aus.filter(idagente=a)[0].idarticulo
+    	    listado.append((agente,arti))
     return sorted(listado, key=lambda faltas: faltas[1], reverse=True)
 
 def listadoAusentes(aux,aus):
@@ -608,9 +599,10 @@ def listadoAusentes(aux,aus):
         #cantidad = aus.filter(idagente=a).count()
         cantidad = 0
         for regaus in aus.filter(idagente=a):
-	    cantidad = cantidad + regaus.cantdias
-        if cantidad != 0:
-	    listado.append((agente,cantidad))
+    	    cantidad = cantidad + regaus.cantdias
+        if cantidad!=0:
+            listado.append((agente,cantidad))
+
     return sorted(listado, key=lambda faltas: faltas[1], reverse=True)
 
 #calcula el porcentaje de articulos
@@ -643,9 +635,9 @@ def listadoArticulos(aus):
         articulo = Articulo.objects.get(idarticulo=al)
         #cantidad = aus.filter(idarticulo=al).count()
         for regaus in aus.filter(idarticulo=al):
-	    cantidad = cantidad + regaus.cantdias
+            cantidad = cantidad + regaus.cantdias
         if cantidad != 0:
-	    listadoArt.append((articulo,cantidad))
+            listadoArt.append((articulo,cantidad))
     
     return porcentajesArti(listadoArt)
 

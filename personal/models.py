@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django import forms
-from django.utils.encoding import force_unicode
+#from django.utils.encoding import force_unicode
 from django.contrib.admin import widgets  
 from datetime import *
 
@@ -193,9 +193,9 @@ class Agente(models.Model):
     nrodocumento = models.SmallIntegerField(unique=True, verbose_name = "Nro Documento")
     sexo = models.CharField(max_length=1, choices=TIPO_SEXO)
     fechanacimiento = models.DateField(verbose_name = "Fecha de Nacimiento")
-    nacionalidad = models.ForeignKey(Nacionalidad, db_column="nacionalidad", verbose_name="Nacionalidad")
+    nacionalidad = models.ForeignKey(Nacionalidad, db_column="nacionalidad", verbose_name="Nacionalidad",on_delete=models.CASCADE)
     estadocivil = models.CharField(max_length=200, choices=TIPO_ECIVIL, verbose_name = "Estado Civil")
-    codigopostal = models.ForeignKey(Codigopostal, null=True, db_column='codigopostal', blank=True, verbose_name = "Código Postal")
+    codigopostal = models.ForeignKey(Codigopostal, null=True, db_column='codigopostal', blank=True, verbose_name = "Código Postal",on_delete=models.CASCADE)
     domicilio = models.CharField(max_length=200)
     telefono = models.CharField(max_length=200, blank=True)
     fechaalta = models.DateField(null=True, blank=True, verbose_name = "Fecha Alta")
@@ -209,13 +209,13 @@ class Agente(models.Model):
     situacion = models.SmallIntegerField(null=False, choices=TIPO_SITUACION)
     fechabaja = models.DateField(null=True, blank=True, verbose_name = "Fecha Baja")
     razonbaja = models.CharField(max_length=400, blank=True, verbose_name = "Razon Baja")
-    clase = models.ForeignKey(Clase, related_name="clase", null=True, db_column='clase', blank=True)
+    clase = models.ForeignKey(Clase, related_name="clase", null=True, db_column='clase', blank=True,on_delete=models.CASCADE)
     categoria = models.SmallIntegerField(null=True, choices = TIPO_CATEGORIA ,blank=True)
     titulo = models.CharField(max_length=200, blank=True, choices=TIPO_TITULO)
     planta = models.CharField(max_length=200, blank=True, choices=TIPO_PLANTA)
-    agrupamiento = models.ForeignKey(Agrupamiento,null=True, blank=True,db_column='agrupamiento')
-    iddireccion = models.ForeignKey(Direccion, null=True, db_column='iddireccion', blank=True, verbose_name = "Dirección")
-    iddireccionreal = models.ForeignKey(Direccion, related_name="iddireccionreal", null=True, db_column='iddireccionreal', blank=True, verbose_name = "Dir. Real")
+    agrupamiento = models.ForeignKey(Agrupamiento,null=True, blank=True,db_column='agrupamiento',on_delete=models.CASCADE)
+    iddireccion = models.ForeignKey(Direccion, null=True, db_column='iddireccion', blank=True, verbose_name = "Dirección",on_delete=models.CASCADE)
+    iddireccionreal = models.ForeignKey(Direccion, related_name="iddireccionreal", null=True, db_column='iddireccionreal', blank=True, verbose_name = "Dir. Real",on_delete=models.CASCADE)
     #sucursal = models.ForeignKey(Direccion, null=True, db_column='sucursal', blank=True)
     nrocuenta = models.CharField(max_length=200, blank=True, verbose_name = "Nro Cuenta")
     nrocontrato = models.CharField(max_length=200, blank=True, verbose_name = "Nro Contrato")
@@ -225,11 +225,11 @@ class Agente(models.Model):
     seccion = models.CharField(max_length=200, blank=True)
     dexc = models.BooleanField(blank=True , verbose_name = "Dedicación Intensiva")
     defun = models.BooleanField(blank=True)
-    funcion = models.ForeignKey(Funcion, null=True,db_column='funcion', blank=True)
-    idcargof =  models.ForeignKey(CargoFuncion, null=True,db_column='idcargof', blank=True, verbose_name='Cargo Funcion')
-    idzona = models.ForeignKey(Zona, null=True, db_column='idzona', blank=True, verbose_name = "Zona")
-    idzonareal = models.ForeignKey(Zona, related_name="idzonareal", null=True, db_column='idzonareal', blank=True, verbose_name = "Zona Real")
-    claseac = models.ForeignKey(Clase, related_name="claseac", null=True, db_column='claseac', blank=True, verbose_name='Clase a Cargo')
+    funcion = models.ForeignKey(Funcion, null=True,db_column='funcion', blank=True,on_delete=models.CASCADE)
+    idcargof =  models.ForeignKey(CargoFuncion, null=True,db_column='idcargof', blank=True, verbose_name='Cargo Funcion',on_delete=models.CASCADE)
+    idzona = models.ForeignKey(Zona, null=True, db_column='idzona', blank=True, verbose_name = "Zona",on_delete=models.CASCADE)
+    idzonareal = models.ForeignKey(Zona, related_name="idzonareal", null=True, db_column='idzonareal', blank=True, verbose_name = "Zona Real",on_delete=models.CASCADE)
+    claseac = models.ForeignKey(Clase, related_name="claseac", null=True, db_column='claseac', blank=True, verbose_name='Clase a Cargo',on_delete=models.CASCADE)
     class Meta:
         db_table = u'agente'
 
@@ -247,7 +247,7 @@ class Tipolesion(models.Model):
 #··························································································································································        
 class Adscripcion(models.Model):
     idadscripcion = models.AutoField(primary_key=True,verbose_name='Adscripcion')
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Agente')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Agente',on_delete=models.CASCADE)
     fecha = models.DateField(null=True, blank=True,verbose_name='Fecha')
     lugar = models.CharField(max_length=200, blank=True,verbose_name='Lugar')
     nroresolucion = models.CharField(max_length=200, blank=True,verbose_name='Nro Resolución')
@@ -269,12 +269,12 @@ class Vinculo(models.Model):
 #··························································································································································        
 class Asignacionfamiliar(models.Model):
     idasigfam = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
     tipodocumento = models.CharField(max_length=200, blank=True, choices = TIPO_DOC,verbose_name='Tipo Documento')
     nrodocumento = models.IntegerField(null=True, blank=True,verbose_name='Número de Documento')
     apellidoynombre = models.CharField(max_length=200, blank=True,verbose_name='Apellido y Nombre de Familiar')
     sexo = models.CharField(max_length=200, blank=True,choices=TIPO_SEXO)
-    vinculo = models.ForeignKey(Vinculo, null=True, db_column='vinculo', blank=True,verbose_name='Vínculo')
+    vinculo = models.ForeignKey(Vinculo, null=True, db_column='vinculo', blank=True,verbose_name='Vínculo',on_delete=models.CASCADE)
     fechanacimiento = models.DateField(null=True, blank=True,verbose_name='Fecha de Nacimiento')
     discapacidad = models.BooleanField(blank=True)
     fechaacontecimiento = models.DateField(null=True, blank=True,verbose_name='Fecha del Acotencimiento')
@@ -282,6 +282,7 @@ class Asignacionfamiliar(models.Model):
     observaciones = models.CharField(max_length=200, blank=True)
     pagasalario = models.BooleanField(blank=True,verbose_name='Paga de Salario')
     pagaflianrosa = models.BooleanField(blank=True,verbose_name='Paga por Familia Numerosa')
+    
     class Meta:
         db_table = u'asignacionfamiliar'
         unique_together = ("nrodocumento","idagente")
@@ -291,19 +292,19 @@ class Asignacionfamiliar(models.Model):
 #··························································································································································        
 class Traslado(models.Model):
     idtraslado = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, db_column='idagente',blank=True,null=True)
-    agrupamiento = models.ForeignKey(Agrupamiento,related_name='agrupamiento', db_column='agrupamiento',null=True, blank=True)
-    clase = models.ForeignKey(Clase, related_name='Clase' ,db_column='clase',null=True, blank=True)
+    idagente = models.ForeignKey(Agente, db_column='idagente',blank=True,null=True,on_delete=models.CASCADE)
+    agrupamiento = models.ForeignKey(Agrupamiento,related_name='agrupamiento', db_column='agrupamiento',null=True, blank=True,on_delete=models.CASCADE)
+    clase = models.ForeignKey(Clase, related_name='Clase' ,db_column='clase',null=True, blank=True,on_delete=models.CASCADE)
     categoria = models.IntegerField(null=True, blank=True)
-    claseac = models.ForeignKey(Clase, related_name='clase ac' ,db_column='claseac',null=True, blank=True)
-    zona = models.ForeignKey(Zona, related_name='zona' ,db_column='zona',null=True, blank=True)
-    nuevoagrupamiento = models.ForeignKey(Agrupamiento, related_name='nuevoagrupamiento', db_column='nuevoagrupamiento',null=True, blank=True)
-    nuevaclase = models.ForeignKey(Clase, related_name='nuevaclase' ,db_column='nuevaclase',null=True, blank=True)
+    claseac = models.ForeignKey(Clase, related_name='clase_ac' ,db_column='claseac',null=True, blank=True,on_delete=models.CASCADE)
+    zona = models.ForeignKey(Zona, related_name='zona' ,db_column='zona',null=True, blank=True,on_delete=models.CASCADE)
+    nuevoagrupamiento = models.ForeignKey(Agrupamiento, related_name='nuevoagrupamiento', db_column='nuevoagrupamiento',null=True, blank=True,on_delete=models.CASCADE)
+    nuevaclase = models.ForeignKey(Clase, related_name='nuevaclase' ,db_column='nuevaclase',null=True, blank=True,on_delete=models.CASCADE)
     nuevacategoria = models.IntegerField(null=True, blank=True)
-    nuevaclaseac = models.ForeignKey(Clase, related_name='nuevaclaseac' ,db_column='nuevaclaseac',null=True, blank=True)
-    nuevazona = models.ForeignKey(Zona, related_name='nuevazona' ,db_column='nuevazona',null=True, blank=True)
-    nuevadireccion = models.ForeignKey(Direccion, related_name='nuevadireccion' ,db_column='nuevadireccion',null=True, blank=True)
-    direccion = models.ForeignKey(Direccion, related_name='direccion' ,db_column='direccion',null=True, blank=True)
+    nuevaclaseac = models.ForeignKey(Clase, related_name='nuevaclaseac' ,db_column='nuevaclaseac',null=True, blank=True,on_delete=models.CASCADE)
+    nuevazona = models.ForeignKey(Zona, related_name='nuevazona' ,db_column='nuevazona',null=True, blank=True,on_delete=models.CASCADE)
+    nuevadireccion = models.ForeignKey(Direccion, related_name='nuevadireccion' ,db_column='nuevadireccion',null=True, blank=True,on_delete=models.CASCADE)
+    direccion = models.ForeignKey(Direccion, related_name='direccion' ,db_column='direccion',null=True, blank=True,on_delete=models.CASCADE)
     observacion = models.CharField(max_length=200, blank=True)
     fechahasta = models.DateField(null=True, blank=True)
     fechad = models.DateField(db_column='fechadesde', null=True, blank=True)
@@ -314,7 +315,7 @@ class Traslado(models.Model):
 #··························································································································································        
 class Licenciaanualagente(models.Model):
     idlicanualagen = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True)
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,on_delete=models.CASCADE)
     anio = models.IntegerField(null=True, blank=True)
     cantidaddias = models.SmallIntegerField(null=True, blank=True)
     diastomados = models.SmallIntegerField(null=True, blank=True)
@@ -326,7 +327,7 @@ class Licenciaanualagente(models.Model):
 #··························································································································································
 class Sancion(models.Model):
     idsancion = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Agente')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Agente',on_delete=models.CASCADE)
     fecha = models.DateField(null=True, blank=True,verbose_name='Fecha')
     tiposancion = models.CharField(max_length=200, choices=TIPO_SANCION, blank=True,verbose_name='Tipo Sanción')
     observaciones = models.CharField(max_length=200, blank=True,verbose_name='Observaciones')
@@ -340,13 +341,13 @@ class Sancion(models.Model):
 
 class Ausentismo(models.Model):
     idausentismo = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True)
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,on_delete=models.CASCADE)
     fecha = models.DateField(null=True, blank=True)
-    idarticulo = models.ForeignKey(Articulo, null=True, db_column='idarticulo', blank=True)
+    idarticulo = models.ForeignKey(Articulo, null=True, db_column='idarticulo', blank=True,on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200, blank=True)
     tiempolltarde = models.TimeField(blank=True) # This field type is a guess.
     #medica = models.ForeignKey(Medica, null=True, db_column='medica', blank=True)
-    direccion = models.ForeignKey(Direccion, null=True, db_column='direccion', blank=True, default = 0)
+    direccion = models.ForeignKey(Direccion, null=True, db_column='direccion', blank=True, default = 0,on_delete=models.CASCADE)
     class Meta:
         db_table = u'ausentismo'
         unique_together = ("idagente","fecha")
@@ -358,14 +359,14 @@ class Ausentismo(models.Model):
 
 class Ausent(models.Model):
     idausent = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True, verbose_name= "Agente")
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True, verbose_name= "Agente",on_delete=models.CASCADE)
     fechainicio = models.DateField(verbose_name= "Fecha Inicio")
     cantdias = models.SmallIntegerField()
     fechafin = models.DateField(blank=True, verbose_name= "Fecha Fin")
-    idarticulo = models.ForeignKey(Articulo, db_column='idarticulo', verbose_name= "Artìculo")
+    idarticulo = models.ForeignKey(Articulo, db_column='idarticulo', verbose_name= "Artìculo",on_delete=models.CASCADE)
     observaciones = models.CharField(max_length=200, blank=True)
     tiempolltarde = models.TimeField(blank=True) # This field type is a guess.
-    direccion = models.ForeignKey(Direccion, null=True, db_column='direccion', blank=True, default = 0)
+    direccion = models.ForeignKey(Direccion, null=True, db_column='direccion', blank=True, default = 0,on_delete=models.CASCADE)
     class Meta:
         db_table = u'ausent'
         #unique_together = ("idagente","fecha")
@@ -381,7 +382,7 @@ class Ausent(models.Model):
 #··························································································································································        
 class Accidentetrabajo(models.Model):
     idaccidente = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
     nroexpediente = models.CharField(max_length=200, null=True, blank=True,verbose_name='Número Expendiente')
     fecha = models.DateField(null=True, blank=True)
     hora = models.TimeField(null=True, blank=True)
@@ -404,7 +405,7 @@ class Accidentetrabajo(models.Model):
     resolucionsumario = models.CharField(max_length=200, blank=True,verbose_name='Resolución Sumario')
     observaciones = models.CharField(max_length=200, blank=True)
     secuelas = models.CharField(max_length=200, blank=True)
-    idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True)
+    idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True,on_delete=models.CASCADE)
     class Meta:
         db_table = u'accidentetrabajo'
     def __unicode__(self):
@@ -413,12 +414,12 @@ class Accidentetrabajo(models.Model):
 #··························································································································································        
 class Certificadoaccidente(models.Model):
     idcertif = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True)
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,on_delete=models.CASCADE)
     fechadesde = models.DateField(null=True, blank=True)
     detalle = models.CharField(max_length=200, blank=True)
     fechahasta = models.DateField(null=True, blank=True)
     nroexpediente = models.CharField(null=True, blank=True,max_length=20)
-    idaccidentetrabajo = models.ForeignKey(Accidentetrabajo, null=True, db_column='idaccidentetrabajo', blank=True)
+    idaccidentetrabajo = models.ForeignKey(Accidentetrabajo, null=True, db_column='idaccidentetrabajo', blank=True,on_delete=models.CASCADE)
     
     class Meta:
         db_table = u'certificadoaccidente'
@@ -428,8 +429,8 @@ class Certificadoaccidente(models.Model):
 #··························································································································································
 class Licenciaanual(models.Model):
     idlicanual = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True, verbose_name='Agente')
-    idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True, verbose_name='Fecha Hasta')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True, verbose_name='Agente',on_delete=models.CASCADE)
+    idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True, verbose_name='Fecha Hasta',on_delete=models.CASCADE)
     anio = models.IntegerField(null=True, blank=True, verbose_name="Año")
     tipo = models.CharField(max_length=200, blank=True,choices=TIPO_LICANUAL)
     fechadesde = models.DateField(null=True, blank=True)
@@ -456,8 +457,8 @@ TIPO_ALTA_MEDICA = (
 )
 class Medica(models.Model):
     id_medica = models.AutoField(primary_key=True,verbose_name='Medica')
-    agente = models.ForeignKey(Agente, null=True, db_column='agente', blank=True,verbose_name='Agente')
-    idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True)
+    agente = models.ForeignKey(Agente, null=True, db_column='agente', blank=True,verbose_name='Agente',on_delete=models.CASCADE)
+    idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True,on_delete=models.CASCADE)
     expediente = models.CharField(max_length=200, blank=False,verbose_name='Expediente')
     diagnostico = models.CharField(max_length=200, blank=False,verbose_name='Diagnostico')
     funcion = models.CharField(max_length=200, blank=True,verbose_name='Función')
@@ -477,10 +478,10 @@ class Medica(models.Model):
 
 class Juntamedica(models.Model):
     idjuntamedica = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True)
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,on_delete=models.CASCADE)
     fecha = models.DateField(null=True, blank=True)
     resultado = models.CharField(max_length=200, blank=True)
-    medica = models.ForeignKey(Medica, null=True, db_column='medica', blank=True)
+    medica = models.ForeignKey(Medica, null=True, db_column='medica', blank=True,on_delete=models.CASCADE)
     class Meta:
         db_table = u'juntamedica'
     def __unicode__(self):
@@ -490,8 +491,8 @@ class Juntamedica(models.Model):
 
 class Licenciamedica(models.Model):
     idlicmedica = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True)
-    idarticulo = models.ForeignKey(Articulo, null=True, db_column='idarticulo', blank=True)
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,on_delete=models.CASCADE)
+    idarticulo = models.ForeignKey(Articulo, null=True, db_column='idarticulo', blank=True,on_delete=models.CASCADE)
     anio = models.IntegerField(null=True, blank=True)
     tipo = models.CharField(max_length=200, blank=True)
     fechadesde = models.DateField(null=True, blank=True)
@@ -505,7 +506,7 @@ class Licenciamedica(models.Model):
 #··························································································································································        
 class Estudiocursado(models.Model):
     idestcur = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True)
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,on_delete=models.CASCADE)
     ciclo = models.CharField(max_length=200, blank=True)
     establecimiento = models.CharField(max_length=200, blank=True)
     titulo = models.CharField(max_length=200, blank=True)
@@ -518,7 +519,7 @@ class Estudiocursado(models.Model):
 #··························································································································································        
 class Servicioprestado(models.Model):
     idservprest = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Agente')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Agente',on_delete=models.CASCADE)
     fechadesde = models.DateField(null=True, blank=True,verbose_name='Fecha Desde')
     fechahasta = models.DateField(null=True, blank=True,verbose_name='Fecha Hasta')
     empresa = models.CharField(max_length=200, blank=True,verbose_name='Empresa')
@@ -534,9 +535,9 @@ class Servicioprestado(models.Model):
 #··························································································································································        
 class Licencia(models.Model):
     idlicencia = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True)
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,on_delete=models.CASCADE)
     anio = models.IntegerField(null=True, blank=True)
-    idarticulo = models.ForeignKey(Articulo, null=True, db_column='idarticulo', blank=True)
+    idarticulo = models.ForeignKey(Articulo, null=True, db_column='idarticulo', blank=True,on_delete=models.CASCADE)
     diastomados = models.SmallIntegerField(null=True, blank=True)
     class Meta:
         db_table = u'licencia'
@@ -545,7 +546,7 @@ class Licencia(models.Model):
 #··························································································································································        
 class Seguro(models.Model):
     idseguro = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
     nropoliza = models.CharField(max_length=200, blank=True,verbose_name='Número de Poliza')
     observaciones = models.CharField(max_length=200, blank=True,verbose_name='Observaciones')
     obligatorio = models.BooleanField(blank=True,verbose_name='Obligatiorio')
@@ -559,7 +560,7 @@ class Seguro(models.Model):
 #··························································································································································        
 class Salida(models.Model):
     idsalida = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
     fecha = models.DateField(null=True, blank=True,verbose_name='Fecha')
     horasalida = models.TimeField(blank=True,verbose_name='Hora Salida')
     horaregreso = models.TimeField(blank=True,verbose_name='Hora Regreso')
@@ -579,7 +580,7 @@ class Escolaridad(models.Model):
     tipoescolaridad = models.CharField(max_length=200, blank=True, choices=TIPO_ESCO,verbose_name='Nivel')
     periodoescolar = models.CharField(max_length=200, blank=True,verbose_name='Período Escolar')
     gradocrusado = models.CharField(max_length=200, blank=True,verbose_name='Grado Cursado')
-    idasigfam = models.ForeignKey(Asignacionfamiliar, db_column='idasigfam',verbose_name='Apellido y Nombre', null=True)
+    idasigfam = models.ForeignKey(Asignacionfamiliar, db_column='idasigfam',verbose_name='Apellido y Nombre', null=True,on_delete=models.CASCADE)
     
     
     class Meta:
@@ -591,10 +592,10 @@ class Escolaridad(models.Model):
 #··························································································································································        
 class ArtiTomados(models.Model):
     idartitom = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
     anio = models.IntegerField(db_column='anio', blank=True,verbose_name='Año') # This field type is a guess.
     mes = models.IntegerField(db_column='mes', blank=True,verbose_name='Mes') # This field type is a guess.
-    idarticulo = models.ForeignKey(Articulo, null=True, db_column='idarticulo', blank=True)
+    idarticulo = models.ForeignKey(Articulo, null=True, db_column='idarticulo', blank=True,on_delete=models.CASCADE)
     diastomados = models.IntegerField(db_column='diastomados', verbose_name='Dias tomados') # This field type is a guess.
     tiempolltarde = models.TimeField(blank=True)
     class Meta:
@@ -605,7 +606,7 @@ class ArtiTomados(models.Model):
     
 class Evaluador(models.Model):
     idevalua = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre')
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=200, blank=True,verbose_name='Descripción')
     
     class Meta:
@@ -615,11 +616,11 @@ class Calificacion(models.Model):
      idcalificacion = models.AutoField(primary_key=True)
      periodo = models.IntegerField(db_column='periodo',verbose_name='Periodo')
      fecha = models.DateField(null=True, blank=True,verbose_name='Fecha')
-     evaluador = models.ForeignKey(Evaluador, db_column='evaluador',verbose_name='Evaluador')
+     evaluador = models.ForeignKey(Evaluador, db_column='evaluador',verbose_name='Evaluador',on_delete=models.CASCADE)
      observaciones = models.CharField(max_length=200, blank=True,verbose_name='Observaciones')
      ultimoAscenso = models.DateField(null=True, blank=True,verbose_name='Ultimo ascenso')
      proximoAscenso = models.DateField(null=True, blank=True,verbose_name='Proximo ascenso')
-     agente = models.ForeignKey(Agente, db_column='agente',verbose_name='Agente evaluado')
+     agente = models.ForeignKey(Agente, db_column='agente',verbose_name='Agente evaluado',on_delete=models.CASCADE)
      puntaje = models.IntegerField(db_column='puntaje',verbose_name='Puntaje')
      
      class Meta:
@@ -667,8 +668,8 @@ class DjangoSession(models.Model):
 class Log(models.Model):
     id = models.IntegerField(primary_key=True)
     action_time = models.DateTimeField()
-    user = models.ForeignKey(UserPerso)
-    content_type = models.ForeignKey(DjangoContentType)
+    user = models.ForeignKey(UserPerso,on_delete=models.CASCADE)
+    content_type = models.ForeignKey(DjangoContentType,on_delete=models.CASCADE)
     object_id = models.TextField()
     object_repr = models.CharField(max_length=200)
     action_flag = models.SmallIntegerField()
@@ -696,8 +697,8 @@ class Cambios(models.Model):
 
 class HistorialDireccion(models.Model):
     idhistdir = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre')
-    iddireccion = models.ForeignKey(Direccion, null=True, db_column='iddireccion', blank=True, verbose_name = "Dirección")
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
+    iddireccion = models.ForeignKey(Direccion, null=True, db_column='iddireccion', blank=True, verbose_name = "Dirección",on_delete=models.CASCADE)
     fechacambio = models.DateTimeField(auto_now_add=True, blank=True)
     
     class Meta:
@@ -709,7 +710,7 @@ class HistorialDireccion(models.Model):
 
 class Licenciaanualvieja(models.Model):
     id_licenciaanualvieja = models.AutoField(primary_key=True)
-    id_agente = models.ForeignKey(Agente, null=True, db_column='id_agente', blank=True)
+    id_agente = models.ForeignKey(Agente, null=True, db_column='id_agente', blank=True,on_delete=models.CASCADE)
     nrolegajo = models.IntegerField()
     anio = models.IntegerField(null=True, blank=True)
     tipo = models.CharField(max_length=200, blank=True,choices=TIPO_LICANUAL)
@@ -726,7 +727,7 @@ class Licenciaanualvieja(models.Model):
 
 class Juntamedicavieja(models.Model):
     idjuntamedicavieja = models.AutoField(primary_key=True)
-    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True)
+    idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,on_delete=models.CASCADE)
     fecha = models.DateField(null=True, blank=True)
     resultado = models.CharField(max_length=200, blank=True)
     class Meta:
@@ -738,7 +739,7 @@ class Juntamedicavieja(models.Model):
 class Medicavieja(models.Model):
     id_medicavieja = models.AutoField(primary_key=True,verbose_name='Medica Vieja')
     nrolegajo = models.IntegerField()
-    id_articulo = models.ForeignKey(Articulo, null=True, db_column='id_articulo', blank=True)
+    id_articulo = models.ForeignKey(Articulo, null=True, db_column='id_articulo', blank=True,on_delete=models.CASCADE)
     fechadesde = models.DateField()
     fechahasta = models.DateField()
     expediente = models.CharField(max_length=200, verbose_name='Expediente')
@@ -748,8 +749,8 @@ class Medicavieja(models.Model):
     observaciones = models.CharField(max_length=200, blank=True,verbose_name='Observaciones')
     fliaratendido = models.CharField(max_length=200, blank=True,verbose_name='Familiar Atendido')
     resolucion = models.CharField(max_length=200, blank=True,verbose_name='Resolución')    
-    agente = models.ForeignKey(Agente, null=True, db_column='agente', blank=True,verbose_name='Agente')
-    juntamedicavieja = models.ForeignKey(Juntamedicavieja, null=True, db_column='juntamedica', blank=True)
+    agente = models.ForeignKey(Agente, null=True, db_column='agente', blank=True,verbose_name='Agente',on_delete=models.CASCADE)
+    juntamedicavieja = models.ForeignKey(Juntamedicavieja, null=True, db_column='juntamedica', blank=True,on_delete=models.CASCADE)
 
     class Meta:
         db_table = u'medicavieja'

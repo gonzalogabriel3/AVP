@@ -3,32 +3,33 @@ from django import forms
 from personal.models import *
 from django.contrib.admin import widgets
 from django.forms.widgets import *
-#from django.contrib.admin.widgets import widgets
 from django.forms.fields import DateField
 from django.forms.fields import TimeField
-from django.forms.extras.widgets import *
-from django.forms import extras
+#from django.forms import *
 from datetime import date
 from django.forms.widgets import SplitDateTimeWidget
-from django.db.models import Q
+from django.db import models
+from django.contrib.admin.widgets import AdminDateWidget
+from django.forms.widgets import SelectDateWidget
+from .models import *
   
-CALENDARIO = widgets.AdminDateWidget()
+#CALENDARIO = widgets.AdminDateWidget()
 
 TIEMPO = SplitDateTimeWidget()
 fecha = date.today()
 #widget1 = forms.extras.widgets.SelectDateWidget(years=range(1920, (fecha.year - 17)).reverse())
-widget1 = forms.extras.widgets.SelectDateWidget(years=range(1920, (fecha.year + 1)))
+widget1 = SelectDateWidget(years=range(1920, (fecha.year + 1)))
 #widget2 = forms.extras.widgets.SelectDateWidget(years=range(1970, (fecha.year + 1)).reverse())
-widget2 = forms.extras.widgets.SelectDateWidget(years=range((fecha.year+1),1970,-1))
+widget2 = SelectDateWidget(years=range((fecha.year+1),1970,-1))
 #widget3 = forms.extras.widgets.SelectDateWidget(years=range(1990, (fecha.year + 1)).reverse())
-widget3 = forms.extras.widgets.SelectDateWidget(years=range(1990, (fecha.year + 2)))
-widget4 = forms.extras.widgets.SelectDateWidget(years=range(1990, (fecha.year + 1)))
+widget3 = SelectDateWidget(years=range(1990, (fecha.year + 2)))
+widget4 = SelectDateWidget(years=range(1990, (fecha.year + 1)))
         
 
 class IngresarArticulo(forms.ModelForm):
     
     class Meta:
-        model  = Articulo
+        model=Articulo
         fields = ('idarticulo','descripcion', 'eslicencia', 'maxanual', 'maxmensual')
         
 class formAusentismo(forms.ModelForm):
@@ -41,9 +42,9 @@ class formAusentismo(forms.ModelForm):
         super(formAusentismo, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['fecha'].widget = widget2
-	self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
-	self.fields['direccion'].widget.attrs['disabled'] = 'disabled'
-	self.fields['idarticulo'].queryset = Articulo.objects.order_by('descripcion')
+        self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
+        self.fields['direccion'].widget.attrs['disabled'] = 'disabled'
+        self.fields['idarticulo'].queryset = Articulo.objects.order_by('descripcion')
 
 class formAusent(forms.ModelForm):
     
@@ -55,10 +56,10 @@ class formAusent(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(formAusent, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-	self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
-	self.fields['direccion'].widget.attrs['disabled'] = 'disabled'
+        self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
+        self.fields['direccion'].widget.attrs['disabled'] = 'disabled'
         self.fields['fechafin'].widget.attrs['disabled'] = 'disabled'
-	self.fields['idarticulo'].queryset = Articulo.objects.filter(~Q(descripcion = 'L. A. R.')).order_by('descripcion')#Articulo.objects.order_by('descripcion')
+        self.fields['idarticulo'].queryset = Articulo.objects.filter(~Q(descripcion = 'L. A. R.')).order_by('descripcion')#Articulo.objects.order_by('descripcion')
      
         
 class formAgente(forms.ModelForm):
@@ -175,8 +176,8 @@ class formSancion(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(formSancion, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-	self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
-	self.fields['tiposancion'].widget = forms.Select(choices=TIPO_SANCION)
+        self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
+        self.fields['tiposancion'].widget = forms.Select(choices=TIPO_SANCION)
 
 class formAdscriptos(forms.ModelForm):
     fecha = forms.DateField(label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
@@ -206,9 +207,9 @@ class formLicenciaanual(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(formLicenciaanual, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-	self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
-	self.fields['idausent'].widget.attrs['disabled'] = 'disabled'
-	self.fields['anio'].widget.attrs['disabled'] = 'disabled'
+        self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
+        self.fields['idausent'].widget.attrs['disabled'] = 'disabled'
+        self.fields['anio'].widget.attrs['disabled'] = 'disabled'
 
 
 class formEscolaridad(forms.ModelForm):

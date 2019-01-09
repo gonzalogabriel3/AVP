@@ -5,7 +5,7 @@ from django.utils.encoding import force_unicode
 from django.contrib.admin import widgets  
 from datetime import *
 
-#from personal.forms import *
+from personal.forms import *
 
 TIPO_DOC = (
 	("5","DNI"),

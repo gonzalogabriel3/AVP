@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django_select2',
     'proyectoApp',
     'pasajes',
-    #'depoapp',
+    'depoapp',
+    'personal',
 
 
 ]
@@ -96,8 +97,16 @@ DATABASES = {
         'HOST': '172.155.0.8',
         'PORT': '5432',
     },
+    'personal':{
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'personal',
+        'USER': 'postgres',
+        'PASSWORD': 'sistemasavp',
+        'HOST': 'sysavp.chubut.gov.ar',
+        'PORT': '33060',
+    }
 }
-DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito','proyecto.routerPasajes.RouterPasajes']
+DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito','proyecto.routerPasajes.RouterPasajes','proyecto.routerPersonal.RouterPersonal']
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
