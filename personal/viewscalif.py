@@ -9,13 +9,13 @@ from personal.permisos import *
 
 from django.shortcuts import render_to_response
 
-import urlparse
+from urllib.parse import urljoin
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib import auth
-from django.utils.encoding import force_unicode
-from django.core.context_processors import csrf
+
+from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import datetime

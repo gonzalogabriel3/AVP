@@ -10,10 +10,9 @@ from personal.permisos import *
 from django.shortcuts import render_to_response
 #===================================================
 
-import urlparse
-
+from urllib.parse import urljoin
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, QueryDict
 from django.template.response import TemplateResponse
 from django.utils.http import base36_to_int
@@ -29,10 +28,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import auth
-from django.utils.encoding import force_unicode
-from django.core.context_processors import csrf
+from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import HttpResponseRedirect
@@ -59,8 +57,7 @@ def fechaEnRango(anio,mes,fi,ff):
     
     for r in rango:
         if fi <= r <=ff:
-	   cant = cant+1
-	   
+        	cant = cant+1  
     return cant
 
     
@@ -150,24 +147,24 @@ def ausRepMensualCMO_excel(peticion):
 	    cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
 	    if cant !=0 :
 	    	agente = Agente.objects.get(idagente__exact=a.idagente.pk)
-		
-		if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
-		    nombres = agente.nombres
-		    sincodnombres = nombres.encode('ascii','ignore')
-		    
-		    apellido = agente.apellido
-		    sincodapellido = apellido.encode('ascii','ignore')
-		    
-		    nombre = sincodapellido+", "+sincodnombres
-		    
-		    i = i + 1
-		    sheet.write(i, 0, nombre, style=default_style)
-		    sheet.write(i, 1, agente.nrodocumento, style=default_style)
-		    sheet.write(i, 2, a.idarticulo.descripcion, style=default_style)
-		    sheet.write(i, 3, a.fechainicio, style=date_style)
-		    sheet.write(i, 4, a.fechafin, style=date_style)
-		    sheet.write(i, 5, agente.domicilio, style=default_style)
-		    sheet.write(i, 6, agente.codigopostal.descripcion, style=default_style)
+
+	    	if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
+			    nombres = agente.nombres
+			    sincodnombres = nombres.encode('ascii','ignore')
+			    
+			    apellido = agente.apellido
+			    sincodapellido = apellido.encode('ascii','ignore')
+			    
+			    nombre = sincodapellido+", "+sincodnombres
+			    
+			    i = i + 1
+			    sheet.write(i, 0, nombre, style=default_style)
+			    sheet.write(i, 1, agente.nrodocumento, style=default_style)
+			    sheet.write(i, 2, a.idarticulo.descripcion, style=default_style)
+			    sheet.write(i, 3, a.fechainicio, style=date_style)
+			    sheet.write(i, 4, a.fechafin, style=date_style)
+			    sheet.write(i, 5, agente.domicilio, style=default_style)
+			    sheet.write(i, 6, agente.codigopostal.descripcion, style=default_style)
 
 	response = HttpResponse(mimetype='application/vnd.ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=ausRepMensualCMO_'+str(mes)+"-"+str(anio)+'_excel.xls'
@@ -203,16 +200,16 @@ def ausRepMensual_excel(peticion):
 	for a in aus:
 	    cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
 	    if cant !=0 :
-		agente = a.idagente.apellido +' '+ a.idagente.nombres
-		if a.idarticulo.pk==3:
-		    try:
-			articulo = a.idarticulo.descripcion + " - " +a.tiempolltarde.strftime("%H:%M:%S")
-		    except AttributeError:
-			articulo = a.idarticulo.descripcion + " "
-		else:
-		    articulo = a.idarticulo.descripcion	  
-		
-		listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
+	    	agente = a.idagente.apellido +' '+ a.idagente.nombres
+
+	    	if a.idarticulo.pk==3:
+	    		try:
+	    			articulo = a.idarticulo.descripcion + " - " +a.tiempolltarde.strftime("%H:%M:%S")
+	    		except AttributeError:
+	    			articulo = a.idarticulo.descripcion + " "
+    		else:
+    			articulo = a.idarticulo.descripcion
+	listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
 	
 	listexcel = sorted(listaAus, key=lambda agen: agen[0])
 	
@@ -286,25 +283,21 @@ def salidasmesagentes_excel(peticion):
 	    nummes = n[1];
 	    
 	    if (int(numanio) == anio):
-		
-		if (int(nummes) == mes): 
-		
-		    agente = Agente.objects.get(idagente__exact=s.idagente.pk)
-		    
-		    if (s.oficial == "TRUE"):
-			tiposalida = "Oficial"
-		    else:
-			tiposalida = "No oficial"
-		    
-		    i = i + 1
-		    sheet.write(i, 0, agente.apellido, style=default_style)
-		    sheet.write(i, 1, agente.nombres, style=default_style)
-		    sheet.write(i, 2, agente.nrodocumento, style=default_style)
-		    sheet.write(i, 3, s.fecha, style=date_style)
-		    sheet.write(i, 4, s.horasalida, style=default_style)
-		    sheet.write(i, 5, s.horaregreso, style=default_style)
-		    sheet.write(i, 6, tiposalida, style=default_style)
-		    sheet.write(i, 7, s.observaciones, style=default_style)
+	    	if (int(nummes) == mes): 
+	    		agente = Agente.objects.get(idagente__exact=s.idagente.pk)
+	    		if (s.oficial == "TRUE"):
+	    			tiposalida = "Oficial"
+	    		else:
+	    			tiposalida = "No oficial"
+	    			i = i + 1
+	    			sheet.write(i, 0, agente.apellido, style=default_style)
+	    			sheet.write(i, 1, agente.nombres, style=default_style)
+	    			sheet.write(i, 2, agente.nrodocumento, style=default_style)
+	    			sheet.write(i, 3, s.fecha, style=date_style)
+	    			sheet.write(i, 4, s.horasalida, style=default_style)
+	    			sheet.write(i, 5, s.horaregreso, style=default_style)
+	    			sheet.write(i, 6, tiposalida, style=default_style)
+	    			sheet.write(i, 7, s.observaciones, style=default_style)
 	
 	'''
 	sheet.write(i+1, 4, ventames, style=default_style)
@@ -383,18 +376,16 @@ def salidasanioagente_excel(peticion):
 	    numanio = n[0];
 	  	    
 	    if (int(numanio) == anio):
-		if (s.oficial == "TRUE"):
-		    tiposalida = "Oficial"
-	        else:
-		    tiposalida = "No oficial"
-		    
-		i = i + 1
-		sheet.write(i, 0, s.fecha, style=date_style)
-		sheet.write(i, 1, s.horasalida, style=default_style)
-		sheet.write(i, 2,  s.horaregreso, style=default_style)
-		sheet.write(i, 3, tiposalida, style=default_style)
-		sheet.write(i, 4, s.observaciones, style=default_style)
-	
+	    	if (s.oficial == "TRUE"):
+	    		tiposalida = "Oficial"
+	    	else:
+	    		tiposalida = "No oficial"
+	    		i = i + 1
+	    		sheet.write(i, 0, s.fecha, style=date_style)
+	    		sheet.write(i, 1, s.horasalida, style=default_style)
+	    		sheet.write(i, 2,  s.horaregreso, style=default_style)
+	    		sheet.write(i, 3, tiposalida, style=default_style)
+	    		sheet.write(i, 4, s.observaciones, style=default_style)
 	
 	response = HttpResponse(mimetype='application/vnd.ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=salidasmes_'+sincodapellido+'_'+str(anio)+'_excel.xls'
@@ -465,15 +456,14 @@ def agentes_excel(request):
         
     
     for row, rowdata in enumerate(lists):
-	for col, val in enumerate(rowdata):
-	    if isinstance(val, datetime):
-		style = datetime_style
-	    elif isinstance(val, date):
-		style = date_style
-	    else:
-		style = default_style
-
-	    sheet.write(row+1, col, val, style=style)
+    	for col, val in enumerate(rowdata):
+    		if isinstance(val, datetime):
+    			style = datetime_style
+    		elif isinstance(val, date):
+    			style = date_style
+    		else:
+    			style = default_style
+    			sheet.write(row+1, col, val, style=style)
     
     
     response = HttpResponse(mimetype='application/vnd.ms-excel')
@@ -522,26 +512,23 @@ def partdiarioaus_excel(peticion):
     sheet.write(i, 6, 'Localidad', style=default_style)
     
     for a in ausentismos:
-	if (analizaFechaRango(a.fechainicio,date(anio, mes, dia),a.fechafin)):
-	    agente = Agente.objects.get(idagente__exact=a.idagente.pk)
-	    
-	    if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
-		nombres = agente.nombres
-		sincodnombres = nombres.encode('ascii','ignore')
-		
-		apellido = agente.apellido
-		sincodapellido = apellido.encode('ascii','ignore')
-		
-		nombre = sincodapellido+", "+sincodnombres
-		
-		i = i + 1
-		sheet.write(i, 0, nombre, style=default_style)
-		sheet.write(i, 1, agente.nrodocumento, style=default_style)
-		sheet.write(i, 2, a.idarticulo.descripcion, style=default_style)
-		sheet.write(i, 3, a.fechainicio, style=date_style)
-		sheet.write(i, 4, a.fechafin, style=date_style)
-		sheet.write(i, 5, agente.domicilio, style=default_style)
-		sheet.write(i, 6, agente.codigopostal.descripcion, style=default_style)
+    	if (analizaFechaRango(a.fechainicio,date(anio, mes, dia),a.fechafin)):
+    		agente = Agente.objects.get(idagente__exact=a.idagente.pk)
+
+    		if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
+    			nombres = agente.nombres
+    			sincodnombres = nombres.encode('ascii','ignore')
+    			apellido = agente.apellido
+    			sincodapellido = apellido.encode('ascii','ignore')
+    			nombre = sincodapellido+", "+sincodnombres
+    			i = i + 1
+    			sheet.write(i, 0, nombre, style=default_style)
+    			sheet.write(i, 1, agente.nrodocumento, style=default_style)
+    			sheet.write(i, 2, a.idarticulo.descripcion, style=default_style)
+    			sheet.write(i, 3, a.fechainicio, style=date_style)
+    			sheet.write(i, 4, a.fechafin, style=date_style)
+    			sheet.write(i, 5, agente.domicilio, style=default_style)
+    			sheet.write(i, 6, agente.codigopostal.descripcion, style=default_style)
 
     response = HttpResponse(mimetype='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename=partdiarioaus_'+str(dia)+'-'+str(mes)+'-'+str(anio)+'_excel.xls'

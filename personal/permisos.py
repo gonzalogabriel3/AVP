@@ -11,52 +11,52 @@ def permisoListado(user):
     if("Personal-Listados" in get_grupos(user))  or ((user.username) == 'admin'):
         return False
     else:
-	return True
+        return True
 
 def permisoEstadistica(user):
     if("Estadisticas" in get_grupos(user))  or ((user.username) == 'admin'):
         return False
     else:
-	return True
+        return True
 
 def permisoZona(user):
     if("Zona" in get_grupos(user))  or ((user.username) == 'admin'):
         return False
     else:
-	return True
+        return True
 	
 	
 def permisoABM(user):
     if("ABM" in get_grupos(user))  or ((user.username) == 'admin'):
         return False
     else:
-	return True
+        return True
 
 def permisoDatosAgente(user):
     if("Datos Agente" in get_grupos(user))  or ((user.username) == 'admin'):
         return False
     else:
-	return True	
+        return True	
 	
 def permisoAusent(user):
     if("Ausent" in get_grupos(user))  or ((user.username) == 'admin'):
         return False
     else:
-	return True
+        return True
 
 
 def permisoCambios(user):
     if("Cambios" in get_grupos(user))  or ((user.username) == 'admin'):
         return False
     else:
-	return True
+        return True
 
 
 def permisoEliminar(user):
     if("Eliminar" in get_grupos(user))  or ((user.username) == 'admin'):
         return False
     else:
-	return True
+        return True
 
 def permisoAgente(user):
     if ((user.username) == 'admin'):
@@ -66,15 +66,15 @@ def permisoAgente(user):
     elif ("Personal - J.CENTRAL" in get_grupos(user)):
         return 'Central'
     elif ("Personal - J.NORESTE" in get_grupos(user)):
-	return 'NorEste'
+        return 'NorEste'
     elif ("Personal - J.NOROESTE" in get_grupos(user)):
         return 'NorOeste'
     elif ("Personal - J.NOROESTE-Puentes" in get_grupos(user)):
         return 'NorOeste-Subd Puentes'
     elif ("Personal - J.SUR" in get_grupos(user)):
-	return 'Sur'
+        return 'Sur'
     elif ("Personal - J.SUR-Comorodo" in get_grupos(user)):
-	return 'Sur - Comodoro Rivadavia'
+        return 'Sur - Comodoro Rivadavia'
     elif ("Personal - J.TREVELIN" in get_grupos(user)):
         return 'Trevelin'
 	

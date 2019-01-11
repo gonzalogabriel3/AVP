@@ -8,10 +8,10 @@ from personal.forms import *
 from django.shortcuts import render_to_response
 #===================================================
 
-import urlparse
+from urllib.parse import urljoin
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, QueryDict
 from django.template.response import TemplateResponse
 from django.utils.http import base36_to_int
@@ -27,10 +27,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import auth
-from django.utils.encoding import force_unicode
-from django.core.context_processors import csrf
+#from django.utils.encoding import force_unicode
+from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from datetime import *
@@ -116,11 +116,11 @@ def datosalista(datos):
     lista = []
     try:
         try: 
-	    a , b = datos.split(",",1)
-	except AttributeError:
-	    return []
+            a , b = datos.split(",",1)
+        except AttributeError:
+            return []
     except ValueError:
-	return []
+        return []
     if "'" in a:
         x ,a = a.split("'",1)
         a ,x = a.split("'",1)
@@ -132,7 +132,7 @@ def datosalista(datos):
         if "'" in a:
             x ,a = a.split("'",1)
             a ,x = a.split("'",1)
-	lista.append(a)
+            lista.append(a)
     l = []
     for f in range(0, (len(lista)-1), 2):
         l.append((lista[f], lista[f+1]))
@@ -152,19 +152,19 @@ def registrar(user, ntabla, tcambio, hora, v_old, v_new):
     val_old = list()
     val_new = list()
     if v_old != None:
-	for i in range(0,len(v_old)-1):
-	    if v_old[i] != v_new[i]:
-	        data_old = unicode(v_old[i][1])
-	        val_old.append((v_old[i][0], data_old))
-	        data_new = unicode(v_new[i][1])
-	        val_new.append((v_new[i][0],data_new))
+    	for i in range(0,len(v_old)-1):
+    	    if v_old[i] != v_new[i]:
+    	        data_old = unicode(v_old[i][1])
+    	        val_old.append((v_old[i][0], data_old))
+    	        data_new = unicode(v_new[i][1])
+    	        val_new.append((v_new[i][0],data_new))
     else:
         val_old = v_old
-	for i in range(0,len(v_new)-1):
-	    try:
-	        val_new.append((v_new[i][0],str(v_new[i][1])))
-	    except:
-	        val_new.append((v_new[i][0],v_new[i][1]))  
+        for i in range(0,len(v_new)-1):
+    	    try:
+    	        val_new.append((v_new[i][0],str(v_new[i][1])))
+    	    except:
+    	        val_new.append((v_new[i][0],v_new[i][1]))  
     registro = Cambios()
     #registro.usuario = UserPerso.objects.using('default').get(pk=user.pk)
     registro.usuario = User.objects.using('default').get(pk=user.pk).username
@@ -172,11 +172,11 @@ def registrar(user, ntabla, tcambio, hora, v_old, v_new):
     registro.tipocambio = tcambio
     if tcambio == "Baja":
         registro.valorold = val_new
-	registro.valornew = val_old
+        registro.valornew = val_old
     else:
         registro.valorold = val_old
         registro.valornew = val_new
-    registro.save()
+        registro.save()
     return
 
 
@@ -194,14 +194,14 @@ def analizaLic(agente,fecha):
     la = Licenciaanual.objects.filter(Q(idagente = agente),Q(tipo='LIC'))
     #La licencia puede estar vacia en caso de que el agente no registre pedido de licencia.
     try:
-	for l in la:
-	    fechaini = l.fechadesde #Fecha en que comienza la licencia
-	    fechafin = fechaini + timedelta(days=l.cantdias - 1) #Se calcula cuando finaliza la licencia en funcion a la cantdias
-	    if analizaFechaRango(fechaini, fecha, fechafin): #Se revisa si la fecha se encuentra entre la fecha inicio y fin
-		return True
-	return False
+    	for l in la:
+    	    fechaini = l.fechadesde #Fecha en que comienza la licencia
+    	    fechafin = fechaini + timedelta(days=l.cantdias - 1) #Se calcula cuando finaliza la licencia en funcion a la cantdias
+    	    if analizaFechaRango(fechaini, fecha, fechafin): #Se revisa si la fecha se encuentra entre la fecha inicio y fin
+                return True
+    	return False
     except IndexError:
-	return False
+        return False
       
 def analizaLicanio(agente,fecha,anio):
     """
@@ -218,15 +218,15 @@ def getLicEnFecha(agente,fecha):
     la = Licenciaanual.objects.filter(Q(idagente = agente),Q(tipo='LIC'))
     #La licencia puede estar vacia en caso de que el agente no registre pedido de licencia.
     try:
-	for l in la:
-	    fechaini = l.fechadesde #Fecha en que comienza la licencia
-	    fechafin = fechaini + timedelta(days=l.cantdias) #Se calcula cuando finaliza la licencia en funcion a la cantdias
-	    if analizaFechaRango(fechaini, fecha, fechafin): #Se revisa si la fecha se encuentra entre la fecha inicio y fin
-		return l
-	return None
+        for l in la:
+            fechaini = l.fechadesde #Fecha en que comienza la licencia
+            fechafin = fechaini + timedelta(days=l.cantdias) #Se calcula cuando finaliza la licencia en funcion a la cantdias
+            if analizaFechaRango(fechaini, fecha, fechafin):
+                return l
+        return None        
     except IndexError:
-	return None
-	
+        return None
+	   
 	
 
 def canttotalart(idagente,mes,anio,arti):
@@ -241,15 +241,15 @@ def canttotalart(idagente,mes,anio,arti):
         return canttotal
     
     if mes == 0:
-	for a in artitomados:
-	    canttotal = canttotal + a.diastomados
+    	for a in artitomados:
+    	    canttotal = canttotal + a.diastomados
     else:
         for i in range(0,mes+1):
-	    try:
-		artitomados = ArtiTomados.objects.get(idagente__exact = idagente,mes__exact = i, anio__exact = anio, idarticulo__exact = arti)
-		canttotal = canttotal + artitomados.diastomados
-	    except ArtiTomados.DoesNotExist:
-		pass
+    	    try:
+        		artitomados = ArtiTomados.objects.get(idagente__exact = idagente,mes__exact = i, anio__exact = anio, idarticulo__exact = arti)
+        		canttotal = canttotal + artitomados.diastomados
+    	    except ArtiTomados.DoesNotExist:
+                pass
     return canttotal
     
     
@@ -258,10 +258,10 @@ def superamaxausentmes(idagente, ausent, cantbase):
     arti = Articulo.objects.get(pk=ausent.idarticulo.pk)
     diastomados = 0
     try:
-	artiTom = ArtiTomados.objects.get(idagente=idagente, idarticulo=ausent.idarticulo.pk, anio=ausent.fechainicio.year,mes=ausent.fechainicio.month)
-	diastomados = artiTom.diastomados
+        artiTom = ArtiTomados.objects.get(idagente=idagente, idarticulo=ausent.idarticulo.pk, anio=ausent.fechainicio.year,mes=ausent.fechainicio.month)
+        diastomados = artiTom.diastomados
     except ArtiTomados.DoesNotExist:
-	diastomados = 0  
+        diastomados = 0  
     
     return (diastomados + (ausent.cantdias - cantbase)) > arti.maxmensual
 
@@ -271,10 +271,10 @@ def superamaxausentanio(idagente, ausent, cantbase):
     diastomados = 0
     artiTom = ArtiTomados.objects.filter(idagente=idagente,idarticulo=ausent.idarticulo,anio=ausent.fechainicio.year)
     if artiTom != []:
-	for artit in artiTom:
-	    diastomados = artit.diastomados + diastomados
+        for artit in artiTom:
+            diastomados = artit.diastomados + diastomados
     else:
-	diastomados = 0
+        diastomados = 0
     
     return (diastomados + (ausent.cantdias - cantbase)) > arti.maxanual
 

@@ -1,17 +1,16 @@
 #from django.conf.urls import patterns, include, url
-from django.conf.urls import include, url
-from . import views
 #from dajaxice.core import dajaxice_autodiscover
 #from django.conf.urls.defaults import *
+from django.urls import path,include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from . import views
 from django.conf.urls import *
+from personal.views import *
+from django.contrib import admin
+admin.autodiscover()
 
-#dajaxice_autodiscover()
-
-urlpatterns = patterns['',
-
-    #path('%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
+urlpatterns = [
     path('index/',index),
-    #path('ausReport/(\d{4})/$',ausReport),
 
     path('ausReportMensual/$',ausReportMensual),
     path('ausReportMensualCMO/$',ausReportMensualCMO),
@@ -55,10 +54,10 @@ urlpatterns = patterns['',
     path('medicasinalta/$',medicasinalta),
     path('licanualacum/(\d{1,5})/$',vacacionesAcum),
     path('registration/logged_out.html$',logout),
-    path('accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'personal/registration/login.html'}),
+    #path('accounts/login/$', django.contrib.auth.views.login, {'template_name': 'personal/registration/login.html'}),
     
-    path('site_media/(?P<path>.*)$','django.views.static.serve',
-        {'document_root': './media'}),
+    #path('site_media/(?P<path>.*)$','django.views.static.serve',
+     #   {'document_root': './media'}),
 
     path('forms/menuagente$',menuagente),
     

@@ -10,10 +10,10 @@ from personal.permisos import *
 from django.shortcuts import render_to_response
 #===================================================
 
-import urlparse
+from urllib.parse import urljoin
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, QueryDict
 from django.template.response import TemplateResponse
 from django.utils.http import base36_to_int
@@ -29,10 +29,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import auth
-from django.utils.encoding import force_unicode
-from django.core.context_processors import csrf
+from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 
 from django.http import HttpResponseRedirect
@@ -58,11 +57,11 @@ def familiaresacxagente(peticion):
     
     if borrado != "":
         try:
-	    a = Asignacionfamiliar.objects.get(idasigfam=int(borrado))
-	    registrar(user,"Asignacion Familiar",'Baja',getTime(),None,modeloLista(Asignacionfamiliar.objects.filter(idasigfam=int(borrado)).values_list()))
-	    a.delete()
-	except Asignacionfamiliar.DoesNotExist:
-	    a = None
+            a = Asignacionfamiliar.objects.get(idasigfam=int(borrado))
+            registrar(user,"Asignacion Familiar",'Baja',getTime(),None,modeloLista(Asignacionfamiliar.objects.filter(idasigfam=int(borrado)).values_list()))
+            a.delete()
+        except Asignacionfamiliar.DoesNotExist:
+            a = None
     
     familiares = Asignacionfamiliar.objects.filter(idagente__exact=idagente).order_by('apellidoynombre')
     
@@ -83,16 +82,16 @@ def accdetrabajoxagente(peticion,idagente, borrado):
         
     if borrado != "":
         try:
-	    a = Accidentetrabajo.objects.get(idaccidente=int(borrado))
-	    try:
-		ausent = Ausent.objects.get(pk = a.idausent_id)
-		registrar(user,"Accidente de trabajo",'Baja',getTime(),modeloLista(Accidentetrabajo.objects.get(idaccidente=int(borrado)).values_list()), None)
-		a.delete()
-		ausent.delete()
-	    except Ausent.DoesNotExist:
-	        print ""
-	except Accidentetrabajo.DoesNotExist:
-	    a = None
+            a = Accidentetrabajo.objects.get(idaccidente=int(borrado))
+            try:
+                ausent = Ausent.objects.get(pk = a.idausent_id)
+                registrar(user,"Accidente de trabajo",'Baja',getTime(),modeloLista(Accidentetrabajo.objects.get(idaccidente=int(borrado)).values_list()), None)
+                a.delete()
+                ausent.delete()
+            except Ausent.DoesNotExist:
+                print ("")
+        except Accidentetrabajo.DoesNotExist:
+            a = None
     agente = Agente.objects.get(idagente=idagente)
     accidentes = Accidentetrabajo.objects.filter(idagente__exact=idagente).order_by('-fecha')
     
@@ -114,11 +113,11 @@ def salidaxagente(peticion):
 
     if borrado != "":
         try:
-	    s = Salida.objects.get(idsalida=int(borrado))
-	    registrar(user,"Salida",'Baja',getTime(),modeloLista(Salida.objects.filter(idsalida=int(borrado)).values_list()),None)
-	    s.delete()
-	except Salida.DoesNotExist:
-	    s = None
+    	    s = Salida.objects.get(idsalida=int(borrado))
+    	    registrar(user,"Salida",'Baja',getTime(),modeloLista(Salida.objects.filter(idsalida=int(borrado)).values_list()),None)
+    	    s.delete()
+        except Salida.DoesNotExist:
+            s = None
     agente = Agente.objects.get(idagente=idagente)
     salidas = Salida.objects.filter(idagente__exact=idagente).order_by('-fecha')
         
@@ -136,11 +135,11 @@ def sancionxagente(peticion,idagente,borrado):
     agente = Agente.objects.get(idagente=idagente)
     if borrado != "":
         try:
-	      s = Sancion.objects.get(idsancion__exact = int(borrado))
-	      registrar(user,"Sanción",'Baja',getTime(),modeloLista(Sancion.objects.filter(idsancion__exact = int(borrado)).values_list()),None)
-	      s.delete()
-	except Sancion.DoesNotExist:
-	      s = None
+            s = Sancion.objects.get(idsancion__exact = int(borrado))
+            registrar(user,"Sanción",'Baja',getTime(),modeloLista(Sancion.objects.filter(idsancion__exact = int(borrado)).values_list()),None)
+            s.delete()
+        except Sancion.DoesNotExist:
+            s = None
     
     Sancion.objects.filter(fecha=None).delete()
     sanciones = Sancion.objects.filter(idagente__exact=idagente).order_by('fecha')
@@ -161,13 +160,12 @@ def certificadoxaccdt(peticion,idacc,idagen,borrado):
         return render_to_response('personal/error.html',{'user':user,'error':error},)
     if borrado != "":
         try:
-	      s = Certificadoaccidente.objects.get(idcertif__exact = int(borrado))
-	      registrar(user,"Certificado de Acc",'Baja',getTime(),modeloLista(Certificadoaccidente.objects.filter(idcertif__exact = int(borrado)).values_list()),None)
-	      s.delete()
-	except Certificadoaccidente.DoesNotExist:
-	      s = None
-    certificados = Certificadoaccidente.objects.filter(idaccidentetrabajo__exact=idacc).order_by('fechadesde')
-    
+            s = Certificadoaccidente.objects.get(idcertif__exact = int(borrado))
+            registrar(user,"Certificado de Acc",'Baja',getTime(),modeloLista(Certificadoaccidente.objects.filter(idcertif__exact = int(borrado)).values_list()),None)
+            s.delete()
+        except Certificadoaccidente.DoesNotExist:
+            s = None
+            certificados = Certificadoaccidente.objects.filter(idaccidentetrabajo__exact=idacc).order_by('fechadesde')
     lista = paginar(certificados,peticion)
     
     return render_to_response('personal/listado/listadoxaccdt/certificadoxaccdt.html',{'lista':lista,'user':user, 'grupos':grupos, 'idacc':idacc,'idagen':idagen},)
@@ -188,11 +186,11 @@ def escolaridadxaf(peticion):
         return render_to_response('personal/error.html',{'user':user,'error':error},)
     if borrado != "":
         try:
-	    e = Escolaridad.objects.get(idescolaridad=int(borrado))
-	    registrar(user,"Escolaridad",'Baja',getTime(),modeloLista(Escolaridad.objects.filter(idescolaridad=int(borrado)).values_list()),None)
-	    e.delete()
-	except Escolaridad.DoesNotExist:
-	    e = None
+            e = Escolaridad.objects.get(idescolaridad=int(borrado))
+            registrar(user,"Escolaridad",'Baja',getTime(),modeloLista(Escolaridad.objects.filter(idescolaridad=int(borrado)).values_list()),None)
+            e.delete()
+        except Escolaridad.DoesNotExist:
+            e = None
         
     escolaridad = Escolaridad.objects.filter(idasigfam__exact=idaf).order_by('anio')
 
@@ -329,11 +327,11 @@ def trasladoxagente(peticion,idagente,borrado):
 
     if borrado != "":
         try:
-	    t = Traslado.objects.get(idtraslado=int(borrado))
-	    registrar(user,"Traslado",'Baja',getTime(), None, modeloLista(Traslado.objects.filter(idtraslado=int(borrado)).values_list()))
-	    t.delete()
-	except Traslado.DoesNotExist:
-	    t = None
+            t = Traslado.objects.get(idtraslado=int(borrado))
+            registrar(user,"Traslado",'Baja',getTime(), None, modeloLista(Traslado.objects.filter(idtraslado=int(borrado)).values_list()))
+            t.delete()
+        except Traslado.DoesNotExist:
+            t = None
     agente = Agente.objects.get(idagente=idagente)
     traslado = Traslado.objects.filter(idagente__exact=idagente).order_by('-fechad')
     lista = paginar(traslado,peticion)
@@ -351,11 +349,11 @@ def seguroxagente(peticion,idagente,borrado):
         return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
     if borrado != "":
         try:
-	    s = Seguro.objects.get(idseguro=int(borrado))
-	    registrar(user,"Seguro",'Baja',getTime(),modeloLista(s = Seguro.objects.filter(idseguro=int(borrado)).values_list()),None)
-	    s.delete()
-	except Seguro.DoesNotExist:
-	    s = None
+            s = Seguro.objects.get(idseguro=int(borrado))
+            registrar(user,"Seguro",'Baja',getTime(),modeloLista(s = Seguro.objects.filter(idseguro=int(borrado)).values_list()),None)
+            s.delete()
+        except Seguro.DoesNotExist:
+            s = None
     agente = Agente.objects.get(idagente=idagente)
     seguro = Seguro.objects.filter(idagente__exact=idagente).order_by('idseguro')
     lista = paginar(seguro,peticion)
@@ -372,11 +370,11 @@ def servprestxagente(peticion,idagente,borrado):
         return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     if borrado != "":
         try:
-	    s = Servicioprestado.objects.get(idservprest=int(borrado))
-	    registrar(user,"Servicio prestado",'Baja',getTime(),modeloLista(Servicioprestado.objects.filter(idservprest=int(borrado)).values_list()),None)
-	    s.delete()
-	except Servicioprestado.DoesNotExist:
-	    s = None
+            s = Servicioprestado.objects.get(idservprest=int(borrado))
+            registrar(user,"Servicio prestado",'Baja',getTime(),modeloLista(Servicioprestado.objects.filter(idservprest=int(borrado)).values_list()),None)
+            s.delete()
+        except Servicioprestado.DoesNotExist:
+            s = None
     agente = Agente.objects.get(idagente=idagente)
     servprest = Servicioprestado.objects.filter(idagente__exact=idagente).order_by('idservprest')
     lista = paginar(servprest,peticion)
@@ -395,21 +393,20 @@ def vacacionesxagente(peticion,idagen,borrado):
         return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     if borrado != "":
         try:
-	      l = Licenciaanual.objects.get(idlicanual__exact = int(borrado))
-	      registrar(user,"Licencia Vacaciones",'Baja',getTime(),None,modeloLista(Licenciaanual.objects.filter(idlicanual__exact = int(borrado)).values_list()))
-	      if l.tipo == "INT":
-		  ausent = Ausent.objects.get(pk=l.idausent.pk)
-		  la = Licenciaanual.objects.get(idausent=l.idausent,tipo='LIC')
-		  l.delete()
-		  ausent.cantdias = la.cantdias
-		  ausent.save()
-	      elif l.tipo == "LIC":
-		  ausent = Ausent.objects.get(pk=l.idausent.pk)
-		  l.delete()
-		  ausent.delete()
-	      
-	except Licenciaanual.DoesNotExist:
-	      l = None
+            l = Licenciaanual.objects.get(idlicanual__exact = int(borrado))
+            registrar(user,"Licencia Vacaciones",'Baja',getTime(),None,modeloLista(Licenciaanual.objects.filter(idlicanual__exact = int(borrado)).values_list()))
+            if l.tipo == "INT":
+                ausent = Ausent.objects.get(pk=l.idausent.pk)
+                la = Licenciaanual.objects.get(idausent=l.idausent,tipo='LIC')
+                l.delete()
+                ausent.cantdias = la.cantdias
+                ausent.save()
+            elif l.tipo == "LIC":
+                ausent = Ausent.objects.get(pk=l.idausent.pk)
+                l.delete()
+                ausent.delete()
+        except Licenciaanual.DoesNotExist:
+            l = None
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
@@ -430,11 +427,11 @@ def estudioscursadosxagente(peticion,idagente, borrado):
 
     if borrado != "":
         try:
-	    e = Estudiocursado.objects.get(idestcur=int(borrado))
-	    registrar(user,"Estudios cursados",'Baja',getTime(),modeloLista(Estudiocursado.objects.filter(idestcur=int(borrado)).values_list()),None)
-	    e.delete()
-	except Estudiocursado.DoesNotExist:
-	    e = None
+            e = Estudiocursado.objects.get(idestcur=int(borrado))
+            registrar(user,"Estudios cursados",'Baja',getTime(),modeloLista(Estudiocursado.objects.filter(idestcur=int(borrado)).values_list()),None)
+            e.delete()
+        except Estudiocursado.DoesNotExist:
+            e = None
     agente = Agente.objects.get(idagente=idagente)
     estudioscursados = Estudiocursado.objects.filter(idagente__exact=idagente)
         
@@ -449,9 +446,9 @@ def medicaxagente(peticion):
     idagente = int(peticion.GET.get('idagente'))
     borrado = int(peticion.GET.get('borrado'))
     try:
-	idausent = int(peticion.GET.get('idausent'))
+        idausent = int(peticion.GET.get('idausent'))
     except TypeError:
-	idausent = 0
+        idausent = 0
     
     grupos = get_grupos(user)
     if permisoListado(user):
@@ -460,17 +457,17 @@ def medicaxagente(peticion):
 
     if borrado != "":
         try:
-	    m = Medica.objects.get(id_medica=int(borrado))
-	    registrar(user,"Medica",'Baja',getTime(),None,modeloLista(Medica.objects.filter(id_medica=int(borrado)).values_list()))
-	    m.delete()
-	except Medica.DoesNotExist:
-	    m = None
+            m = Medica.objects.get(id_medica=int(borrado))
+            registrar(user,"Medica",'Baja',getTime(),None,modeloLista(Medica.objects.filter(id_medica=int(borrado)).values_list()))
+            m.delete()
+        except Medica.DoesNotExist:
+            m = None
 	    
     agente = Agente.objects.get(idagente=idagente)  
     if idausent == 0:
-	medica = Medica.objects.filter(agente__exact=idagente)
+        medica = Medica.objects.filter(agente__exact=idagente)
     else:
-	medica = Medica.objects.filter(agente__exact=idagente, idausent__exact = idausent)
+        medica = Medica.objects.filter(agente__exact=idagente, idausent__exact = idausent)
         #medica = Medica.objects.filter(agente__exact=idagente,Q(idausent__idarticulo__pk=102)|Q(idausent__idarticulo__pk=1021))
     
     lista = paginar(medica,peticion)
@@ -482,22 +479,22 @@ def medicaxagente(peticion):
 def juntamedicaxagente(peticion, idagente, idmedica, borrado):
 
     try:
-	idausent = int(peticion.GET.get('idausent'))
+        idausent = int(peticion.GET.get('idausent'))
     except TypeError:
-	idausent = ""
-    user = peticion.user
-    grupos = get_grupos(user)
+        idausent = ""
+        user = peticion.user
+        grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
 
     if borrado != "":
         try:
-	    m = Juntamedica.objects.get(idjuntamedica=int(borrado))
-	    registrar(user,"Junta Medica",'Baja',getTime(),None,modeloLista(Juntamedica.objects.filter(idjuntamedica=int(borrado)).values_list()))
-	    m.delete()
-	except Juntamedica.DoesNotExist:
-	    m = None
+            m = Juntamedica.objects.get(idjuntamedica=int(borrado))
+            registrar(user,"Junta Medica",'Baja',getTime(),None,modeloLista(Juntamedica.objects.filter(idjuntamedica=int(borrado)).values_list()))
+            m.delete()
+        except Juntamedica.DoesNotExist:
+            m = None
     juntamedicas = Juntamedica.objects.filter(medica=idmedica)
     agente = Agente.objects.get(idagente=idagente)    
     lista = paginar(juntamedicas,peticion)
@@ -534,13 +531,13 @@ def cambiosenreg(peticion):
     listanew = datosalista(cambios.valornew)
     if listaold == []:
         for i in range(0,len(listanew)):
-	    lista.append((listanew[i] , ("","Vacio")))
+            lista.append((listanew[i] , ("","Vacio")))
     elif listanew == []:
         for i in range(0,len(listaold)):
-	    lista.append((("","Vacio"), listaold[i]))
+            lista.append((("","Vacio"), listaold[i]))
     else:
-	for i in range(0,len(listanew)):
-	    lista.append((listanew[i] , listaold[i]))
+        for i in range(0,len(listanew)):
+            lista.append((listanew[i] , listaold[i]))
         
     return render_to_response('personal/listado/cambiosenregistros.html',{'lista':lista,'user':user,'grupos':grupos},)
 

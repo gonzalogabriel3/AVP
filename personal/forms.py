@@ -53,6 +53,7 @@ class formAusent(forms.ModelForm):
     #fechafin = forms.DateField(label="Fecha Fin",widget=forms.TextInput(attrs={'id':'dp2','class':'datepicker','data-date-format':'yyyy-mm-dd'}))
     class Meta:
         model  = Ausent
+        fields = "__all__"
     def __init__(self, *args, **kwargs):
         super(formAusent, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
@@ -225,7 +226,7 @@ class formEscolaridad(forms.ModelForm):
 class formMedica(forms.ModelForm):
     class Meta:
         model  = Medica
-        #fields = ('agente', 'expediente', 'diagnostico', 'funcion','tipoalta','observaciones','fliaratendido','resolucion')
+        fields = ('agente', 'expediente', 'diagnostico', 'funcion','tipoalta','observaciones','fliaratendido','resolucion')
     def __init__(self, *args, **kwargs):
         super(formMedica, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
@@ -249,11 +250,14 @@ class formJuntaMedica(forms.ModelForm):
 class formJuntamedicavieja(forms.ModelForm):
     class Meta:
         model  = Juntamedicavieja
+        fields = "__all__"
         
 class formMedicavieja(forms.ModelForm):
     class Meta:
         model  = Medicavieja
+        fields = "__all__"
 
 class formLicenciaanualvieja(forms.ModelForm):
     class Meta:
         model  = Licenciaanualvieja
+        fields = "__all__"
