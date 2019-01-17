@@ -1,0 +1,66 @@
+{% extends "appPasajes/plantillaBase.html" %}
+
+{% block contenido %}
+<!--Cargo el load static por si hay que mostrar alguna imagen desde el directorio assets-->
+{% load static %}
+<br>
+<center><h2 class="titulo">Administraci&oacuten de Agentes</h2></center>
+<!--Valido si se recibe algun mensjae para mostrar-->
+{% if messages %}
+	<div class="alert alert-success">
+	{% for message in messages %}
+		<img src="{% static 'ok.png' %}" alt="imagenOk" style="display:inline-block;width: 25px;height: 25px" />
+    	<p style="display:inline-block;"><strong>{{ message }}</strong></p>
+    {% endfor %}
+	</div>
+{% endif %}
+<a href="{% url 'altaAgente' %}" class="btn btn-success" style="display: inline-block;"><span class="glyphicon glyphicon-plus"></span> Nuevo agente</a>
+
+<br><br>
+{% if agentes %}
+	<table class="datatable display" style="width:100%">
+		<thead>
+			<tr class="titulo_columna">
+				<th>Id agente</th>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>DNI</th>
+				<th>Fecha nacimiento</th>
+				<th>Localidad</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+	    {% for agen in agentes %}
+	    	<tr>
+	        	<td><b>{{ agen.id }}</b></td>
+	        	<td><b>{{ agen.apellido }}</b></td>
+	        	<td><b>{{ agen.nombre }}</b></td>
+	        	<td><b>{{ agen.documento }}</b></td>
+	        	<td><b>{{ agen.fecha_nacimiento }}</b></td>
+	        	<td><b>{{ agen.id_localidad.nombre }}</b></td>
+	        	<td>
+	        		<a href="{% url 'modificacionAgente' agen.id %}" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Editar</a>
+	        		<a href="{% url 'bajaAgente' agen.id %}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
+	        	</td>
+	    	</tr>
+	    {% endfor %}
+	    </tbody>
+	    <tfoot>
+			<tr class="titulo_columna">
+				<th>Id agente</th>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>DNI</th>
+				<th>Fecha nacimiento</th>
+				<th>Localidad</th>
+				<th>Acciones</th>
+			</tr>
+		</tfoot>
+	</table>
+{% else %}
+    <p>No hay agentes a mostrar</p>
+{% endif %}
+
+
+{% endblock %}

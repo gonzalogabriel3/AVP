@@ -684,7 +684,7 @@ def ausReportDir(peticion,a,direc):
 #--------------------------------------------------------------------------
 
 #@csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+#@login_required(login_url='/personal/accounts/login')
 def index(peticion):
 
     user = peticion.user
@@ -692,8 +692,17 @@ def index(peticion):
     inicio = Inicio.objects.get(idinicio=1)
     #titulo = str(i.titulo)
     #mensaje = i.mensaje
-    return render_to_response('personal/index.html',{'user':user, 'grupos':grupos,'inicio':inicio},)
+    return render_to_response('appPersonal/index.html',{'user':user, 'grupos':grupos,'inicio':inicio},)
  
+@login_required(login_url='/personal/accounts/login')
+def index2(peticion):
+
+    user = peticion.user
+    grupos = get_grupos(user)
+    inicio = Inicio.objects.get(idinicio=1)
+    #titulo = str(i.titulo)
+    #mensaje = i.mensaje
+    return render(peticion,'appPersonal/index.html',{'user':user, 'grupos':grupos,'inicio':inicio},)
 
 @login_required(login_url='/personal/accounts/login')
 def agentesIndex(peticion):

@@ -24,7 +24,7 @@ from depoapp.viewslistado import *
 
 
 def index(peticion):
-	return render_to_response('index.html',)
+	return render_to_response('appDeposito/index.html',)
 
 def depos(preticion):
 	return render_to_response('deposito.html',)

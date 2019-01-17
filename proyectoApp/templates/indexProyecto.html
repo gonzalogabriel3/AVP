@@ -1,10 +1,25 @@
 {% extends "plantillaBaseProyecto.html" %}
 
+{% load static %}
+
 {% block contenido %}
 <center>
-		<h3>Esto es el index del proyecto</h3>
+	
+		<div style="display: inline-block;" class="contenedor">
+			<a href="personal/index"><img src="{% static 'imagenes_item/personal.jpg' %}" class="imagenInicio" style="width: 180px;height: 150px;border-radius: 50%;display: inline-block;margin-top: 20px;margin-right: 150px;"></a>
+		</div>
+		<a href="deposito/index"><img src="{% static 'imagenes_item/deposito.jpg' %}" class="imagenInicio" style="width: 180px;height: 150px;border-radius: 50%;display: inline-block;margin-top: 20px;"></a>
+		<br>
+		<div style="margin-top: 100px;">
+			<a href="pasajes"><img src="{% static 'imagenes_item/pasajes.jpg' %}" class="imagenInicio" style="width: 180px;height: 150px;border-radius: 50%;display: inline-block;float: left;margin-left: 100px;"></a>
+
+			<img src="{% static 'logoAVP2.png' %}" style="margin-left: 0px;width: 230px;height: 200px;display: inline-block;">
+
+			<a href="#"><img src="{% static 'imagenes_item/taller.jpg' %}" class="imagenInicio" style="width: 180px;height: 150px;border-radius: 50%;display: inline-block;float: right;margin-right: 100px;"></a>
+		</div>
+
+		<a href="#"><img src="{% static 'imagenes_item/patrimonio.jpg' %}" class="imagenInicio" style="width: 180px;height: 150px;border-radius: 50%;display: inline-block;float: left;margin-left: 260px;margin-top: 70px;"></a>
+
 		
-		<a href="pasajes" class="btn btn-success">App pasajes</a><br>
-		<a href="#" class="btn btn-info">App deposito</a>
 </center>
 {% endblock %}

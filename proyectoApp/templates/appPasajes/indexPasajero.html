@@ -1,0 +1,74 @@
+{% extends "appPasajes/plantillaBase.html" %}
+
+{% block contenido %}
+<!--Cargo el load static por si hay que mostrar alguna imagen desde el directorio assets-->
+{% load static %}
+<br>
+<center><h2 class="titulo">Administraci&oacuten de Pasajeros</h2></center>
+<!--Valido si se recibe algun mensjae para mostrar-->
+{% if messages %}
+	<div class="alert alert-success">
+	{% for message in messages %}
+		<img src="{% static 'ok.png' %}" alt="imagenOk" style="display:inline-block;width: 25px;height: 25px" />
+    	<p style="display:inline-block;"><strong>{{ message }}</strong></p>
+    {% endfor %}
+	</div>
+{% endif %}
+<br><br>
+{% if pasajeros %}
+	<table class="datatable display" style="width:100%">
+		<thead>
+			<tr class="titulo_columna">
+				<th>Id pasajero</th>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>DNI</th>
+				<th>Fecha nacimiento</th>
+				<th>Localidad</th>
+				<th>Familiar de</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+	    {% for pasajero in pasajeros %}
+	    	<tr>
+	        	<td><b>{{ pasajero.id }}</b></td>
+	        	{% if pasajero.id_familiar.id%}
+	        		<td><b>{{ pasajero.id_familiar.apellido }}</b></td>
+	        		<td><b>{{ pasajero.id_familiar.nombre }}</b></td>
+	        		<td><b>{{ pasajero.id_familiar.documento }}</b></td>
+	        		<td><b>{{ pasajero.id_familiar.fecha_nacimiento }}</b></td>
+	        		<td><b>{{ pasajero.id_familiar.id_localidad.nombre }}</b></td>
+	        		<td><b>{{ pasajero.id_agente.apellido }} {{ pasajero.id_agente.nombre }}</td>
+	        		<td><a href="{% url 'altaPasaje' pasajero.id %}" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Generar Pasaje</a></td>
+	        	{% else %}
+		        	<td><b>{{ pasajero.id_agente.apellido }}</b></td>
+		        	<td><b>{{ pasajero.id_agente.nombre }}</b></td>
+		        	<td><b>{{ pasajero.id_agente.documento }}</b></td>
+		        	<td><b>{{ pasajero.id_agente.fecha_nacimiento }}</b></td>
+		        	<td><b>{{ pasajero.id_agente.id_localidad.nombre }}</b></td>
+		        	<td><b>-</b></td>
+		        	<td><a href="{% url 'altaPasaje' pasajero.id %}" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Generar Pasaje</a></td>
+		       {% endif %}  	
+	    	</tr>
+	    {% endfor %}
+	    </tbody>
+	    <tfoot>
+			<tr class="titulo_columna">
+				<th>Id pasajero</th>
+				<th>Apellido</th>
+				<th>Nombre</th>
+				<th>DNI</th>
+				<th>Fecha nacimiento</th>
+				<th>Localidad</th>
+				<th>Familiar de</th>
+				<th>Acciones</th>
+			</tr>
+		</tfoot>
+	</table>
+{% else %}
+    <p>No hay pasajeros a mostrar</p>
+{% endif %}
+
+
+{% endblock %}

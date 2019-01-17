@@ -1,15 +1,14 @@
 <!DOCTYPE>
 <html>
 <head>
-	<title>Inicio</title>
-<html>
-<head>
 	{% load static %}
 
-	<title>Inicio</title>
+	<title>Administracion Vialidad Provincial</title>
 	
 
 	<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
+
+	<link rel="stylesheet" href="{% static 'estilo.css' %}" type="text/css">
 
 	<!-- Css de Bootstrap -Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -20,7 +19,7 @@
 	<!-- Importo jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
-<body style="background-image: url('{% static 'fondo2.png' %}');background-repeat: no-repeat;">
+<body style="background-image: url('{% static 'fondo_madera.jpg' %}');background-repeat: no-repeat;" class="container">
 	<!--Si el usuario esta registrado,redirecciono a la url de pasajes -->
 	{% if user.is_authenticated is True %}
 		

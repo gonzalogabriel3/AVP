@@ -8,6 +8,7 @@ admin.autodiscover()
 from depoapp.views import *
 
 urlpatterns = [
+    path('index/',index),
     path('listado/(\w{3,25})',listado),
     path('listado/pdf/(\w{3,25})',listPdf),
     path('lista/Compra/',listaCompra),

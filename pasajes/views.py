@@ -18,7 +18,7 @@ from django.contrib import messages
 #################################INDEX'S#################################################
 def index(request):
 	
-	return render(request, 'index.html')
+	return render(request, 'appPasajes/index.html')
 
 
 #Funcion para retornar los datos de la tabla de agente renderizados en un template
@@ -29,7 +29,7 @@ def indexAgenteView(request):
 		'agentes':agentes,
 	}
 	
-	return render(request, 'indexAgente.html', context)
+	return render(request, 'appPasajes/indexAgente.html', context)
 
 def indexLocalidadView(request):
 	localidades=Localidad.objects.all().order_by('-id')
@@ -38,7 +38,7 @@ def indexLocalidadView(request):
 		'localidades':localidades
 	}
 	
-	return render(request, 'indexLocalidad.html', context)
+	return render(request, 'appPasajes/indexLocalidad.html', context)
 
 
 def indexFamiliarView(request):
@@ -48,7 +48,7 @@ def indexFamiliarView(request):
 		'familiares':familiares,
 	}
 	
-	return render(request, 'indexFamiliar.html', context)
+	return render(request, 'appPasajes/indexFamiliar.html', context)
 
 def indexEmpresaView(request):
 	empresas=Empresa.objects.all().order_by('-id')
@@ -57,7 +57,7 @@ def indexEmpresaView(request):
 		'empresas':empresas,
 	}
 	
-	return render(request, 'indexEmpresa.html', context)
+	return render(request, 'appPasajes/indexEmpresa.html', context)
 
 def indexPasajeView(request):
 	pasajes=Pasaje.objects.all().order_by('-id')
@@ -66,7 +66,7 @@ def indexPasajeView(request):
 		'pasajes':pasajes,
 	}
 	
-	return render(request, 'indexPasaje.html', context)
+	return render(request, 'appPasajes/indexPasaje.html', context)
 
 def indexPasajeroView(request):
 	pasajeros=Pasajero.objects.all().order_by('-id')
@@ -75,7 +75,7 @@ def indexPasajeroView(request):
 		'pasajeros':pasajeros,
 	}
 	
-	return render(request, 'indexPasajero.html', context)
+	return render(request, 'appPasajes/indexPasajero.html', context)
 ################FIN DE INDEX'S########################################
 
 
@@ -100,7 +100,7 @@ def altaAgente(request):
 		form=formularioAgente()
 		
 	titulo="Agregar nuevo agente"	
-	return render(request,'formularios/agente.html',{'form':form,'titulo':titulo})
+	return render(request,'appPasajes/formularios/agente.html',{'form':form,'titulo':titulo})
 
 def bajaAgente(request,idAgente):
 
@@ -114,7 +114,7 @@ def bajaAgente(request,idAgente):
 	texto="el agente '"+agente.nombre+" "+agente.apellido+"',con id "+str(agente.id)+"?"
 	nombreUrl="agente"
 
-	return render(request,'confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
+	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
 def modificacionAgente(request,idAgente):
 
@@ -133,7 +133,7 @@ def modificacionAgente(request,idAgente):
 			return redirect('agente')
 
 	titulo="Modificar agente"
-	return render(request,'formularios/agente.html',{'form':form,'agente':agente,'titulo':titulo})
+	return render(request,'appPasajes/formularios/agente.html',{'form':form,'agente':agente,'titulo':titulo})
 
 #********FIN ABM AGENTE***********#
 
@@ -157,7 +157,7 @@ def altaLocalidad(request):
 		form=formularioLocalidad()
 		
 	titulo="Agregar nueva localidad"	
-	return render(request,'formularios/localidad.html',{'form':form,'titulo':titulo})
+	return render(request,'appPasajes/formularios/localidad.html',{'form':form,'titulo':titulo})
 
 
 
@@ -173,7 +173,7 @@ def bajaLocalidad(request,idLocalidad):
 	texto="la localidad '"+localidad.nombre+"',con id "+str(localidad.id)+"?"
 	nombreUrl="localidad"
 
-	return render(request,'confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
+	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
 def modificacionLocalidad(request,idLocalidad):
 
@@ -193,7 +193,7 @@ def modificacionLocalidad(request,idLocalidad):
 			return redirect('localidad')
 
 	titulo="Modificar localidad"
-	return render(request,'formularios/localidad.html',{'form':form,'localidad':localidad,'titulo':titulo})
+	return render(request,'appPasajes/formularios/localidad.html',{'form':form,'localidad':localidad,'titulo':titulo})
 
 
 #********FIN ABM LOCALIDAD***********#
@@ -218,7 +218,7 @@ def altaFamiliar(request):
 		
 	
 	titulo="Agregar nuevo familiar"	
-	return render(request,'formularios/familiar.html',{'form':form,'titulo':titulo})
+	return render(request,'appPasajes/formularios/familiar.html',{'form':form,'titulo':titulo})
 
 def bajaFamiliar(request,idFamiliar):
 
@@ -232,7 +232,7 @@ def bajaFamiliar(request,idFamiliar):
 	texto="a el familiar '"+familiar.nombre+" "+familiar.apellido+"',con id "+str(familiar.id)+"?"
 	nombreUrl="familiar"
 
-	return render(request,'confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
+	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
 def modificacionFamiliar(request,idFamiliar):
 
@@ -251,7 +251,7 @@ def modificacionFamiliar(request,idFamiliar):
 			return redirect('familiar')
 
 	titulo="Modificar familiar"
-	return render(request,'formularios/familiar.html',{'form':form,'familiar':familiar,'titulo':titulo})
+	return render(request,'appPasajes/formularios/familiar.html',{'form':form,'familiar':familiar,'titulo':titulo})
 
 
 #********FIN ABM FAMILIAR***********#
@@ -277,7 +277,7 @@ def altaEmpresa(request):
 		form=formularioEmpresa()
 		
 	titulo="Agregar nueva empresa"	
-	return render(request,'formularios/empresa.html',{'form':form,'titulo':titulo})
+	return render(request,'appPasajes/formularios/empresa.html',{'form':form,'titulo':titulo})
 
 
 def bajaEmpresa(request,idEmpresa):
@@ -292,7 +292,7 @@ def bajaEmpresa(request,idEmpresa):
 	texto="la empresa '"+empresa.nombre+"',con id "+str(empresa.id)+"?"
 	nombreUrl="empresa"
 
-	return render(request,'confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
+	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
 def modificacionEmpresa(request,idEmpresa):
 
@@ -311,7 +311,7 @@ def modificacionEmpresa(request,idEmpresa):
 			return redirect('empresa')
 
 	titulo="Modificar empresa"
-	return render(request,'formularios/empresa.html',{'form':form,'empresa':empresa,'titulo':titulo})
+	return render(request,'appPasajes/formularios/empresa.html',{'form':form,'empresa':empresa,'titulo':titulo})
 
 
 #********FIN ABM EMPRESA***********#
@@ -341,7 +341,7 @@ def altaPasaje(request):
 		form=formularioPasaje()
 		
 	titulo="Agregar nuevo pasaje"	
-	return render(request,'formularios/pasaje.html',{'form':form,'titulo':titulo})
+	return render(request,'appPasajes/formularios/pasaje.html',{'form':form,'titulo':titulo})
 
 def bajaPasaje(request,idPasaje):
 
@@ -355,7 +355,7 @@ def bajaPasaje(request,idPasaje):
 	texto="el pasaje 'N°"+str(pasaje.id)+"',emitido el dia "+str(pasaje.fecha_emision.strftime('%Y-%m-%d %H:%M'))+"?"
 	nombreUrl="pasaje"
 
-	return render(request,'confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
+	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
 def modificacionPasaje(request,idPasaje):
 
@@ -375,7 +375,7 @@ def modificacionPasaje(request,idPasaje):
 			return redirect('pasaje')
 
 	titulo="Modificar Pasaje"
-	return render(request,'formularios/pasaje.html',{'form':form,'pasaje':pasaje,'titulo':titulo})
+	return render(request,'appPasajes/formularios/pasaje.html',{'form':form,'pasaje':pasaje,'titulo':titulo})
 
 
 #********FIN ABM PASAJE***********#
@@ -388,7 +388,7 @@ def reportePasaje(request,idPasaje):
 	fecha=datetime.datetime.now()
 	fecha=fecha.strftime("%d/%m/%Y")
 	#Renderizo la vista que sera devuelta
-	html_string = render_to_string('reportes/pasaje.html', {'pasaje': pasaje})
+	html_string = render_to_string('appPasajes/reportes/pasaje.html', {'pasaje': pasaje})
 	#Agrego el 'base_url' para poder cargar imagenes en el pdf
 	html = HTML(string=html_string,base_url=request.build_absolute_uri())
 	result = html.write_pdf()
@@ -453,7 +453,7 @@ def altaPasaje(request,idPasajero):
 		
 	titulo="Generar nuevo pasaje"
 
-	return render(request,'formularios/pasaje.html',{'form':form,'titulo':titulo,'pasajero':pasajero})
+	return render(request,'appPasajes/formularios/pasaje.html',{'form':form,'titulo':titulo,'pasajero':pasajero})
 
 #*************FIN formulario pasajes*************#
 
