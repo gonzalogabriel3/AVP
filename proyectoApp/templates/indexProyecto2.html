@@ -7,26 +7,34 @@
 -->
 <html>
 	<head>
-		<title>AVP</title>
+		<title>Administracion Vialidad Provincial</title>
+		<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="{% static 'indexProyecto/assets2/css/main.css' %}" />
 	</head>
 	<body>
+	<!--Si el usuario esta registrado,redirecciono a la url de pasajes -->
+	{% if user.is_authenticated is True %}
+		
+		<meta http-equiv="refresh" content="0; url=/pasajes">
+	
+	<!--Si el usuario NO esta registrado,muestro el menu principal del proyecto -->
+	{% else %}
 
 		<!-- Header -->
 			<header id="header">
-				
+				<img src="{% static 'logoAVP2.png' %}" style="float: left;width: 150px;height: 120px;opacity: 0.6;" />
 				<a href="#menu"><span>Menu</span></a>
 			</header>
 
 		<!-- Nav -->
 			<nav id="menu">
 				<ul class="links">
-					<li><a href="#">Personal</a></li>
-					<li><a href="#">Deposito</a></li>
+					<li><a href="personal/index">Personal</a></li>
+					<li><a href="deposito/index">Deposito</a></li>
 					<li><a href="#">Taller</a></li>
-					<li><a href="#">Pasajes</a></li>
+					<li><a href="pasajes">Pasajes</a></li>
 					<li><a href="#">Patrimonio</a></li>
 				</ul>
 			</nav>
@@ -37,7 +45,9 @@
 			to the full filename of your image. This is used in each section to set
 			the background image.
 		-->
-			<section id="banner" class="bg-img" data-bg="fondos/fondo_res.jpg">
+		
+
+			<section id="banner" class="bg-img" data-bg="/static/indexProyecto/imagenes/fondos/fondo_res.jpg">
 				<div class="inner">
 					<header>
 						<h1>Administraci&oacuten Vialidad Provincial</h1>
@@ -51,12 +61,13 @@
 				<div class="inner">
 
 					<h4>
-						Copyright (c) 2012 Administración Vial Provincial (AVP) Todos los Derechos Reservados.
+						Copyright (c) 2019 Administración Vial Provincial (AVP) Todos los Derechos Reservados.
 						Estas aplicaciones están protegidas por copyright y distribuidas bajo licencias que restringen la copia y la distribución. 
 					</h4>
 				</div>
 			</footer>
 
+	{% endif %}
 		<!-- Scripts -->
 			<script src="{% static 'indexProyecto/assets2/js/jquery.min.js' %}"></script>
 			<script src="{% static 'indexProyecto/assets2/js/jquery.scrolly.min.js' %}"></script>
