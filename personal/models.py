@@ -586,8 +586,8 @@ class Escolaridad(models.Model):
     class Meta:
         db_table = u'escolaridad'
         unique_together = ("idasigfam","anio")
-    def __unicode__(self):
-        return force_unicode(self.gradocrusado)       
+    #def __unicode__(self):
+    #   return force_unicode(self.gradocrusado)       
 
 #··························································································································································        
 class ArtiTomados(models.Model):

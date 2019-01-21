@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from django.shortcuts import redirect
 from .models import *
 from .forms import *
-from .funciones import *
 import datetime, time
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -12,16 +11,20 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 import tempfile
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here
-
+#Con "@login_required" indico que el usuario debe estar autenticado para acceder a la view,en 'login_url' indico hacia donde debe
+#ser redirigido el usuario en caso de que no este logueado
 #################################INDEX'S#################################################
+@login_required(login_url='login')
 def index(request):
 	
 	return render(request, 'appPasajes/index.html')
 
 
 #Funcion para retornar los datos de la tabla de agente renderizados en un template
+@login_required(login_url='login')
 def indexAgenteView(request):
 	agentes=Agente.objects.all().order_by('-id')
 	
@@ -31,6 +34,7 @@ def indexAgenteView(request):
 	
 	return render(request, 'appPasajes/indexAgente.html', context)
 
+@login_required(login_url='login')
 def indexLocalidadView(request):
 	localidades=Localidad.objects.all().order_by('-id')
 	
@@ -41,6 +45,7 @@ def indexLocalidadView(request):
 	return render(request, 'appPasajes/indexLocalidad.html', context)
 
 
+@login_required(login_url='login')
 def indexFamiliarView(request):
 	familiares=Familiar.objects.all().order_by('-id')
 	
@@ -50,6 +55,7 @@ def indexFamiliarView(request):
 	
 	return render(request, 'appPasajes/indexFamiliar.html', context)
 
+@login_required(login_url='login')
 def indexEmpresaView(request):
 	empresas=Empresa.objects.all().order_by('-id')
 	
@@ -59,6 +65,7 @@ def indexEmpresaView(request):
 	
 	return render(request, 'appPasajes/indexEmpresa.html', context)
 
+@login_required(login_url='login')
 def indexPasajeView(request):
 	pasajes=Pasaje.objects.all().order_by('-id')
 	
@@ -68,6 +75,7 @@ def indexPasajeView(request):
 	
 	return render(request, 'appPasajes/indexPasaje.html', context)
 
+@login_required(login_url='login')
 def indexPasajeroView(request):
 	pasajeros=Pasajero.objects.all().order_by('-id')
 	
@@ -82,6 +90,7 @@ def indexPasajeroView(request):
 ################FORMULARIOS###########################################
 
 #********ABM AGENTE***********#
+@login_required(login_url='login')
 def altaAgente(request):
 
 	#Recibo el request,si es un request de tipo POST lo valido y guardo el nuevo agente
@@ -102,6 +111,7 @@ def altaAgente(request):
 	titulo="Agregar nuevo agente"	
 	return render(request,'appPasajes/formularios/agente.html',{'form':form,'titulo':titulo})
 
+@login_required(login_url='login')
 def bajaAgente(request,idAgente):
 
 	agente=Agente.objects.get(id=idAgente)
@@ -116,6 +126,7 @@ def bajaAgente(request,idAgente):
 
 	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
+@login_required(login_url='login')
 def modificacionAgente(request,idAgente):
 
 	agente=Agente.objects.get(id=idAgente)
@@ -139,6 +150,7 @@ def modificacionAgente(request,idAgente):
 
 
 #********ABM LOCALIDAD***********#
+@login_required(login_url='login')
 def altaLocalidad(request):
 
 	#Recibo el request,si es un request de tipo POST lo valido y guardo el nuevo agente
@@ -160,7 +172,7 @@ def altaLocalidad(request):
 	return render(request,'appPasajes/formularios/localidad.html',{'form':form,'titulo':titulo})
 
 
-
+@login_required(login_url='login')
 def bajaLocalidad(request,idLocalidad):
 
 	localidad=Localidad.objects.get(id=idLocalidad)
@@ -175,6 +187,7 @@ def bajaLocalidad(request,idLocalidad):
 
 	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
+@login_required(login_url='login')
 def modificacionLocalidad(request,idLocalidad):
 
 	localidad=Localidad.objects.get(id=idLocalidad)
@@ -200,6 +213,7 @@ def modificacionLocalidad(request,idLocalidad):
 
 
 #********ABM FAMILIAR***********#
+@login_required(login_url='login')
 def altaFamiliar(request):
 
 	if(request.method == 'POST'):
@@ -220,6 +234,7 @@ def altaFamiliar(request):
 	titulo="Agregar nuevo familiar"	
 	return render(request,'appPasajes/formularios/familiar.html',{'form':form,'titulo':titulo})
 
+@login_required(login_url='login')
 def bajaFamiliar(request,idFamiliar):
 
 	familiar=Familiar.objects.get(id=idFamiliar)
@@ -234,6 +249,7 @@ def bajaFamiliar(request,idFamiliar):
 
 	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
+@login_required(login_url='login')
 def modificacionFamiliar(request,idFamiliar):
 
 	familiar=Familiar.objects.get(id=idFamiliar)
@@ -259,6 +275,7 @@ def modificacionFamiliar(request,idFamiliar):
 
 
 #********ABM EMPRESA***********#
+@login_required(login_url='login')
 def altaEmpresa(request):
 
 	if(request.method == 'POST'):
@@ -279,7 +296,7 @@ def altaEmpresa(request):
 	titulo="Agregar nueva empresa"	
 	return render(request,'appPasajes/formularios/empresa.html',{'form':form,'titulo':titulo})
 
-
+@login_required(login_url='login')
 def bajaEmpresa(request,idEmpresa):
 
 	empresa=Empresa.objects.get(id=idEmpresa)
@@ -294,6 +311,7 @@ def bajaEmpresa(request,idEmpresa):
 
 	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
+@login_required(login_url='login')
 def modificacionEmpresa(request,idEmpresa):
 
 	empresa=Empresa.objects.get(id=idEmpresa)
@@ -318,6 +336,7 @@ def modificacionEmpresa(request,idEmpresa):
 
 
 #********ABM PASAJE***********#
+@login_required(login_url='login')
 def altaPasaje(request):
 
 	
@@ -343,6 +362,7 @@ def altaPasaje(request):
 	titulo="Agregar nuevo pasaje"	
 	return render(request,'appPasajes/formularios/pasaje.html',{'form':form,'titulo':titulo})
 
+@login_required(login_url='login')
 def bajaPasaje(request,idPasaje):
 
 	pasaje=Pasaje.objects.get(id=idPasaje)
@@ -357,6 +377,7 @@ def bajaPasaje(request,idPasaje):
 
 	return render(request,'appPasajes/confirmaciones/eliminar.html',{'texto':texto,'nombreUrl':nombreUrl})
 
+@login_required(login_url='login')
 def modificacionPasaje(request,idPasaje):
 
 	pasaje=Pasaje.objects.get(id=idPasaje)
@@ -381,6 +402,7 @@ def modificacionPasaje(request,idPasaje):
 #********FIN ABM PASAJE***********#
 
 #********REPORTES********************#
+@login_required(login_url='login')
 def reportePasaje(request,idPasaje):
 	pasaje=Pasaje.objects.get(id=idPasaje)
 
@@ -409,6 +431,7 @@ def reportePasaje(request,idPasaje):
 ########FIN REPORTES##############
 
 ##########Formulario pasajes######################
+@login_required(login_url='login')
 def altaPasaje(request,idPasajero):
 	pasajero=Pasajero.objects.get(id=idPasajero)
 	#form=formularioPasaje()
@@ -457,5 +480,3 @@ def altaPasaje(request,idPasajero):
 
 #*************FIN formulario pasajes*************#
 
-def loginView(request):
-	return render(request,'registration/login.html')
