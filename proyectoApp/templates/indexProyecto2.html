@@ -7,11 +7,16 @@
 -->
 <html>
 	<head>
-		<title>AVP</title>
+		<title>Administracion Vialidad Provincial</title>
+		<!-- Css de Bootstrap -Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="{% static 'indexProyecto/assets2/css/main.css' %}" />
+
+		
+
 	</head>
 	<body>
 	<!--Si el usuario esta registrado,redirecciono a la url de pasajes -->
@@ -31,11 +36,11 @@
 		<!-- Nav -->
 			<nav id="menu">
 				<ul class="links">
-					<li><a href="personal/index">Personal</a></li>
-					<li><a href="deposito/index">Deposito</a></li>
-					<li><a href="#">Taller</a></li>
-					<li><a href="pasajes">Pasajes</a></li>
-					<li><a href="#">Patrimonio</a></li>
+					<li><a href="personal/index"><span class="glyphicon glyphicon-user"></span>  Personal</a></li>
+					<li><a href="deposito/index"><span class="glyphicon glyphicon-oil"></span>  Deposito</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-briefcase"></span>  Taller</a></li>
+					<li><a href="pasajes"><span class="glyphicon glyphicon-plane"></span>  Pasajes</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-home"></span>  Patrimonio</a></li>
 				</ul>
 			</nav>
 

@@ -3467,7 +3467,7 @@
 		-ms-transition: -ms-transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
 		transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
 		-webkit-overflow-scrolling: touch;
-		background: #F7D403;
+		background: #F4C213;
 		box-shadow: none;
 		color: #ffffff;
 		height: 100%;
@@ -3497,12 +3497,17 @@
 
 					#menu > ul.links > li > a:not(.button) {
 						border: 0;
-						border-top: solid 1px #848484;
-						color: #848484;
+						border-top: solid 1px #6E6E6E;
+						color: #6E6E6E;
 						display: block;
 						line-height: 3.5em;
 						text-decoration: none;
 						font-weight: bold;
+					}
+
+					#menu > ul.links > li > a:not(.button):hover {
+						opacity: 0.5;
+
 					}
 
 					#menu > ul.links > li > .button {
@@ -3630,7 +3635,7 @@
 			line-height: 1.1;
 			font-family: "Georgia", serif;
 			margin-bottom: .25em;
-			color: #F7D403;
+			color: #F4C213;
 			text-shadow: -2px -2px 0 rgba(0, 0, 0, 0.125);
 			text-transform: none;
 		}
@@ -4183,7 +4188,7 @@
 		background-color: #F64747;
 		color: #fdd1d1;
 		padding: 6em 0 4em 0;
-		background: #F7D403;
+		background: #F4C213;
 	}
 
 		#footer input, #footer select, #footer textarea {
