@@ -1,0 +1,50 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+		{% block titulo-form %}
+		    <td><b><font color="#000000" style="font-size: 13px;">LOGS</font></b></td> 
+	        {% endblock %}
+
+	    	{% block botonnuevo %}{%endblock%}
+	
+		{% block botonatrasaction %}"return Open('/personal/index'); " {% endblock %}
+	
+		{% block path %}{% endblock%}
+		
+		{% block titulo %}
+		
+		{%endblock%}
+		{% block main-list %}
+		
+		<div class="results">
+			<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>Usuario</th>
+						<th>Modelo</th>
+						<th>Tipo Cambio</th>
+						<th>Horario</th>
+						<th>Cambios</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+							
+							<td>{{list.usuario}}</td>
+							<td>{{list.modelo}}</td>
+							<td>{{list.tipocambio}}</td>
+							<td>{{list.horario}}</td>
+							<td><a href= "/personal/listado/cambiosenreg?camb={{list.idcambio}}">Ver Cambios</a></td>
+							
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>

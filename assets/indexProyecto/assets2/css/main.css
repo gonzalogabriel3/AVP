@@ -3468,6 +3468,7 @@
 		transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
 		-webkit-overflow-scrolling: touch;
 		background: #F4C213;
+		opacity: 0.8;
 		box-shadow: none;
 		color: #ffffff;
 		height: 100%;
@@ -3635,6 +3636,7 @@
 			line-height: 1.1;
 			font-family: "Georgia", serif;
 			margin-bottom: .25em;
+			opacity: 0.8;
 			color: #F4C213;
 			text-shadow: -2px -2px 0 rgba(0, 0, 0, 0.125);
 			text-transform: none;
@@ -4189,6 +4191,7 @@
 		color: #fdd1d1;
 		padding: 6em 0 4em 0;
 		background: #F4C213;
+		opacity: 0.8;
 	}
 
 		#footer input, #footer select, #footer textarea {

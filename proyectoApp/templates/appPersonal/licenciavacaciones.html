@@ -1,0 +1,99 @@
+{% extends "personal/graficos.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<script type="text/javascript"> 
+    $(function () {
+	var chart;
+	$(document).ready(function() {
+	    chart = new Highcharts.Chart({
+		chart: {
+		    renderTo: 'diasvaca',
+		    type: 'bar'
+		},
+		title: {
+		    text: 'Licencia anual tomada'
+		},
+		xAxis: {
+		    categories: ['{{categorias.0}}','{{categorias.1}}','{{categorias.2}}','{{categorias.3}}','{{categorias.4}}']
+		},
+		yAxis: {
+		    min: 0,
+		    title: {
+			text: 'Total de dias tomados por año'
+		    }
+		},
+		legend: {
+		    backgroundColor: '#FFFFFF',
+		    reversed: true
+		},
+		tooltip: {
+		    formatter: function() {
+			return ''+
+			    this.series.name +': '+ this.y +'';
+		    }
+		},
+		plotOptions: {
+		    series: {
+			stacking: 'normal'
+		    }
+		},
+		    series: [{
+		    name: 'Días Licencia',
+		    data: [({{diaslicencia.0}}-{{diastomados.0}}), ({{diaslicencia.1}}-{{diastomados.1}}), ({{diaslicencia.2}}-{{diastomados.2}}), ({{diaslicencia.3}}-{{diastomados.3}}), {{diaslicencia.4}}-{{diastomados.4}}]
+		}, {
+		    name: 'Días Tomados',
+		    data: [{{diastomados.0}},{{diastomados.1}}, {{diastomados.2}}, {{diastomados.3}}, {{diastomados.4}}]
+		}]
+	    });
+	});
+	
+    });
+</script>
+{% endblock %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+	
+{% endblock%}
+
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Grafico - Vacaciones</font></b></td> 
+{% endblock %}
+
+{% block contenido-graficos%}
+	 <div class="text-center">
+		<h4>{{agente.apellido}}, {{agente.nombres}}</h4>
+		<h5>Licencia por Vacaciones</h5>
+		<form action="/personal/listado/listadoxagente/vacacionesxagente/{{idagente}}/-1/">
+			<input id="saveForm" class="button_text" type="submit" name="submit" value="Detalles" style="margin-left: 250px;" />
+		</form>
+		
+	 </div>  
+	      
+	<div id="tablavacas"> 
+		<table class="table table-striped span1 offset2">
+		    <tr>
+			<thead>
+			    <th>Año</th>
+			</thead>
+			<tbody>
+			    {%for cate in categorias%}
+				    <tr class="{% cycle 'row1' 'row2' %}" >
+					  <td >
+					      <ul style="padding:0;list-style-type:none;  ">
+						    <a href= "/personal/forms/abmlicanual/0/{{idagente}}/{{cate}}">{{cate}}</a>
+					      </ul>
+					  </td>
+				    </tr>
+			    {% endfor %}
+			</tbody>
+		  </tr>      
+		</table>
+		<div id="diasvaca" style="width: 450px; height: 300px; float:left" class="span1"></div>
+		
+	</div>
+{% endblock %}

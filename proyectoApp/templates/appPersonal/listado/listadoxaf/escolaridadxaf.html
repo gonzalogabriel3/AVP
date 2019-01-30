@@ -1,0 +1,74 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+
+{% block extrahead %}  
+<script type="text/javascript">
+function Eliminar(a,b) {
+
+    if(confirm("¿Desea eliminar?")) {
+
+        document.location.href= '/personal/listado/listadoxaf/escolaridadxaf/'+a+'/'+b+'/';
+
+    }
+
+}
+</script> 
+{% endblock %} 
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+
+		{% block titulo-form %}
+		    <td><b><font color="#000000" style="font-size: 13px;">Listado Escolaridad Agente</font></b></td> 
+		{% endblock %}
+
+		{% block botonnuevo %}
+			<form action="/personal/forms/abmescolaridad/0/{{idaf}}/">
+			    <input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" />
+			</form>	 
+		{% endblock%}
+		
+		{% block botonatrasaction %}"return Open('/personal/listado/listadoxagente/facxagente?idagente={{idagente}}&borrado=-1'); " {% endblock %}
+		
+		{% block titulo %}
+		<div align="center">
+		    <h5 style="margin-left: 5px;margin-top: 10px;"> {{persona.apellidoynombre}}   </h5>
+		</div>
+		{% endblock%}
+		
+		{% block main-list %}
+		
+		<div class="results">
+		
+		
+			<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>Grado Cursado</th>
+						<th>Nivel</th>
+						<th>Año</th>
+						<th>Período Escolar</th>
+						<th>Establecimiento</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td><a href= "/personal/forms/abmescolaridad/{{list.idescolaridad}}/{{list.idasigfam_id}}/">{{list.gradocrusado}}</a> </td>
+								<th>{{list.tipoescolaridad}}</th>
+								<td>{{list.anio}}</td>
+								<td>{{list.periodoescolar}}</td>
+								<td>{{list.establecimiento}}</td>
+								{%if "Eliminar" in grupos or user.username = "admin"%}
+								<td><a href="#" onclick="Eliminar({{idaf}},{{list.idescolaridad}});">Eliminar</a></td>
+								{% endif %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>

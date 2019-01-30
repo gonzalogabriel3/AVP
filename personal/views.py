@@ -260,14 +260,13 @@ def medicasinalta(peticion):
     lista = paginar(lista,peticion)
     return render_to_response('personal/medicasinalta.html',{'lista':lista,'user':user,'grupos':grupos},)
 
-@csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+
 def partediario(peticion):
     user = peticion.user
-    if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+    #if permisoEstadistica(user):
+     #   return HttpResponseRedirect('/personal/error/')
     dire = Direccion.objects.all()
-    return render_to_response('personal/partediario.html',{'user':user,'dire':dire,'grupos':get_grupos(user)},)
+    return render_to_response('appPersonal/partediario.html',{'user':user,'dire':dire,'grupos':get_grupos(user)},)
     
     
 
@@ -684,7 +683,7 @@ def ausReportDir(peticion,a,direc):
 #--------------------------------------------------------------------------
 
 #@csrf_exempt
-#@login_required(login_url='/personal/accounts/login')
+#@login_required(login_url='login')
 def index(peticion):
 
     user = peticion.user
@@ -693,16 +692,7 @@ def index(peticion):
     #titulo = str(i.titulo)
     #mensaje = i.mensaje
     return render_to_response('appPersonal/index.html',{'user':user, 'grupos':grupos,'inicio':inicio},)
- 
-@login_required(login_url='/personal/accounts/login')
-def index2(peticion):
 
-    user = peticion.user
-    grupos = get_grupos(user)
-    inicio = Inicio.objects.get(idinicio=1)
-    #titulo = str(i.titulo)
-    #mensaje = i.mensaje
-    return render(peticion,'appPersonal/index.html',{'user':user, 'grupos':grupos,'inicio':inicio},)
 
 @login_required(login_url='/personal/accounts/login')
 def agentesIndex(peticion):

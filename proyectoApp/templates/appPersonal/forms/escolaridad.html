@@ -1,0 +1,69 @@
+{% extends "forms/personal/form_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Escolaridad'%}
+{% endblock%}
+
+{% block extrahead %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<script type="text/javascript" src='/site_media/personal/js/forms/view.js'></script>
+<script type="text/javascript" src='/site_media/personal/js/forms/calendar.js'></script>
+{% endblock%}
+{% block branding %}
+
+{% endblock %}
+
+{% block breadcrumbs %}
+ {% endblock %}
+            
+{% block nav-global %}
+
+{% endblock %}
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Escolaridad</font></b></td> 
+	{% endblock %}
+
+	{% block contenido-form %}
+			
+		<p>
+		<label class="description" for="element_1">Nro. Documento: </label>
+		<input id="element_1" name="element_1" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_2"> Año: </label>
+		<input id="element_2" name="element_2" class="element text medium" maxlength="255" value="" type="text"></input> 
+		</p>	
+		
+		<p>
+		<label class="description" for="element_3">Establecimiento: </label>
+		<input id="element_3" name="element_3" class="element text medium" maxlength="255" value="" type="text"></input> 
+		</p>	
+		
+		<p>
+		<label class="description" for="element_4"> Tipo Escolaridad: </label>
+		<input id="element_4" name="element_4" class="element text medium" maxlength="255" value="" type="text"></input> 
+		</p>	
+		
+		<p>
+		<label class="description" for="element_5">Periodo Escolar: </label>
+		<input id="element_5" name="element_5" class="element text medium" maxlength="255" value="" type="text"></input> 
+		</p>	
+		
+		<p>
+		<label class="description" for="element_6">Grado Cursado: </label>
+		<input id="element_6" name="element_6" class="element text medium" maxlength="255" value="" type="text"></input> 
+		</p>	
+		
+		<p>
+		<label class="description" for="element_7">Apellido y Nombre: </label>
+		<input id="element_7" name="element_7" class="element text medium" maxlength="255" value="" type="text"></input> 
+		</p>
+		
+		
+	
+{% endblock %}

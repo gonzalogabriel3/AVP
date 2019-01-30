@@ -1,0 +1,24 @@
+  {% extends "personal/admin/base.html" %}
+  
+  {% load i18n admin_static %}
+  {% load url from future %}
+
+  {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "/site_media/personal/css/base.css" %}" />{% endblock %}
+  
+  {% load i18n %}
+  
+  <div id="header">
+          {% block header %}
+          {% endblock %}
+          <div id="branding">
+          
+          {% block branding %}{% endblock %}
+          </div>
+          {% block nav-global %}{% endblock %}
+          
+      </div>
+  
+  {% block title %} 
+          {{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+          
+  {% endblock%}

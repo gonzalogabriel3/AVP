@@ -1,0 +1,83 @@
+{% extends "personal/plantilla_base.html" %}
+{% load i18n %}
+<!--<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />-->
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Adscriptos'%}
+{% endblock%}
+
+{% block extrahead %}
+
+{{ form.media }}
+
+{% endblock%}
+{% block branding %}
+
+{% endblock %}
+
+{% block breadcrumbs %}
+ {% endblock %}
+            
+{% block nav-global %}
+
+{% endblock %}
+
+{% block content %}
+<div id="content-main" >
+	
+	<div id="form_container">
+			    
+		<form id="form_544015" class="appnitro"  method="post" action="{% block action-form %}{% endblock %}" onsubmit="{% block submit-form %}{% endblock %}" onclick="{% block onclick-form %} {% endblock %}" >
+
+		
+		<table width="105%" border="0" cellspacing="0" cellpadding="1"> 
+		<tr bgcolor="#FFC200" align="center" style="border-bottom: 1px solid #eee;"> 
+		
+		{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Adscriptos</font></b></td> 
+		{% endblock %}
+		
+		</tr> 
+		<tr bgcolor="#FFC200"> 
+		<td> 
+		<table width="100%" border="0" cellspacing="0" cellpadding="4"> 
+		<tr bgcolor="#FFFFFF"> 
+		<td>
+		
+		
+		<fieldset>
+		{% block contenido-form %}
+		
+		{% endblock %}
+		
+		
+		</fieldset>	
+		
+		<input type="hidden" name="form_id" value="544015" />
+		
+		
+		<input id="saveForm" style="margin-left: 280px; width: 140px; background:orange;" class="button_text" type="submit" name="submit" value="Guardar" />
+		
+		<input type="button" value="Volver Atrás" name="Back2" onclick="history.back()" style="
+		  margin-left: 10px;
+		  width: 140px;
+		  height: 22px;
+		" />
+
+
+		</form>
+		<div id="footer">
+		</div>
+
+		</td> 
+		</tr> 
+		</table> 
+		</td> 
+		</tr> 
+		</table> 
+	</div>
+	
+	</div>
+{% endblock %}
+

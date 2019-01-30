@@ -1,0 +1,42 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+{% block botonnuevo %}{%endblock%}
+
+{% block botonatrasaction %}"return Open('/personal/index'); " {% endblock %}
+
+{% block path %}{% endblock%}
+
+{% block titulo-form %}
+		    <td><b><font color="#000000" style="font-size: 13px;">Cantidad de agentes por clase</font></b></td> 
+{% endblock %}
+
+{% block main-list %}
+		<div class="results">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Clase</th>
+						<th>Cantidad</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for li in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td>{{li.0.descripcion}}</td>
+								<td>{{li.1}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+{% endblock %}
+</br>
+
+{% block paginasinf %}  
+{%endblock%}

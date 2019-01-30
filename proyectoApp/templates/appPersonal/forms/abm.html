@@ -1,0 +1,46 @@
+{% extends "personal/forms/form_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Agente'%}
+{% endblock%}
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">{{name}}</font></b></td> 
+	{% endblock %}
+
+	{% block contenido-form %}
+	<table class="table table-hover"  width="100%" border="0" cellspacing="0" cellpadding="4"> 
+		<tbody>
+		
+			{% if form.errors %}
+			<tr> 
+				<td>
+					<p class="error">Error...</p>
+				</td>
+				{{ error_html }}
+			</tr> 
+			{% endif %}
+			
+			{% csrf_token %}
+			
+			{% for f in form %}
+				<tr>
+				    <th>{{ f.label }}</th> 
+				    {% if "fecha" in f.label %}
+					<td>{{ f.errors }}</td>
+					<td>
+					    <div id="dp3" class="input-append date" data-date-format="yyyy-mm-dd">
+						{{ f }}
+					    </div>
+					</td>
+				    {% else %}
+				        <td>{{ f.errors }}</td>
+					<td>{{ f }}</td>
+				    {% endif %}
+				</tr> 
+			{% endfor %}
+		
+		</tbody>
+	</table>
+{% endblock %}

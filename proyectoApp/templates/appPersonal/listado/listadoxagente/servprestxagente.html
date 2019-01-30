@@ -1,0 +1,61 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+{% block titulo-form %}
+	<p style="font-size: 16px;">Listado Servicios Prestados de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
+{% endblock %}
+
+{% block botonnuevo %}
+	<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/abmservprest/0/{{idagente}}');" />
+{%endblock%}
+
+{% block titulo %}{% endblock%}
+
+{% block main-list %}
+
+	<div class="results">
+		<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>Agente</th>
+					<th>Fecha desde</th>
+					<th>Fecha hasta</th>
+					<th>Empresa</th>
+					<th>Estatal</th>
+					<th>Caja aporte</th>
+					<th>Nº afiliacion</th>
+					<th>Observacion</th>
+					<th>Tarea</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for list in lista%}
+					<tr class="{% cycle 'row1' 'row2' %}">
+							<td><a href= "/personal/forms/abmservprest/{{list.idservprest}}/{{list.idagente_id}}/">{{list.idagente}}</td>
+							<td>{{list.fechadesde}}</td>
+							<td>{{list.fechahasta}}</td>
+							<td>{{list.empresa}}</td>
+							<td>
+							    {%if list.estatal%}
+								<img src='/site_media/personal/img/icons/tick.png' ></img>
+							    {%else%}
+								<img src='/site_media/personal/img/icons/cross.png'></img>
+							    {%endif%}
+							</td>
+							<td>{{list.cajaaporte}}</td>
+							<td>{{list.nroafiliacion}}</td>
+							<td>{{list.observaciones}}</td>
+							<td>{{list.tarea}}</td>
+							{%if "Eliminar" in grupos or user.username = "admin"%}
+							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/servprest/{{idagente}}/{{list.idservprest}}/');">Eliminar</a></td>
+							{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

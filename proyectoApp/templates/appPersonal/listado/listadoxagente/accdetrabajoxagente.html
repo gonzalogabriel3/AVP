@@ -1,0 +1,46 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+
+{% block titulo-form %}
+	<p style="font-size: 16px;">Listado Accidentes de Trabajo de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
+{% endblock %}
+
+{% block botonnuevo %}{%endblock%}
+
+{% block main-list %}
+
+	<div class="results">
+		<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>Número de Expediente</th>
+					<th>Fecha</th>
+					<th>Lesión</th>
+					<th>Observaciones</th>
+					<th>Certificados</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for list in lista%}
+					<tr class="{% cycle 'row1' 'row2' %}">
+							<td><a href= "/personal/forms/abmaccdetrabajo/{{list.idaccidente}}/{{list.idagente_id}}/">{{list.nroexpediente}}</a> </td>
+							<td>{{list.fecha}}</td>
+							<td>{{list.detallelesion}}</td>
+							<td>{{list.observaciones}}</td>
+							<td><a href= "/personal/listado/listadoxaccdt/certificadoxaccdt/{{list.idaccidente}}/{{list.idagente_id}}/-1/">Ver</a> </td>
+							{%if "Eliminar" in grupos or user.username = "admin"%}
+							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/adtxagente/{{list.idagente_id}}/{{list.idaccidente}}/');">Eliminar</a>
+							{% endif %}
+							
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+{% endblock %}

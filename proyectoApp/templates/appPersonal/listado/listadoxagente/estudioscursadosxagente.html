@@ -1,0 +1,51 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+
+		{% block titulo-form %}
+		    <p style="font-size: 16px;">Listado Estudios Cursados <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
+		{% endblock %}
+
+		{% block botonnuevo %}
+			<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/abmestudioscursados/0/{{idagente}}');" />
+		{%endblock%}
+		
+		{% block titulo %}{% endblock%}
+		
+		{% block main-list %}
+		
+		<div class="results">
+
+			<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>Agente</th>
+						<th>Ciclo</th>
+						<th>Establecimiento</th>
+						<th>Título</th>
+						<th>Duración</th>
+						<th>Observaciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td><a href= "/personal/forms/abmestudioscursados/{{list.idestcur}}/{{list.idagente_id}}/">{{list.idagente}}</a></td>
+								<td>{{list.ciclo}}</td>
+								<td>{{list.establecimiento}}</td>
+								<td>{{list.titulo}}</td>
+								<td>{{list.duracion}}</td>
+								<td>{{list.observaciones}}</td>
+								{%if "Eliminar" in grupos or user.username = "admin"%}
+								<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/estudioscursados/{{idagente}}/{{list.idestcur}}/');">Eliminar</a></td>
+								{% endif %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}

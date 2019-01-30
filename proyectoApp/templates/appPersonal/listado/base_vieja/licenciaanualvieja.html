@@ -1,0 +1,71 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
+
+
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+		{% block titulo-form %}
+		    <td><b><font color="#000000" style="font-size: 13px;">Listado Agentes</font></b></td> 
+	        {% endblock %}
+
+		{% block botonnuevo %}
+	        {%endblock%}
+	        
+	        {% block botonborrar %}{%endblock%}
+		
+		{% block botonatrasaction %}"return Open('/personal/index'); " {% endblock %}
+		
+		{% block busqueda %}
+		
+<!-- 		<input id="busqueda" name="busqueda" class="element text" size="50" maxlength="50" value="" type="text"> -->
+<!-- 		<input class="btn btn-inverse" type="button" name="busqueda" value="buscar" Onclick="return buscargenerico('/personal/listado/base_vieja/licenciaanualvieja', '&idagente={{idagente}}')"> -->
+
+		{%endblock%}
+
+		{% block titulo %}
+		<div align="center">
+		    <h2 style="margin-left: 5px;margin-top: 10px;"> {{agente.apellido}}, {{agente.nombres}}   </h2>
+		</div>
+		{% endblock%}
+
+		
+		{% block main-list %}
+		
+		<div class="results">
+			<table id="result_list">
+					<thead>
+					<tr>
+						<th>Agente</th>
+						<th>Número de legajo</th>
+						<th>Año</th>
+						<th>Tipo</th>
+						<th>Fecha desde</th>
+						<th>Cantidad de dias</th>
+						<th>Observaciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						
+						<tr class="{% cycle 'row1' 'row2' %}">
+						
+								<td><a href= "/personal/forms/abmlicenciaanualvieja?idagente={{idagente}}&idlic={{list.pk}}">{{list.id_agente}} </a></td>
+								<td>{{list.nrolegajo}} </td>
+								<td>{{list.anio}}</td>
+								<td>{{list.tipo}}</td>
+								<td>{{list.fechadesde}}</td>
+								<td>{{list.cantdias}}</td>
+								<td>{{list.observaciones}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>

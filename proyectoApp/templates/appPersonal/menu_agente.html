@@ -1,0 +1,90 @@
+{% extends "personal/plantilla_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Adscriptos'%}
+{% endblock%}
+
+{% block content %}
+<div id="content-main" >
+	
+	<div id="form_container">
+	
+		<form id="form_544015" class="appnitro"  method="post" action="">
+		
+		<table width="105%" border="0" cellspacing="0" cellpadding="1"> 
+		<tr bgcolor="#FFC200" align="center" style="border-bottom: 1px solid #eee;"> 
+		
+		{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Menu Agente</font></b></td> 
+		{% endblock %}
+		
+		</tr> 
+		<tr bgcolor="#FFC200"> 
+		<td> 
+		<table width="100%" border="0" cellspacing="0" cellpadding="4"> 
+		<tr bgcolor="#FFFFFF"> 
+		<td>
+		
+
+		<fieldset>
+		
+		
+		
+		{% block contenido-menuagente %}
+		
+		
+		<h4> {{agente.apellido}}, {{agente.nombres}}   </h4>
+		
+		
+		<center>
+		
+
+		
+		
+		<ul class="nav nav-tabs nav-stacked">  
+		
+		<li class="nivel1"><a href="/personal/forms/agente?idagente={{idagente}}" class="nivel1">Modificar datos personales</a></li>
+		<li class="nivel1"><a href="/personal/listado/listadoxagente/facxagente?idagente={{idagente}}&borrado=-1">Familiares a Cargo</a></li>
+		{%if "Datos Agente" not in grupos%}
+			<li><a href="/personal/detalle/detallexagente/ausentismo?idagente={{idagente}}&borrado=-1">Ausentismo</a></li>
+			<li><a href="/personal/listado/listadoxagente/salidaxagente?idagente={{idagente}}&borrado=-1">Salidas</a></li>
+			<li><a href="/personal/vacas?idagente={{idagente}}" class="nivel1">Licencia Anual Agente</a></li>
+			<li><a href="/personal/listado/listadoxagente/medica?idagente={{idagente}}&borrado=-1" class="nivel1">Medica</a></li>
+			<li><a href="/personal/listado/listadoxagente/adtxagente/{{idagente}}/-1/">Accidente de Trabajo</a></li>
+			<li><a href="/personal/listado/listadoxagente/sancionxagente/{{idagente}}/-1/">Sanciones</a></li>
+<!-- 			<li><a href="/personal/forms/abmadscriptos/0/{{idagente}}/">Adscriptos</a></li> -->
+			<li><a href="/personal/listado/listadoxagente/traslado/{{idagente}}/-1/">Traslado</a></li>
+<!-- 			<li><a href="/personal/listado/listadoxagente/seguro/{{idagente}}/-1/">Seguro</a></li> -->
+			<li><a href="/personal/listado/listadoxagente/servprest/{{idagente}}/-1/">Servicios prestados</a></li>
+			<li><a href="/personal/listado/listadoxagente/estudioscursados/{{idagente}}/-1/">Estudios cursados</a></li>
+			<li><a href="/personal/licanualacum/{{idagente}}/">Licencias acumuladas</a></li>
+		{%endif%}
+		
+		</ul>  
+		
+		</center>
+		
+		{% endblock %}
+		
+		</fieldset>	
+		
+		</form>	
+		<div id="footer">
+		</div>
+
+		</td> 
+		</tr> 
+		</table> 
+		</td> 
+		</tr> 
+		</table> 
+		
+		
+	</div>
+	
+	</div>
+	
+{% endblock %}
+
+

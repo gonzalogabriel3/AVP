@@ -1,0 +1,52 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+		{% block titulo-form %}
+		    <td><b><font color="#000000" style="font-size: 13px;">Listado Agentes</font></b></td> 
+	        {% endblock %}
+
+		{% block botonnuevo %}
+
+	        {%endblock%}
+		
+		{% block botonatrasaction %}"return Open('/personal/index'); " {% endblock %}
+		
+		{% block titulo %} 
+		{%endblock%}
+		
+		{% block busqueda %}
+			<input id="busqueda" name="busqueda" class="element text" size="50" maxlength="50" value="" type="text">
+			<input class="btn btn-inverse" type="button" name="busqueda" value="buscar" Onclick="return buscaragentes('/personal/buscadoragenlic')">
+		{%endblock%}
+		{% block main-list %}
+		
+		<div class="results">
+			<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>Nombres y Apellidos</th>
+						<th>Número de legajo</th>
+						<th>Tipo Documento</th>
+						<th>Número Documento</th>
+						<th>Zona</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td><a href= "/personal/generarlicencia/individual?idagente={{list.idagente}}">{{list.apellido}}</a>, {{list.nombres}} </td>
+								<td>{{list.nrolegajo}}</td>
+								<td>{{list.tipodoc}}</td>
+								<td>{{list.nrodocumento}}</td>
+								<td>{{list.idzona}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>

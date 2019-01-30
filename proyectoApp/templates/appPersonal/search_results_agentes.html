@@ -1,0 +1,57 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+		{% block botonnuevo %}
+			<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/agente?idagente=0');"/>
+	        {%endblock%}
+	        
+	        {% block botonborrar %}{%endblock%}
+		
+		{% block botonatrasaction %}"return Open('/personal/listado/agentesIndex'); " {% endblock %}
+		
+		{% block busqueda %}
+			<form action="/personal/searchagente/{{opc}}" method="get" style="margin-left: 490px;">
+			    <input type="text" name="q">
+			    <input type="submit" value="Buscar">
+			</form>
+	        {%endblock%}
+				
+		{% block main-list %}
+		      <p>Termino de Busqueda: <strong>{{ query }}</strong></p>
+		      
+		      {% if agentes %}
+			  <p>Se encontraron {{ agentes|length }} agentes{{ agentes|pluralize }}.</p>
+			  <div class="results">
+			      <table class="table table-striped">
+					      <thead>
+					      <tr>
+						      <th>Nombre y Apellido</th>
+						      <th>Número de legajo</th>
+						      <th>Tipo Documento</th>
+						      <th>Número Documento</th>
+						      <th>Vacaciones</th>
+					      </tr>
+				      </thead>
+				      <tbody>
+					      {%for agente in agentes%}
+						      <tr class="{% cycle 'row1' 'row2' %}">
+								      <td><a href= "/personal/forms/menuagente?idagente={{agente.idagente}}">{{agente.apellido}}</a>, {{agente.nombres}} </td>
+								      <td>{{agente.nrolegajo}}</td>
+								      <td>{{agente.tipodoc}}</td>
+								      <td>{{agente.nrodocumento}}</td>
+								      <td><a href= "/personal/vacas/{{agente.idagente}}/">ver</a></td>
+						      </tr>
+					      {% endfor %}
+				      </tbody>
+			      </table>
+		      </div>
+		      {% else %}
+			  <p>No books matched your search criteria.</p>
+		      {% endif %}
+		      
+		      
+		{% endblock %}
+		<br/>

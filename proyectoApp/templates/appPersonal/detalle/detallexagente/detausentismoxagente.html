@@ -1,0 +1,215 @@
+{% extends "personal/graficos.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+{{ block.super }}
+<script type="text/javascript"> 
+  $(function () {
+    var chart;
+    $(document).ready(function() {
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'Aus',
+                type: 'column',
+                margin: [ 50, 50, 100, 80]
+            },
+            title: {
+                text: 'Ausentismo del periodo {{anio}}'
+            },
+            xAxis: {
+                categories: [
+                    'Enero',
+                    'Febrero',
+                    'Marzo',
+                    'Abril',
+                    'Mayo',
+                    'Junio',
+                    'Julio',
+                    'Agosto',
+                    'Septiembre',
+                    'Octubre',
+                    'Noviembre',
+                    'Diciembre'
+                ],
+                labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Cantidad de ausentismos'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.x +'</b><br/>'+
+                        'Ausentismo del periodo : '+ Highcharts.numberFormat(this.y, 1);
+                }
+            },
+                series: [{
+                name: 'Cantidad de personal',
+                data: [{{ene}},{{feb}},{{mar}},{{abr}},{{may}},{{jun}},{{jul}},{{ago}},
+			{{sep}},{{oct}},{{nov}},{{dic}}],
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    x: -3,
+                    y: 10,
+                    formatter: function() {
+                        return this.y;
+                    },
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            }]
+        });
+    });
+}); 
+</script> 
+<script type="text/javascript"> 
+  $(function () {
+	var chart2;
+		$(document).ready(function() {
+		    chart2 = new Highcharts.Chart({
+			chart: {
+			    renderTo: 'Arti',
+			    plotBackgroundColor: null,
+			    plotBorderWidth: null,
+			    plotShadow: false
+			},
+			title: {
+			    text: 'Articulos'
+			},
+			tooltip: {
+			    pointFormat: '<b>{point.percentage}%</b>',
+			    percentageDecimals: 3 ,
+			    formatter: function() {
+					return '<b>'+ this.point.name +'</b>';
+			    }
+			},
+			plotOptions: {
+			    pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+				    enabled: true,
+				    color: '#000000',
+				    connectorColor: '#000000',
+				    formatter: function() {
+					return '<b>'+ this.point.name +'</b>'+':'+Math.round(this.percentage*100)/100+'%';
+				    }
+				}
+			    }
+			},
+			series: [{
+			    type: 'pie',
+			    name: 'Articulos',
+			    data: [
+				  {%for lis in listadoArti%}
+					['{{lis.0}}',{{lis.1}}],
+				  {%endfor%}
+			    ],
+			}]
+		    });
+		});
+  });
+</script>
+
+<script type="text/javascript">
+function cargarausent(path){
+
+	open(path,'_self',false);
+
+  return false;
+}
+</script>
+{% endblock %}
+
+{% block title %}
+        {{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Grafico - Reporte Anual por Direccion</font></b></td> 
+{% endblock %}
+
+{% block contenido-graficos %}
+	
+	<div id="Arti" style="width: 98%; height:70%; margin-left:10px; float:left"></div>
+	<div id="Aus" style="width: 85%; height: 50%; margin-left:10px; float:left"></div>
+<!-- 	<div align="center"><embed src="http://sindisplay.com/creadores/letreros/show.swf?baseURL=http://sindisplay.com/creadores/letreros/&clickURL=http://www.sindisplay.com/creadores/letreros/&clickLABEL=Crear letrero en flash&type=0&delaySpeed=80&transID=0&str=Trabajar_nunca_mato_a_nadie,_pero_para_que_arriesgarse&bgColor=0&symbolX=9&w=7&h=7&pointType=point&glowColor=16777215&designNum=4" quality="high" bgcolor="#ffffff" width="431" height="63" name="show" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" /><br><small></small></div> -->
+	<input id="saveForm" class="button_text" type="submit" name="submit" value="Cargar ausentismo" onclick="return cargarausent('/personal/forms/abmausentismo?idausent=0&idagente={{idagen}}');"/>
+
+	<table class="table table-striped">
+		{%for a in l%}
+		    {{a.fechadesde}}
+		{%endfor%}
+		<thead >
+		      <th>Total 55</th>
+		      <th>Mensual 55</th>
+		      <th>Total 10-2</th>
+		      <th>Total 10-1</th>
+		      <th>Total 18</th>
+		</thead>
+		<tbody>
+		      <tr>
+				<td>{{tot55}}</td>
+				<td>{{men55}}</td>
+				<td>{{tot102}}</td>
+				<td>{{tot101}}</td>
+				<td>{{tot18}}</td>
+		      </tr>
+		</tbody>
+		
+		<thead >
+		
+		      <th>Fecha Inicio</th>
+		      <th>Fecha Fin</th>
+		      <th>Cant Dias</th>
+		      <th>Artículo</th>
+		      <th>Art. 10-2 / Acc. T.</th>
+		      {% if "Ausentismo" in grupos or user.username == "admin" %}
+		      <th></th>
+		      {% endif %}
+		</thead>
+		<tbody>
+		      {%for li in aus%}
+		      <tr class="{% cycle 'row1' 'row2' %}">
+				<td>{{li.fechainicio}}</td>
+				<td>{{li.fechafin}}</td>
+				<td>{{li.cantdias}}</td>
+				<td><a {% if li.idarticulo.pk != 999%}href="/personal/forms/abmausentismo?idausent={{li.idausent}}&idagente={{li.idagente_id}}"{% endif %}>{{li.idarticulo}}</a></td>
+				{% if "18" in li.idarticulo.descripcion  or "10-1" in li.idarticulo.descripcion or "10-2" in li.idarticulo.descripcion %}
+					<td><a href="/personal/listado/listadoxagente/medica?idagente={{li.idagente_id}}&idausent={{li.idausent}}&borrado=-1"> Actualizar</a></td>
+				{% else %}
+				{% if "11-1" in li.idarticulo.descripcion%}
+					<td><a href="/personal/listado/listadoxagente/adtxagente/{{li.idagente_id}}/-1/"> Actualizar</a></td>
+				{% else %}
+					<td></td>
+				{% endif %}
+				
+				{% endif %}
+				{% if  "Ausentismo" in grupos or user.username == "admin"  and li.idarticulo.pk != 999%}
+					<td><a href="#" onclick="Eliminar('/personal/detalle/detallexagente/ausentismo?idagente={{li.idagente_id}}&borrado={{li.idausent}}');">Eliminar</a></td>
+				{% endif %}
+		      </tr>
+		      {%endfor%}
+		</tbody>
+
+	</table>
+	
+
+{% endblock %}

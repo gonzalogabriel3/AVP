@@ -1,0 +1,59 @@
+{% extends "personal/admin/base_site.html" %}
+{% load i18n %}
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">
+	function abrir(){
+		var indice = document.formuL.selectL.selectedIndex;
+		var texto = document.formuL.selectL.options[indice].value; //tambien si fuera el caso podria ser text
+		//alert(texto);
+		//var url="/index/"+$F('opcion');
+		var url="/personal/listado/"+texto+"/";
+		open(url,"_self");
+		return false;
+	}
+</script>
+<div id="content-main">
+		<h2>Listados</h3>
+		<h3>Seleccione el tipo de listado</h2>
+		<p>A continuacion, seleccione de la lista el tipo de listado que quiere realizar, y luego presione el boton "Listar"</p>
+		<img src="/site_media/personal/img/men_at_work.png" width="200" height="200"></img>
+		<form name="formuL">
+			<select name="selectL">
+				<option value="1"> Alumnos</option>
+				<option value="2"> Otra cosa</option>
+				<option value="3"> Nada</option>
+			</select><br />
+			<!--<input type="radio" name="sex" value="alumnos" /> Alumnos<br />
+			<input type="radio" name="sex" value="female" /> NADA<br /> -->
+			<input type="button"  value="Listar" onclick="return abrir()"/>
+		</form>
+
+
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>Menu</h2>
+        <h3><img src='/site_media/personal/img/icon/white/PngFiles/Bulb.png' width="20" height="20"></img> Alumnos</h3>
+            <ul class="actionlist">
+		{% for al in alum %}
+			{% for a in al %}
+				<li class=""><a href="">{{a}}</a></li>
+			{%endfor%}
+		{%endfor%}
+            </ul>
+    </div>
+</div>
+{% endblock %}

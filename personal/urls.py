@@ -15,7 +15,7 @@ urlpatterns = [
     path('ausReportMensual/$',ausReportMensual),
     path('ausReportMensualCMO/$',ausReportMensualCMO),
     path('searchagente/(-?\d{1})/$', searchagente),
-    path('partediario/$',partediario),
+    path('partediario/',partediario),
     
     path('ausReportDir/(\d{4})/(\d{1,2})/$',ausReportDir),
     path('ausPartDiario/$',ausPartDiario),

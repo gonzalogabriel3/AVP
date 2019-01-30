@@ -1,0 +1,48 @@
+{% extends "appPersonal/plantilla_base.html" %}
+{% load i18n %}
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Adscriptos'%}
+{% endblock%}
+
+{% block extrahead %}
+{% endblock%}
+
+
+{% block content %}
+<div id="content-main" >
+	
+	<div id="form_container">
+
+		    <table class="table table-striped" width="105%" border="0" cellspacing="0" cellpadding="1"> 
+			<tr bgcolor="#FFC200" align="center" style="border-bottom: 1px solid #eee;"> 
+			    {% block titulo-form %}
+			    <td><b><font color="#000000" style="font-size: 13px;">Adscriptos</font></b></td> 
+			    {% endblock %}
+			    
+			    </tr> 
+				<tr bgcolor="#FFC200"> 
+				    <td> 
+					  <table width="100%" border="0" cellspacing="0" cellpadding="4"> 
+					      <tr bgcolor="#FFFFFF"> 
+						    <td>
+							  
+							  {% block contenido-estadisticas %}
+							  
+							  {% endblock %}
+						      
+							  <div id="footer">
+							  </div>
+						    </td>
+					      </tr>
+					  </table> 
+				    
+				    </td>
+				 </tr>   
+			    </tr> 
+			</tr> 
+		    </table> 
+	</div>
+	
+</div>
+	
+{% endblock %}

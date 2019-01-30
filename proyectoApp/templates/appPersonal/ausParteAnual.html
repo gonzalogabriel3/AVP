@@ -1,0 +1,86 @@
+{% extends "personal/graficos.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<script type="text/javascript"> 
+  $(function () {
+	var chart2;
+		$(document).ready(function() {
+		    chart2 = new Highcharts.Chart({
+			chart: {
+			    renderTo: 'Arti',
+			    plotBackgroundColor: null,
+			    plotBorderWidth: null,
+			    plotShadow: false
+			},
+			title: {
+			    text: 'Articulos'
+			},
+			tooltip: {
+			    pointFormat: '<b>{point.percentage}%</b>',
+			    percentageDecimals: 3 ,
+			    formatter: function() {
+					return '<b>'+ this.point.name +'</b>';
+			    }
+			},
+			plotOptions: {
+			    pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+				    enabled: true,
+				    color: '#000000',
+				    connectorColor: '#000000',
+				    formatter: function() {
+					return '<b>'+ this.point.name +'</b>'+':'+Math.round(this.percentage*100)/100+'%';
+				    }
+				}
+			    }
+			},
+			series: [{
+			    type: 'pie',
+			    name: 'Articulos',
+			    data: [
+				  {%for lis in listadoArti%}
+					['{{lis.0}}',{{lis.1}}],
+				  {%endfor%}
+			    ],
+			}]
+		    });
+		});
+  });
+</script>
+{% endblock %}
+
+{% block title %}
+        {{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Parte mensual </font></b></td> 
+{% endblock %}
+
+{% block contenido-graficos %}
+	
+	<h5><strong>Parte mensual {{mes}}/{{anio}}</strong></h5>
+	<div id="Arti" style="width: 98%; height:70%; margin-left:10px; float:left"></div>
+
+	<table class="table table-striped">
+		<thead >
+		      <th>Agente</th>
+		      <th>Articulo</th>
+		</thead>
+		<tbody>
+		      {%for li in listado%}
+		      <tr class="{% cycle 'row1' 'row2' %}">
+				<td>{{li.0}}</td>
+				<td>{{li.1}}</td>
+		      </tr>
+		      {%endfor%}
+		</tbody>
+	</table>
+	
+	
+{% endblock %}

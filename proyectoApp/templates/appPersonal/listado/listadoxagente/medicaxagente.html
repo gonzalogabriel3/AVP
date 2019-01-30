@@ -1,0 +1,58 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+
+{% block titulo-form %}
+	<p style="font-size: 16px;">Listado de Medicas de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
+{% endblock %}
+
+{% block botonnuevo %}
+{% if idausent > 0%}
+	<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/abmmedica?idmedica=0&idagente={{idagente}}&idausent={{idausent}}');" />
+{% endif %}
+{%endblock%}
+
+{% block main-list %}
+
+	<div class="results">
+		<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>Agente</th>
+					<th>Artículo</th>
+					<th>Expediente</th>
+					<th>Diagnostico</th>
+					<th>Función</th>
+					<th>Tipo alta</th>
+					<th>Observaciones</th>
+					<th>Familiar atendido</th>
+					<th>Resolución</th>
+					<th>Ver</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for list in lista%}
+					<tr class="{% cycle 'row1' 'row2' %}">
+							<td><a href= "/personal/forms/abmmedica?idmedica={{list.id_medica}}&idagente={{list.agente_id}}&idausent={{list.idausent_id}}">{{list.agente}}</td>
+							<td>{{list.articulo}}</td>
+							<td>{{list.expediente}}</td>
+							<td>{{list.diagnostico}}</td>
+							<td>{{list.funcion}}</td>
+							<td>{{list.tipoalta}}</td>
+							<td>{{list.observaciones}}</td>
+							<td>{{list.fliaratendido}}</td>
+							<td>{{list.resolucion}}</td>
+							<td><a href= "/personal/listado/listadoxmedica/juntamedica/{{list.agente_id}}/{{list.id_medica}}/0/?idausent={{idausent}}">Junta medica</td>
+							{%if "Eliminar" in grupos or user.username = "admin"%}
+							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/medica?idagente={{idagente}}&borrado={{list.id_medica}}&idausent={{list.idausent_id}}');">Eliminar</a></td>
+							{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

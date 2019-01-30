@@ -1,0 +1,223 @@
+{% extends "personal/forms/form_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Accidente de Trabajo'%}
+{% endblock%}
+
+{% block extrahead %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<script type="text/javascript" src='/site_media/personal/js/forms/view.js'></script>
+<script type="text/javascript" src='/site_media/personal/js/forms/calendar.js'></script>
+{% endblock%}
+{% block branding %}
+
+{% endblock %}
+
+{% block breadcrumbs %}
+ {% endblock %}
+            
+{% block nav-global %}
+
+{% endblock %}
+
+	{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Accidentes de Trabajo</font></b></td> 
+	{% endblock %}
+
+	{% block contenido-form %}
+		
+		<p>
+		<label class="description" for="element_1">Nombre y Apellido: </label>
+		<input id="element_1" name="element_1" class="element text large" type="text" maxlength="255" value=""/> 
+		</p> 
+		
+		<p>
+		<label class="description" for="element_2">Número de Expediente: </label>
+		<input id="element_2" name="element_2" class="element text large" type="text" maxlength="255" value=""/> 
+		</p> 
+		
+		
+		<p>
+		<label class="description" for="element_3">Fecha: </label>
+		<span>
+			<input id="element_3_1" name="element_3_1" class="element text" size="2" maxlength="2" value="" type="text"> /
+			<label for="element_3_1">DD</label>
+		</span>
+		<span>
+			<input id="element_3_2" name="element_3_2" class="element text" size="2" maxlength="2" value="" type="text"> /
+			<label for="element_3_2">MM</label>
+		</span>
+		<span>
+	 		<input id="element_3_3" name="element_3_3" class="element text" size="4" maxlength="4" value="" type="text">
+			<label for="element_3_3">YYYY</label>
+		</span>
+	
+		<span id="calendar_3">
+			<img id="cal_img_3" class="datepicker" src='/site_media/personal/img/forms/calendar.gif' alt="Pick a date.">	
+		</span>
+		<script type="text/javascript">
+			Calendar.setup({
+			inputField	 : "element_3_3",
+			baseField    : "element_3",
+			displayArea  : "calendar_3",
+			button		 : "cal_img_3",
+			ifFormat	 : "%B %e, %Y",
+			onSelect	 : selectEuropeDate
+			});
+		</script>
+		</p> 
+		
+		<p>
+		<label class="description" for="element_4">Hora </label>
+		<span>
+			<input id="element_4_1" name="element_4_1" class="element text " size="2" type="text" maxlength="2" value=""/> : 
+			<label>HH</label>
+		</span>
+		<span>
+			<input id="element_4_2" name="element_4_2" class="element text " size="2" type="text" maxlength="2" value=""/> : 
+			<label>MM</label>
+		</span>
+		<span>
+			<input id="element_4_3" name="element_4_3" class="element text " size="2" type="text" maxlength="2" value=""/>
+			<label>SS</label>
+		</span>
+		<span>
+			<select class="element select" style="width:4em" id="element_4_4" name="element_4_4">
+				<option value="AM" >AM</option>
+				<option value="PM" >PM</option>
+			</select>
+			<label>AM/PM</label>
+		</span> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_5">Testigos: </label>
+		<input id="element_5" name="element_5" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_20">Lesión: </label>
+		
+		<select class="element select medium" id="element_20" name="element_20"> 
+			<option value="" selected="selected"></option>
+			<option value="1" >First option</option>
+			<option value="2" >Second option</option>
+			<option value="3" >Third option</option>
+
+		</select>
+		</p>
+		
+		<p>
+		<label class="description" for="element_6">Detalle Lesión </label>
+		<textarea id="element_6" name="element_6" class="element textarea medium"></textarea> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_7">Circunstancias: </label>
+		<textarea id="element_7" name="element_7" class="element textarea medium"></textarea> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_8">Número de Siniestro: </label>
+		<input id="element_8" name="element_8" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_9">Número Exposición: </label>
+		<input id="element_9" name="element_9" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_10">Comisaria: </label>
+		<input id="element_10" name="element_10" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_11">Edad: </label>
+		<input id="element_11" name="element_11" class="element text small" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_12">Horario: </label>
+		<input id="element_12" name="element_12" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_13">Función: </label>
+		<input id="element_13" name="element_13" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_14">Función Circunstancial: </label>
+		<input id="element_14" name="element_14" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		
+		<p>
+		<label class="description" for="element_15">Fecha Alta: </label>
+		<span>
+			<input id="element_15_1" name="element_15_1" class="element text" size="2" maxlength="2" value="" type="text"> /
+			<label for="element_15_1">MM</label>
+		</span>
+		<span>
+			<input id="element_15_2" name="element_15_2" class="element text" size="2" maxlength="2" value="" type="text"> /
+			<label for="element_15_2">DD</label>
+		</span>
+		<span>
+	 		<input id="element_15_3" name="element_15_3" class="element text" size="4" maxlength="4" value="" type="text">
+			<label for="element_15_3">YYYY</label>
+		</span>
+	
+		<span id="calendar_15">
+			<img id="cal_img_15" class="datepicker" src='/site_media/personal/img/forms/calendar.gif' alt="Pick a date.">	
+		</span>
+		<script type="text/javascript">
+			Calendar.setup({
+			inputField	 : "element_15_3",
+			baseField    : "element_15",
+			displayArea  : "calendar_15",
+			button		 : "cal_img_15",
+			ifFormat	 : "%B %e, %Y",
+			onSelect	 : selectDate
+			});
+		</script>
+		</p>
+		
+		<p>
+		<label class="description" for="element_21">Con secuelas: </label>
+		<span>
+			<input id="element_21_1" name="element_21_1" class="element checkbox" type="checkbox" value="1" />
+<label class="choice" for="element_21_1">First option</label>
+
+		</span> 
+		</p>
+		
+		
+		<p>
+		<label class="description" for="element_16">Porcentaje de Incapacidad: </label>
+		<input id="element_16" name="element_16" class="element text small" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		
+		<p>
+		<label class="description" for="element_17">Zona: </label>
+		<input id="element_17" name="element_17" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		
+		
+		<p>
+		<label class="description" for="element_18">Resolución: </label>
+		<input id="element_18" name="element_18" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		
+		<p>
+		<label class="description" for="element_19">Resolución Sumario: </label>
+		<input id="element_19" name="element_19" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+	
+	{% endblock %}

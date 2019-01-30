@@ -1,0 +1,46 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+	{% block botonnuevo %}{% endblock %}
+	{% block botonatrasaction %}"return Open('/personal/vacas?idagente={{idagente}}'); " {% endblock %}
+	{% block path %}
+	
+	{% endblock%}
+	{% block main-list %}
+		<div class="results">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Año</th>
+						<th>Tipo</th>
+						<th>Fecha Desde</th>
+						<th>Fecha Hasta</th>
+						<th>Cantidad de dias</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+							<td><a href='/personal/forms/abmlicanual/{{list.idlicanual}}/{{list.idagente_id}}/'>{{list.anio}}</a></td>
+							<td>{{list.tipo}}</td>
+							<td>{{list.fechadesde|date:"d/m/Y"}}</td>
+							<td>{{list.idausent.fechafin|date:"d/m/Y"}}</td>
+							<td>{{list.cantdias}}</td>
+							{%if "Eliminar" in grupos or user.username = "admin"%}
+							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/vacacionesxagente/{{list.idagente_id}}/{{list.idlicanual}}/');">Eliminar</a></td>
+							{% endif %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% endblock %}
+	</br>

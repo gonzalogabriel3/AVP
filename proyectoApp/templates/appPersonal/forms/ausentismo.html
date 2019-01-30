@@ -1,0 +1,53 @@
+{% extends "personal/forms/form_base.html" %}
+{% load i18n admin_modify adminmedia %}
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Agente'%}
+{% endblock%}
+
+{% block extrahead %}
+{{ block.super }}
+<script type="text/javascript" src='/site_media/personal/js/forms/view.js'></script>
+<script type="text/javascript">
+  jQuery(document).ready(function(){ jQuery('.timepicker').datepicker(); });
+</script>
+{{ form.media }}
+{% endblock%}
+{% block branding %}
+
+{% endblock %}
+
+{% block breadcrumbs %}
+ {% endblock %}
+            
+{% block nav-global %}
+
+{% endblock %}
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Ausentismo</font></b></td> 
+	{% endblock %}
+
+	{% block contenido-form %}
+		
+		<table width="100%" border="0" cellspacing="0" cellpadding="4"> 
+		<tr bgcolor="#FFFFFF"> 
+		<td>
+		
+		{% if form.errors %}
+		    <p class="error">Error...</p>
+		{% endif %}
+
+		{{ error_html }}
+
+		
+		    {% csrf_token %}
+
+		    
+		    {{ form.as_table }}
+		   
+		</td>
+		</tr>
+		</table>
+		
+		
+{% endblock %}

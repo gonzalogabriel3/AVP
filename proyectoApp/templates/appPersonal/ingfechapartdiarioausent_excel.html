@@ -1,0 +1,36 @@
+{% extends "personal/estadisticas/estadisticas_base.html" %}
+{% load i18n %}
+
+{% block extrastyle %}
+
+
+{{ block.super }}
+
+{% endblock %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+	
+{% endblock%}
+
+
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Reporte Excel Ausentismo -Parte diario</font></b></td> 
+{% endblock %}
+
+{% block contenido-estadisticas %}
+
+		<h5>Ausentismos - Parte diario</h5>
+		<form method="post" enctype="text/plain">{% csrf_token %}
+		      Fecha (Ejemplo 11-06-2000)
+		      </br>
+		      
+		      <input type="text" id="dia" name="dia" maxlength=2 size=2>-
+		      <input type="text" id="mes" name="mes" maxlength=2 size=2>-
+		      <input type="text" id="anio" name="anio" maxlength=4 size=2></br>
+		      
+		      <input type="button" value="Consulta" onclick="return auspartediarioexcel()"/>
+		 
+		</form>
+{% endblock %}

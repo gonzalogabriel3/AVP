@@ -1,0 +1,44 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+{% block titulo-form %}
+	<p style="font-size: 16px;">Listado Sanciones de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
+{% endblock %}
+
+{% block botonnuevo %}
+	<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/abmsancion/0/{{idagente}}');" />
+{%endblock%}
+
+{% block main-list %}
+
+	<div class="results">
+
+		<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>Fecha</th>
+					<th>Sancion</th>
+					<th>Dias de Sanción</th>
+					<th>Observaciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for list in lista%}
+					<tr class="{% cycle 'row1' 'row2' %}">
+							<td><a href= "/personal/forms/abmsancion/{{list.idsancion}}/{{list.idagente_id}}/">{{list.fecha}}</a> </td>
+							<td>{{list.tiposancion}}</td>
+							<td>{{list.cantidaddias}}</td>
+							<td>{{list.observaciones}}</td>
+							{%if "Eliminar" in grupos or user.username = "admin"%}
+							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/sancionxagente/{{list.idagente_id}}/{{list.idsancion}}/');">Eliminar</a></td>
+							{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

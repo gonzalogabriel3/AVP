@@ -1,0 +1,48 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+{% endblock %}
+
+
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+	{% block botonnuevo %}{%endblock%}
+	
+	{% block botonatrasaction %}"return Open('/personal/index'); " {% endblock %}
+	
+	{% block botonexcel %}
+	     <input id="backbutton" class="button_text" type="submit" name="submit" value="Excel" style="margin-rigth: 740px;" onclick="javascript:callExcel()" />
+	{%endblock%}
+	
+	<h5>Licencias anuales acumuladas</h5>
+	
+	{% block main-list %}
+		<div class="results">
+			<table class="table table-striped">
+				<thead>
+					<th>Agente</th>
+					<th>Año</th>
+					<th>Dias</th>
+					<th>Dias tomados</th>
+					
+				</thead>
+				<tbody>
+					{%for l in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+							<td>{{l.idagente}}</td>
+							<td>{{l.anio}}</td>
+							<td>{{l.cantidaddias}}</td>
+							<td>{{l.diastomados}}</td>
+							
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+		</div>
+	{% endblock %}
+	</br>
+	{% block prevpage%}{% endblock %}
+	{% block nextpage%}{% endblock %}

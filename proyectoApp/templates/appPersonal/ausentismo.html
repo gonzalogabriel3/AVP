@@ -1,0 +1,28 @@
+{% extends "personal/estadisticas/estadisticas_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Estadisticas Ausentismos</font></b></td> 
+{% endblock %}
+
+
+
+{% block contenido-estadisticas %}
+
+		
+		<h5>Ausentismos</h5>
+		<p>Seleccione una opcion:</p>
+		
+		<center>
+		<ul class="nav nav-pills nav-stacked">
+			<li><a href="/personal/partediario/">Parte Diario</a></li>
+			<li><a href="/personal/ausRepMes/">Ausentismo Mensual</a></li>
+			<li><a href="/personal/ausRepDir/">Ausentismo Anual por Direccion</a></li>
+			<li><a href="/personal/ausRepCMO/">Reporte Mensual C.M.O</a></li>
+		</ul>
+		</center>
+{% endblock %}

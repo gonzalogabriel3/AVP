@@ -1,11 +1,68 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Personal</title>
-</head>
-<body>
-	<h3>Index de personal</h3>
-	<br><br>
+{% extends "appPersonal/plantilla_base.html" %}
+{% load i18n %}
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+	
+{% endblock%}
 
-</body>
-</html>
+{% block content %}
+
+<div id="content-main">
+	<div id="form_container">
+		<form id="form_544015" class="appnitro"  method="post" action="">
+
+		    <table width="105%" border="0" cellspacing="0" cellpadding="1"> 
+			<tr bgcolor="#FFC200" align="center" style="border-bottom: 1px solid #eee;"> 
+			    {% block titulo-form %}
+			    <td><b><font color="#000000" style="font-size: 13px;">Inicio</font></b></td> 
+			    {% endblock %}
+			    </tr> 
+				<tr bgcolor="#FFC200"> 
+				    <td> 
+					  <table width="100%" border="0" cellspacing="0" cellpadding="4"> 
+					      <tr bgcolor="#FFFFFF"> 
+						    <td>
+							  <fieldset>
+							  
+							  {% block contenido-estadisticas %}
+
+							  <div align="center" style="height: 25px;">
+							  <h4 style="font-size:32px; text-align:center;">Sistema de Personal </h4>
+							  </div>
+							  
+							  <div align="center">
+								<img src='/site_media/personal/img/logo-inicio.jpg' width=140px height=152px></img><br></br>
+								<hr>
+								<a href='/personal/partediario/'><img src='/site_media/personal/img/icon/black/PngFiles/Chart.png' width=40px height=40px alt="parte diario"></img></a>
+								<a href='/personal/listado/agentes?opc=2&busc=/'><img src='/site_media/personal/img/icon/black/PngFiles/Machine.png' width=40px height=40px alt="agentes"></img></a>
+								<a href='/personal/cargaausent'><img src='/site_media/personal/img/icon/black/PngFiles/Stock.png' width=40px height=40px alt="licencias"></img></a>
+							  </div>
+
+							  <hr>
+							  
+							  <h2>{{inicio.titulo}}</h2>
+							  
+							  <p>{{inicio.mensaje|linebreaksbr}}</p>
+
+							  {% endblock %}
+							  
+							  
+							  </fieldset>	
+
+							  <div id="footer">
+							  </div>
+						    </td>
+					      </tr>
+					  </table> 
+				    </td>
+				 </tr>   
+			    </tr> 
+			</tr> 
+		    </table> 
+		</form>	
+	</div>
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,47 @@
+{% extends "personal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+		 
+		{% block nombrelistado %} de Certificados {% endblock %}
+
+		{% block botonnuevoaction %} /personal/forms/abmcertificadoaccdt/0/{{idacc}}/{{idagen}}/ {% endblock %}
+		
+		{% block botonatrasaction %}"return Open('/personal/listado/listadoxagente/adtxagente/{{idagen}}/-1/'); " {% endblock %}
+
+		
+		{% block main-list %}
+		
+		<div class="results">
+		
+		
+			<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>Número Expediente</th>
+						<th>Detalle</th>
+						<th>Fecha Desde</th>
+						<th>Fecha Hasta</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td><a href= "/personal/forms/abmcertificadoaccdt/{{list.idcertif}}/{{list.idaccidentetrabajo_id}}/{{list.idagente_id}}/">{{list.nroexpediente}}</a> </td>
+								<th>{{list.detalle}}</th>
+								<td>{{list.fechadesde}}</td>
+								<td>{{list.fechahasta}}</td>
+								{%if "Eliminar" in grupos or user.username = "admin"%}
+								<td><a href="#" onclick="Eliminar('/personal/listado/listadoxaccdt/certificadoxaccdt/{{list.idaccidentetrabajo_id}}/{{list.idagente_id}}/{{list.idcertif}}/');">Eliminar</a></td>
+								{% endif %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>
+		
+		
