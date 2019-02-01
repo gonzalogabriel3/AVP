@@ -34,7 +34,7 @@ function Eliminar(a,b) {
 					<thead>
 					<tr>
 						<th>Nombre y Apellido</th>
-						<th>Tipo Documento</th>
+						<th>Paga Salario</th>
 						<th>Número Documento</th>
 						<th>Sexo</th>
 						<th>Vínculo</th>
@@ -47,7 +47,11 @@ function Eliminar(a,b) {
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
 								<td><a href= "/personal/forms/abmfamiliaresac?idfac={{list.idasigfam}}&idagente={{list.idagente_id}}">{{list.apellidoynombre}}</a> </td>
-								<td>{{list.tipodoc}}</td>
+								{% if list.pagasalario %}
+									<td><img src='/site_media/personal/img/icon/orig/icon-yes.gif'></img></td>
+								{% else %}
+									<td><img src='/site_media/personal/img/icon/orig/icon-no.gif'></img></td>
+								{% endif %}
 								<td>{{list.nrodocumento}}</td>
 								<td>{{list.sexo}}</td>
 								<td>{{list.vinculo}}</td>
