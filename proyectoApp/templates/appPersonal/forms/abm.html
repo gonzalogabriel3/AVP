@@ -1,13 +1,8 @@
-{% extends "personal/forms/form_base.html" %}
-{% load i18n %}
-
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Agente'%}
-{% endblock%}
+{% extends "appPersonal/forms/form_base.html" %}
 
 {% block titulo-form %}
 		<td><b><font color="#000000" style="font-size: 13px;">{{name}}</font></b></td> 
-	{% endblock %}
+{% endblock %}
 
 	{% block contenido-form %}
 	<table class="table table-hover"  width="100%" border="0" cellspacing="0" cellpadding="4"> 

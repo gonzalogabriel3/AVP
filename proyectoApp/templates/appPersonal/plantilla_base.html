@@ -1,18 +1,21 @@
-{% load static %}{% load url from future %}<!DOCTYPE html>
+{% load static %}
+<!DOCTYPE html>
 
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
 	<title>
 	{% block title %} 
 		Administracion de Vialidad Provincial
 	{% endblock%}
 	</title>
-	<link rel="stylesheet" type="text/css" href="/site_media/personal/css/bootstrap.css" />
-	<link rel="stylesheet" type="text/css" href="/site_media/personal/css/datepicker.css" />
-	<link rel="stylesheet" type="text/css" href="/site_media/personal/css/bootstrap-responsive.css"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/bootstrap.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/datepicker.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/bootstrap-responsive.css' %}"/>
 	<style type="text/css">
 	  body {
 	    padding-top: 60px;
@@ -33,16 +36,16 @@
 	</style>
 
 	<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
-	{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "personal/admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+	{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static 'personal/admin/css/rtl.css' %}{% endblock %}" />{% endif %}
 	<script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
 	<script type="text/javascript" src="/jsi18n/"></script>
-	<script type="text/javascript" src="/site_media/personal/js/core.js"></script>
-	<script type="text/javascript" src="/site_media/personal/js/funciones.js" ></script>
-	<script type="text/javascript" src='/site_media/personal/js/forms/view.js'></script>
-	<script type="text/javascript" src="/site_media/personal/js/prototype.js" ></script>
-	<script type="text/javascript" src="/site_media/personal/js/jquery.js" ></script>
-	<script type="text/javascript" src="/site_media/personal/js/bootstrap.js" ></script>
-	<script type="text/javascript" src="/site_media/personal/js/bootstrap-datepicker.js" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/core.js' %}"></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/funciones.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/forms/view.js' %}"></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/prototype.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/jquery.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/bootstrap.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/bootstrap-datepicker.js' %}" ></script>
 		
 	<script>
 		$(function(){
@@ -122,7 +125,7 @@
 			{% endblock %}
 			<a class="brand" href="/personal/index/">
 				{% trans ' AVP' %}
-				<img src='/site_media/personal/img/logo-mini.png' width="35" height="35"  onclick="/index.html" ></img>
+				<img src="{% static 'appPersonal/img/logo-inicio2.png' %}" width="35" height="35"  onclick="/index.html" ></img>
 				{% block branding %}{% endblock %}
 			</a>
 			{% if user.is_active and user.is_staff %}
@@ -135,7 +138,7 @@
 					    {% if docsroot %}
 						<a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
 					    {% endif %}
-					    <a href="/personal/registration/logged_out.html">{% trans 'Salir' %}</a>
+					    <a href="{% url 'logout' %}">{% trans 'Salir' %}</a>
 					{% endblock %}
 					</div>
 				</div>
@@ -165,24 +168,24 @@
 					{% block sidebar %}
 					      <div id="content-related">
 						      <div class="module" id="recent-actions-module">
-							  {%if "Personal-Listados" in grupos  or user.username = "admin"%}
+							  {%if "Personal-Listados" in grupos  or user.username == "admin"%}
 								<ul class="nav nav-list">
 
-								  <li class="nav-header"><img src='/site_media/personal/img/icons/vcard.png' width="8%" height="8%"></img> Datos</li>
+								  <li class="nav-header"><img src="{% static 'appPersonal/img/icons/vcard.png' %}" width="8%" height="8%"></img> Datos</li>
 
-								  <li><a href="/personal/listado/agentesIndex">Agentes </a></li2>
-								  <li><a href="/personal/listado/articulos">Articulos</a></li2>
+								  <li><a href="{% url 'listado/agentesIndex' %}">Agentes </a></li>
+								  <li><a href="/personal/listado/articulos">Articulos</a></li>
 <!-- 								  <li><a href="/personal/listado/adscriptos">Adscriptos</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/listacctrabajo">Accidente de trabajo</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/traslado">Traslados</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/seguro">Seguros</a></li2> -->
-								  <li><a href="/personal/listado/agentes_base_vieja">Base vieja</a></li2>
+								  <li><a href="/personal/listado/agentes_base_vieja">Base vieja</a></li>
 								  <hr>
 								</ul>
 							  {%endif%}
-							  {%if "Reportes" in grupos  or user.username = "admin"%}
+							  {%if "Reportes" in grupos  or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src='/site_media/personal/img/icons/report.png' width="8%" height="8%"></img> Reportes en Excel</li>
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/report.png' %}" width="8%" height="8%"></img> Reportes en Excel</li>
 								      <li><a href="/personal/reportes/agentes">Agentes </a></li>
 								      <li><a href="/personal/reportes/ingfechapartdiarioausent_excel">Ausentismo-Parte Diario </a></li>
 								      <li><a href="/personal/reportes/ingopcsalidasanioagente_excel">Salidas Agente Año </a></li>
@@ -191,9 +194,9 @@
 								      <hr>
 								    </ul>
 							  {%endif%}
-							  {%if "Estadisticas" in grupos or user.username = "admin" %}
+							  {%if "Estadisticas" in grupos or user.username == "admin" %}
 								    <ul class="nav nav-list">
-									      <li class="nav-header"><img src='/site_media/personal/img/icons/chart_pie.png' width="8%" height="8%"></img> Informes</li>
+									      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/chart_pie.png' %}" width="8%" height="8%"></img> Informes</li>
 									      <li><a href="/personal/listado/altasbajasindex">Altas-Bajas</a></li2>
 									      <li><a href="/personal/ausent">Ausentismo</a></li>
 									      <li><a href="/personal/presentRep">Presentismo</a></li>
@@ -204,17 +207,17 @@
 									      <hr>
 								    </ul>
 							  {%endif%}
-							  {%if "Licencia" in grupos or user.username = "admin"%}
+							  {%if "Licencia" in grupos or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src='/site_media/personal/img/icons/user_go.png' width="8%" height="8%"></img> Generar Licencia</li>
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/user_go.png' %}" width="8%" height="8%"></img> Generar Licencia</li>
 								      <li><a href="#" onclick="doOperation('/personal/generarlicencia/todos');">Generar licencia para todos</a></li>
 								      <li><a href="/personal/buscadoragenlic">Generar licencia individual</a></li>
 								      <hr>
 								    </ul>
 							  {%endif%}
-							  {%if "Cambios" in grupos or user.username = "admin"%}
+							  {%if "Cambios" in grupos or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src='/site_media/personal/img/icons/eye.png' width="8%" height="8%"></img> Informes</li>
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/eye.png' %}" width="8%" height="8%"></img> Informes</li>
 								      <li><a href="/personal/listado/cambios" >Logs</a></li>
 								      <hr>
 								    </ul>

@@ -42,7 +42,7 @@ import datetime
 
 #--------------------------------LISTADO POR AGENTE--------------------------------
 
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def familiaresacxagente(peticion):
     user = peticion.user
 
@@ -51,7 +51,7 @@ def familiaresacxagente(peticion):
     borrado = int(peticion.GET.get('borrado'))
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
         
     agente = Agente.objects.get(idagente=idagente)
     
@@ -67,9 +67,9 @@ def familiaresacxagente(peticion):
     
     lista = paginar(familiares,peticion)
     
-    return render_to_response('personal/listado/listadoxagente/familiaresacxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/listadoxagente/familiaresacxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def accdetrabajoxagente(peticion,idagente, borrado):
     
     user = peticion.user
@@ -78,7 +78,7 @@ def accdetrabajoxagente(peticion,idagente, borrado):
     
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
         
     if borrado != "":
         try:
@@ -96,11 +96,11 @@ def accdetrabajoxagente(peticion,idagente, borrado):
     accidentes = Accidentetrabajo.objects.filter(idagente__exact=idagente).order_by('-fecha')
     
     lista = paginar(accidentes,peticion)
-    return render_to_response('personal/listado/listadoxagente/accdetrabajoxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/listadoxagente/accdetrabajoxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
 
 
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def salidaxagente(peticion):
 
     user = peticion.user
@@ -109,7 +109,7 @@ def salidaxagente(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
 
     if borrado != "":
         try:
@@ -122,16 +122,16 @@ def salidaxagente(peticion):
     salidas = Salida.objects.filter(idagente__exact=idagente).order_by('-fecha')
         
     lista = paginar(salidas,peticion)
-    return render_to_response('personal/listado/listadoxagente/salidaxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/listadoxagente/salidaxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
   
 
-@login_required
+@login_required(login_url='login')
 def sancionxagente(peticion,idagente,borrado):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
     agente = Agente.objects.get(idagente=idagente)
     if borrado != "":
         try:
@@ -145,19 +145,19 @@ def sancionxagente(peticion,idagente,borrado):
     sanciones = Sancion.objects.filter(idagente__exact=idagente).order_by('fecha')
 
     lista = paginar(sanciones,peticion)
-    return render_to_response('personal/listado/listadoxagente/sancionxagente.html',{'lista':lista,'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente,},)
+    return render_to_response('appPersonal/listado/listadoxagente/sancionxagente.html',{'lista':lista,'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente,},)
     
     
     
 #--------------------------------LISTADO POR CERTIFICADO--------------------------------
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def certificadoxaccdt(peticion,idacc,idagen,borrado):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
     if borrado != "":
         try:
             s = Certificadoaccidente.objects.get(idcertif__exact = int(borrado))
@@ -168,11 +168,11 @@ def certificadoxaccdt(peticion,idacc,idagen,borrado):
             certificados = Certificadoaccidente.objects.filter(idaccidentetrabajo__exact=idacc).order_by('fechadesde')
     lista = paginar(certificados,peticion)
     
-    return render_to_response('personal/listado/listadoxaccdt/certificadoxaccdt.html',{'lista':lista,'user':user, 'grupos':grupos, 'idacc':idacc,'idagen':idagen},)
+    return render_to_response('appPersonal/listado/listadoxaccdt/certificadoxaccdt.html',{'lista':lista,'user':user, 'grupos':grupos, 'idacc':idacc,'idagen':idagen},)
     
 #--------------------------------LISTADO POR CERTIFICADO--------------------------------
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def escolaridadxaf(peticion):
     user = peticion.user
     idaf = int(peticion.GET.get('idfac'))
@@ -183,7 +183,7 @@ def escolaridadxaf(peticion):
 
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
     if borrado != "":
         try:
             e = Escolaridad.objects.get(idescolaridad=int(borrado))
@@ -196,30 +196,29 @@ def escolaridadxaf(peticion):
 
     lista = paginar(escolaridad,peticion)        
         
-    return render_to_response('personal/listado/listadoxaf/escolaridadxaf.html',{'lista':lista,'user':user,'idaf':idaf,'persona':persona,'grupos':grupos,'idagente':idagente},)
+    return render_to_response('appPersonal/listado/listadoxaf/escolaridadxaf.html',{'lista':lista,'user':user,'idaf':idaf,'persona':persona,'grupos':grupos,'idagente':idagente},)
 
 
 
 
 #---------------------------------------------LISTADO ALTAS BAJAS AGENTES----------------------
-@csrf_exempt
-@login_required
+@login_required(login_url='login')
 def listAltasBajasIndex(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = ": No posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
-    return render_to_response('personal/listado/altasBajasIndex.html',{'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/altasBajasIndex.html',{'user':user,'grupos':grupos},)
 
-@login_required
+@login_required(login_url='login')
 def listAltasBajas(peticion,periodo):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = ": No posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     agen = Agente.objects.all()
     alta = Agente.objects.filter(fechaalta__year=periodo)
     alta = alta.order_by('apellido')
@@ -228,55 +227,55 @@ def listAltasBajas(peticion,periodo):
     cantAlta = alta.count()
     cantBaja = baja.count()
     cantAgen = agen.filter(situacion=2).count()
-    return render_to_response('personal/listado/altasBajas.html',{'alta':alta,'baja':baja,'cantAlta':cantAlta,'cantBaja':cantBaja,'cantAgen':cantAgen,'periodo':periodo,'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/altasBajas.html',{'alta':alta,'baja':baja,'cantAlta':cantAlta,'cantBaja':cantBaja,'cantAgen':cantAgen,'periodo':periodo,'user':user,'grupos':grupos},)
 
-@login_required
+@login_required(login_url='login')
 def listAccTrabajo(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
     accidentes = Accidentetrabajo.objects.all().order_by('-fecha')
     lista = paginar(accidentes,peticion)
     
-    return render_to_response('personal/listado/acctrabajo.html',{'lista':lista, 'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/acctrabajo.html',{'lista':lista, 'user':user,'grupos':grupos},)
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------
-@login_required
+@login_required(login_url='login')
 def articulosList(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
     articulos = Articulo.objects.all()
     
-    return render_to_response('personal/listado/articulos.html',{'user':user,'articulos':articulos,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/articulos.html',{'user':user,'articulos':articulos,'grupos':grupos},)
 
-@login_required
+@login_required(login_url='login')
 def adscripList(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
     adscriptos = Adscripcion.objects.all()
     
-    return render_to_response('personal/listado/adscriptos.html',{'user':user,'adscriptos':adscriptos,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/adscriptos.html',{'user':user,'adscriptos':adscriptos,'grupos':grupos},)
     
-@login_required
+@login_required(login_url='login')
 def ausentismos(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
     agentes = Agente.objects.order_by('idagente')
 
-    return render_to_response('personal/listado/ausentismo.html',{'user':user, 'grupos':grupos, 'agentes':agentes},)
+    return render_to_response('appPersonal/listado/ausentismo.html',{'user':user, 'grupos':grupos, 'agentes':agentes},)
     
-@login_required
+@login_required(login_url='login')
 def menuagente(peticion):
   
     user = peticion.user
@@ -284,46 +283,46 @@ def menuagente(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
         
     agente = Agente.objects.get(idagente=idagente)
     
-    return render_to_response('personal/menu_agente.html',{'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
+    return render_to_response('appPersonal/menu_agente.html',{'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def agentesIndex(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
-    return render_to_response('personal/listado/agenteIndex.html',{'user':user,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/agenteIndex.html',{'user':user,'grupos':grupos},)
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def agentes(peticion,opc):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     agentes = Agente.objects.all()
     if int(opc) == 9:
         agentes = agentes.order_by('apellido')
     else:
         agentes = agentes.filter(situacion=opc).order_by('apellido')
     lista = paginar(agentes,peticion)
-    return render_to_response('personal/listado/agentes.html',{'lista':lista,'user':user,'opc':opc,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/agentes.html',{'lista':lista,'user':user,'opc':opc,'grupos':grupos},)
 
 #-------------------------------------------------------------------------------------------------------------------    
 
-@login_required
+@login_required(login_url='login')
 def trasladoxagente(peticion,idagente,borrado):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
 
     if borrado != "":
         try:
@@ -336,17 +335,17 @@ def trasladoxagente(peticion,idagente,borrado):
     traslado = Traslado.objects.filter(idagente__exact=idagente).order_by('-fechad')
     lista = paginar(traslado,peticion)
     flag= True
-    return render_to_response('personal/listado/traslado.html',{'lista':lista,'user':user,'grupos':grupos,'flag':flag,'idagente':idagente,'agente':agente},)
+    return render_to_response('appPersonal/listado/traslado.html',{'lista':lista,'user':user,'grupos':grupos,'flag':flag,'idagente':idagente,'agente':agente},)
 
 #-------------------------------------------------------------------------------------------------------------------    
 
-@login_required
+@login_required(login_url='login')
 def seguroxagente(peticion,idagente,borrado):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     if borrado != "":
         try:
             s = Seguro.objects.get(idseguro=int(borrado))
@@ -358,16 +357,16 @@ def seguroxagente(peticion,idagente,borrado):
     seguro = Seguro.objects.filter(idagente__exact=idagente).order_by('idseguro')
     lista = paginar(seguro,peticion)
     flag= True
-    return render_to_response('personal/listado/listadoxagente/seguroxagente.html',{'lista':lista,'user':user,'grupos':grupos,'flag':flag,'idagente':idagente,'agente':agente},)
+    return render_to_response('appPersonal/listado/listadoxagente/seguroxagente.html',{'lista':lista,'user':user,'grupos':grupos,'flag':flag,'idagente':idagente,'agente':agente},)
 
 #-------------------------------------------------------------------------------------------------------------------    
-@login_required
+@login_required(login_url='login')
 def servprestxagente(peticion,idagente,borrado):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     if borrado != "":
         try:
             s = Servicioprestado.objects.get(idservprest=int(borrado))
@@ -379,18 +378,18 @@ def servprestxagente(peticion,idagente,borrado):
     servprest = Servicioprestado.objects.filter(idagente__exact=idagente).order_by('idservprest')
     lista = paginar(servprest,peticion)
     flag= True
-    return render_to_response('personal/listado/listadoxagente/servprestxagente.html',{'lista':lista,'user':user,'grupos':grupos,'flag':flag,'idagente':idagente,'agente':agente},)
+    return render_to_response('appPersonal/listado/listadoxagente/servprestxagente.html',{'lista':lista,'user':user,'grupos':grupos,'flag':flag,'idagente':idagente,'agente':agente},)
     
     
 #--------------------------------LISTADO DE VACACIONES POR AGENTE--------------------------------
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def vacacionesxagente(peticion,idagen,borrado):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     if borrado != "":
         try:
             l = Licenciaanual.objects.get(idlicanual__exact = int(borrado))
@@ -409,21 +408,21 @@ def vacacionesxagente(peticion,idagen,borrado):
             l = None
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     licencia = Licenciaanual.objects.filter(idagente__exact=idagen).order_by('anio')
     
     lista = paginar(licencia,peticion)
     
-    return render_to_response('personal/listado/listadoxagente/vacacionesxagente.html',{'lista':lista,'user':user,'idagente':idagen, 'grupos':grupos},)
+    return render_to_response('appPersonal/listado/listadoxagente/vacacionesxagente.html',{'lista':lista,'user':user,'idagente':idagen, 'grupos':grupos},)
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def estudioscursadosxagente(peticion,idagente, borrado):
 
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
 
     if borrado != "":
         try:
@@ -436,10 +435,10 @@ def estudioscursadosxagente(peticion,idagente, borrado):
     estudioscursados = Estudiocursado.objects.filter(idagente__exact=idagente)
         
     lista = paginar(estudioscursados,peticion)
-    return render_to_response('personal/listado/listadoxagente/estudioscursadosxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/listadoxagente/estudioscursadosxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def medicaxagente(peticion):
     user = peticion.user
     
@@ -453,7 +452,7 @@ def medicaxagente(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
 
     if borrado != "":
         try:
@@ -471,11 +470,11 @@ def medicaxagente(peticion):
         #medica = Medica.objects.filter(agente__exact=idagente,Q(idausent__idarticulo__pk=102)|Q(idausent__idarticulo__pk=1021))
     
     lista = paginar(medica,peticion)
-    return render_to_response('personal/listado/listadoxagente/medicaxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos, 'idausent':idausent},)
+    return render_to_response('appPersonal/listado/listadoxagente/medicaxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos, 'idausent':idausent},)
 
 
 
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def juntamedicaxagente(peticion, idagente, idmedica, borrado):
 
     try:
@@ -486,7 +485,7 @@ def juntamedicaxagente(peticion, idagente, idmedica, borrado):
         grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
 
     if borrado != "":
         try:
@@ -498,24 +497,24 @@ def juntamedicaxagente(peticion, idagente, idmedica, borrado):
     juntamedicas = Juntamedica.objects.filter(medica=idmedica)
     agente = Agente.objects.get(idagente=idagente)    
     lista = paginar(juntamedicas,peticion)
-    return render_to_response('personal/listado/listadoxmedica/juntamedicaxmedica.html',{'lista':lista,'user':user,'idmedica':idmedica, 'idagente':idagente,'agente':agente,'grupos':grupos, 'idausent':idausent},)
+    return render_to_response('appPersonal/listado/listadoxmedica/juntamedicaxmedica.html',{'lista':lista,'user':user,'idmedica':idmedica, 'idagente':idagente,'agente':agente,'grupos':grupos, 'idausent':idausent},)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------    
 
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def cambios(peticion):
     user = peticion.user
 
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
         
     cambios = Cambios.objects.all().order_by('-horario')
     
     lista = paginar(cambios,peticion)
     
-    return render_to_response('personal/listado/cambios.html',{'lista':lista,'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/cambios.html',{'lista':lista,'user':user,'grupos':grupos},)
     
 def cambiosenreg(peticion):
     user = peticion.user
@@ -523,7 +522,7 @@ def cambiosenreg(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
         
     cambios = Cambios.objects.get(pk=camb)
     lista = []
@@ -539,11 +538,11 @@ def cambiosenreg(peticion):
         for i in range(0,len(listanew)):
             lista.append((listanew[i] , listaold[i]))
         
-    return render_to_response('personal/listado/cambiosenregistros.html',{'lista':lista,'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/cambiosenregistros.html',{'lista':lista,'user':user,'grupos':grupos},)
 
 
 
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def medicavieja(peticion):
 
     user = peticion.user
@@ -553,15 +552,15 @@ def medicavieja(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     
     medicav = Medicavieja.objects.filter(agente__exact = idagente)
 
     lista = paginar(medicav,peticion)
-    return render_to_response('personal/listado/base_vieja/medicavieja.html',{'lista':lista,'user':user,'grupos':grupos, 'idagente':idagente, 'agente':agente},)
+    return render_to_response('appPersonal/listado/base_vieja/medicavieja.html',{'lista':lista,'user':user,'grupos':grupos, 'idagente':idagente, 'agente':agente},)
     
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def licenciaanualvieja(peticion):
 
     user = peticion.user
@@ -571,15 +570,15 @@ def licenciaanualvieja(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     
     licav = Licenciaanualvieja.objects.filter(id_agente__exact = idagente)
 
     lista = paginar(licav,peticion)
-    return render_to_response('personal/listado/base_vieja/licenciaanualvieja.html',{'lista':lista,'user':user,'grupos':grupos,'licav':licav, 'idagente':idagente, 'agente':agente},)
+    return render_to_response('appPersonal/listado/base_vieja/licenciaanualvieja.html',{'lista':lista,'user':user,'grupos':grupos,'licav':licav, 'idagente':idagente, 'agente':agente},)
     
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='login')   
 def juntamedicavieja(peticion):
 
     user = peticion.user
@@ -589,10 +588,10 @@ def juntamedicavieja(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     
     juntamedicas = Juntamedicavieja.objects.filter(idagente__exact = idagente)
 
     lista = paginar(juntamedicas,peticion)
-    return render_to_response('personal/listado/base_vieja/juntamedicavieja.html',{'lista':lista,'user':user,'grupos':grupos, 'idagente':idagente, 'agente':agente},)
+    return render_to_response('appPersonal/listado/base_vieja/juntamedicavieja.html',{'lista':lista,'user':user,'grupos':grupos, 'idagente':idagente, 'agente':agente},)
 

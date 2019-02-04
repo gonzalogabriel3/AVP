@@ -21,11 +21,11 @@ urlpatterns = [
     path('ausPartDiario/$',ausPartDiario),
     #path('forms/traslado.html',traslado),
     path('listado/ausentismos$',ausentismos),
-    path('listado/agentesIndex$',agentesIndex),
+    path('listado/agentesIndex',agentesIndex,name='listado/agentesIndex'),
     path('listado/base_vieja/base_vieja_index$',base_vieja_index),
     path('listado/agentes_base_vieja$',agentes_base_vieja),
 
-    path('listado/agentes$',agentes),
+    path('listado/agentes$',agentes,name='listado/agentes'),
     path('listado/articulos$',articulosList),
 
     path('listado/adscriptos$',adscripList),
@@ -59,7 +59,7 @@ urlpatterns = [
     #path('site_media/(?P<path>.*)$','django.views.static.serve',
      #   {'document_root': './media'}),
 
-    path('forms/menuagente$',menuagente),
+    path('forms/menuagente$',menuagente,name="forms/menuagente"),
     
 #---------------------------------Listado Logs------------------------------
 
@@ -122,7 +122,7 @@ urlpatterns = [
     path('reportes/salidasmesagentes_excel/$',salidasmesagentes_excel),
     
 #---------------------------------Plantilla de forms-----------------------
-    path('forms/agente',abmAgente),
+    path('forms/agente',abmAgente,name="forms/agente"),
     path('forms/abmfamiliaresac',abmFamiliresac),
     path('forms/abmaccdetrabajo/(\d+)/(\d+)/$',abmAccdetrabajo),
     path('forms/abmsalida',abmSalida),

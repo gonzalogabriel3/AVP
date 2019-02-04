@@ -41,7 +41,7 @@ from personal.funciones import *
 
 #--------------------------------------------------------------------------
 #---------------------------------VIEW FORM--------------------------------
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmAusent(peticion):
 
     user = peticion.user
@@ -53,7 +53,7 @@ def abmAusent(peticion):
     grupos = get_grupos(user)
     if permisoZona(user) and permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html', {'user': user, 'error': error, 'grupos': grupos},)
+        return render_to_response('appPersonal/error.html', {'user': user, 'error': error, 'grupos': grupos},)
 
     idagen = int(peticion.GET.get('idagente'))
     idausent = int(peticion.GET.get('idausent'))
@@ -161,7 +161,7 @@ def abmAusent(peticion):
           if f == f1:
             url = '/personal/detalle/detallexagente/ausentismo?idagente='+str(idagen)+'&borrado=-1'
             error = ": Redundancia en ausentismo"
-            return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos,'url':url},)
+            return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos,'url':url},)
     except IndexError:
       print ("")
 
@@ -211,17 +211,17 @@ def abmAusent(peticion):
         form = formAusent()
        
     cache.clear()
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmAusentismo(peticion):
     user = peticion.user
     name = 'Ausentismo'
     grupos = get_grupos(user)
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
 
     idagen = int(peticion.GET.get('idagente'))
     idausent = int(peticion.GET.get('idausentismo'))
@@ -249,7 +249,7 @@ def abmAusentismo(peticion):
             fd = licencia[0].fechadesde + timedelta(days=j)
             if f == fd:
               error = ": El agente se encuentra de vacaciones"
-              return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
           #------------------------------------------------
       form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
       form.fields['direccion'].widget.attrs['enabled'] = 'enabled'
@@ -283,16 +283,17 @@ def abmAusentismo(peticion):
       else:
         form = formAusentismo()
        
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmAgente(peticion):
-  
+    
+    
     user = peticion.user
     grupos = get_grupos(user)
     if permisoZona(user) and permisoABM(user) and permisoDatosAgente(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     idagente = int(peticion.GET.get('idagente'))
     name = 'Agente'
     accion = ''
@@ -306,40 +307,40 @@ def abmAgente(peticion):
 	      form = formAgente(peticion.POST, instance=a)
 	      
       else:
-	      form = formAgente(peticion.POST)
-    
-      if form.is_valid():
-        try:
-          aux = Agente.objects.get(nrodocumento=form.instance.nrodocumento)
-          accion = "Modificacion"
-        except Agente.DoesNotExist:
-          accion = "Alta"
+        form = formAgente(peticion.POST)
 
-        if ("Datos Agente" not in get_grupos(user)):
-	          form.save()
-      if accion == "Alta":
-            registrar(user, name, "Alta", getTime(), None, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-      elif accion == "Modificacion":
-          registrar(user, name, "Modificacion", getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-          if int(idagente) != 0:
-            url = '/personal/forms/menuagente?idagente='+str(idagente)
-          else:
-            url = '/personal/listado/agentes?opc=2'
-            return HttpResponseRedirect(url)
+        if form.is_valid():
+          try:
+            aux = Agente.objects.get(nrodocumento=form.instance.nrodocumento)
+            accion = "Modificacion"
+          except Agente.DoesNotExist:
+            accion = "Alta"
+
+          if ("Datos Agente" not in get_grupos(user)):
+  	          form.save()
+        if accion == "Alta":
+              registrar(user, name, "Alta", getTime(), None, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+        elif accion == "Modificacion":
+            registrar(user, name, "Modificacion", getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+            if int(idagente) != 0:
+              url = '/personal/forms/menuagente?idagente='+str(idagente)
+            else:
+              url = '/personal/listado/agentes?opc=2'
+              return HttpResponseRedirect(url)
+    else:
+      if int(idagente) >0:
+        #MODIFICACION
+        a = Agente.objects.get(pk=idagente)
+        form = formAgente(instance=a)
       else:
-          if int(idagente) >0:
-            #MODIFICACION
-            a = Agente.objects.get(pk=idagente)
-            form = formAgente(instance=a)
-          else:
-	        # ALTA
-            form = formAgente()
+        # ALTA
+        form = formAgente()
       
-    return render_to_response('personal/forms/abm.html',{'form': form,'accion':accion, 'name':name,'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form,'accion':accion, 'name':name,'grupos':grupos})
 
 
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmFamiliresac(peticion):
   
     user = peticion.user
@@ -350,7 +351,7 @@ def abmFamiliresac(peticion):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     idfac = int(peticion.GET.get('idfac'))
     idagen = int(peticion.GET.get('idagente'))
@@ -387,11 +388,11 @@ def abmFamiliresac(peticion):
           form = formFamiliaresac(instance=b)
       else:
         form = formFamiliaresac()
-        return render_to_response('personal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos}, context_instance=RequestContext(peticion))
+        return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos}, context_instance=RequestContext(peticion))
 
     
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmAccdetrabajo(peticion,idadt,idagen):
   
    user = peticion.user
@@ -402,7 +403,7 @@ def abmAccdetrabajo(peticion,idadt,idagen):
    
    if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
    if peticion.POST:
       if int(idadt) >0:
@@ -438,10 +439,10 @@ def abmAccdetrabajo(peticion,idadt,idagen):
     else:
       form = formAccdetrabajo()
       
-   return render_to_response('personal/forms/abm.html',{'form': form, 'name': name, 'grupos':grupos}, context_instance=RequestContext(peticion))
+   return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name': name, 'grupos':grupos}, context_instance=RequestContext(peticion))
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmSalida(peticion):
   
     user = peticion.user
@@ -452,7 +453,7 @@ def abmSalida(peticion):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     idsalida = int(peticion.GET.get('idsalida'))
     idagen = int(peticion.GET.get('idagente'))
     if peticion.POST:
@@ -490,10 +491,10 @@ def abmSalida(peticion):
       else:
         form = formSalida()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
 
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmTraslado(peticion,idtraslado,idagen):
   
     user = peticion.user
@@ -504,7 +505,7 @@ def abmTraslado(peticion,idtraslado,idagen):
     grupos = get_grupos(user)
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     if peticion.POST:
       if int(idtraslado) >0:
 	      a = Traslado.objects.get(pk=idtraslado)
@@ -543,10 +544,10 @@ def abmTraslado(peticion,idtraslado,idagen):
       else:
         form = formTraslado()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
 
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmSeguro(peticion,idseguro,idagen):
 
     user = peticion.user
@@ -556,7 +557,7 @@ def abmSeguro(peticion,idseguro,idagen):
     accion = ''
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
 
     
     if peticion.POST:
@@ -593,10 +594,10 @@ def abmSeguro(peticion,idseguro,idagen):
       else:
         form = formSeguro()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmServicioprestado(peticion,idservprest,idagen):
   
     user = peticion.user
@@ -607,7 +608,7 @@ def abmServicioprestado(peticion,idservprest,idagen):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     
     if peticion.POST:
@@ -645,11 +646,11 @@ def abmServicioprestado(peticion,idservprest,idagen):
       else:
         form = formSeguro()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
         
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmLicenciaanualagente(peticion,idlicanualagen,idagen):
   
     user = peticion.user
@@ -660,7 +661,7 @@ def abmLicenciaanualagente(peticion,idlicanualagen,idagen):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
         
 
     if peticion.POST:
@@ -698,10 +699,10 @@ def abmLicenciaanualagente(peticion,idlicanualagen,idagen):
       else:
         form = formLicenciaanualagente()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmLicenciaanual(peticion,idlicanual,idagen,anio):
   
     user = peticion.user
@@ -711,7 +712,7 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
     
     if permisoZona(user) and permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
 
     name = 'Licencia Anual'
 
@@ -733,7 +734,7 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
         if accion == "Modificacion" and form.instance.tipo == 'INT':
           url = "/personal/vacas?idagente="+str(idagen)
           error = ": No se puede modificar interrupcion, elimine y vuelve a cargar"
-          return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+          return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
 
         lica = Licenciaanual.objects.filter(idagente__exact=idagen).order_by('fechadesde')
         ausent = Ausent()
@@ -758,7 +759,7 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
                 url = "/personal/vacas?idagente="+str(idagen)
                 error = ": Año no correspondiente "
                 error.decode('utf-8')
-                return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+                return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
         except IndexError:
 	          print ("")
 		# fin superposicion de licencias
@@ -784,7 +785,7 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
                       if f == f1:
                         url = "/personal/vacas?idagente="+str(idagen)
                         error = ": Ya existe un ausentismo con esa fecha"
-                        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos,'url':url},)
+                        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos,'url':url},)
           except IndexError:
             print ("")
 	      # fin superposicion ausentismo
@@ -798,7 +799,7 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
             if (form.instance.cantdias + (diastomados - lic.cantdias)) > diadelicencia:
               url = "/personal/vacas?idagente="+str(idagen)
               error = ": Supera la cantidad de dias permitidos"
-              return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
             else:    
               diastomados = Licenciaanualagente.objects.get(idagente__exact = idagen, anio__exact = anio).diastomados
               diadelicencia = Licenciaanualagente.objects.get(idagente__exact = idagen, anio__exact = anio).cantidaddias
@@ -806,7 +807,7 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
               if (form.instance.cantdias + diastomados) > diadelicencia:
                 url = "/personal/vacas?idagente="+str(idagen)
                 error = ": Supera la cantidad de dias permitidos"
-                return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+                return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
 	      # fin supera dias de licencia
 
 	      # Vinculacion con ausent
@@ -858,10 +859,10 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
           form = formLicenciaanual(instance=b)
         else:
           form = formLicenciaanual()
-      return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
         
         
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmSancion(peticion,idsan,idagen):
   
     user = peticion.user
@@ -872,7 +873,7 @@ def abmSancion(peticion,idsan,idagen):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     
     if peticion.POST:
@@ -909,11 +910,11 @@ def abmSancion(peticion,idsan,idagen):
       else:
         form = formSancion()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
     
         
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmLicencia(peticion,idlicencia,idagen):
   
     user = peticion.user
@@ -923,7 +924,7 @@ def abmLicencia(peticion,idlicencia,idagen):
     form_old=''
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     if peticion.POST:
       
@@ -958,11 +959,11 @@ def abmLicencia(peticion,idlicencia,idagen):
       else:
         form = formLicencia()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
 
     
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmCertificadoaccidente(peticion,idcertf, idacc, idagen):
     
     user = peticion.user
@@ -972,7 +973,7 @@ def abmCertificadoaccidente(peticion,idcertf, idacc, idagen):
     form_old=''
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     grupos = get_grupos(user)
     if peticion.POST:
@@ -1017,10 +1018,10 @@ def abmCertificadoaccidente(peticion,idcertf, idacc, idagen):
     else:
       form = formCertificadoaccidente()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion)) 
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion)) 
  
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmAdscriptos(peticion,idads, idagen):
     
     user = peticion.user
@@ -1030,7 +1031,7 @@ def abmAdscriptos(peticion,idads, idagen):
     accion = ''
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     
     if peticion.POST:
@@ -1068,9 +1069,9 @@ def abmAdscriptos(peticion,idads, idagen):
       else:
         form = formAdscriptos()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))  
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))  
  
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmEstudioscursados(peticion,idestcur,idagen):
   
     user = peticion.user
@@ -1081,7 +1082,7 @@ def abmEstudioscursados(peticion,idestcur,idagen):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     if peticion.POST:
       if int(idestcur) >0:
@@ -1115,10 +1116,10 @@ def abmEstudioscursados(peticion,idestcur,idagen):
           
       else:
         form = formEstudiosCursados()
-    return render_to_response('personal/forms/abm.html',{'form': form,'name':name,'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form,'name':name,'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
 
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmArticulos(peticion,idarticulo):
   
     user = peticion.user
@@ -1129,7 +1130,7 @@ def abmArticulos(peticion,idarticulo):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     
     if peticion.POST:
@@ -1158,10 +1159,10 @@ def abmArticulos(peticion,idarticulo):
       else:
           form = formArticulos()
 
-      return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
+      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
 
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmEscolaridad(peticion,idescolaridad, idasigfam):
     
     user = peticion.user
@@ -1172,7 +1173,7 @@ def abmEscolaridad(peticion,idescolaridad, idasigfam):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     if peticion.POST:
       
@@ -1210,11 +1211,11 @@ def abmEscolaridad(peticion,idescolaridad, idasigfam):
       else:
         form = formEscolaridad()
     
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion)) 
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion)) 
     
     
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmMedica(peticion):
     
     user = peticion.user
@@ -1231,7 +1232,7 @@ def abmMedica(peticion):
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     if peticion.POST:
        
@@ -1273,10 +1274,10 @@ def abmMedica(peticion):
       else:
         form = formMedica()
       
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
     
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmJuntaMedica(peticion,idjm, idmed, idagen):
     
     user = peticion.user
@@ -1286,7 +1287,7 @@ def abmJuntaMedica(peticion,idjm, idmed, idagen):
     grupos = get_grupos(user)
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     if peticion.POST:
     
     
@@ -1329,10 +1330,10 @@ def abmJuntaMedica(peticion,idjm, idmed, idagen):
       else:
         form = formJuntaMedica()
       
-      return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion)) 
+      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion)) 
     
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmJuntaMedicavieja(peticion):
   
     user = peticion.user
@@ -1368,9 +1369,9 @@ def abmJuntaMedicavieja(peticion):
           except ValueError:
             form = formJuntamedicavieja()
       	
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmMedicavieja(peticion):
   
     user = peticion.user
@@ -1406,9 +1407,9 @@ def abmMedicavieja(peticion):
           except ValueError:
             form = formMedicavieja()
 	
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def abmLicenciaanualvieja(peticion):
   
     user = peticion.user
@@ -1443,5 +1444,5 @@ def abmLicenciaanualvieja(peticion):
               form = formLicenciaanualvieja()
           except ValueError:
               form = formLicenciaanualvieja()
-    return render_to_response('personal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
 

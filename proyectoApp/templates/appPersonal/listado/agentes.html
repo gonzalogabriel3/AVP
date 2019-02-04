@@ -1,5 +1,5 @@
-{% extends "personal/listado/listado_base.html" %}
-{% load i18n %}
+{% extends "appPersonal/listado/listado_base.html" %}
+
 {% block extrahead %}
 	<script type="text/javascript">
 
@@ -21,16 +21,13 @@
 	</script>
 {% endblock %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 
 		{% block titulo-form %}
 		    <td><b><font color="#000000" style="font-size: 13px;">Listado Agentes</font></b></td> 
 	        {% endblock %}
 
 		{% block botonnuevo %}
-			      {%if "ABM" in grupos or user.username = "admin"%}
+			      {%if "ABM" in grupos or user.username == "admin"%}
 			      <input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/agente?idagente=0');"/>
 			      {% endif %}
 	        {%endblock%}
@@ -64,7 +61,7 @@
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-								<td><a href= "/personal/forms/menuagente?idagente={{list.idagente}}">{{list.apellido}}</a>, {{list.nombres}} </td>
+								<td><a href="{% url 'forms/menuagente' %}?idagente={{list.idagente}}">{{list.apellido}}</a>, {{list.nombres}} </td>
 								<td>{{list.nrolegajo}}</td>
 								{%if list.tipodoc == '5'%}
 								    <td>DNI</td>

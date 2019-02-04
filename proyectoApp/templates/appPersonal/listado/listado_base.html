@@ -1,14 +1,9 @@
-{% extends "personal/plantilla_base.html" %}
-{% load i18n %}
+{% extends "appPersonal/plantilla_base.html" %}
+{% load static %}
 
 {% block extrahead %}
 
 {% endblock %}
-
-
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 
 {% block content %}
 	
@@ -35,7 +30,7 @@
 			  <div class="hero-unit" style="background: #FFC200;padding:10px">
 
 					{% block botonnuevo %}
-						{%if "ABM" in grupos or user.username = "admin"%}
+						{%if "ABM" in grupos or user.username == "admin"%}
 						<form action="{% block botonnuevoaction %} {% endblock %}">
 						    <input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" />
 						</form>
@@ -68,13 +63,13 @@
 			  
 				      <div class="text-right">
 					  {% if lista.has_previous %}
-					      <a href="?page={{ lista.previous_page_number }}{% block prevpage%}{% endblock %}"><img src='/site_media/personal/img/icons/resultset_previous.png' width="16px" height="16px" alt="Anterior"></img></a>
+					      <a href="?page={{ lista.previous_page_number }}{% block prevpage%}{% endblock %}"><img src="{% static 'appPersonal/img/icons/resultset_previous.png' %}" width="16px" height="16px" alt="Anterior"></img></a>
 					  {% endif %}
 					 
 					  Pagina {{ lista.number }} of {{ lista.paginator.num_pages }}.
 					  
 					  {% if lista.has_next %}
-					      <a href="?page={{ lista.next_page_number }}{% block nextpage%}{% endblock %}"><img src='/site_media/personal/img/icons/resultset_next.png' width="16px" height="16px" alt="Siguiente"></img></a>
+					      <a href="?page={{ lista.next_page_number }}{% block nextpage%}{% endblock %}"><img src="{% static 'appPersonal/img/icons/resultset_next.png' %}" width="16px" height="16px" alt="Siguiente"></img></a>
 					  {% endif %}
 				      </div>
 			  </div>

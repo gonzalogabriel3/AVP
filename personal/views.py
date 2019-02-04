@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #from django.utils import simplejson
 #from dajaxice.decorators import dajaxice_register
-
+from django.shortcuts import render
 from django.template import RequestContext, Template, Context
 from django.template.loader import *
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from personal.models import *
 from personal.forms import *
 #====================================================
@@ -683,7 +683,7 @@ def ausReportDir(peticion,a,direc):
 #--------------------------------------------------------------------------
 
 #@csrf_exempt
-#@login_required(login_url='login')
+@login_required(login_url='login')
 def index(peticion):
 
     user = peticion.user
@@ -694,13 +694,13 @@ def index(peticion):
     return render_to_response('appPersonal/index.html',{'user':user, 'grupos':grupos,'inicio':inicio},)
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def agentesIndex(peticion):
 
     user = peticion.user
     grupos = get_grupos(user)
   
-    return render_to_response('personal/listado/agenteIndex.html',{'user':user,'grupos':grupos},)
+    return render(peticion,'appPersonal/listado/agenteIndex.html',{'user':user,'grupos':grupos},)
     
 @login_required(login_url='/personal/accounts/login')
 def base_vieja_index(peticion):
@@ -713,7 +713,7 @@ def base_vieja_index(peticion):
     
 #-----------------------------------------------------------------------------------
 
-@login_required(login_url='/personal/accounts/login')
+#@login_required(login_url='/personal/accounts/login')
 def agentes(peticion):
 
     user = peticion.user
@@ -761,7 +761,7 @@ def agentes(peticion):
         lista = paginator.page(paginator.num_pages)
         
     
-    return render_to_response('personal/listado/agentes.html',{'lista':lista,'user':user, 'grupos':grupos, 'opc':opc, 'busc':busc},)
+    return render(peticion,'appPersonal/listado/agentes.html',{'lista':lista,'user':user, 'grupos':grupos, 'opc':opc, 'busc':busc},)
 
 
 #-----------------------------------------------------------------------------------

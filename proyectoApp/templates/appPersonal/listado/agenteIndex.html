@@ -1,8 +1,4 @@
-{% extends "personal/listado/listado_base.html" %}
-{% load i18n %}
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
+{% extends "appPersonal/listado/listado_base.html" %}
 
 
 {% block path %}
@@ -20,10 +16,10 @@
 		<h4>Seleccione una opción:</h4>
 		<center>
 		<ul class="nav nav-tabs nav-stacked">  
-			<li ><a href="/personal/listado/agentes?opc=2&busc=">Agentes Activos</a></li>
-			<li ><a href="/personal/listado/agentes?opc=0&busc=">Agentes dados de Baja</a></li>
-			<li ><a href="/personal/listado/agentes?opc=1&busc=">Agentes Inactivos</a></li>
-			<li ><a href="/personal/listado/agentes?opc=9&busc=">Todos los Agentes</a></li>
+			<li ><a href="{% url 'listado/agentes'%}?opc=2&busc=">Agentes Activos</a></li>
+			<li ><a href="{% url 'listado/agentes'%}?opc=0&busc=">Agentes dados de Baja</a></li>
+			<li ><a href="{% url 'listado/agentes'%}?opc=1&busc=">Agentes Inactivos</a></li>
+			<li ><a href="{% url 'listado/agentes'%}?opc=9&busc=">Todos los Agentes</a></li>
 		</ul>
 		</center>
 {% endblock %}

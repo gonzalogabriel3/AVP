@@ -1,9 +1,4 @@
-{% extends "personal/plantilla_base.html" %}
-{% load i18n %}
-
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Adscriptos'%}
-{% endblock%}
+{% extends "appPersonal/plantilla_base.html" %}
 
 {% block content %}
 <div id="content-main" >
@@ -29,8 +24,7 @@
 
 		<fieldset>
 		
-		
-		
+				
 		{% block contenido-menuagente %}
 		
 		
@@ -40,11 +34,9 @@
 		<center>
 		
 
-		
-		
 		<ul class="nav nav-tabs nav-stacked">  
 		
-		<li class="nivel1"><a href="/personal/forms/agente?idagente={{idagente}}" class="nivel1">Modificar datos personales</a></li>
+		<li class="nivel1"><a href="{% url 'forms/agente' %}?idagente={{idagente}}" class="nivel1">Modificar datos personales</a></li>
 		<li class="nivel1"><a href="/personal/listado/listadoxagente/facxagente?idagente={{idagente}}&borrado=-1">Familiares a Cargo</a></li>
 		{%if "Datos Agente" not in grupos%}
 			<li><a href="/personal/detalle/detallexagente/ausentismo?idagente={{idagente}}&borrado=-1">Ausentismo</a></li>

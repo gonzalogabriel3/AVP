@@ -1,11 +1,8 @@
-{% extends "personal/plantilla_base.html" %}
-{% load i18n %}
+{% extends "appPersonal/plantilla_base.html" %}
+{% load static %}
 <!--<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />-->
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Adscriptos'%}
-{% endblock%}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/dashboard.css' %}" />{% endblock %}
 
 {% block extrahead %}
 
@@ -59,7 +56,7 @@
 		
 		<input id="saveForm" style="margin-left: 280px; width: 140px; background:orange;" class="button_text" type="submit" name="submit" value="Guardar" />
 		
-		<input type="button" value="Volver Atrás" name="Back2" onclick="history.back()" style="
+		<input type="button" value="Volver Atrás" name="Back" onclick="history.back()" style="
 		  margin-left: 10px;
 		  width: 140px;
 		  height: 22px;

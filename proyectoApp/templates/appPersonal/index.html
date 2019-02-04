@@ -1,9 +1,5 @@
-{% extends "personal/plantilla_base.html" %}
-{% load i18n %}
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-	
-{% endblock%}
+{% extends "appPersonal/plantilla_base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -31,11 +27,11 @@
 							  </div>
 							  
 							  <div align="center">
-								<img src='/site_media/personal/img/logo-inicio.jpg' width=140px height=152px></img><br></br>
+								<img src="{% static 'appPersonal/img/logo-inicio.jpg' %}" width=140px height=152px></img><br></br>
 								<hr>
-								<a href='/personal/partediario/'><img src='/site_media/personal/img/icon/black/PngFiles/Chart.png' width=40px height=40px alt="parte diario"></img></a>
-								<a href='/personal/listado/agentes?opc=2&busc=/'><img src='/site_media/personal/img/icon/black/PngFiles/Machine.png' width=40px height=40px alt="agentes"></img></a>
-								<a href='/personal/cargaausent'><img src='/site_media/personal/img/icon/black/PngFiles/Stock.png' width=40px height=40px alt="licencias"></img></a>
+								<a href='/personal/partediario/'><img src="{% static 'appPersonal/img/icon/black/PngFiles/Chart.png' %}" width=40px height=40px alt="parte diario" title="Parte diario"></img></a>
+								<a href='/personal/listado/agentes?opc=2&busc=/'><img src="{% static 'appPersonal/img/icon/black/PngFiles/Machine.png' %}" width=40px height=40px alt="agentes" title="Agentes"></img></a>
+								<a href='/personal/cargaausent'><img src="{% static 'appPersonal/img/icon/black/PngFiles/Stock.png' %}" width=40px height=40px alt="licencias" title="Licencias"></img></a>
 							  </div>
 
 							  <hr>
