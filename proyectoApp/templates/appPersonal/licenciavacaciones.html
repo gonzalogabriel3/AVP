@@ -1,4 +1,4 @@
-{% extends "personal/graficos.html" %}
+{% extends "appPersonal/graficos.html" %}
 {% load i18n %}
 
 {% block extrahead %}
@@ -54,12 +54,6 @@
 </script>
 {% endblock %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-	
-{% endblock%}
-
-
 {% block titulo-form %}
 		<td><b><font color="#000000" style="font-size: 13px;">Grafico - Vacaciones</font></b></td> 
 {% endblock %}
@@ -68,7 +62,7 @@
 	 <div class="text-center">
 		<h4>{{agente.apellido}}, {{agente.nombres}}</h4>
 		<h5>Licencia por Vacaciones</h5>
-		<form action="/personal/listado/listadoxagente/vacacionesxagente/{{idagente}}/-1/">
+		<form action="{% url 'listado/listadoxagente/vacacionesxagente' %}/{{idagente}}/-1/">
 			<input id="saveForm" class="button_text" type="submit" name="submit" value="Detalles" style="margin-left: 250px;" />
 		</form>
 		

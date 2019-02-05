@@ -1,5 +1,5 @@
-{% extends "personal/listado/listado_base.html" %}
-{% load i18n %}
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load static %}
 
 {% block extrahead %}  
 <script type="text/javascript">
@@ -15,9 +15,6 @@ function Eliminar(a,b) {
 </script> 
 {% endblock %} 
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 
 		{% block titulo-form %}
 		    <p style="font-size: 16px;">Listado Familiares a Cargo de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
@@ -48,9 +45,9 @@ function Eliminar(a,b) {
 						<tr class="{% cycle 'row1' 'row2' %}">
 								<td><a href= "/personal/forms/abmfamiliaresac?idfac={{list.idasigfam}}&idagente={{list.idagente_id}}">{{list.apellidoynombre}}</a> </td>
 								{% if list.pagasalario %}
-									<td><img src='/site_media/personal/img/icon/orig/icon-yes.gif'></img></td>
+									<td><img src="{% static 'appPersonal/img/icon/orig/icon-yes.gif' %}"></img></td>
 								{% else %}
-									<td><img src='/site_media/personal/img/icon/orig/icon-no.gif'></img></td>
+									<td><img src="{% static 'appPersonal/img/icon/orig/icon-no.gif' %}"></img></td>
 								{% endif %}
 								<td>{{list.nrodocumento}}</td>
 								<td>{{list.sexo}}</td>
@@ -58,7 +55,7 @@ function Eliminar(a,b) {
 								<td>{{list.fechanacimiento}}</td>
 								<td>{{list.discapacidad}}</td>
 								<td><a href= "/personal/listado/listadoxaf/escolaridadxaf?idfac={{list.idasigfam}}&borrado=-1">Ver</a></td>
-								{%if "Eliminar" in grupos or user.username = "admin"%}
+								{%if "Eliminar" in grupos or user.username == "admin"%}
 								<td><a href="#" onclick="Eliminar({{idagente}},{{list.idasigfam}});">Eliminar</a></td>
 								{% endif %}
 						</tr>

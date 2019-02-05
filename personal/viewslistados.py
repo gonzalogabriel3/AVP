@@ -392,23 +392,23 @@ def vacacionesxagente(peticion,idagen,borrado):
         return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     if borrado != "":
         try:
-            l = Licenciaanual.objects.get(idlicanual__exact = int(borrado))
-            registrar(user,"Licencia Vacaciones",'Baja',getTime(),None,modeloLista(Licenciaanual.objects.filter(idlicanual__exact = int(borrado)).values_list()))
-            if l.tipo == "INT":
-                ausent = Ausent.objects.get(pk=l.idausent.pk)
-                la = Licenciaanual.objects.get(idausent=l.idausent,tipo='LIC')
-                l.delete()
-                ausent.cantdias = la.cantdias
-                ausent.save()
-            elif l.tipo == "LIC":
-                ausent = Ausent.objects.get(pk=l.idausent.pk)
-                l.delete()
-                ausent.delete()
+          l = Licenciaanual.objects.get(idlicanual__exact = int(borrado))
+          registrar(user,"Licencia Vacaciones",'Baja',getTime(),None,modeloLista(Licenciaanual.objects.filter(idlicanual__exact = int(borrado)).values_list()))
+          if l.tipo == "INT":
+            ausent = Ausent.objects.get(pk=l.idausent.pk)
+            la = Licenciaanual.objects.get(idausent=l.idausent,tipo='LIC')
+            l.delete()
+            ausent.cantdias = la.cantdias
+            ausent.save()
+          elif l.tipo == "LIC":
+            ausent = Ausent.objects.get(pk=l.idausent.pk)
+            l.delete()
+            ausent.delete()
         except Licenciaanual.DoesNotExist:
             l = None
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     licencia = Licenciaanual.objects.filter(idagente__exact=idagen).order_by('anio')
     
     lista = paginar(licencia,peticion)

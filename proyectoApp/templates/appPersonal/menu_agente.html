@@ -39,9 +39,9 @@
 		<li class="nivel1"><a href="{% url 'forms/agente' %}?idagente={{idagente}}" class="nivel1">Modificar datos personales</a></li>
 		<li class="nivel1"><a href="/personal/listado/listadoxagente/facxagente?idagente={{idagente}}&borrado=-1">Familiares a Cargo</a></li>
 		{%if "Datos Agente" not in grupos%}
-			<li><a href="/personal/detalle/detallexagente/ausentismo?idagente={{idagente}}&borrado=-1">Ausentismo</a></li>
-			<li><a href="/personal/listado/listadoxagente/salidaxagente?idagente={{idagente}}&borrado=-1">Salidas</a></li>
-			<li><a href="/personal/vacas?idagente={{idagente}}" class="nivel1">Licencia Anual Agente</a></li>
+			<li><a href="{% url 'detalle/detallexagente/ausentismo' %}?idagente={{idagente}}&borrado=-1">Ausentismo</a></li>
+			<li><a href="{% url 'listado/listadoxagente/salidaxagente' %}?idagente={{idagente}}&borrado=-1">Salidas</a></li>
+			<li><a href="{% url 'vacas' %}?idagente={{idagente}}" class="nivel1">Licencia Anual Agente</a></li>
 			<li><a href="/personal/listado/listadoxagente/medica?idagente={{idagente}}&borrado=-1" class="nivel1">Medica</a></li>
 			<li><a href="/personal/listado/listadoxagente/adtxagente/{{idagente}}/-1/">Accidente de Trabajo</a></li>
 			<li><a href="/personal/listado/listadoxagente/sancionxagente/{{idagente}}/-1/">Sanciones</a></li>

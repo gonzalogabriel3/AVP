@@ -41,7 +41,7 @@ urlpatterns = [
     
     #path('estadisticas/ausentismoEs.html',ausentismoEs),
     path('ausent/$',ausent),
-    path('vacas$',vacas),
+    path('vacas',vacas,name="vacas"),
     path('ausRep/$',ausRep),
     path('ausRepDir/$',ausRepDir),
     path('ausRepMes/$',ausRepMes),
@@ -68,18 +68,19 @@ urlpatterns = [
 
 #---------------------------------Detalles por agente-----------------------    
 
-    path('detalle/detallexagente/ausentismo',detAusentismoxagente),
+    path('detalle/detallexagente/ausentismo',detAusentismoxagente,name="detalle/detallexagente/ausentismo"),
 
 #---------------------------------Listados por agente-----------------------
 
-    path('listado/listadoxagente/facxagente',familiaresacxagente),
+    path('listado/listadoxagente/facxagente',familiaresacxagente,name="listado/listadoxagente/facxagente"),
     path('listado/listadoxagente/adtxagente/(\d+)/(-?\d+)/$',accdetrabajoxagente),
-    path('listado/listadoxagente/salidaxagente',salidaxagente),
+    path('listado/listadoxagente/salidaxagente',salidaxagente,name="listado/listadoxagente/salidaxagente"),
     path('listado/listadoxagente/sancionxagente/(\d+)/(-?\d+)/$',sancionxagente),
     path('listado/listadoxagente/traslado/(\d+)/(-?\d+)/$',trasladoxagente),
     path('listado/listadoxagente/seguro/(\d+)/(-?\d+)/$',seguroxagente),
     path('listado/listadoxagente/servprest/(\d+)/(-?\d+)/$',servprestxagente),
-    path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente),
+    #path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
+    path('listado/listadoxagente/vacacionesxagente/<int:idAgente>/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
     path('listado/listadoxagente/estudioscursados/(\d+)/(-?\d+)/$',estudioscursadosxagente),
     path('listado/listadoxagente/medica$',medicaxagente),
 
@@ -134,8 +135,8 @@ urlpatterns = [
     path('forms/abmtraslado/(\d+)/(\d+)/$',abmTraslado),
     path('forms/abmsancion/(\d+)/(\d+)/$',abmSancion),
     path('forms/abmarticulos/(\d+)/$',abmArticulos),
-    #path('forms/abmausentismo',abmAusentismo),
-    path('forms/abmausent',abmAusent),
+    path('forms/abmausentismo',abmAusentismo),
+    #path('forms/abmausent',abmAusent),
     path('forms/abmsancion/(\d+)/(\d+)/$',abmSancion),
     path('forms/abmseguro/(\d+)/(\d+)/$', abmSeguro),
     path('forms/abmcertificadoaccdt/(\d+)/(\d+)/(\d+)/$',abmCertificadoaccidente),

@@ -1,12 +1,13 @@
-{% extends "personal/plantilla_base.html" %}
+{% extends "appPersonal/plantilla_base.html" %}
 {% load i18n %}
+{% load static %}
 
 
 
 {% block extrahead %}
-<script type="text/javascript" src="/site_media/personal/js/jquery2.js" ></script>
-<script type="text/javascript" src="/site_media/personal/js/highcharts.js"></script> 
-<script type="text/javascript" src="/site_media/personal/js/modules/exporting.js"></script> 
+<script type="text/javascript" src="{% static 'appPersonal/js/jquery2.js' %}" ></script>
+<script type="text/javascript" src="{% static 'appPersonal/js/highcharts.js' %}"></script> 
+<script type="text/javascript" src="{% static 'appPersonal/js/modules/exporting.js' %}"></script> 
 {% endblock %}
 
 {% block content %}

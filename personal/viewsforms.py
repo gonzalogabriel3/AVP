@@ -221,10 +221,10 @@ def abmAusentismo(peticion):
     grupos = get_grupos(user)
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
-        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
 
     idagen = int(peticion.GET.get('idagente'))
-    idausent = int(peticion.GET.get('idausentismo'))
+    idausent = int(peticion.GET.get('idausent'))
     
     if peticion.POST:
       if int(idausent) >0:
@@ -235,40 +235,40 @@ def abmAusentismo(peticion):
       if form.is_valid():
         cd = form.cleaned_data['cantdias']
         #------------------------------------------------
+        
         licencia = Licenciaanual.objects.order_by('-fechadesde').filter(idagente__exact = idagen)
         if len(licencia) > 0:
-      	  cdl = licencia[0].cantdias
-      	  fd = licencia[0].fechadesde
-      	  f = form.instance.fecha
-      	  if f == fd:
-      	      error = ": El agente se encuentra de vacaciones"
-      	      return render_to_response('error.html',{'user':user,'error':error, 'grupos':grupos},)
-      for i in range(1,cd):
-        for j in range(1,cdl):
+          cdl = licencia[0].cantdias
+          fd = licencia[0].fechadesde
+          f = form.instance.fecha
+          if f == fd:
+            error = ": El agente se encuentra de vacaciones"
+            return render_to_response('error.html',{'user':user,'error':error, 'grupos':grupos},)
+        for i in range(1,cd):
+          for j in range(1,cdl):
             f = form.instance.fecha + timedelta(days=i)
             fd = licencia[0].fechadesde + timedelta(days=j)
             if f == fd:
               error = ": El agente se encuentra de vacaciones"
-              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
-          #------------------------------------------------
-      form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
-      form.fields['direccion'].widget.attrs['enabled'] = 'enabled'
-      agente = Agente.objects.get(pk = idagen)
-      form.instance.idagente = agente
-      form.instance.direccion = agente.iddireccion
-      form.save()
-      for i in range(1,cd):
-    	  a = Ausentismo()
-    	  a.fecha = form.instance.fecha + timedelta(days=i)
-    	  a.observaciones = form.instance.observaciones
-    	  a.idagente = form.instance.idagente
-    	  a.idarticulo = form.instance.idarticulo
-    	  a.tiempolltarde = form.instance.tiempolltarde
-    	  a.direccion = form.instance.direccion
-    	  a.save()
-
-      url = '/personal/detalle/detallexagente/ausentismo?idagente='+str(idagen)+'&borrado=-1'
-      return HttpResponseRedirect(url)
+              return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        #------------------------------------------------
+        form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
+        form.fields['direccion'].widget.attrs['enabled'] = 'enabled'
+        agente = Agente.objects.get(pk = idagen)
+        form.instance.idagente = agente
+        form.instance.direccion = agente.iddireccion
+        form.save()
+        for i in range(1,cd):
+          a = Ausentismo()
+          a.fecha = form.instance.fecha + timedelta(days=i)
+          a.observaciones = form.instance.observaciones
+          a.idagente = form.instance.idagente
+          a.idarticulo = form.instance.idarticulo
+          a.tiempolltarde = form.instance.tiempolltarde
+          a.direccion = form.instance.direccion
+          a.save()
+        url = 'detalle/detallexagente/ausentismo?idagente='+str(idagen)+'&borrado=-1'
+        return HttpResponseRedirect(url)
     else:
       if int(idausent) >0 and int(idagen)> 0:
         a = Ausentismo.objects.get(pk=idausent)
@@ -277,13 +277,13 @@ def abmAusentismo(peticion):
           a = Agente.objects.get(pk=idagen)
           b = Ausentismo()
           b.idagente = a
-          b.direccion = a.iddireccion	
+          b.direccion = a.iddireccion 
           form = formAusentismo(instance=b)
           
       else:
         form = formAusentismo()
        
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos})
 
 @login_required(login_url='login')
 def abmAgente(peticion):
@@ -388,7 +388,7 @@ def abmFamiliresac(peticion):
           form = formFamiliaresac(instance=b)
       else:
         form = formFamiliaresac()
-        return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos})
 
     
     
@@ -491,7 +491,7 @@ def abmSalida(peticion):
       else:
         form = formSalida()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos})
 
     
 @login_required(login_url='login')

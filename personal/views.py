@@ -7,6 +7,7 @@ from django.template.loader import *
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from personal.models import *
 from personal.forms import *
+from django.shortcuts import get_object_or_404
 #====================================================
 from django.shortcuts import render_to_response
 #===================================================
@@ -476,7 +477,7 @@ def procesaPresen(listaPre):
     
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def presentismoReport(peticion):
     """
     Metodo que analiza el presentismo de los agentes
@@ -784,7 +785,7 @@ def vacacionesAcum(peticion, agente):
     return render_to_response('personal/vacaciones.html',{'user':user,'grupos':grupos,'lista':listaLic},)
     
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def vacas(peticion):
     user = peticion.user
     grupos = get_grupos(user)
@@ -823,7 +824,7 @@ def vacas(peticion):
             nofin = False
 	
       
-    return render_to_response('personal/licenciavacaciones.html',{'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente, 'vacas':vacas, 'categorias':categorias, 'diaslicencia':diaslicencia, 'diastomados':diastomados,},)
+    return render_to_response('appPersonal/licenciavacaciones.html',{'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente, 'vacas':vacas, 'categorias':categorias, 'diaslicencia':diaslicencia, 'diastomados':diastomados,},)
  
  
 #--------------------------------------------------------------------------
@@ -882,10 +883,8 @@ def cantDias(ausent):
     		    return listM
     return listM
 
-  
-    
-@csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+
+@login_required(login_url='login')
 def detAusentismoxagente(peticion):
     user = peticion.user
     borrado = str(peticion.GET.get('borrado'))
@@ -894,8 +893,9 @@ def detAusentismoxagente(peticion):
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':get_grupos(user)},)
-	
+    
     if borrado != "":
+        try:
             a = Ausent.objects.get(idausent__exact = int(borrado))
             registrar(user,"Ausentismo",'Baja',getTime(),None,modeloLista(Ausent.objects.filter(idausent__exact = int(borrado)).values_list()))
             try:
@@ -903,59 +903,58 @@ def detAusentismoxagente(peticion):
                 acc.delete()
             except Accidentetrabajo.DoesNotExist:
                 print ("")
-            try:
-                a.delete()
-            except IntegrityError:
-                error = "Existe 10-2 o accidente de trabajo justificado, verifique antes de eliminar"
-                return render_to_response('personal/error.html',{'user':user,'error':error},)
-            except Ausent.DoesNotExist:
-                a = None
+                try:
+                    a.delete()
+                except IntegrityError:
+                    error = "Existe 10-2 o accidente de trabajo justificado, verifique antes de eliminar"
+                    return render_to_response('personal/error.html',{'user':user,'error':error},)
+        except Ausent.DoesNotExist:
+            a = None
             anio = date.today().year
             mes = date.today().month
             tot55 = canttotalart(idagen,0, anio, 58)
-
             try:
                 men55 = ArtiTomados.objects.get(idagente__exact = idagen, anio__exact = anio, mes__exact = mes, idarticulo__exact=58).diastomados
             except ArtiTomados.DoesNotExist:
                 men55 = 0
     
     
-            tot102 = canttotalart(idagen,0, anio, 102)
-            tot101 = canttotalart(idagen,0, anio, 101) + canttotalart(idagen,0, anio, 1011)
-            tot18 = canttotalart(idagen,0, anio, 18) + canttotalart(idagen,0, anio, 1811) 
-            cantAnual=0
-            listaagente = list()
-            #Todo el ausentismo en un año dado
-            
-            #fechaEnRango(anio,mes,fi,ff):
-            #aus = Ausent.objects.all().filter(Q(fechainicio__year=anio, fechafin__year=anio)|Q(fechafin__year=anio))
-            aus = Ausent.objects.filter(Q(idagente__exact=idagen)).order_by('-fechainicio')
-            #aus = aus.order_by('-fechainicio')
-            agen = Agente.objects.filter(idagente__exact = idagen)
-            #En listaagente se guardan los agentes de la direccion
-            for a in agen:
-              listaagente.append(a.idagente)
-            
-            #Sobrescribo ausentismo con los ausentes de la direccion
-            #aus = aus.filter(idagente__in=listaagente)
-            
-            listadoAus = listadoAusentes(listaagente,aus)
-            listadoArti = listadoArticulos(aus)
-            per = []
-            cantAnual = 0
-            for i in range(0,12):
-                per.append(0)
-            
-            cantMes = cantDias(aus)
+    tot102 = canttotalart(idagen,0, anio, 102)
+    tot101 = canttotalart(idagen,0, anio, 101) + canttotalart(idagen,0, anio, 1011)
+    tot18 = canttotalart(idagen,0, anio, 18) + canttotalart(idagen,0, anio, 1811) 
+    cantAnual=0
+    listaagente = list()
+    #Todo el ausentismo en un año dado
+    
+    #fechaEnRango(anio,mes,fi,ff):
+    #aus = Ausent.objects.all().filter(Q(fechainicio__year=anio, fechafin__year=anio)|Q(fechafin__year=anio))
+    aus = Ausent.objects.filter(Q(idagente__exact=idagen)).order_by('-fechainicio')
+    #aus = aus.order_by('-fechainicio')
+    agen = Agente.objects.filter(idagente__exact = idagen)
+    #En listaagente se guardan los agentes de la direccion
+    for a in agen:
+      listaagente.append(a.idagente)
+    
+    #Sobrescribo ausentismo con los ausentes de la direccion
+    #aus = aus.filter(idagente__in=listaagente)
+    
+    listadoAus = listadoAusentes(listaagente,aus)
+    listadoArti = listadoArticulos(aus)
+    per = []
+    cantAnual = 0
+    for i in range(0,12):
+        per.append(0)
+    
+    cantMes = cantDias(aus)
 
-            for a in aus:
-                indice = 0
-                for i in range(0,12):
-                    per[i] = per[i] + fechaEnRango(anio,indice+1,a.fechainicio,a.fechafin)
-                    indice = indice +1
-                    cantAnual = cantAnual + per[i]
+    for a in aus:
+        indice = 0
+        for i in range(0,12):
+            per[i] = per[i] + fechaEnRango(anio,indice+1,a.fechainicio,a.fechafin)
+            indice = indice +1
+            cantAnual = cantAnual + per[i]
             	   #cantAnual = ene + feb + mar + abr + may + jun + jul + ago + sep + oct + nov + dic
-            return render_to_response('personal/detalle/detallexagente/detausentismoxagente.html',{'user':user, 'grupos':grupos,'listadoArti':listadoArti,'listado':listadoAus,'anual':cantAnual,'ene':per[0],'feb':per[1],'mar':per[2],'abr':per[3],'may':per[4],'jun':per[5],'jul':per[6],'ago':per[7],'sep':per[8],'oct':per[9],'nov':per[10],'dic':per[11],'aus':aus,'idagen':idagen,'grupos':grupos,'anio':anio, 'tot55':tot55, 'men55':men55, 'tot102':tot102, 'tot101':tot101, 'tot18':tot18})
+    return render_to_response('appPersonal/detalle/detallexagente/detausentismoxagente.html',{'user':user, 'grupos':grupos,'listadoArti':listadoArti,'listado':listadoAus,'anual':cantAnual,'ene':per[0],'feb':per[1],'mar':per[2],'abr':per[3],'may':per[4],'jun':per[5],'jul':per[6],'ago':per[7],'sep':per[8],'oct':per[9],'nov':per[10],'dic':per[11],'aus':aus,'idagen':idagen,'grupos':grupos,'anio':anio, 'tot55':tot55, 'men55':men55, 'tot102':tot102, 'tot101':tot101, 'tot18':tot18})
 
 
 
