@@ -36,9 +36,9 @@
 								<td>{{list.horaregreso}}</td>
 								<td>
 								    {%if list.oficial%}
-									<img src='/site_media/personal/img/icons/tick.png' ></img>
+									<img src="{% static 'appPersonal/img/icons/tick.png' %}"></img>
 								    {%else%}
-									<img src='/site_media/personal/img/icons/cross.png'></img>
+									<img src="{% static 'appPersonal/img/icons/cross.png' %}"></img>
 								    {%endif%}
 								</td>
 								{%if "Eliminar" in grupos or user.username == "admin"%}
