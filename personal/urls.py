@@ -1,7 +1,7 @@
 #from django.conf.urls import patterns, include, url
 #from dajaxice.core import dajaxice_autodiscover
 #from django.conf.urls.defaults import *
-from django.urls import path,include
+from django.urls import path,include, re_path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from . import views
 from django.conf.urls import *
@@ -80,7 +80,7 @@ urlpatterns = [
     path('listado/listadoxagente/seguro/(\d+)/(-?\d+)/$',seguroxagente),
     path('listado/listadoxagente/servprest/(\d+)/(-?\d+)/$',servprestxagente),
     #path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
-    path('listado/listadoxagente/vacacionesxagente/<int:idAgente>/<int:borrado>/',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
+    path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente),
     path('listado/listadoxagente/estudioscursados/(\d+)/(-?\d+)/$',estudioscursadosxagente),
     path('listado/listadoxagente/medica$',medicaxagente),
 

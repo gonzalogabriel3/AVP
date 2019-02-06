@@ -384,8 +384,10 @@ def servprestxagente(peticion,idagente,borrado):
 #--------------------------------LISTADO DE VACACIONES POR AGENTE--------------------------------
     
 @login_required(login_url='login')   
-def vacacionesxagente(peticion,idagen,borrado):
+def vacacionesxagente(peticion):
     user = peticion.user
+    idagen = int(peticion.GET.get('idagen'))
+    borrado = int(peticion.GET.get('borrado'))
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"

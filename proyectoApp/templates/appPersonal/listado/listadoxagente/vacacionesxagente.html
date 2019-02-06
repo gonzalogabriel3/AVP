@@ -30,7 +30,7 @@
 							<td>{{list.fechadesde|date:"d/m/Y"}}</td>
 							<td>{{list.idausent.fechafin|date:"d/m/Y"}}</td>
 							<td>{{list.cantdias}}</td>
-							{%if "Eliminar" in grupos or user.username = "admin"%}
+							{%if "Eliminar" in grupos or user.username == "admin"%}
 							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/vacacionesxagente/{{list.idagente_id}}/{{list.idlicanual}}/');">Eliminar</a></td>
 							{% endif %}
 						</tr>
