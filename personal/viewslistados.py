@@ -383,7 +383,8 @@ def servprestxagente(peticion,idagente,borrado):
     
 #--------------------------------LISTADO DE VACACIONES POR AGENTE--------------------------------
     
-@login_required(login_url='login')   
+@login_required(login_url='login')
+@csrf_exempt   
 def vacacionesxagente(peticion):
     user = peticion.user
     idagen = int(peticion.GET.get('idagen'))
@@ -410,8 +411,8 @@ def vacacionesxagente(peticion):
             l = None
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
-    licencia = Licenciaanual.objects.filter(idagente__exact=idagen).order_by('anio')
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+    licencia = Licenciaanual.objects.filter(idagente=idagen).order_by('anio')
     
     lista = paginar(licencia,peticion)
     

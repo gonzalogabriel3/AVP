@@ -785,7 +785,7 @@ def vacacionesAcum(peticion, agente):
     return render_to_response('personal/vacaciones.html',{'user':user,'grupos':grupos,'lista':listaLic},)
     
 
-@login_required(login_url='login')
+#@login_required(login_url='login')
 def vacas(peticion):
     user = peticion.user
     grupos = get_grupos(user)

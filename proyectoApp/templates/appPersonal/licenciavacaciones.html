@@ -63,7 +63,8 @@
 		<h4>{{agente.apellido}}, {{agente.nombres}}</h4>
 		<h5>Licencia por Vacaciones</h5>
 		
-		<form action="listado/listadoxagente/vacacionesxagente$?idagen={{idagente}}&borrado=-1" method="post">
+		<form action="listado/listadoxagente/vacacionesxagente$?idagen={{idagente}}&borrado=-1" method="POST">{% csrf_token %}
+
 			<input id="saveForm" class="button_text" type="submit" name="submit" value="Detalles" style="margin-left: 250px;" />
 		</form>
 		

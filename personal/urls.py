@@ -7,6 +7,7 @@ from . import views
 from django.conf.urls import *
 from personal.views import *
 from django.contrib import admin
+from django.views.decorators.csrf import csrf_exempt
 admin.autodiscover()
 
 urlpatterns = [
