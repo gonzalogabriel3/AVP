@@ -1,4 +1,4 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
 {% block title %} 
@@ -28,12 +28,12 @@
 			<tbody>
 				{%for list in lista%}
 					<tr class="{% cycle 'row1' 'row2' %}">
-							<td><a href= "/personal/forms/abmaccdetrabajo/{{list.idaccidente}}/{{list.idagente_id}}/">{{list.nroexpediente}}</a> </td>
+							<td><a href= "{% url 'forms/abmaccdetrabajo' %}?idadt={{list.idaccidente}}&idagen={{list.idagente_id}}">{{list.nroexpediente}}</a> </td>
 							<td>{{list.fecha}}</td>
 							<td>{{list.detallelesion}}</td>
 							<td>{{list.observaciones}}</td>
 							<td><a href= "/personal/listado/listadoxaccdt/certificadoxaccdt/{{list.idaccidente}}/{{list.idagente_id}}/-1/">Ver</a> </td>
-							{%if "Eliminar" in grupos or user.username = "admin"%}
+							{%if "Eliminar" in grupos or user.username == "admin"%}
 							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/adtxagente/{{list.idagente_id}}/{{list.idaccidente}}/');">Eliminar</a>
 							{% endif %}
 							

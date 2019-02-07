@@ -1,4 +1,4 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
 {% block title %} 
@@ -37,7 +37,7 @@
 			<tbody>
 				{%for list in lista%}
 					<tr class="{% cycle 'row1' 'row2' %}">
-							<td><a href= "/personal/forms/abmmedica?idmedica={{list.id_medica}}&idagente={{list.agente_id}}&idausent={{list.idausent_id}}">{{list.agente}}</td>
+							<td><a href= "{% url 'forms/abmmedica' %}?idmedica={{list.id_medica}}&idagente={{list.agente_id}}&idausent={{list.idausent_id}}">{{list.agente}}</td>
 							<td>{{list.articulo}}</td>
 							<td>{{list.expediente}}</td>
 							<td>{{list.diagnostico}}</td>
@@ -46,8 +46,8 @@
 							<td>{{list.observaciones}}</td>
 							<td>{{list.fliaratendido}}</td>
 							<td>{{list.resolucion}}</td>
-							<td><a href= "/personal/listado/listadoxmedica/juntamedica/{{list.agente_id}}/{{list.id_medica}}/0/?idausent={{idausent}}">Junta medica</td>
-							{%if "Eliminar" in grupos or user.username = "admin"%}
+							<td><a href= "{% url 'listado/listadoxmedica/juntamedica' %}?idagente={{list.agente_id}}&idmedica={{list.id_medica}}&borrado=0&idausent={{idausent}}">Junta medica</td>
+							{%if "Eliminar" in grupos or user.username == "admin"%}
 							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/medica?idagente={{idagente}}&borrado={{list.id_medica}}&idausent={{list.idausent_id}}');">Eliminar</a></td>
 							{% endif %}
 					</tr>

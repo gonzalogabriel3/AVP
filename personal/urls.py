@@ -74,7 +74,7 @@ urlpatterns = [
 #---------------------------------Listados por agente-----------------------
 
     path('listado/listadoxagente/facxagente',familiaresacxagente,name="listado/listadoxagente/facxagente"),
-    path('listado/listadoxagente/adtxagente/(\d+)/(-?\d+)/$',accdetrabajoxagente),
+    path('listado/listadoxagente/adtxagente$',accdetrabajoxagente,name="listado/listadoxagente/adtxagente"),
     path('listado/listadoxagente/salidaxagente',salidaxagente,name="listado/listadoxagente/salidaxagente"),
     path('listado/listadoxagente/sancionxagente/(\d+)/(-?\d+)/$',sancionxagente),
     path('listado/listadoxagente/traslado/(\d+)/(-?\d+)/$',trasladoxagente),
@@ -83,7 +83,7 @@ urlpatterns = [
     #path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
     path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente),
     path('listado/listadoxagente/estudioscursados/(\d+)/(-?\d+)/$',estudioscursadosxagente),
-    path('listado/listadoxagente/medica$',medicaxagente),
+    path('listado/listadoxagente/medica$',medicaxagente,name="listado/listadoxagente/medica"),
 
 #---------------------------------Listados por acc de trabajo-----------------------
 
@@ -94,9 +94,9 @@ urlpatterns = [
 
     path('listado/listadoxaf/escolaridadxaf$',escolaridadxaf),
 
-#---------------------------------listado por jutna medica------------------
-    path('listado/listadoxmedica/juntamedica/(\d+)/(\d+)/(-?\d+)/$',juntamedicaxagente),
-
+#---------------------------------listado por junta medica------------------
+    #path('listado/listadoxmedica/juntamedica/(\d+)/(\d+)/(-?\d+)/$',juntamedicaxagente,name="listado/listadoxmedica/juntamedica"),
+     path('listado/listadoxmedica/juntamedica$',juntamedicaxagente,name='listado/listadoxmedica/juntamedica'),
 #---------------------------------------------------------------------------
     path('listado/altasbajasindex/$',listAltasBajasIndex),
     path('listado/listaltasbajas/(\d{4})/$',listAltasBajas),
@@ -126,7 +126,7 @@ urlpatterns = [
 #---------------------------------Plantilla de forms-----------------------
     path('forms/agente',abmAgente,name="forms/agente"),
     path('forms/abmfamiliaresac',abmFamiliresac),
-    path('forms/abmaccdetrabajo/(\d+)/(\d+)/$',abmAccdetrabajo),
+    path('forms/abmaccdetrabajo$',abmAccdetrabajo,name="forms/abmaccdetrabajo"),
     path('forms/abmsalida',abmSalida),
     path('forms/abmservprest/(\d+)/(\d+)/$',abmServicioprestado),
     path('forms/abmlicencia/(\d+)/(\d+)/$',abmLicencia),
@@ -144,7 +144,7 @@ urlpatterns = [
     path('forms/abmadscriptos/(\d+)/(\d+)/$',abmAdscriptos),
     path('forms/abmestudioscursados/(\d+)/(\d+)/$',abmEstudioscursados),
     path('forms/abmescolaridad/(\d+)/(\d+)/$',abmEscolaridad),
-    path('forms/abmmedica$',abmMedica),
+    path('forms/abmmedica$',abmMedica,name="forms/abmmedica"),
     path('forms/abmjuntamedica/(\d+)/(\d+)/(\d+)/$',abmJuntaMedica),
     path('forms/abmjuntamedicavieja$', abmJuntaMedicavieja),
     path('forms/abmmedicavieja$', abmMedicavieja),

@@ -224,15 +224,21 @@ class formEscolaridad(forms.ModelForm):
         self.fields['idasigfam'].widget.attrs['disabled'] = 'disabled'
 
 class formMedica(forms.ModelForm):
+    fechaalta=forms.DateField(widget=forms.DateInput(attrs=
+                                {
+                                    'class':'datepickerFamiliar',
+                                    'placeholder':'Fecha de nacimiento'
+                                }))
+
     class Meta:
         model  = Medica
         fields = ('agente', 'expediente', 'diagnostico', 'funcion','tipoalta','observaciones','fliaratendido','resolucion')
     def __init__(self, *args, **kwargs):
         super(formMedica, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        self.fields['fechaalta'].widget = widget2
-        self.fields['agente'].widget.attrs['disabled'] = 'disabled'
-        self.fields['idausent'].widget.attrs['disabled'] = 'disabled'
+        #self.fields['fechaalta'].widget = widget2
+        #self.fields['agente'].widget.attrs['disabled'] = 'disabled'
+        #self.fields['idausent'].widget.attrs['disabled'] = 'disabled'
 
         
 class formJuntaMedica(forms.ModelForm):

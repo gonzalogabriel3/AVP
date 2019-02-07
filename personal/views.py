@@ -259,7 +259,7 @@ def medicasinalta(peticion):
             lista.append([m.agente.apellido,m.agente.nombres,m.diagnostico,m.idausent.fechainicio,m.idausent.fechafin])
     
     lista = paginar(lista,peticion)
-    return render_to_response('personal/medicasinalta.html',{'lista':lista,'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/medicasinalta.html',{'lista':lista,'user':user,'grupos':grupos},)
 
 
 def partediario(peticion):

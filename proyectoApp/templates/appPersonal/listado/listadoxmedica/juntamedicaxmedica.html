@@ -1,4 +1,4 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
 {% block title %} 
@@ -47,7 +47,7 @@
 								<td>{{list.idagente}}</td>
 								<td>{{list.resultado}}</td>
 								<td>{{list.medica}}</td>
-								{%if "Eliminar" in grupos or user.username = "admin"%}
+								{%if "Eliminar" in grupos or user.username == "admin"%}
 								<td><a href="#" onclick="Eliminar('/personal/listado/listadoxmedica/juntamedica/{{idagente}}/{{list.medica_id}}/{{list.idjuntamedica}}/');">Eliminar</a></td>
 								{% endif %}
 						</tr>

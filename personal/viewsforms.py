@@ -211,7 +211,7 @@ def abmAusent(peticion):
         form = formAusent()
        
     cache.clear()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, )
 
 
 @login_required(login_url='login')
@@ -250,7 +250,7 @@ def abmAusentismo(peticion):
             fd = licencia[0].fechadesde + timedelta(days=j)
             if f == fd:
               error = ": El agente se encuentra de vacaciones"
-              return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
         #------------------------------------------------
         form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
         form.fields['direccion'].widget.attrs['enabled'] = 'enabled'
@@ -393,8 +393,10 @@ def abmFamiliresac(peticion):
     
     
 @login_required(login_url='login')
-def abmAccdetrabajo(peticion,idadt,idagen):
-  
+def abmAccdetrabajo(peticion):
+    
+   idadt=int(peticion.GET.get('idadt'))
+   idagen=int(peticion.GET.get('idagen'))
    user = peticion.user
    name = 'Accidente de Trabajo'
    form_old = ''
@@ -439,7 +441,7 @@ def abmAccdetrabajo(peticion,idadt,idagen):
     else:
       form = formAccdetrabajo()
       
-   return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name': name, 'grupos':grupos}, context_instance=RequestContext(peticion))
+   return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name': name, 'grupos':grupos},)
 
 
 @login_required(login_url='login')
@@ -544,7 +546,7 @@ def abmTraslado(peticion,idtraslado,idagen):
       else:
         form = formTraslado()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user},)
 
     
 @login_required(login_url='login')
@@ -594,7 +596,7 @@ def abmSeguro(peticion,idseguro,idagen):
       else:
         form = formSeguro()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, )
 
 
 @login_required(login_url='login')
@@ -646,7 +648,7 @@ def abmServicioprestado(peticion,idservprest,idagen):
       else:
         form = formSeguro()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
         
 
 
@@ -699,7 +701,7 @@ def abmLicenciaanualagente(peticion,idlicanualagen,idagen):
       else:
         form = formLicenciaanualagente()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
 
 @login_required(login_url='login')
@@ -859,7 +861,7 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
           form = formLicenciaanual(instance=b)
         else:
           form = formLicenciaanual()
-      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
         
         
 @login_required(login_url='login')
@@ -910,7 +912,7 @@ def abmSancion(peticion,idsan,idagen):
       else:
         form = formSancion()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
     
         
 
@@ -959,7 +961,7 @@ def abmLicencia(peticion,idlicencia,idagen):
       else:
         form = formLicencia()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
     
     
@@ -1018,7 +1020,7 @@ def abmCertificadoaccidente(peticion,idcertf, idacc, idagen):
     else:
       form = formCertificadoaccidente()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion)) 
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, ) 
  
 
 @login_required(login_url='login')
@@ -1069,7 +1071,7 @@ def abmAdscriptos(peticion,idads, idagen):
       else:
         form = formAdscriptos()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))  
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )  
  
 @login_required(login_url='login')
 def abmEstudioscursados(peticion,idestcur,idagen):
@@ -1116,7 +1118,7 @@ def abmEstudioscursados(peticion,idestcur,idagen):
           
       else:
         form = formEstudiosCursados()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form,'name':name,'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form,'name':name,'grupos':grupos, 'user':user}, )
 
     
 @login_required(login_url='login')
@@ -1159,7 +1161,7 @@ def abmArticulos(peticion,idarticulo):
       else:
           form = formArticulos()
 
-      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion))
+      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, )
 
     
 @login_required(login_url='login')
@@ -1211,7 +1213,7 @@ def abmEscolaridad(peticion,idescolaridad, idasigfam):
       else:
         form = formEscolaridad()
     
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos, 'user':user}, context_instance=RequestContext(peticion)) 
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos, 'user':user}, ) 
     
     
     
@@ -1258,7 +1260,7 @@ def abmMedica(peticion):
 	      elif accion == 'Modificacion':
 	          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
 	      
-	      url = '/personal/listado/listadoxagente/medica?idagente='+str(idagen)+'&borrado=-1&idausent='+str(idausent)
+	      url = "listado/listadoxagente/medica?idagente='+str(idagen)+'&borrado=-1&idausent='+str(idausent)"
 	      return HttpResponseRedirect(url)
     else:
       if int(idmed) > 0 and int(idagen)> 0:
@@ -1274,7 +1276,7 @@ def abmMedica(peticion):
       else:
         form = formMedica()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos},)
     
 
 @login_required(login_url='login')
@@ -1330,7 +1332,7 @@ def abmJuntaMedica(peticion,idjm, idmed, idagen):
       else:
         form = formJuntaMedica()
       
-      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion)) 
+      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, ) 
     
     
 @login_required(login_url='login')
@@ -1369,7 +1371,7 @@ def abmJuntaMedicavieja(peticion):
           except ValueError:
             form = formJuntamedicavieja()
       	
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
 @login_required(login_url='login')
 def abmMedicavieja(peticion):
@@ -1407,7 +1409,7 @@ def abmMedicavieja(peticion):
           except ValueError:
             form = formMedicavieja()
 	
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
 @login_required(login_url='login')
 def abmLicenciaanualvieja(peticion):
@@ -1444,5 +1446,5 @@ def abmLicenciaanualvieja(peticion):
               form = formLicenciaanualvieja()
           except ValueError:
               form = formLicenciaanualvieja()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, context_instance=RequestContext(peticion))
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 

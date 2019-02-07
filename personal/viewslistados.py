@@ -70,8 +70,10 @@ def familiaresacxagente(peticion):
     return render_to_response('appPersonal/listado/listadoxagente/familiaresacxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
 @login_required(login_url='login')   
-def accdetrabajoxagente(peticion,idagente, borrado):
+def accdetrabajoxagente(peticion):
     
+    idagente=int(peticion.GET.get('idagente'))
+    borrado=int(peticion.GET.get('borrado'))
     user = peticion.user
     
     grupos = get_grupos(user)
@@ -82,7 +84,7 @@ def accdetrabajoxagente(peticion,idagente, borrado):
         
     if borrado != "":
         try:
-            a = Accidentetrabajo.objects.get(idaccidente=int(borrado))
+            a = Accidentetrabajo.objects.get(idaccidente=borrado)
             try:
                 ausent = Ausent.objects.get(pk = a.idausent_id)
                 registrar(user,"Accidente de trabajo",'Baja',getTime(),modeloLista(Accidentetrabajo.objects.get(idaccidente=int(borrado)).values_list()), None)
@@ -93,7 +95,7 @@ def accdetrabajoxagente(peticion,idagente, borrado):
         except Accidentetrabajo.DoesNotExist:
             a = None
     agente = Agente.objects.get(idagente=idagente)
-    accidentes = Accidentetrabajo.objects.filter(idagente__exact=idagente).order_by('-fecha')
+    accidentes = Accidentetrabajo.objects.filter(idagente=idagente).order_by('-fecha')
     
     lista = paginar(accidentes,peticion)
     return render_to_response('appPersonal/listado/listadoxagente/accdetrabajoxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
@@ -478,17 +480,19 @@ def medicaxagente(peticion):
 
 
 @login_required(login_url='login')   
-def juntamedicaxagente(peticion, idagente, idmedica, borrado):
-
+def juntamedicaxagente(peticion):
+    idagente=int(peticion.GET.get('idagente'))
+    idmedica=int(peticion.GET.get('idmedica'))
+    borrado=int(peticion.GET.get('borrado'))
     try:
         idausent = int(peticion.GET.get('idausent'))
     except TypeError:
         idausent = ""
-        user = peticion.user
-        grupos = get_grupos(user)
+    user = peticion.user
+    grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+        return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos},)
 
     if borrado != "":
         try:
@@ -500,6 +504,7 @@ def juntamedicaxagente(peticion, idagente, idmedica, borrado):
     juntamedicas = Juntamedica.objects.filter(medica=idmedica)
     agente = Agente.objects.get(idagente=idagente)    
     lista = paginar(juntamedicas,peticion)
+
     return render_to_response('appPersonal/listado/listadoxmedica/juntamedicaxmedica.html',{'lista':lista,'user':user,'idmedica':idmedica, 'idagente':idagente,'agente':agente,'grupos':grupos, 'idausent':idausent},)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------    
