@@ -325,7 +325,7 @@ def abmAgente(peticion):
             if int(idagente) != 0:
               url = '/personal/forms/menuagente?idagente='+str(idagente)
             else:
-              url = '/personal/listado/agentes?opc=2'
+              url = 'listado/agentes?opc=2'
               return HttpResponseRedirect(url)
     else:
       if int(idagente) >0:
@@ -394,7 +394,7 @@ def abmFamiliresac(peticion):
     
 @login_required(login_url='login')
 def abmAccdetrabajo(peticion):
-    
+   
    idadt=int(peticion.GET.get('idadt'))
    idagen=int(peticion.GET.get('idagen'))
    user = peticion.user
@@ -497,8 +497,10 @@ def abmSalida(peticion):
 
     
 @login_required(login_url='login')
-def abmTraslado(peticion,idtraslado,idagen):
-  
+def abmTraslado(peticion):
+    
+    idtraslado=int(peticion.GET.get('idtraslado'))
+    idagen=int(peticion.GET.get('idagen'))
     user = peticion.user
     name = 'Traslado'
     form_old = ''
@@ -600,8 +602,9 @@ def abmSeguro(peticion,idseguro,idagen):
 
 
 @login_required(login_url='login')
-def abmServicioprestado(peticion,idservprest,idagen):
-  
+def abmServicioprestado(peticion):
+    idservprest=int(peticion.GET.get('idservprest'))
+    idagen=int(peticion.GET.get('idagen'))
     user = peticion.user
     grupos = get_grupos(user)
     name = 'Servicio Prestado'
@@ -705,8 +708,10 @@ def abmLicenciaanualagente(peticion,idlicanualagen,idagen):
 
 
 @login_required(login_url='login')
-def abmLicenciaanual(peticion,idlicanual,idagen,anio):
-  
+def abmLicenciaanual(peticion):
+    idlicanual=int(peticion.GET.get('idlicanual'))
+    idagen=int(peticion.GET.get('idagen'))
+    anio=int(peticion.GET.get('anio'))
     user = peticion.user
     grupos = get_grupos(user)
     form_old = ''
@@ -849,24 +854,26 @@ def abmLicenciaanual(peticion,idlicanual,idagen,anio):
             registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
             url = '/personal/vacas?idagente='+str(idagen)
             return HttpResponseRedirect(url)
+    else:
+      if int(idlicanual) > 0 and int(idagen)> 0:
+        a = Licenciaanual.objects.get(pk=idlicanual)
+        form = formLicenciaanual(instance=a)
+      elif int(idagen) > 0 or int(anio)> 0:          
+        a = Agente.objects.get(pk=idagen)
+        b = Licenciaanual()
+        b.idagente = a
+        b.anio = anio
+        form = formLicenciaanual(instance=b)
       else:
-        if int(idlicanual) > 0 and int(idagen)> 0:
-          a = Licenciaanual.objects.get(pk=idlicanual)
-          form = formLicenciaanual(instance=a)
-        elif int(idagen) > 0 or int(anio)> 0:          
-          a = Agente.objects.get(pk=idagen)
-          b = Licenciaanual()
-          b.idagente = a
-          b.anio = anio
-          form = formLicenciaanual(instance=b)
-        else:
-          form = formLicenciaanual()
-      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+        form = formLicenciaanual()
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
         
         
 @login_required(login_url='login')
-def abmSancion(peticion,idsan,idagen):
-  
+def abmSancion(peticion):
+
+    idsan=int(peticion.GET.get('idsan'))
+    idagen=int(peticion.GET.get('idagen'))
     user = peticion.user
     grupos = get_grupos(user)
     name = 'Sanción'
@@ -1074,8 +1081,10 @@ def abmAdscriptos(peticion,idads, idagen):
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )  
  
 @login_required(login_url='login')
-def abmEstudioscursados(peticion,idestcur,idagen):
-  
+def abmEstudioscursados(peticion):
+    
+    idestcur=int(peticion.GET.get('idestcur'))
+    idagen=int(peticion.GET.get('idagen'))
     user = peticion.user
     grupos = get_grupos(user)
     name = 'Estudios Cursados'

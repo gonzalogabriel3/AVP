@@ -28,7 +28,7 @@
 
 		{% block botonnuevo %}
 			      {%if "ABM" in grupos or user.username == "admin"%}
-			      <input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/agente?idagente=0');"/>
+			      	<a href="{% url 'forms/agente' %}?idagente=0" class="btn btn-success">Nuevo</a>
 			      {% endif %}
 	        {%endblock%}
 	        

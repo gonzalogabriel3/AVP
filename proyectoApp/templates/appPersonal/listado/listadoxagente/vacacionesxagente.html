@@ -25,7 +25,7 @@
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-							<td><a href='/personal/forms/abmlicanual/{{list.idlicanual}}/{{list.idagente_id}}/'>{{list.anio}}</a></td>
+							<td><a href="{% url 'forms/abmlicanual' %}?idlicanual={{list.idlicanual}}&idagen={{list.idagente_id}}&anio={{list.anio}}">{{list.anio}}</a></td>
 							<td>{{list.tipo}}</td>
 							<td>{{list.fechadesde|date:"d/m/Y"}}</td>
 							<td>{{list.idausent.fechafin|date:"d/m/Y"}}</td>

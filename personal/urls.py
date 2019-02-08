@@ -53,7 +53,7 @@ urlpatterns = [
     path('cantagrupindex/$',cantagrupindex),
     path('cantagrup/$',cantAgrupamiento),
     path('medicasinalta/$',medicasinalta),
-    path('licanualacum/(\d{1,5})/$',vacacionesAcum),
+    path('licanualacum$',vacacionesAcum,name="licanualacum"),
     path('registration/logged_out.html$',logout),
     #path('accounts/login/$', django.contrib.auth.views.login, {'template_name': 'personal/registration/login.html'}),
     
@@ -76,23 +76,23 @@ urlpatterns = [
     path('listado/listadoxagente/facxagente',familiaresacxagente,name="listado/listadoxagente/facxagente"),
     path('listado/listadoxagente/adtxagente$',accdetrabajoxagente,name="listado/listadoxagente/adtxagente"),
     path('listado/listadoxagente/salidaxagente',salidaxagente,name="listado/listadoxagente/salidaxagente"),
-    path('listado/listadoxagente/sancionxagente/(\d+)/(-?\d+)/$',sancionxagente),
-    path('listado/listadoxagente/traslado/(\d+)/(-?\d+)/$',trasladoxagente),
+    path('listado/listadoxagente/sancionxagente$',sancionxagente,name="listado/listadoxagente/sancionxagente"),
+    path('listado/listadoxagente/traslado$',trasladoxagente,name="listado/listadoxagente/traslado"),
     path('listado/listadoxagente/seguro/(\d+)/(-?\d+)/$',seguroxagente),
-    path('listado/listadoxagente/servprest/(\d+)/(-?\d+)/$',servprestxagente),
+    path('listado/listadoxagente/servprest$',servprestxagente,name="listado/listadoxagente/servprest"),
     #path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
     path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente),
-    path('listado/listadoxagente/estudioscursados/(\d+)/(-?\d+)/$',estudioscursadosxagente),
+    path('listado/listadoxagente/estudioscursados$',estudioscursadosxagente,name="listado/listadoxagente/estudioscursados"),
     path('listado/listadoxagente/medica$',medicaxagente,name="listado/listadoxagente/medica"),
 
 #---------------------------------Listados por acc de trabajo-----------------------
 
-    path('listado/listadoxaccdt/certificadoxaccdt/(\d+)/(\d+)/(-?\d+)/$',certificadoxaccdt),
+    path('listado/listadoxaccdt/certificadoxaccdt$',certificadoxaccdt,name="listado/listadoxaccdt/certificadoxaccdt"),
 
 
 #---------------------------------Listados por asig familiar-----------------------
 
-    path('listado/listadoxaf/escolaridadxaf$',escolaridadxaf),
+    path('listado/listadoxaf/escolaridadxaf$',escolaridadxaf,name='listado/listadoxaf/escolaridadxaf'),
 
 #---------------------------------listado por junta medica------------------
     #path('listado/listadoxmedica/juntamedica/(\d+)/(\d+)/(-?\d+)/$',juntamedicaxagente,name="listado/listadoxmedica/juntamedica"),
@@ -128,13 +128,13 @@ urlpatterns = [
     path('forms/abmfamiliaresac',abmFamiliresac),
     path('forms/abmaccdetrabajo$',abmAccdetrabajo,name="forms/abmaccdetrabajo"),
     path('forms/abmsalida',abmSalida),
-    path('forms/abmservprest/(\d+)/(\d+)/$',abmServicioprestado),
+    path('forms/abmservprest$',abmServicioprestado,name="forms/abmservprest"),
     path('forms/abmlicencia/(\d+)/(\d+)/$',abmLicencia),
     path('forms/abmlicanualagen/(\d+)/(\d+)/$',abmLicenciaanualagente),
-    path('forms/abmlicanual/(\d+)/(\d+)/(\d*)$',abmLicenciaanual),
+    path('forms/abmlicanual$',abmLicenciaanual,name="forms/abmlicanual"),
     path('forms/abmseguro/(\d+)/(\d+)/$',abmSeguro),
-    path('forms/abmtraslado/(\d+)/(\d+)/$',abmTraslado),
-    path('forms/abmsancion/(\d+)/(\d+)/$',abmSancion),
+    path('forms/abmtraslado$',abmTraslado,name="forms/abmtraslado"),
+    path('forms/abmsancion$',abmSancion,name="forms/abmsancion"),
     path('forms/abmarticulos/(\d+)/$',abmArticulos),
     path('forms/abmausentismo',abmAusentismo),
     #path('forms/abmausent',abmAusent),
@@ -142,7 +142,7 @@ urlpatterns = [
     path('forms/abmseguro/(\d+)/(\d+)/$', abmSeguro),
     path('forms/abmcertificadoaccdt/(\d+)/(\d+)/(\d+)/$',abmCertificadoaccidente),
     path('forms/abmadscriptos/(\d+)/(\d+)/$',abmAdscriptos),
-    path('forms/abmestudioscursados/(\d+)/(\d+)/$',abmEstudioscursados),
+    path('forms/abmestudioscursados$',abmEstudioscursados,name="forms/abmestudioscursados"),
     path('forms/abmescolaridad/(\d+)/(\d+)/$',abmEscolaridad),
     path('forms/abmmedica$',abmMedica,name="forms/abmmedica"),
     path('forms/abmjuntamedica/(\d+)/(\d+)/(\d+)/$',abmJuntaMedica),

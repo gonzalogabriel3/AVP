@@ -54,7 +54,7 @@ function Eliminar(a,b) {
 								<td>{{list.vinculo}}</td>
 								<td>{{list.fechanacimiento}}</td>
 								<td>{{list.discapacidad}}</td>
-								<td><a href= "/personal/listado/listadoxaf/escolaridadxaf?idfac={{list.idasigfam}}&borrado=-1">Ver</a></td>
+								<td><a href= "{% url 'listado/listadoxaf/escolaridadxaf' %}?idfac={{list.idasigfam}}&borrado=-1">Ver</a></td>
 								{%if "Eliminar" in grupos or user.username == "admin"%}
 								<td><a href="#" onclick="Eliminar({{idagente}},{{list.idasigfam}});">Eliminar</a></td>
 								{% endif %}

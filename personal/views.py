@@ -767,8 +767,10 @@ def agentes(peticion):
 
 #-----------------------------------------------------------------------------------
 
-@login_required(login_url='/personal/accounts/login')
-def vacacionesAcum(peticion, agente):
+@login_required(login_url='login')
+def vacacionesAcum(peticion):
+    idagente=int(peticion.GET.get('idagente'))
+    agente=Agente.objects.get(pk=idagente)
     user = peticion.user
     grupos = get_grupos(user)
     if permisoEstadistica(user):
@@ -782,7 +784,7 @@ def vacacionesAcum(peticion, agente):
     #lista = sorted(listaLic, key=lambda vac:vac.idagente.apellido)
     lista = paginar(listaLic,peticion)
 
-    return render_to_response('personal/vacaciones.html',{'user':user,'grupos':grupos,'lista':listaLic},)
+    return render_to_response('appPersonal/vacaciones.html',{'user':user,'grupos':grupos,'lista':listaLic},)
     
 
 #@login_required(login_url='login')

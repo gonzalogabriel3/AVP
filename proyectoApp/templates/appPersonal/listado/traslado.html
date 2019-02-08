@@ -1,16 +1,12 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
-
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 
 {% block titulo-form %}
     <p style="font-size: 16px;">Listado Traslado de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
 {% endblock %}
 
 {% block botonnuevo %}
-	<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/abmtraslado/0/{{idagente}}');" />
+	<a href="{% url 'forms/abmtraslado' %}?idtraslado=0&idagen={{idagente}}" class="btn btn-success">Nuevo</a>
 {%endblock%}
 
 {% block titulo %}{%endblock%}
@@ -46,7 +42,7 @@
 					<td>{{list.observacion}}</td>
 					<td>{{list.fechad}}</td>
 					<td>{{list.fechahasta}}</td>
-					{%if "Eliminar" in grupos or user.username = "admin"%}
+					{%if "Eliminar" in grupos or user.username == "admin"%}
 					<td><href="#" onclick="Eliminar('/personal/listado/listadoxagente/traslado/{{list.idagente_id}}/{{list.idtraslado}}/');">Eliminar</a></td>
 					{% endif %}	
 					
