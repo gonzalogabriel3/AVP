@@ -147,8 +147,7 @@ function cargarausent(path){
 	<div id="Arti" style="width: 98%; height:70%; margin-left:10px; float:left"></div>
 	<div id="Aus" style="width: 85%; height: 50%; margin-left:10px; float:left"></div>
 <!-- 	<div align="center"><embed src="http://sindisplay.com/creadores/letreros/show.swf?baseURL=http://sindisplay.com/creadores/letreros/&clickURL=http://www.sindisplay.com/creadores/letreros/&clickLABEL=Crear letrero en flash&type=0&delaySpeed=80&transID=0&str=Trabajar_nunca_mato_a_nadie,_pero_para_que_arriesgarse&bgColor=0&symbolX=9&w=7&h=7&pointType=point&glowColor=16777215&designNum=4" quality="high" bgcolor="#ffffff" width="431" height="63" name="show" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" /><br><small></small></div> -->
-	<input id="saveForm" class="button_text" type="submit" name="submit" value="Cargar ausentismo" 
-	onclick="return cargarausent('/personal/forms/abmausentismo?idausent=0&idagente={{idagen}}');"/>
+	<a href="{% url 'forms/abmausentismo' %}?idausent=0&idagente={{idagen}}" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span> Cargar ausentismo</a>
 
 	<table class="table table-striped">
 		{%for a in l%}

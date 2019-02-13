@@ -41,6 +41,7 @@ from personal.funciones import *
 
 #--------------------------------------------------------------------------
 #---------------------------------VIEW FORM--------------------------------
+@csrf_exempt
 @login_required(login_url='login')
 def abmAusent(peticion):
 
@@ -213,7 +214,7 @@ def abmAusent(peticion):
     cache.clear()
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, )
 
-
+@csrf_exempt
 @login_required(login_url='login')
 def abmAusentismo(peticion):
     user = peticion.user
@@ -228,10 +229,10 @@ def abmAusentismo(peticion):
     
     if peticion.POST:
       if int(idausent) >0:
-        a = Ausentismo.objects.get(pk=idausent)
-        form = formAusentismo(peticion.POST, instance=a)
+        a = Ausent.objects.get(pk=idausent)
+        form = formAusent(peticion.POST, instance=a)
       else:
-        form = formAusentismo(peticion.POST)
+        form = formAusent(peticion.POST)
       if form.is_valid():
         cd = form.cleaned_data['cantdias']
         #------------------------------------------------
@@ -244,13 +245,13 @@ def abmAusentismo(peticion):
           if f == fd:
             error = ": El agente se encuentra de vacaciones"
             return render_to_response('error.html',{'user':user,'error':error, 'grupos':grupos},)
-        for i in range(1,cd):
-          for j in range(1,cdl):
-            f = form.instance.fecha + timedelta(days=i)
-            fd = licencia[0].fechadesde + timedelta(days=j)
-            if f == fd:
-              error = ": El agente se encuentra de vacaciones"
-              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
+          for i in range(1,cd):
+            for j in range(1,cdl):
+              f = form.instance.fecha + timedelta(days=i)
+              fd = licencia[0].fechadesde + timedelta(days=j)
+              if f == fd:
+                error = ": El agente se encuentra de vacaciones"
+                return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
         #------------------------------------------------
         form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
         form.fields['direccion'].widget.attrs['enabled'] = 'enabled'
@@ -259,29 +260,30 @@ def abmAusentismo(peticion):
         form.instance.direccion = agente.iddireccion
         form.save()
         for i in range(1,cd):
-          a = Ausentismo()
-          a.fecha = form.instance.fecha + timedelta(days=i)
+          a = Ausent()
+          a.fechafin = form.instance.fechafin + timedelta(days=i)
           a.observaciones = form.instance.observaciones
           a.idagente = form.instance.idagente
           a.idarticulo = form.instance.idarticulo
           a.tiempolltarde = form.instance.tiempolltarde
           a.direccion = form.instance.direccion
           a.save()
-        url = 'detalle/detallexagente/ausentismo?idagente='+str(idagen)+'&borrado=-1'
+
+        url = '/personal/detalle/detallexagente/ausentismo?idagente='+str(idagen)+'&borrado=-1'
         return HttpResponseRedirect(url)
     else:
       if int(idausent) >0 and int(idagen)> 0:
-        a = Ausentismo.objects.get(pk=idausent)
+        a = Ausent.objects.get(pk=idausent)
         form = formAusentismo(instance=a)
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
-          b = Ausentismo()
+          b = Ausent()
           b.idagente = a
           b.direccion = a.iddireccion 
-          form = formAusentismo(instance=b)
+          form = formAusent(instance=b)
           
       else:
-        form = formAusentismo()
+        form = formAusent()
        
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos})
 
@@ -706,7 +708,7 @@ def abmLicenciaanualagente(peticion,idlicanualagen,idagen):
       
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
-
+@csrf_exempt
 @login_required(login_url='login')
 def abmLicenciaanual(peticion):
     idlicanual=int(peticion.GET.get('idlicanual'))
@@ -863,6 +865,7 @@ def abmLicenciaanual(peticion):
         b = Licenciaanual()
         b.idagente = a
         b.anio = anio
+        
         form = formLicenciaanual(instance=b)
       else:
         form = formLicenciaanual()

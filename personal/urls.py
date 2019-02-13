@@ -36,7 +36,7 @@ urlpatterns = [
     path('listado/base_vieja/juntamedicavieja$', juntamedicavieja),
     
     path('buscadoragenlic$',buscarAgenLic),
-    path('cargaausent$',buscarAgenAusent),
+    path('cargaausent$',buscarAgenAusent,name="cargaausent"),
     path('generarlicencia/todos$',generarLicT),
     path('generarlicencia/individual$',generarLicI),
     
@@ -69,6 +69,7 @@ urlpatterns = [
 
 #---------------------------------Detalles por agente-----------------------    
 
+    
     path('detalle/detallexagente/ausentismo',detAusentismoxagente,name="detalle/detallexagente/ausentismo"),
 
 #---------------------------------Listados por agente-----------------------
@@ -136,7 +137,7 @@ urlpatterns = [
     path('forms/abmtraslado$',abmTraslado,name="forms/abmtraslado"),
     path('forms/abmsancion$',abmSancion,name="forms/abmsancion"),
     path('forms/abmarticulos/(\d+)/$',abmArticulos),
-    path('forms/abmausentismo',abmAusentismo),
+    path('forms/abmausentismo',abmAusentismo,name="forms/abmausentismo"),
     #path('forms/abmausent',abmAusent),
     path('forms/abmsancion/(\d+)/(\d+)/$',abmSancion),
     path('forms/abmseguro/(\d+)/(\d+)/$', abmSeguro),

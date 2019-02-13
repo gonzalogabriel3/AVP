@@ -77,11 +77,11 @@
 			    <th>Año</th>
 			</thead>
 			<tbody>
-			    {%for cate in categorias%}
+			    {%for anio in anio_lar %}
 				    <tr class="{% cycle 'row1' 'row2' %}" >
 					  <td >
 					      <ul style="padding:0;list-style-type:none;  ">
-						    <a href= "/personal/forms/abmlicanual/0/{{idagente}}/{{cate}}">{{cate}}</a>
+						    <a href= "{% url 'forms/abmlicanual' %}?idlicanual=0&idagen={{idagente}}&anio={{anio}}">{{anio}}</a>
 					      </ul>
 					  </td>
 				    </tr>

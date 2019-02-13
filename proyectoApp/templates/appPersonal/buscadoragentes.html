@@ -1,4 +1,4 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
 {% block extrahead %}
@@ -14,9 +14,6 @@ function buscaragentes(path){
 </script>
 {% endblock %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 
 		{% block titulo-form %}
 		    <h4>Listado Agentes</h4> 
