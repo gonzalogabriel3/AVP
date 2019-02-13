@@ -865,11 +865,11 @@ def abmLicenciaanual(peticion):
         b = Licenciaanual()
         b.idagente = a
         b.anio = anio
-        
+
         form = formLicenciaanual(instance=b)
       else:
         form = formLicenciaanual()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos},)
         
         
 @login_required(login_url='login')

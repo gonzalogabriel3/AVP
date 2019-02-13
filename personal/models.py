@@ -459,7 +459,7 @@ class Licenciaanual(models.Model):
         unique_together = ("fechadesde", "idagente", "tipo")
     
     def __str__(self):
-        return str(self.fechadesde)  
+        return str(self.fechadesde)
         
 #··························································································································································        
 TIPO_MEDICA = (
