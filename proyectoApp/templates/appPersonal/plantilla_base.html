@@ -6,6 +6,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+	
+	<!-- Css de Bootstrap -Latest compiled and minified CSS -->
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+	<!-- Importo jQuery library -->
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+
 	<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
 	<title>
 	{% block title %} 
@@ -37,7 +43,7 @@
 	<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
 	{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static 'personal/admin/css/rtl.css' %}{% endblock %}" />{% endif %}
 	<script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
-	<script type="text/javascript" src="/jsi18n/"></script>
+	
 	<script type="text/javascript" src="{% static 'appPersonal/js/core.js' %}"></script>
 	<script type="text/javascript" src="{% static 'appPersonal/js/funciones.js' %}" ></script>
 	<script type="text/javascript" src="{% static 'appPersonal/js/forms/view.js' %}"></script>
@@ -127,7 +133,7 @@
 				<img src="{% static 'appPersonal/img/logo-inicio2.png' %}" width="35" height="35"  onclick="/index.html" ></img>
 				{% block branding %}{% endblock %}
 			</a>
-			{% if user.is_active and user.is_staff %}
+			{% if user.is_active and user.is_staff  %}
 				<div class="nav-collapse collapse">
 					<div class="navbar-text pull-right" >
 					{% trans 'Bienvenido,' %}
@@ -266,4 +272,7 @@
      {% block footer %}
 
      {% endblock %}
+
+     <!-- Javascript de bootstrap Latest compiled JavaScript -->
+	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </body>

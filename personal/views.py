@@ -139,7 +139,7 @@ def generarLicenciaAgentesActivos():
     return
 
 @csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def ausRep(peticion):
     user = peticion.user
     if permisoEstadistica(user):
@@ -767,8 +767,10 @@ def agentes(peticion):
 
 #-----------------------------------------------------------------------------------
 
-@login_required(login_url='/personal/accounts/login')
-def vacacionesAcum(peticion, agente):
+@login_required(login_url='login')
+def vacacionesAcum(peticion):
+    idagente=int(peticion.GET.get('idagente'))
+    agente=Agente.objects.get(pk=idagente)
     user = peticion.user
     grupos = get_grupos(user)
     if permisoEstadistica(user):
@@ -782,7 +784,7 @@ def vacacionesAcum(peticion, agente):
     #lista = sorted(listaLic, key=lambda vac:vac.idagente.apellido)
     lista = paginar(listaLic,peticion)
 
-    return render_to_response('personal/vacaciones.html',{'user':user,'grupos':grupos,'lista':listaLic},)
+    return render_to_response('appPersonal/vacaciones.html',{'user':user,'grupos':grupos,'lista':listaLic},)
     
 
 #@login_required(login_url='login')
@@ -795,7 +797,8 @@ def vacas(peticion):
     i = 0
     nofin = True
     vacasaux = []
-    categorias  = [' ',' ',' ',' ',' ']
+    #anio_lar  = [' ',' ',' ',' ',' ']
+    anio_lar = []
     diastomados = [0,0,0,0,0]
     diaslicencia = [0,0,0,0,0]
     vacas = Licenciaanualagente.objects.filter(idagente__exact=idagente).order_by('anio')
@@ -817,14 +820,15 @@ def vacas(peticion):
     i = 0
     for v in vacasaux:
         if i <= 4:
-            categorias[i] = str(v.anio)
+            #categorias[i] = str(v.anio)
+            anio_lar.append(v.anio)
             diaslicencia[i] = v.cantidaddias
             diastomados[i] = v.diastomados
             i += 1
             nofin = False
 	
       
-    return render_to_response('appPersonal/licenciavacaciones.html',{'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente, 'vacas':vacas, 'categorias':categorias, 'diaslicencia':diaslicencia, 'diastomados':diastomados,},)
+    return render_to_response('appPersonal/licenciavacaciones.html',{'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente, 'vacas':vacas, 'anio_lar':anio_lar, 'diaslicencia':diaslicencia, 'diastomados':diastomados,},)
  
  
 #--------------------------------------------------------------------------
@@ -832,7 +836,7 @@ def vacas(peticion):
 
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def ausent(peticion):
   
     user = peticion.user
@@ -867,20 +871,20 @@ def cantDias(ausent):
     for i in range(1,13):
         listM.append([i,0])#la lista interna es [mes-1,cant dias]
     #aca se recorren los ausentismos
-    for a in ausent:
-        aux = a.fechainicio
-        m = aux.month
-        anio = aux.year
-    if m==a.fechafin.month:
-        listM[m-1][1]=listM[m-1][1]+a.cantdias
-    else:
-	    while(aux<=a.fechafin):
-    		if aux.month != m:
-    		    m = aux.month       
-    		listM[m-1][1]=listM[m-1][1]+1
-    		aux = aux + datetime.timedelta(days=1)
-    		if aux.year> anio:
-    		    return listM
+        for a in ausent:
+            aux = a.fechainicio
+            m = aux.month
+            anio = aux.year
+            if m==a.fechafin.month:
+                listM[m-1][1]=listM[m-1][1]+a.cantdias
+            else:
+        	    while(aux<=a.fechafin):
+            		if aux.month != m:
+            		    m = aux.month       
+            		listM[m-1][1]=listM[m-1][1]+1
+            		aux = aux + datetime.timedelta(days=1)
+            		if aux.year> anio:
+            		    return listM
     return listM
 
 
@@ -907,14 +911,14 @@ def detAusentismoxagente(peticion):
                     a.delete()
                 except IntegrityError:
                     error = "Existe 10-2 o accidente de trabajo justificado, verifique antes de eliminar"
-                    return render_to_response('personal/error.html',{'user':user,'error':error},)
+                    return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
         except Ausent.DoesNotExist:
             a = None
             anio = date.today().year
             mes = date.today().month
             tot55 = canttotalart(idagen,0, anio, 58)
             try:
-                men55 = ArtiTomados.objects.get(idagente__exact = idagen, anio__exact = anio, mes__exact = mes, idarticulo__exact=58).diastomados
+                men55 = ArtiTomados.objects.get(idagente = idagen, anio__exact = anio, mes__exact = mes, idarticulo__exact=58).diastomados
             except ArtiTomados.DoesNotExist:
                 men55 = 0
     
@@ -959,25 +963,25 @@ def detAusentismoxagente(peticion):
 
 
 #------------------------------ BUSCADOR -----------------------------
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def buscarAgenAusent(peticion):
     user = peticion.user
     busc = peticion.GET.get('busc')
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     try:
         agentes = Agente.objects.filter( Q(situacion=2), Q(nombres__icontains = busc) | Q(apellido__icontains = busc)| Q(nrodocumento__icontains = busc)| Q(nrolegajo__icontains = busc)).order_by('apellido')
     except:
         agentes = Agente.objects.filter( Q(situacion=2)).order_by('apellido')
     lista = paginar(agentes,peticion)
     
-    return render_to_response('personal/buscadoragentes.html',{'lista':lista,'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/buscadoragentes.html',{'lista':lista,'user':user,'grupos':grupos},)
 
 
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='login')
 def buscarAgenLic(peticion):
     user = peticion.user
     busc = str(peticion.GET.get('busc'))

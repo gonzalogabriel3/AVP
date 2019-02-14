@@ -1,8 +1,5 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 
 		{% block botonnuevo %}
 			<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/agente?idagente=0');"/>

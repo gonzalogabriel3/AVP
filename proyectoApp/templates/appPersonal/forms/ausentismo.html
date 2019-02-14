@@ -6,7 +6,7 @@
 
 {% block extrahead %}
 {{ block.super }}
-<script type="text/javascript" src='/site_media/personal/js/forms/view.js'></script>
+<script type="text/javascript" src="{% url 'appPersonal/js/forms/view.js' %}"></script>
 <script type="text/javascript">
   jQuery(document).ready(function(){ jQuery('.timepicker').datepicker(); });
 </script>

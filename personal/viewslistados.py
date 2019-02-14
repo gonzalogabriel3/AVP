@@ -128,7 +128,9 @@ def salidaxagente(peticion):
   
 
 @login_required(login_url='login')
-def sancionxagente(peticion,idagente,borrado):
+def sancionxagente(peticion):
+    idagente=int(peticion.GET.get('idagente'))
+    borrado=int(peticion.GET.get('borrado'))
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
@@ -154,7 +156,10 @@ def sancionxagente(peticion,idagente,borrado):
 #--------------------------------LISTADO POR CERTIFICADO--------------------------------
     
 @login_required(login_url='login')   
-def certificadoxaccdt(peticion,idacc,idagen,borrado):
+def certificadoxaccdt(peticion):
+    idacc=peticion.GET.get('idacc')
+    idagen=peticion.GET.get('idagen')
+    borrado=peticion.GET.get('borrado')
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
@@ -167,7 +172,7 @@ def certificadoxaccdt(peticion,idacc,idagen,borrado):
             s.delete()
         except Certificadoaccidente.DoesNotExist:
             s = None
-            certificados = Certificadoaccidente.objects.filter(idaccidentetrabajo__exact=idacc).order_by('fechadesde')
+            certificados = Certificadoaccidente.objects.filter(idaccidentetrabajo=idacc).order_by('fechadesde')
     lista = paginar(certificados,peticion)
     
     return render_to_response('appPersonal/listado/listadoxaccdt/certificadoxaccdt.html',{'lista':lista,'user':user, 'grupos':grupos, 'idacc':idacc,'idagen':idagen},)
@@ -319,7 +324,9 @@ def agentes(peticion,opc):
 #-------------------------------------------------------------------------------------------------------------------    
 
 @login_required(login_url='login')
-def trasladoxagente(peticion,idagente,borrado):
+def trasladoxagente(peticion):
+    idagente=int(peticion.GET.get('idagente'))
+    borrado=int(peticion.GET.get('borrado'))
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
@@ -363,7 +370,9 @@ def seguroxagente(peticion,idagente,borrado):
 
 #-------------------------------------------------------------------------------------------------------------------    
 @login_required(login_url='login')
-def servprestxagente(peticion,idagente,borrado):
+def servprestxagente(peticion):
+    idagente=int(peticion.GET.get('idagente'))
+    borrado=int(peticion.GET.get('borrado'))
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
@@ -421,8 +430,9 @@ def vacacionesxagente(peticion):
     return render_to_response('appPersonal/listado/listadoxagente/vacacionesxagente.html',{'lista':lista,'user':user,'idagente':idagen, 'grupos':grupos},)
     
 @login_required(login_url='login')   
-def estudioscursadosxagente(peticion,idagente, borrado):
-
+def estudioscursadosxagente(peticion):
+    idagente=int(peticion.GET.get('idagente'))
+    borrado=int(peticion.GET.get('borrado'))
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):

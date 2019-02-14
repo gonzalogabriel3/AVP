@@ -98,16 +98,17 @@ class Inicio(models.Model):
     mensaje = models.TextField(max_length=5000, blank=True)
     class Meta:
         db_table = u'inicio'
-    def __unicode__(self):
-        return force_unicode(self.titulo)        
+    def __str__(self):
+        return self.titulo 
+            
 #··························································································································································        
 class Nacionalidad(models.Model):
     idnacionalidad = models.IntegerField(primary_key=True)
     nacionalidad = models.CharField(max_length=200, blank=True)
     class Meta:
-        db_table = u'nacionalidad'
-    def __unicode__(self):
-        return force_unicode(self.nacionalidad)        
+        db_table = u'nacionalidad' 
+    def __str__(self):
+        return self.nacionalidad      
 #··························································································································································        
 class Funcion(models.Model):
     idfuncion = models.IntegerField(primary_key=True)
@@ -115,9 +116,9 @@ class Funcion(models.Model):
     observacion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'funcion'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)        
-
+            
+    def __str__(self):
+        return self.descripcion    
 #··························································································································································        
 class CargoFuncion(models.Model):
     idcargof = models.IntegerField(primary_key=True)
@@ -125,8 +126,8 @@ class CargoFuncion(models.Model):
     observacion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'cargo_funcion'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)        
+    def __str__(self):
+        return self.descripcion            
                 
 #··························································································································································
 class Clase(models.Model):
@@ -134,8 +135,9 @@ class Clase(models.Model):
     descripcion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'clase'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)
+    
+    def __str__(self):
+        return self.descripcion 
               
 #··························································································································································        
 class Direccion(models.Model):
@@ -143,16 +145,19 @@ class Direccion(models.Model):
     descripcion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'direccion'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)        
+
+    def __str__(self):
+        return self.descripcion        
 #··························································································································································                
 class Zona(models.Model):
     idzona = models.IntegerField(primary_key=True)
     descripcion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'zona'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)        
+    
+    def __str__(self):
+        return self.descripcion
+
 #··························································································································································        
 class Codigopostal(models.Model):
     idcodpos = models.IntegerField(primary_key=True)
@@ -160,8 +165,9 @@ class Codigopostal(models.Model):
     descripcion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'codigopostal'
-    def __unicode__(self):
-        return force_unicode(str(self.descripcion) + " -- " + str(self.codigopostal)  )        
+    
+    def __str__(self):
+        return str(self.descripcion) + " -- " + str(self.codigopostal)       
 #··························································································································································        
 class Articulo(models.Model):
     idarticulo = models.IntegerField(primary_key=True, verbose_name= "Articulo")
@@ -171,8 +177,9 @@ class Articulo(models.Model):
     maxmensual = models.IntegerField(null=True, blank=True, verbose_name = "Maximo Mensual")
     class Meta:
         db_table = u'articulo'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)        
+    
+    def __str__(self):
+        return self.descripcion            
         
 #··························································································································································        
 class Agrupamiento(models.Model):
@@ -180,8 +187,9 @@ class Agrupamiento(models.Model):
     descripcion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'agrupamiento'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)        
+
+    def __str__(self):
+        return self.descripcion        
 
 #··························································································································································        
 class Agente(models.Model):
@@ -233,16 +241,17 @@ class Agente(models.Model):
     class Meta:
         db_table = u'agente'
 
-    def __unicode__(self):
-        return force_unicode(str(self.nrolegajo)+ " - " + self.apellido +" " +self.nombres  )
+    def __str__(self):
+        return self.apellido +" " +self.nombres    
 #··························································································································································     
 class Tipolesion(models.Model):
     idtipolesion = models.IntegerField(primary_key=True)
     descripcion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'tipolesion'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)        
+    
+    def __str__(self):
+        return self.descripcion        
 
 #··························································································································································        
 class Adscripcion(models.Model):
@@ -255,8 +264,9 @@ class Adscripcion(models.Model):
     observacion = models.CharField(max_length=200, blank=True,verbose_name='Observaciones')
     class Meta:
         db_table = u'adscripcion'
-    def __unicode__(self):
-        return force_unicode(self.idagente)
+
+    def __str__(self):
+        return self.descripcion
         
 #··························································································································································        
 class Vinculo(models.Model):
@@ -264,8 +274,9 @@ class Vinculo(models.Model):
     descripcion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'vinculo'
-    def __unicode__(self):
-        return force_unicode(self.descripcion)        
+    
+    def __str__(self):
+        return self.descripcion        
 #··························································································································································        
 class Asignacionfamiliar(models.Model):
     idasigfam = models.AutoField(primary_key=True)
@@ -286,8 +297,9 @@ class Asignacionfamiliar(models.Model):
     class Meta:
         db_table = u'asignacionfamiliar'
         unique_together = ("nrodocumento","idagente")
-    def __unicode__(self):
-        return force_unicode(self.apellidoynombre)        
+     
+    def __str__(self):
+        return self.apellidoynombre       
 
 #··························································································································································        
 class Traslado(models.Model):
@@ -310,8 +322,9 @@ class Traslado(models.Model):
     fechad = models.DateField(db_column='fechadesde', null=True, blank=True)
     class Meta:
         db_table = u'traslado'
-    def __unicode__(self):
-        return force_unicode(self.idagente)        
+     
+    def __str__(self):
+        return self.apellidoynombre     
 #··························································································································································        
 class Licenciaanualagente(models.Model):
     idlicanualagen = models.AutoField(primary_key=True)
@@ -322,8 +335,9 @@ class Licenciaanualagente(models.Model):
     resta = models.BooleanField()
     class Meta:
         db_table = u'licenciaanualagente'
-    def __unicode__(self):
-        return force_unicode(self.idagente)        
+    
+    def __str__(self):
+        return self.apellidoynombre        
 #··························································································································································
 class Sancion(models.Model):
     idsancion = models.AutoField(primary_key=True)
@@ -334,8 +348,9 @@ class Sancion(models.Model):
     cantidaddias = models.SmallIntegerField(null=True, blank=True,verbose_name='Cantidad de Dias')
     class Meta:
         db_table = u'sancion'
-    def __unicode__(self):
-        return force_unicode(self.idagente)             
+ 
+    def __str__(self):
+        return self.apellidoynombre             
 
 #··························································································································································
 
@@ -351,8 +366,9 @@ class Ausentismo(models.Model):
     class Meta:
         db_table = u'ausentismo'
         unique_together = ("idagente","fecha")
-    def __unicode__(self):
-        return force_unicode(self.idagente)        
+    
+    def __str__(self):
+        return self.apellidoynombre        
 
 #··························································································································································        
 
@@ -370,8 +386,8 @@ class Ausent(models.Model):
     class Meta:
         db_table = u'ausent'
         #unique_together = ("idagente","fecha")
-    def __unicode__(self):
-        return force_unicode(self.fechafin)
+    def __str__(self):
+        return self.fechafin
         
     def save(self, *args, **kwargs):
         inicio = self.fechainicio
@@ -408,8 +424,9 @@ class Accidentetrabajo(models.Model):
     idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True,on_delete=models.CASCADE)
     class Meta:
         db_table = u'accidentetrabajo'
-    def __unicode__(self):
-        return force_unicode(self.nroexpediente)        
+    
+    def __str__(self):
+        return self.nroexpediente        
         
 #··························································································································································        
 class Certificadoaccidente(models.Model):
@@ -423,8 +440,9 @@ class Certificadoaccidente(models.Model):
     
     class Meta:
         db_table = u'certificadoaccidente'
-    def __unicode__(self):
-        return force_unicode(self.nroexpediente)        
+    
+    def __str__(self):
+        return self.nroexpediente        
         
 #··························································································································································
 class Licenciaanual(models.Model):
@@ -439,8 +457,9 @@ class Licenciaanual(models.Model):
     class Meta:
         db_table = u'licenciaanual'
         unique_together = ("fechadesde", "idagente", "tipo")
-    def __unicode__(self):
-        return force_unicode(self.fechadesde)   
+    
+    def __str__(self):
+        return str(self.fechadesde)
         
 #··························································································································································        
 TIPO_MEDICA = (
@@ -470,8 +489,9 @@ class Medica(models.Model):
 
     class Meta:
         db_table = u'medica'
-    def __unicode__(self):
-        return force_unicode(self.expediente)
+    
+    def __str__(self):
+        return self.expediente
 
 #··························································································································································        
 
@@ -484,8 +504,9 @@ class Juntamedica(models.Model):
     medica = models.ForeignKey(Medica, null=True, db_column='medica', blank=True,on_delete=models.CASCADE)
     class Meta:
         db_table = u'juntamedica'
-    def __unicode__(self):
-        return force_unicode(self.idagente)
+    
+    def __str__(self):
+        return self.idagente
         
 #··························································································································································
 
@@ -500,8 +521,9 @@ class Licenciamedica(models.Model):
     observaciones = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'licenciamedica'
-    def __unicode__(self):
-        return force_unicode(self.idagente)        
+    
+    def __str__(self):
+        return self.idagente        
 
 #··························································································································································        
 class Estudiocursado(models.Model):
@@ -514,8 +536,9 @@ class Estudiocursado(models.Model):
     observaciones = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'estudiocursado'
-    def __unicode__(self):
-        return force_unicode(self.idagente)        
+    
+    def __str__(self):
+        return self.idagente        
 #··························································································································································        
 class Servicioprestado(models.Model):
     idservprest = models.AutoField(primary_key=True)
@@ -530,8 +553,9 @@ class Servicioprestado(models.Model):
     tarea = models.CharField(max_length=200, blank=True,verbose_name='Tarea')
     class Meta:
         db_table = u'servicioprestado'
-    def __unicode__(self):
-        return force_unicode(self.idagente)        
+    
+    def __str__(self):
+        return self.idagente        
 #··························································································································································        
 class Licencia(models.Model):
     idlicencia = models.AutoField(primary_key=True)
@@ -541,8 +565,9 @@ class Licencia(models.Model):
     diastomados = models.SmallIntegerField(null=True, blank=True)
     class Meta:
         db_table = u'licencia'
-    def __unicode__(self):
-        return force_unicode(self.idagente)        
+    
+    def __str__(self):
+        return self.idagente        
 #··························································································································································        
 class Seguro(models.Model):
     idseguro = models.AutoField(primary_key=True)
@@ -555,8 +580,9 @@ class Seguro(models.Model):
     adicionalxco = models.BooleanField(blank=True)
     class Meta:
         db_table = u'seguro'
-    def __unicode__(self):
-        return force_unicode(self.idagente)        
+    
+    def __str__(self):
+        return self.idagente        
 #··························································································································································        
 class Salida(models.Model):
     idsalida = models.AutoField(primary_key=True)
@@ -569,8 +595,9 @@ class Salida(models.Model):
     class Meta:
         db_table = u'salida'
         unique_together = ("idagente","horasalida","fecha")
-    def __unicode__(self):
-        return force_unicode(self.idagente)       
+    
+    def __str__(self):
+        return self.idagente       
 
 #··························································································································································        
 class Escolaridad(models.Model):
@@ -586,8 +613,9 @@ class Escolaridad(models.Model):
     class Meta:
         db_table = u'escolaridad'
         unique_together = ("idasigfam","anio")
-    #def __unicode__(self):
-    #   return force_unicode(self.gradocrusado)       
+    
+    def __str__(self):
+        return self.gradocrusado       
 
 #··························································································································································        
 class ArtiTomados(models.Model):
@@ -643,8 +671,9 @@ class UserPerso(models.Model):
     date_joined = models.DateTimeField()
     class Meta:
         db_table = u'auth_user'
-    def __unicode__(self):
-        return force_unicode(self.username)
+    
+    def __str__(self):
+        return self.username
 
 class DjangoContentType(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -653,8 +682,9 @@ class DjangoContentType(models.Model):
     model = models.CharField(max_length=100)
     class Meta:
         db_table = u'django_content_type'
-    def __unicode__(self):
-        return force_unicode(self.name)
+    
+    def __str__(self):
+        return self.name
 
 class DjangoSession(models.Model):
     session_key = models.CharField(max_length=40, primary_key=True)
@@ -662,8 +692,9 @@ class DjangoSession(models.Model):
     expire_date = models.DateTimeField()
     class Meta:
         db_table = u'django_session'
-    def __unicode__(self):
-        return force_unicode(self.session_data)
+    
+    def __str__(self):
+        return self.session_data
 
 class Log(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -676,8 +707,9 @@ class Log(models.Model):
     change_message = models.TextField()
     class Meta:
         db_table = u'django_admin_log'
-    def __unicode__(self):
-        return force_unicode(self.user)
+    
+    def __str__(self):
+        return self.user
 
 class Cambios(models.Model):
     idcambio = models.AutoField(primary_key=True)
@@ -691,8 +723,9 @@ class Cambios(models.Model):
 
     class Meta:
         db_table = u'cambios'
-    def __unicode__(self):
-        return force_unicode(self.usuario)
+    
+    def __str__(self):
+        return self.usuario
 
 
 class HistorialDireccion(models.Model):
@@ -703,8 +736,9 @@ class HistorialDireccion(models.Model):
     
     class Meta:
         db_table = u'historialdireccion'
-    def __unicode__(self):
-        return force_unicode(self.idagente)
+    
+    def __str__(self):
+        return self.idagente
         
 #------------------------------------------ Tablas Viejas -----------------------------------------------------------------        
 
@@ -720,8 +754,9 @@ class Licenciaanualvieja(models.Model):
     class Meta:
         db_table = u'licenciaanualvieja'
         unique_together = ("fechadesde", "id_agente", "tipo")
-    def __unicode__(self):
-        return force_unicode(self.fechadesde)   
+    
+    def __str__(self):
+        return str(self.fechadesde)   
 #··························································································································································        
 
 
@@ -732,8 +767,9 @@ class Juntamedicavieja(models.Model):
     resultado = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'juntamedicavieja'
-    def __unicode__(self):
-        return force_unicode(self.idagente)
+    
+    def __str__(self):
+        return self.idagente
         
         
 class Medicavieja(models.Model):
@@ -754,5 +790,6 @@ class Medicavieja(models.Model):
 
     class Meta:
         db_table = u'medicavieja'
-    def __unicode__(self):
-        return force_unicode(self.expediente)
+    
+    def __str__(self):
+        return self.expediente

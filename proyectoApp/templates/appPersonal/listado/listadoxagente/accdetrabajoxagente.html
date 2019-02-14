@@ -1,10 +1,6 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
-
 
 {% block titulo-form %}
 	<p style="font-size: 16px;">Listado Accidentes de Trabajo de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
@@ -32,7 +28,7 @@
 							<td>{{list.fecha}}</td>
 							<td>{{list.detallelesion}}</td>
 							<td>{{list.observaciones}}</td>
-							<td><a href= "/personal/listado/listadoxaccdt/certificadoxaccdt/{{list.idaccidente}}/{{list.idagente_id}}/-1/">Ver</a> </td>
+							<td><a href= "{% url 'listado/listadoxaccdt/certificadoxaccdt' %}?idacc={{list.idaccidente}}&idagen={{list.idagente_id}}&borrado=-1">Ver</a> </td>
 							{%if "Eliminar" in grupos or user.username == "admin"%}
 							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/adtxagente/{{list.idagente_id}}/{{list.idaccidente}}/');">Eliminar</a>
 							{% endif %}
