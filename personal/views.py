@@ -714,7 +714,7 @@ def base_vieja_index(peticion):
     
 #-----------------------------------------------------------------------------------
 
-#@login_required(login_url='/personal/accounts/login')
+#@login_required(login_url='login')
 def agentes(peticion):
 
     user = peticion.user
