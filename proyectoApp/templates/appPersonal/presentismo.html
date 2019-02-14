@@ -1,4 +1,4 @@
-{% extends "personal/estadisticas/estadisticas_base.html" %}
+{% extends "appPersonal/estadisticas/estadisticas_base.html" %}
 {% load i18n %}
 
 {% block title %} 
@@ -17,7 +17,7 @@
 	    mes = parseInt(mesaux);
 	    anio = parseInt(anioaux);
 	    
-	    open("/personal/presentReport/?mes="+mes+"&anio="+anio+"&excel="+0,"_self");	
+	    open("presentReport/?mes="+mes+"&anio="+anio+"&excel="+0,"_self");	
 	    return false;
 	}
 		  

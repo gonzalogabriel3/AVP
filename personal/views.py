@@ -143,68 +143,68 @@ def generarLicenciaAgentesActivos():
 def ausRep(peticion):
     user = peticion.user
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
 
-    return render_to_response('personal/ausRep.html',{'user':user,'grupos':get_grupos(user)},)
+    return render_to_response('appPersonal/ausRep.html',{'user':user,'grupos':get_grupos(user)},)
     
-@login_required(login_url='/personal/accounts/login')    
+@login_required(login_url='/appPersonal/accounts/login')    
 def generarLicT(peticion):
     user = peticion.user
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     generarLicenciaAgentesActivos()
 
-    return render_to_response('personal/licenciagenerada.html',{'user':user,'grupos':get_grupos(user)},)
+    return render_to_response('appPersonal/licenciagenerada.html',{'user':user,'grupos':get_grupos(user)},)
 
 def generarLicI(peticion):
     user = peticion.user
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     idagente = int(peticion.GET.get('idagente'))
     generarLicencia(int(idagente))
 
-    return render_to_response('personal/licenciagenerada.html',{'user':user,},)
+    return render_to_response('appPersonal/licenciagenerada.html',{'user':user,},)
     
 @csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def ausRepDir(peticion):
     user = peticion.user
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     dire = Direccion.objects.all()
-    return render_to_response('personal/ausRepDir.html',{'user':user,'dire':dire,'grupos':get_grupos(user)},)
+    return render_to_response('appPersonal/ausRepDir.html',{'user':user,'dire':dire,'grupos':get_grupos(user)},)
 
     
 @csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def ausRepMes(peticion):
     user = peticion.user
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
-    return render_to_response('personal/ausRepMensual.html',{'user':user,'grupos':get_grupos(user)},)
+        return HttpResponseRedirect('/appPersonal/error/')
+    return render_to_response('appPersonal/ausRepMensual.html',{'user':user,'grupos':get_grupos(user)},)
 
 
 @csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def ausRepCMO(peticion):
     user = peticion.user
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
-    return render_to_response('personal/ausRepMensualCMO.html',{'user':user,'grupos':get_grupos(user)},)
+        return HttpResponseRedirect('/appPersonal/error/')
+    return render_to_response('appPersonal/ausRepMensualCMO.html',{'user':user,'grupos':get_grupos(user)},)
 
 @csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def presentRep(peticion):
     user = peticion.user
     if permisoEstadistica(user):
         return HttpResponseRedirect('/personal/error/')
-    return render_to_response('personal/presentismo.html',{'user':user,'grupos':get_grupos(user)},)
+    return render_to_response('appPersonal/presentismo.html',{'user':user,'grupos':get_grupos(user)},)
    
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='/appPersonal/accounts/login')   
 def cantClases(peticion):
     user = peticion.user
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     grupos = get_grupos(user)
     cla = Clase.objects.all().order_by('idclase')
     age = Agente.objects.all().filter(situacion=2)
@@ -843,13 +843,13 @@ def ausent(peticion):
     grupos = get_grupos(user)
     #c={}
     #c.update(csrf(peticion))
-    return render_to_response('personal/ausentismo.html',{'user':user, 'grupos':grupos},)
+    return render_to_response('appPersonal/ausentismo.html',{'user':user, 'grupos':grupos},)
     
     
     
 #--------------------------------VIEW ERROR--------------------------------
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def error(peticion):
   
     user = peticion.user
@@ -857,7 +857,7 @@ def error(peticion):
     
     #c={}
     #c.update(csrf(peticion))
-    return render_to_response('personal/error.html',{'user':user, 'grupos':grupos},)
+    return render_to_response('appPersonal/error.html',{'user':user, 'grupos':grupos},)
   
 
 
@@ -896,7 +896,7 @@ def detAusentismoxagente(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':get_grupos(user)},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':get_grupos(user)},)
     
     if borrado != "":
         try:
@@ -991,10 +991,10 @@ def buscarAgenLic(peticion):
         return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
     agentes = Agente.objects.filter( Q(situacion=2), Q(nombres__icontains = busc) | Q(apellido__icontains = busc)| Q(nrodocumento__icontains = busc)| Q(nrolegajo__icontains = busc)).order_by('apellido')
     lista = paginar(agentes,peticion)
-    return render_to_response('personal/buscadoragenlic.html',{'lista':lista,'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/buscadoragenlic.html',{'lista':lista,'user':user,'grupos':grupos},)
 
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def agentes_base_vieja(peticion):
 
     user = peticion.user
@@ -1021,7 +1021,7 @@ def agentes_base_vieja(peticion):
         lista = paginator.page(paginator.num_pages)
         
     
-    return render_to_response('personal/listado/base_vieja/agentes_base_vieja.html',{'lista':lista,'user':user, 'grupos':grupos, 'busc':busc},)
+    return render_to_response('appPersonal/listado/base_vieja/agentes_base_vieja.html',{'lista':lista,'user':user, 'grupos':grupos, 'busc':busc},)
 
 
 #-----------------------------------------------------------------------------------
