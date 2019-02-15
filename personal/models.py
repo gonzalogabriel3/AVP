@@ -387,7 +387,7 @@ class Ausent(models.Model):
         db_table = u'ausent'
         #unique_together = ("idagente","fecha")
     def __str__(self):
-        return self.fechafin
+        return str(self.fechafin)
         
     def save(self, *args, **kwargs):
         inicio = self.fechainicio
@@ -457,9 +457,8 @@ class Licenciaanual(models.Model):
     class Meta:
         db_table = u'licenciaanual'
         unique_together = ("fechadesde", "idagente", "tipo")
-    
-    def __str__(self):
-        return str(self.fechadesde)
+    #def __str__(self):
+     #   return tipo
         
 #··························································································································································        
 TIPO_MEDICA = (

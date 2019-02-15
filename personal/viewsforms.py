@@ -4,6 +4,7 @@ from django.template.loader import *
 from django.http import HttpResponse
 from personal.models import *
 from personal.forms import *
+from django.shortcuts import render
 #====================================================
 from django.shortcuts import render_to_response
 #===================================================
@@ -869,7 +870,8 @@ def abmLicenciaanual(peticion):
         form = formLicenciaanual(instance=b)
       else:
         form = formLicenciaanual()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos},)
+
+    return render(peticion,'appPersonal/forms/abm.html',{'form':form,'name':name,'user':user, 'grupos':grupos})
         
         
 @login_required(login_url='login')
@@ -908,7 +910,7 @@ def abmSancion(peticion):
 	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
 	      elif accion == 'Modificacion':
 	          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      url = '/personal/listado/listadoxagente/sancionxagente/'+str(idagen)+'/-1/'
+	      url = 'appPersonal/listado/listadoxagente/sancionxagente/'+str(idagen)+'/-1/'
 	      return HttpResponseRedirect(url)
     else:
       if int(idsan) > 0 and int(idagen)> 0:
@@ -922,7 +924,7 @@ def abmSancion(peticion):
       else:
         form = formSancion()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+    return render_to_response(peticion,'appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos})
     
         
 
@@ -970,7 +972,7 @@ def abmLicencia(peticion,idlicencia,idagen):
           
       else:
         form = formLicencia()
-      
+    
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
     

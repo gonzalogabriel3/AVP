@@ -76,7 +76,7 @@
 								    <td>CI</td>
 								{%endif%}
 								<td>{{list.nrodocumento}}</td>
-								<td><a href= "{% url 'vacas?idagente={{list.idagente}}' %}">ver</a></td>
+								<td><a href= "{% url 'vacas' %}?idagente={{list.idagente}}">ver</a></td>
 								<td>{{list.idzona}}</td>
 						</tr>
 					{% endfor %}
