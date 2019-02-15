@@ -64,8 +64,8 @@ urlpatterns = [
     
 #---------------------------------Listado Logs------------------------------
 
-    path('listado/cambios$',cambios),
-    path('listado/cambiosenreg$',cambiosenreg),
+    path('listado/cambios$',cambios,name="listado/cambios"),
+    path('listado/cambiosenreg$',cambiosenreg,name="listado/cambiosenreg"),
 
 #---------------------------------Detalles por agente-----------------------    
 
