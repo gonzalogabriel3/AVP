@@ -1,4 +1,4 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
 {% block title %} 
@@ -6,7 +6,7 @@
 {% endblock%}
 	{% block botonnuevo %}{%endblock%}
 	
-	{% block botonatrasaction %}"return Open('/personal/index'); " {% endblock %}
+	{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
 	
 	{% block path %}{% endblock%}
 	
@@ -28,7 +28,7 @@
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-							<td><a href='/personal/forms/abmaccdetrabajo/{{list.idaccidente}}/{{list.idagente.idagente}}/'>{{list.idagente}}</a></td>
+							<td><a href='/appPersonal/forms/abmaccdetrabajo/{{list.idaccidente}}/{{list.idagente.idagente}}/'>{{list.idagente}}</a></td>
 							<td>{{list.nroexpediente}}</td>
 							<td>{{list.fecha|date:"d/m/Y"}}</td>
 							<td>{{list.hora|time:"H:i"}}</td>

@@ -1,4 +1,4 @@
-{% extends "personal/admin/base_site.html" %}
+{% extends "appPersonal/admin/base_site.html" %}
 {% load i18n admin_modify adminmedia %}
 {% load url from future %}
 
@@ -8,7 +8,7 @@
 {{ media }}
 {% endblock %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}personal/css/forms.css" />{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}appPersonal/css/forms.css" />{% endblock %}
 
 {% block coltype %}{% if ordered_objects %}colMS{% else %}colM{% endif %}{% endblock %}
 

@@ -34,14 +34,14 @@
 	        
 	        {% block botonborrar %}{%endblock%}
 		
-		{% block botonatrasaction %}"return Open('/personal/listado/agentesIndex'); " {% endblock %}
+		{% block botonatrasaction %}"return Open('/appPersonal/listado/agentesIndex'); " {% endblock %}
 		
 		{% block titulo %}
 		{%endblock%}
 		
 		{% block busqueda %}
 			<input id="busqueda" name="busqueda" class="input-medium search-query" size="50" maxlength="50" value="" type="text">
-			<input id="buscar" class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('/personal/listado/agentes?opc={{opc}}')">
+			<input id="buscar" class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('/appPersonal/listado/agentes?opc={{opc}}')">
 		{%endblock%}
 				
 		{% block main-list %}
@@ -76,7 +76,7 @@
 								    <td>CI</td>
 								{%endif%}
 								<td>{{list.nrodocumento}}</td>
-								<td><a href= "/personal/vacas?idagente={{list.idagente}}">ver</a></td>
+								<td><a href= "{% url 'vacas?idagente={{list.idagente}}' %}">ver</a></td>
 								<td>{{list.idzona}}</td>
 						</tr>
 					{% endfor %}

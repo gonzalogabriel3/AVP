@@ -29,7 +29,7 @@
 							  <div align="center">
 								<img src="{% static 'appPersonal/img/logo-inicio.jpg' %}" width=140px height=152px></img><br></br>
 								<hr>
-								<a href='/personal/partediario/'><img src="{% static 'appPersonal/img/icon/black/PngFiles/Chart.png' %}" width=40px height=40px alt="parte diario" title="Parte diario"></img></a>
+								<a href="{% url 'partediario' %}"><img src="{% static 'appPersonal/img/icon/black/PngFiles/Chart.png' %}" width=40px height=40px alt="parte diario" title="Parte diario"></img></a>
 
 								<a href="{% url 'listado/agentes' %}?opc=2&busc='' "><img src="{% static 'appPersonal/img/icon/black/PngFiles/Machine.png' %}" width=40px height=40px alt="agentes" title="Agentes"></img></a>
 
@@ -61,6 +61,3 @@
 	</div>
 </div>
 {% endblock %}
-
-
-

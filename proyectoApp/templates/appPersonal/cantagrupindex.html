@@ -1,5 +1,5 @@
  
-{% extends "personal/estadisticas/estadisticas_base.html" %}
+{% extends "appPersonal/estadisticas/estadisticas_base.html" %}
 {% load i18n %}
 
 {% block title %} 
@@ -31,7 +31,7 @@
 
 	function reporteAgrup(){
 		agrup = document.getElementById('agrup').value ;
-		open("/personal/cantagrup?agrup="+agrup,"_self");
+		open("/appPersonal/cantagrup?agrup="+agrup,"_self");
 		return false;
 	}
 	

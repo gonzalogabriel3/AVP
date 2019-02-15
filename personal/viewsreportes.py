@@ -91,11 +91,12 @@ def ausRepLicenciasPendientes_excel(peticion):
 	    i = i + 1
 	    
 	    nombres = a.idagente.nombres
-	    sincodnombres = nombres.encode('ascii','ignore')
-	    
+	    #sincodnombres = nombres.encode('ascii','ignore')
+	    sincodnombres = str(nombres)
 	    apellido = a.idagente.apellido
-	    sincodapellido = apellido.encode('ascii','ignore')
-	    
+	    #sincodapellido = apellido.encode('ascii','ignore')
+	    sincodapellido = str(apellido)
+
 	    nombre = sincodapellido+", "+sincodnombres
 	    
 	    sheet.write(i, 0, nombre, style=default_style)
@@ -103,11 +104,14 @@ def ausRepLicenciasPendientes_excel(peticion):
 	    sheet.write(i, 2, a.anio, style=default_style)
 	    sheet.write(i, 3, a.cantidaddias, style=default_style)
 	    sheet.write(i, 4, a.diastomados, style=default_style)
-	    sheet.write(i, 5, a.idagente.idzona.descripcion, style=default_style)
+	    try:
+	    	sheet.write(i, 5, a.idagente.idzona.descripcion, style=default_style)
+	    except:
+	    	sheet.write(i, 5, "", style=default_style)
 	    sheet.write(i, 6, a.idagente.iddireccion.descripcion, style=default_style)
 	    
 
-	response = HttpResponse(mimetype='application/vnd.ms-excel')
+	response = HttpResponse(content_type='application/vnd.ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=Licencia_excel.xls'
 	book.save(response)
 	return response
@@ -239,7 +243,7 @@ def ingopcsalidasmesagentes_excel(peticion):
 	
 	user = peticion.user
 		
-	return render_to_response('personal/reports/ingopcsalidasmesagentes_excel.html',{'user':user,},)
+	return render_to_response('appPersonal/reports/ingopcsalidasmesagentes_excel.html',{'user':user,},)
 		
 		
 @login_required
@@ -319,7 +323,7 @@ def ingopcsalidasanioagente_excel(peticion):
 	
 	agentes = Agente.objects.all().order_by('apellido')
 			
-	return render_to_response('personal/reports/ingopcsalidasanioagente_excel.html',{'agentes':agentes,'user':user,},)	
+	return render_to_response('appPersonal/reports/ingopcsalidasanioagente_excel.html',{'agentes':agentes,'user':user,},)	
 
 	
 @login_required
@@ -466,7 +470,7 @@ def agentes_excel(request):
     			sheet.write(row+1, col, val, style=style)
     
     
-    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response = HttpResponse(content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename=agentes_excel.xls'
     book.save(response)
     return response
@@ -477,7 +481,7 @@ def ingfechapartdiarioausent_excel(peticion):
 	
 	user = peticion.user
 	
-	return render_to_response('personal/ingfechapartdiarioausent_excel.html',{'user':user,},)
+	return render_to_response('appPersonal/ingfechapartdiarioausent_excel.html',{'user':user,},)
     
     
 

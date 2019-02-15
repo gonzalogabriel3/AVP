@@ -219,22 +219,22 @@ def cantClases(peticion):
                     lis[i][1] = lis[i][1] + 1
             except AttributeError:
                 pass
-    return render_to_response('personal/cantclase.html',{'lista':lis,'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/cantclase.html',{'lista':lis,'user':user,'grupos':grupos},)
 
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='/appPersonal/accounts/login')   
 def cantagrupindex(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     agrup = Agrupamiento.objects.all()
-    return render_to_response('personal/cantagrupindex.html',{'agrup':agrup,'user':user,'grupos':grupos},)
+    return render_to_response('appPersonal/cantagrupindex.html',{'agrup':agrup,'user':user,'grupos':grupos},)
     
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='/appPersonal/accounts/login')   
 def cantAgrupamiento(peticion):
     user = peticion.user
     agrup = int(peticion.GET.get('agrup'))
     agrupaux = Agrupamiento.objects.get(pk=int(agrup))
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     grupos = get_grupos(user)
     lista = []
     agent = Agente.objects.filter(agrupamiento=agrup,situacion=2).order_by('apellido')
@@ -244,9 +244,9 @@ def cantAgrupamiento(peticion):
         lista.append([a.apellido,a.nombres,a.nrodocumento,a.fechaalta,zona.descripcion])
     
     lista = paginar(lista,peticion)
-    return render_to_response('personal/cantagrup.html',{'lista':lista,'user':user,'grupos':grupos,'cantidad':cantidad,'agrup':agrup,'descrip':agrupaux.descripcion},)
+    return render_to_response('appPersonal/cantagrup.html',{'lista':lista,'user':user,'grupos':grupos,'cantidad':cantidad,'agrup':agrup,'descrip':agrupaux.descripcion},)
 
-@login_required(login_url='/personal/accounts/login')   
+@login_required(login_url='/appPersonal/accounts/login')   
 def medicasinalta(peticion):
     user = peticion.user
     if permisoEstadistica(user):
@@ -272,7 +272,7 @@ def partediario(peticion):
     
 
 @csrf_exempt
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def ausPartDiario(peticion):
     user = peticion.user
     listaagente = list()
@@ -281,7 +281,7 @@ def ausPartDiario(peticion):
     anio = int(peticion.GET.get('anio'))
     fecha = datetime.date(anio,mes,dia)
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     aus = Ausent.objects.filter(Q(fechainicio__lte=fecha), Q(fechafin__gte=fecha))
     agen = Agente.objects.filter(situacion=2)
     for a in agen:
@@ -291,7 +291,7 @@ def ausPartDiario(peticion):
     listadoArti = listadoArticulos(aus)
     cantDiaria = aus.count
     
-    return render_to_response('personal/ausParteDiario.html',{'user':user,'listadoArti':listadoArti,'listado':sorted(listadoAus, key=lambda agen: agen[0].apellido),'cant':cantDiaria,'dia':dia,'mes':mes,'anio':anio,'grupos':get_grupos(user)},)
+    return render_to_response('appPersonal/ausParteDiario.html',{'user':user,'listadoArti':listadoArti,'listado':sorted(listadoAus, key=lambda agen: agen[0].apellido),'cant':cantDiaria,'dia':dia,'mes':mes,'anio':anio,'grupos':get_grupos(user)},)
     
     
 
@@ -320,7 +320,7 @@ def fechaEnRango(anio,mes,fi,ff):
     return cant
 
 
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def ausReportMensual(peticion):
     """
     Metodo que retorna los ausentes que hubieron en un mes dado. Discriminados en la siguiente forma:
@@ -333,7 +333,7 @@ def ausReportMensual(peticion):
     anio = int(peticion.GET.get('anio'))
     listaAus = list()
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     aus = Ausent.objects.all()
     for a in aus:
         cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
@@ -349,10 +349,10 @@ def ausReportMensual(peticion):
     listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
     lista=sorted(listaAus, key=lambda agen: agen[0])
     lista = paginar(lista,peticion)
-    return render_to_response('personal/ausReportMensual.html',{'user':user, 'grupos':grupos, 'lista':lista,'anio':anio,'mes':mes})
+    return render_to_response('appPersonal/ausReportMensual.html',{'user':user, 'grupos':grupos, 'lista':lista,'anio':anio,'mes':mes})
 
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def ausReportMensualCMO(peticion):
     """
     Metodo que retorna la ocurrencia de CMO en un mes dado. Discriminados en la siguiente forma:
@@ -365,7 +365,7 @@ def ausReportMensualCMO(peticion):
     anio = int(peticion.GET.get('anio'))
     listaAus = list()
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     aus = Ausent.objects.filter(Q(idarticulo=1011)|Q(idarticulo=1021)|Q(idarticulo=1811))
     for a in aus:
         cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
@@ -382,7 +382,7 @@ def ausReportMensualCMO(peticion):
 	    
     lista=sorted(listaAus, key=lambda agen: agen[0])
     lista = paginar(lista,peticion)
-    return render_to_response('personal/ausReportMensual.html',{'user':user, 'grupos':grupos, 'lista':lista,'anio':anio,'mes':mes})
+    return render_to_response('appPersonal/ausReportMensual.html',{'user':user, 'grupos':grupos, 'lista':lista,'anio':anio,'mes':mes})
     
 def procesaPresen(listaPre):
     """
@@ -531,7 +531,7 @@ def presentismoReport(peticion):
     lista = paginar(listaPre,peticion)
     
     if excel == 0:
-	       return render_to_response('personal/presentismoReport.html',{'user':user,'grupos':grupos,'lista':lista,'anio':year,'mes':month})
+	       return render_to_response('appPersonal/presentismoReport.html',{'user':user,'grupos':grupos,'lista':lista,'anio':year,'mes':month})
     else:
     	book = xlwt.Workbook(encoding='utf8')
     	
@@ -642,12 +642,12 @@ def listadoArticulos(aus):
     return porcentajesArti(listadoArt)
 
         
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def ausReportDir(peticion,a,direc):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     cantAnual=0
     direccion = Direccion.objects.get(pk=direc)
     listaagente = list()
@@ -679,7 +679,7 @@ def ausReportDir(peticion,a,direc):
     dic = cantMes[11][1]
     cantAnual = ene + feb + mar + abr + may + jun + jul + ago + sep + oct + nov + dic
 
-    return render_to_response('personal/ausReportDir.html',{'user':user, 'grupos':grupos, 'listadoArti':listadoArti,'listado':listadoAus,'direccion':force_unicode(direccion.descripcion),'anual':cantAnual,'ene':ene,'feb':feb,'mar':mar,'abr':abr,'may':may,'jun':jun,'jul':jul,'ago':ago,'sep':sep,'oct':oct,'nov':nov,'dic':dic})
+    return render_to_response('appPersonal/ausReportDir.html',{'user':user, 'grupos':grupos, 'listadoArti':listadoArti,'listado':listadoAus,'direccion':force_unicode(direccion.descripcion),'anual':cantAnual,'ene':ene,'feb':feb,'mar':mar,'abr':abr,'may':may,'jun':jun,'jul':jul,'ago':ago,'sep':sep,'oct':oct,'nov':nov,'dic':dic})
 
 #--------------------------------------------------------------------------
 
@@ -703,14 +703,14 @@ def agentesIndex(peticion):
   
     return render(peticion,'appPersonal/listado/agenteIndex.html',{'user':user,'grupos':grupos},)
     
-@login_required(login_url='/personal/accounts/login')
+@login_required(login_url='/appPersonal/accounts/login')
 def base_vieja_index(peticion):
 
     user = peticion.user
     grupos = get_grupos(user)
     idagente = int(peticion.GET.get('idagente'))
   
-    return render_to_response('personal/listado/base_vieja/base_vieja_index.html',{'user':user,'grupos':grupos, 'idagente':idagente},)
+    return render_to_response('appPersonal/listado/base_vieja/base_vieja_index.html',{'user':user,'grupos':grupos, 'idagente':idagente},)
     
 #-----------------------------------------------------------------------------------
 
@@ -774,7 +774,7 @@ def vacacionesAcum(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     if permisoEstadistica(user):
-        return HttpResponseRedirect('/personal/error/')
+        return HttpResponseRedirect('/appPersonal/error/')
     licaanual = Licenciaanualagente.objects.filter(resta=True, idagente=agente).order_by('idagente')
     listaLic = list()
     for l in licaanual:

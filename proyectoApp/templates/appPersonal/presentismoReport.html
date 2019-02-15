@@ -1,4 +1,4 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
 {% block extrahead %}
@@ -6,7 +6,7 @@
 <script>
 		    
 	function callExcel(){
-	    open("/personal/presentReport/?mes="+{{mes}}+"&anio="+{{anio}}+"&excel="+1,"_self");	
+	    open("/appPersonal/presentReport/?mes="+{{mes}}+"&anio="+{{anio}}+"&excel="+1,"_self");	
 	    return false;
 	}
 		  
@@ -21,7 +21,7 @@
 {% endblock%}
 	{% block botonnuevo %}{%endblock%}
 	
-	{% block botonatrasaction %}"return Open('/personal/index'); " {% endblock %}
+	{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
 		
 	
 	{% block botonexcel %}

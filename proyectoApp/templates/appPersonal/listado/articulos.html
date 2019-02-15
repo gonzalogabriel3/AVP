@@ -1,4 +1,4 @@
-{% extends "personal/listado/listado_base.html" %}
+{% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
 {% block title %} 
@@ -7,7 +7,7 @@
 
 {% block botonnuevo %}{%endblock%}
 
-{% block botonatrasaction %}"return Open('/personal/index'); " {% endblock %}
+{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
 
 {% block path %}{% endblock%}
 
@@ -30,7 +30,7 @@
 				<tbody>
 					{%for arti in articulos%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-								<td><a href="/personal/forms/abmarticulos/{{arti.pk}}/">{{arti.descripcion}}</a></td>
+								<td><a href="{% url 'forms/abmarticulos' arti.pk %}">{{arti.descripcion}}</a></td>
 								<td>{{arti.maxanual}}</td>
 								<td>{{arti.maxmensual}}</td>
 						</tr>
