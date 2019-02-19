@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 admin.autodiscover()
 
 urlpatterns = [
-    path('index/',index),
+    path('index/',index,name="indexPersonal"),
 
     path('ausReportMensual/$',ausReportMensual),
     path('ausReportMensualCMO/$',ausReportMensualCMO),

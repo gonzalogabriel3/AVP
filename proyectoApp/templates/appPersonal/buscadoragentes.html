@@ -30,7 +30,7 @@ function buscaragentes(path){
 		
 		{% block busqueda %}
 			<input id="busqueda" name="busqueda" class="input-medium search-query" size="50" maxlength="50" value="" type="text">
-			<input class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('/appPersonal/cargaausent')">
+			<input class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('cargaausent')">
 		{%endblock%}
 		{% block main-list %}
 		
@@ -50,7 +50,7 @@ function buscaragentes(path){
 						<tr class="{% cycle 'row1' 'row2' %}">
 <!-- 								<td><a href= "/personal/forms/abmausentismo?idausent=0&idagente={{list.idagente}}&code=2">{{list.apellido}}</a>, {{list.nombres}} </td> -->
 								
-								<td><a href= "{% url 'detalle/detallexagente/ausentismo?idagente={{list.idagente}}&borrado=-1' %}">{{list.apellido}}</a>, {{list.nombres}} </td>
+								<td><a href= "{% url 'detalle/detallexagente/ausentismo' %}?idagente={{list.idagente}}&borrado=-1">{{list.apellido}}</a>, {{list.nombres}} </td>
 								<td>{{list.nrolegajo}}</td>
 								<td>{{list.tipodoc}}</td>
 								<td>{{list.nrodocumento}}</td>

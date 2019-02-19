@@ -692,6 +692,7 @@ def index(peticion):
     inicio = Inicio.objects.get(idinicio=1)
     #titulo = str(i.titulo)
     #mensaje = i.mensaje
+
     return render_to_response('appPersonal/index.html',{'user':user, 'grupos':grupos,'inicio':inicio},)
 
 
@@ -887,7 +888,7 @@ def cantDias(ausent):
             		    return listM
     return listM
 
-
+@csrf_exempt
 @login_required(login_url='login')
 def detAusentismoxagente(peticion):
     user = peticion.user

@@ -1,6 +1,13 @@
 {% extends "appPersonal/plantilla_base.html" %}
 
+{% block url %}
+	<a href="#">Url 2</a>
+{% endblock %}
+
 {% block content %}
+
+	
+
 <div id="content-main" >
 	
 	<div id="form_container">
@@ -37,7 +44,7 @@
 		<ul class="nav nav-tabs nav-stacked">  
 		
 		<li class="nivel1"><a href="{% url 'forms/agente' %}?idagente={{idagente}}" class="nivel1">Modificar datos personales</a></li>
-		<li class="nivel1"><a href="{% url 'listadoxagente/facxagente?idagente={{idagente}}&borrado=-1">Familiares a Cargo</a></li>
+		<li class="nivel1"><a href="{% url 'listado/listadoxagente/facxagente' %}?idagente={{idagente}}&borrado=-1">Familiares a Cargo</a></li>
 		{%if "Datos Agente" not in grupos%}
 			<li><a href="{% url 'detalle/detallexagente/ausentismo' %}?idagente={{idagente}}&borrado=-1">Ausentismo</a></li>
 			<li><a href="{% url 'listado/listadoxagente/salidaxagente' %}?idagente={{idagente}}&borrado=-1">Salidas</a></li>

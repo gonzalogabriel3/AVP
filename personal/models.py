@@ -99,7 +99,7 @@ class Inicio(models.Model):
     class Meta:
         db_table = u'inicio'
     def __str__(self):
-        return self.titulo 
+        return str(self.titulo) 
             
 #··························································································································································        
 class Nacionalidad(models.Model):
@@ -108,7 +108,7 @@ class Nacionalidad(models.Model):
     class Meta:
         db_table = u'nacionalidad' 
     def __str__(self):
-        return self.nacionalidad      
+        return str(self.nacionalidad)      
 #··························································································································································        
 class Funcion(models.Model):
     idfuncion = models.IntegerField(primary_key=True)
@@ -118,7 +118,7 @@ class Funcion(models.Model):
         db_table = u'funcion'
             
     def __str__(self):
-        return self.descripcion    
+        return str(self.descripcion)    
 #··························································································································································        
 class CargoFuncion(models.Model):
     idcargof = models.IntegerField(primary_key=True)
@@ -127,7 +127,7 @@ class CargoFuncion(models.Model):
     class Meta:
         db_table = u'cargo_funcion'
     def __str__(self):
-        return self.descripcion            
+        return str(self.descripcion)            
                 
 #··························································································································································
 class Clase(models.Model):
@@ -137,7 +137,7 @@ class Clase(models.Model):
         db_table = u'clase'
     
     def __str__(self):
-        return self.descripcion 
+        return str(self.descripcion) 
               
 #··························································································································································        
 class Direccion(models.Model):
@@ -147,7 +147,7 @@ class Direccion(models.Model):
         db_table = u'direccion'
 
     def __str__(self):
-        return self.descripcion        
+        return str(self.descripcion)        
 #··························································································································································                
 class Zona(models.Model):
     idzona = models.IntegerField(primary_key=True)
@@ -156,7 +156,7 @@ class Zona(models.Model):
         db_table = u'zona'
     
     def __str__(self):
-        return self.descripcion
+        return str(self.descripcion)
 
 #··························································································································································        
 class Codigopostal(models.Model):
@@ -179,7 +179,7 @@ class Articulo(models.Model):
         db_table = u'articulo'
     
     def __str__(self):
-        return self.descripcion            
+        return str(self.descripcion)            
         
 #··························································································································································        
 class Agrupamiento(models.Model):
@@ -189,7 +189,7 @@ class Agrupamiento(models.Model):
         db_table = u'agrupamiento'
 
     def __str__(self):
-        return self.descripcion        
+        return str(self.descripcion)        
 
 #··························································································································································        
 class Agente(models.Model):
@@ -242,7 +242,7 @@ class Agente(models.Model):
         db_table = u'agente'
 
     def __str__(self):
-        return self.apellido +" " +self.nombres    
+        return str(self.apellido)+" " +str(self.nombres)    
 #··························································································································································     
 class Tipolesion(models.Model):
     idtipolesion = models.IntegerField(primary_key=True)
@@ -251,7 +251,7 @@ class Tipolesion(models.Model):
         db_table = u'tipolesion'
     
     def __str__(self):
-        return self.descripcion        
+        return str(self.descripcion)       
 
 #··························································································································································        
 class Adscripcion(models.Model):
@@ -266,7 +266,7 @@ class Adscripcion(models.Model):
         db_table = u'adscripcion'
 
     def __str__(self):
-        return self.descripcion
+        return str(self.descripcion)
         
 #··························································································································································        
 class Vinculo(models.Model):
@@ -276,7 +276,7 @@ class Vinculo(models.Model):
         db_table = u'vinculo'
     
     def __str__(self):
-        return self.descripcion        
+        return str(self.descripcion)        
 #··························································································································································        
 class Asignacionfamiliar(models.Model):
     idasigfam = models.AutoField(primary_key=True)
@@ -299,7 +299,7 @@ class Asignacionfamiliar(models.Model):
         unique_together = ("nrodocumento","idagente")
      
     def __str__(self):
-        return self.apellidoynombre       
+        return str(self.apellidoynombre)       
 
 #··························································································································································        
 class Traslado(models.Model):
@@ -324,7 +324,7 @@ class Traslado(models.Model):
         db_table = u'traslado'
      
     def __str__(self):
-        return self.apellidoynombre     
+        return str(self.idagente.apellido)     
 #··························································································································································        
 class Licenciaanualagente(models.Model):
     idlicanualagen = models.AutoField(primary_key=True)
@@ -337,7 +337,7 @@ class Licenciaanualagente(models.Model):
         db_table = u'licenciaanualagente'
     
     def __str__(self):
-        return self.apellidoynombre        
+        return str(self.idagente)      
 #··························································································································································
 class Sancion(models.Model):
     idsancion = models.AutoField(primary_key=True)
@@ -350,7 +350,7 @@ class Sancion(models.Model):
         db_table = u'sancion'
  
     def __str__(self):
-        return self.apellidoynombre             
+        return str(self.idagente.apellido)             
 
 #··························································································································································
 
@@ -368,7 +368,7 @@ class Ausentismo(models.Model):
         unique_together = ("idagente","fecha")
     
     def __str__(self):
-        return self.apellidoynombre        
+        return str(self.idagente.apellido)        
 
 #··························································································································································        
 
@@ -426,7 +426,7 @@ class Accidentetrabajo(models.Model):
         db_table = u'accidentetrabajo'
     
     def __str__(self):
-        return self.nroexpediente        
+        return str(self.nroexpediente)        
         
 #··························································································································································        
 class Certificadoaccidente(models.Model):
@@ -442,7 +442,7 @@ class Certificadoaccidente(models.Model):
         db_table = u'certificadoaccidente'
     
     def __str__(self):
-        return self.nroexpediente        
+        return str(self.nroexpediente)        
         
 #··························································································································································
 class Licenciaanual(models.Model):
@@ -457,8 +457,8 @@ class Licenciaanual(models.Model):
     class Meta:
         db_table = u'licenciaanual'
         unique_together = ("fechadesde", "idagente", "tipo")
-    #def __str__(self):
-     #   return tipo
+    def __str__(self):
+       return str(tipo)
         
 #··························································································································································        
 TIPO_MEDICA = (
@@ -490,7 +490,7 @@ class Medica(models.Model):
         db_table = u'medica'
     
     def __str__(self):
-        return self.expediente
+        return str(self.expediente)
 
 #··························································································································································        
 
@@ -505,7 +505,7 @@ class Juntamedica(models.Model):
         db_table = u'juntamedica'
     
     def __str__(self):
-        return self.idagente
+        return str(self.idagente)
         
 #··························································································································································
 
@@ -522,7 +522,7 @@ class Licenciamedica(models.Model):
         db_table = u'licenciamedica'
     
     def __str__(self):
-        return self.idagente        
+        return str(self.idagente)        
 
 #··························································································································································        
 class Estudiocursado(models.Model):
@@ -537,7 +537,7 @@ class Estudiocursado(models.Model):
         db_table = u'estudiocursado'
     
     def __str__(self):
-        return self.idagente        
+        return str(self.idagente)        
 #··························································································································································        
 class Servicioprestado(models.Model):
     idservprest = models.AutoField(primary_key=True)
@@ -554,7 +554,7 @@ class Servicioprestado(models.Model):
         db_table = u'servicioprestado'
     
     def __str__(self):
-        return self.idagente        
+        return str(self.tarea)        
 #··························································································································································        
 class Licencia(models.Model):
     idlicencia = models.AutoField(primary_key=True)
@@ -566,7 +566,7 @@ class Licencia(models.Model):
         db_table = u'licencia'
     
     def __str__(self):
-        return self.idagente        
+        return str(self.idagente)        
 #··························································································································································        
 class Seguro(models.Model):
     idseguro = models.AutoField(primary_key=True)
@@ -581,7 +581,7 @@ class Seguro(models.Model):
         db_table = u'seguro'
     
     def __str__(self):
-        return self.idagente        
+        return str(self.nropoliza)        
 #··························································································································································        
 class Salida(models.Model):
     idsalida = models.AutoField(primary_key=True)
@@ -596,7 +596,7 @@ class Salida(models.Model):
         unique_together = ("idagente","horasalida","fecha")
     
     def __str__(self):
-        return self.idagente       
+        return str(self.fecha)       
 
 #··························································································································································        
 class Escolaridad(models.Model):
@@ -614,7 +614,7 @@ class Escolaridad(models.Model):
         unique_together = ("idasigfam","anio")
     
     def __str__(self):
-        return self.gradocrusado       
+        return str(self.gradocrusado)       
 
 #··························································································································································        
 class ArtiTomados(models.Model):
@@ -627,8 +627,8 @@ class ArtiTomados(models.Model):
     tiempolltarde = models.TimeField(blank=True)
     class Meta:
         db_table = u'articulos_tomados'
-    #def __unicode__(self):
-    #    return force_unicode()
+    def __str__(self):
+        return str(self.idartitom)
     
     
 class Evaluador(models.Model):
@@ -638,7 +638,9 @@ class Evaluador(models.Model):
     
     class Meta:
         db_table = u'evaluador'
-        
+    def __str__(self):
+        return str(self.descripcion)
+
 class Calificacion(models.Model):
      idcalificacion = models.AutoField(primary_key=True)
      periodo = models.IntegerField(db_column='periodo',verbose_name='Periodo')
@@ -652,6 +654,8 @@ class Calificacion(models.Model):
      
      class Meta:
          db_table = u'calificacion'
+     def __str__(self):
+        return str(self.idcalificacion)
 #***********************************************************************************************$
 #***MODELOS-DJANGO******************************************************************************$
 #***********************************************************************************************$
@@ -672,7 +676,7 @@ class UserPerso(models.Model):
         db_table = u'auth_user'
     
     def __str__(self):
-        return self.username
+        return str(self.username)
 
 class DjangoContentType(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -683,7 +687,7 @@ class DjangoContentType(models.Model):
         db_table = u'django_content_type'
     
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class DjangoSession(models.Model):
     session_key = models.CharField(max_length=40, primary_key=True)
@@ -693,7 +697,7 @@ class DjangoSession(models.Model):
         db_table = u'django_session'
     
     def __str__(self):
-        return self.session_data
+        return str(self.session_data)
 
 class Log(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -708,7 +712,7 @@ class Log(models.Model):
         db_table = u'django_admin_log'
     
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 class Cambios(models.Model):
     idcambio = models.AutoField(primary_key=True)
@@ -724,7 +728,7 @@ class Cambios(models.Model):
         db_table = u'cambios'
     
     def __str__(self):
-        return self.usuario
+        return str(self.usuario)
 
 
 class HistorialDireccion(models.Model):
@@ -737,7 +741,7 @@ class HistorialDireccion(models.Model):
         db_table = u'historialdireccion'
     
     def __str__(self):
-        return self.idagente
+        return str(self.idagente)
         
 #------------------------------------------ Tablas Viejas -----------------------------------------------------------------        
 
@@ -768,7 +772,7 @@ class Juntamedicavieja(models.Model):
         db_table = u'juntamedicavieja'
     
     def __str__(self):
-        return self.idagente
+        return str(self.idagente)
         
         
 class Medicavieja(models.Model):
@@ -791,4 +795,4 @@ class Medicavieja(models.Model):
         db_table = u'medicavieja'
     
     def __str__(self):
-        return self.expediente
+        return str(self.expediente)

@@ -131,6 +131,7 @@
 			<a class="brand" href="/personal/index/">
 				{% trans ' AVP' %}
 				<img src="{% static 'appPersonal/img/logo-inicio2.png' %}" width="35" height="35"  onclick="/index.html" ></img>
+				
 				{% block branding %}{% endblock %}
 			</a>
 			{% if user.is_active and user.is_staff  %}
@@ -155,15 +156,17 @@
        <!-- END Header -->
    
       {% block messages %}
-	{% if messages %}
-		  <ul class="messagelist">{% for message in messages %}
-		    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-		  {% endfor %}</ul>
-	{% endif %}
+		{% if messages %}
+			  <ul class="messagelist">{% for message in messages %}
+			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			  {% endfor %}</ul>
+		{% endif %}
       {% endblock messages %}
-   
+      
+
        <!-- Content -->
       {% block estructura %}
+      
        <div class="container-fluid">
       <!-- Content -->
 		<div id="content" class="{% block coltype %}colM{% endblock %}">  </div>
