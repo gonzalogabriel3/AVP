@@ -27,7 +27,7 @@ urlpatterns = [
     path('listado/agentes_base_vieja$',agentes_base_vieja,name="listado/agentes_base_vieja"),
 
     path('listado/agentes$',agentes,name='listado/agentes'),
-    
+
     path('listado/articulos$',articulosList,name="listado/articulos"),
 
     path('listado/adscriptos$',adscripList),
@@ -36,7 +36,7 @@ urlpatterns = [
     path('listado/base_vieja/licenciaanualvieja$', licenciaanualvieja),
     path('listado/base_vieja/juntamedicavieja$', juntamedicavieja),
     
-    path('buscadoragenlic$',buscarAgenLic),
+    path('buscadoragenlic$',buscarAgenLic,name="buscadoragenlic"),
     path('cargaausent$',buscarAgenAusent,name="cargaausent"),
     path('generarlicencia/todos$',generarLicT),
     path('generarlicencia/individual$',generarLicI),
@@ -44,10 +44,10 @@ urlpatterns = [
     #path('estadisticas/ausentismoEs.html',ausentismoEs),
     path('ausent/$',ausent,name="ausent"),
     path('vacas',vacas,name="vacas"),
-    path('ausRep/$',ausRep),
-    path('ausRepDir/$',ausRepDir),
-    path('ausRepMes/$',ausRepMes),
-    path('ausRepCMO/$',ausRepCMO),
+    path('ausRep/$',ausRep,name="ausRep"),
+    path('ausRepDir/$',ausRepDir,name="ausRepDir"),
+    path('ausRepMes/$',ausRepMes,name="ausRepMes"),
+    path('ausRepCMO/$',ausRepCMO,name="ausRepCMO"),
     path('presentRep',presentRep,name="presentRep"),
     path('presentReport/$',presentismoReport),
     path('cantclase/$',cantClases,name="cantclase"),
@@ -101,7 +101,7 @@ urlpatterns = [
      path('listado/listadoxmedica/juntamedica$',juntamedicaxagente,name='listado/listadoxmedica/juntamedica'),
 #---------------------------------------------------------------------------
     path('listado/altasbajasindex$',listAltasBajasIndex, name='listado/altasbajasindex'),
-    path('listado/listaltasbajas/(\d{4})/$',listAltasBajas),
+    path('listado/listaltasbajas/$',listAltasBajas,name="listado/listaltasbajas"),
     #path('listado/listacctrabajo/$',listAccTrabajo),
     #path('listado/traslado/$',trasladolist),
     #path('listado/seguro/$',segurolist),
@@ -119,7 +119,7 @@ urlpatterns = [
            
     path('reportes/agentes/$',agentes_excel,name="reportes/agentes"),
     path('reportes/ingfechapartdiarioausent_excel/$',ingfechapartdiarioausent_excel,name="reportes/ingfechapartdiarioausent_excel"),
-    path('reportes/partdiarioaus_excel/$',partdiarioaus_excel,),
+    path('reportes/partdiarioaus_excel/$',partdiarioaus_excel,name="reportes/partdiarioaus_excel"),
     path('reportes/ingopcsalidasanioagente_excel/$',ingopcsalidasanioagente_excel,name="reportes/ingopcsalidasanioagente_excel"),
     path('reportes/salidasanioagente_excel/$',salidasanioagente_excel),
     path('reportes/ingopcsalidasmesagentes_excel/$',ingopcsalidasmesagentes_excel,name="reportes/ingopcsalidasmesagentes_excel"),

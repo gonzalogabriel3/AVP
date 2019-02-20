@@ -219,7 +219,7 @@
 								    <ul class="nav nav-list">
 								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/user_go.png' %}" width="8%" height="8%"></img> Generar Licencia</li>
 								      <li><a href="#" onclick="doOperation('/appPersonal/generarlicencia/todos');">Generar licencia para todos</a></li>
-								      <li><a href="/appPersonal/buscadoragenlic">Generar licencia individual</a></li>
+								      <li><a href="{% url 'buscadoragenlic' %}">Generar licencia individual</a></li>
 								      <hr>
 								    </ul>
 							  {%endif%}

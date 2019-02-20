@@ -220,7 +220,8 @@ def listAltasBajasIndex(peticion):
     return render_to_response('appPersonal/listado/altasBajasIndex.html',{'user':user,'grupos':grupos},)
 
 @login_required(login_url='login')
-def listAltasBajas(peticion,periodo):
+def listAltasBajas(peticion):
+    periodo=int(peticion.GET.get('periodo'))
     user = peticion.user
     grupos = get_grupos(user)
     if permisoListado(user):
@@ -522,7 +523,7 @@ def juntamedicaxagente(peticion):
 @login_required(login_url='login')   
 def cambios(peticion):
     user = peticion.user
-
+    
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"

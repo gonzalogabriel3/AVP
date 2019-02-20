@@ -1,9 +1,6 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 
 		{% block titulo-form %}
 		    <td><b><font color="#000000" style="font-size: 13px;">LOGS</font></b></td> 
@@ -39,7 +36,7 @@
 							<td>{{list.modelo}}</td>
 							<td>{{list.tipocambio}}</td>
 							<td>{{list.horario}}</td>
-							<td><a href= "{% url 'listado/cambiosenreg?camb={{list.idcambio}}' %}">Ver Cambios</a></td>
+							<td><a href= "{% url 'listado/cambiosenreg' %}?camb={{list.idcambio}} ">Ver Cambios</a></td>
 							
 						</tr>
 					{% endfor %}

@@ -16,10 +16,6 @@
 
 {% endblock %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-	
-{% endblock%}
 
 
 {% block branding %}
@@ -56,7 +52,7 @@
 		posicion2 = document.getElementById("select2").options.selectedIndex;
 		anio = document.getElementById("select2").options[posicion2].text;
 								
-		open("/appPersonal/reportes/salidasanioagente_excel/?idagente="+idagente+"&anio="+anio,"_self");	
+		open("{% url 'reportes/ingopcsalidasanioagente_excel' %}?idagente="+idagente+"&anio="+anio,"_self");	
 		
 		return false;
 	}

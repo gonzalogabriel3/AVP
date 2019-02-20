@@ -502,7 +502,7 @@ def partdiarioaus_excel(peticion):
     date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
     
     #ausentismos = Ausent.objects.filter(fecha__range=(fechainicio, fechafin)).filter(iddeposito__exact=posiciondepo)
-    ausentismos = Ausent.objects.filter(Q(idarticulo__exact=18) | Q(idarticulo__exact=101) | Q(idarticulo__exact=102) | Q(idarticulo__exact=1011) | Q(idarticulo__exact=1021) | Q(idarticulo__exact=1811) | Q(idarticulo__exact=103) | Q(idarticulo__exact=181) )
+    ausentismos = Ausent.objects.filter(Q(idarticulo=18) | Q(idarticulo=101) | Q(idarticulo=102) | Q(idarticulo=1011) | Q(idarticulo=1021) | Q(idarticulo=1811) | Q(idarticulo=103) | Q(idarticulo=181) )
     
     lista = list()
     

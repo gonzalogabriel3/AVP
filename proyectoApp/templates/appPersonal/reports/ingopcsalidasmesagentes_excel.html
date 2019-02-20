@@ -1,5 +1,5 @@
 {% extends "appPersonal/estadisticas/estadisticas_base.html" %}
-{% load i18n %}
+{% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/appPersonal/css/base2.css{% endblock %}" />
 
@@ -8,18 +8,13 @@
 
 {{ block.super }}
 
-<link rel="stylesheet" type="text/css" href="/site_media/appPersonal/css/dashboard.css"/>
+<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/dashboard.css' %}"/>
 
-<script type="text/javascript" src="/site_media/js/view.js"></script>
-<script type="text/javascript" src="/site_media/js/calendar/calendar.js"></script>
-<script type="text/javascript" src="/site_media/personal/js/funciones.js"></script>
+<script type="text/javascript" src="{% static 'appPersonal/js/view.js' %}"></script>
+<script type="text/javascript" src="{% static 'appPersonal/js/calendar/calendar.js' %}"></script>
+<script type="text/javascript" src="{% static 'appPersonal/js/funciones.js' %}"></script>
 
 {% endblock %}
-
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-	
-{% endblock%}
 
 
 {% block branding %}
@@ -89,7 +84,7 @@
 		posicion2 = document.getElementById("select2").options.selectedIndex;
 		anio = document.getElementById("select2").options[posicion2].text;
 				
-		open("/appPersonal/reportes/salidasmesagentes_excel/?mes="+mes+"&anio="+anio+"&nombremes="+nombremes,"_self");	
+		open("{% url 'reportes/ingopcsalidasmesagentes_excel' %}?mes="+mes+"&anio="+anio+"&nombremes="+nombremes,"_self");	
 		
 		return false;
 	}

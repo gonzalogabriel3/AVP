@@ -196,7 +196,7 @@ function reportePartDiario(){
 function auspartediarioexcel(){
   if (validarFecha(document.getElementById('anio').value, document.getElementById('mes').value, document.getElementById('dia').value) ==1){
       //fechain = $F('anio') + "-" + $F('mes') +"-"+ $F('dia');
-      open("/personal/reportes/partdiarioaus_excel/?anio="+document.getElementById('anio').value+"&mes="+document.getElementById('mes').value+"&dia="+document.getElementById('dia').value,"_self");
+      open("?anio="+document.getElementById('anio').value+"&mes="+document.getElementById('mes').value+"&dia="+document.getElementById('dia').value,"_self");
   }
   return false;
 }
@@ -204,7 +204,7 @@ function auspartediarioexcel(){
 function listadoAltasBajas(){
   
   if (validaAnio(document.getElementById('anio').value) ==1){
-      open("/personal/listado/listaltasbajas/"+document.getElementById('anio').value+"/","_self");   
+      open("listaltasbajas?periodo="+document.getElementById('anio').value,"_self");   
   }
   return false;
 }
