@@ -21,9 +21,7 @@ function Eliminar(a,b) {
 		{% endblock %}
 
 		{% block botonnuevo %}
-			<form action="/personal/forms/abmescolaridad/0/{{idaf}}/">
-			    <input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" />
-			</form>	 
+			<a class="btn btn-success" href="{% url 'forms/abmescolaridad' %}?idescolaridad=0&idasigfam={{idaf}}">Nuevo</a> 
 		{% endblock%}
 		
 		{% block botonatrasaction %}"return Open('/personal/listado/listadoxagente/facxagente?idagente={{idagente}}&borrado=-1'); " {% endblock %}

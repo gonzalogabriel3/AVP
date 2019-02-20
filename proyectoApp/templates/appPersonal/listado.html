@@ -1,5 +1,5 @@
 {% extends "appPersonal/admin/base_site.html" %}
-{% load i18n %}
+{% load static %}
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/appPersonal/css/base2.css{% endblock %}" />
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/appPersonal/css/dashboard.css" />{% endblock %}
 
@@ -16,7 +16,7 @@
 	<h2>Listado de {{titulo}} </h3>
 	<h3> Breve descripcion del contenido </h2>
 	<p>Molde de un posible reporte</p>
-	<img src="/site_media/appPersonal/img/men_at_work.png" width="200" height="200"></img>
+	<img src="{% static 'appPersonal/img/men_at_work.png' %}" width="200" height="200"></img>
 	<div class="module">
 		<table>
 		<caption><a href="{{ app.app_url }}" class="section">{{titulo}}</a></caption>

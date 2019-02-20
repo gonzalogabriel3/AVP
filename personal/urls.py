@@ -27,6 +27,7 @@ urlpatterns = [
     path('listado/agentes_base_vieja$',agentes_base_vieja,name="listado/agentes_base_vieja"),
 
     path('listado/agentes$',agentes,name='listado/agentes'),
+    
     path('listado/articulos$',articulosList,name="listado/articulos"),
 
     path('listado/adscriptos$',adscripList),
@@ -144,7 +145,7 @@ urlpatterns = [
     path('forms/abmcertificadoaccdt/(\d+)/(\d+)/(\d+)/$',abmCertificadoaccidente),
     path('forms/abmadscriptos/(\d+)/(\d+)/$',abmAdscriptos),
     path('forms/abmestudioscursados$',abmEstudioscursados,name="forms/abmestudioscursados"),
-    path('forms/abmescolaridad/(\d+)/(\d+)/$',abmEscolaridad),
+    path('forms/abmescolaridad/$',abmEscolaridad,name="forms/abmescolaridad"),
     path('forms/abmmedica$',abmMedica,name="forms/abmmedica"),
     path('forms/abmjuntamedica/(\d+)/(\d+)/(\d+)/$',abmJuntaMedica),
     path('forms/abmjuntamedicavieja$', abmJuntaMedicavieja,name="forms/abmjuntamedicavieja"),

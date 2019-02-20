@@ -41,7 +41,7 @@
 		
 		{% block busqueda %}
 			<input id="busqueda" name="busqueda" class="input-medium search-query" size="50" maxlength="50" value="" type="text">
-			<input id="buscar" class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('/appPersonal/listado/agentes?opc={{opc}}')">
+			<input id="buscar" class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('{% url 'listado/agentes' %}?opc={{opc}}')">
 		{%endblock%}
 				
 		{% block main-list %}

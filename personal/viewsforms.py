@@ -1179,8 +1179,10 @@ def abmArticulos(peticion,idarticulo):
 
     
 @login_required(login_url='login')
-def abmEscolaridad(peticion,idescolaridad, idasigfam):
+def abmEscolaridad(peticion):
     
+    idescolaridad=int(peticion.GET.get('idescolaridad'))
+    idasigfam=int(peticion.GET.get('idasigfam'))
     user = peticion.user
     grupos = get_grupos(user)
     name = 'Escolaridad'

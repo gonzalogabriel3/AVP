@@ -139,14 +139,14 @@ def sancionxagente(peticion):
     agente = Agente.objects.get(idagente=idagente)
     if borrado != "":
         try:
-            s = Sancion.objects.get(idsancion__exact = int(borrado))
+            s = Sancion.objects.get(idsancion = int(borrado))
             registrar(user,"Sanción",'Baja',getTime(),modeloLista(Sancion.objects.filter(idsancion__exact = int(borrado)).values_list()),None)
             s.delete()
         except Sancion.DoesNotExist:
             s = None
     
     Sancion.objects.filter(fecha=None).delete()
-    sanciones = Sancion.objects.filter(idagente__exact=idagente).order_by('fecha')
+    sanciones = Sancion.objects.filter(idagente=idagente).order_by('fecha')
 
     lista = paginar(sanciones,peticion)
     return render_to_response('appPersonal/listado/listadoxagente/sancionxagente.html',{'lista':lista,'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente,},)

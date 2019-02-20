@@ -29,7 +29,7 @@
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-								<td><a href= "/personal/forms/abmestudioscursados/{{list.idestcur}}/{{list.idagente_id}}/">{{list.idagente}}</a></td>
+								<td><a href= "{% url 'forms/abmestudioscursados' %}?idestcur={{list.idestcur}}&idagen={{list.idagente_id}}">{{list.idagente}}</a></td>
 								<td>{{list.ciclo}}</td>
 								<td>{{list.establecimiento}}</td>
 								<td>{{list.titulo}}</td>
