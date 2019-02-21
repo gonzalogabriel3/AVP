@@ -23,7 +23,7 @@ urlpatterns = [
     #path('forms/traslado.html',traslado),
     path('listado/ausentismos$',ausentismos),
     path('listado/agentesIndex',agentesIndex,name='listado/agentesIndex'),
-    path('listado/base_vieja/base_vieja_index$',base_vieja_index),
+    path('listado/base_vieja/base_vieja_index$',base_vieja_index,name="listado/base_vieja/base_vieja_index"),
     path('listado/agentes_base_vieja$',agentes_base_vieja,name="listado/agentes_base_vieja"),
 
     path('listado/agentes$',agentes,name='listado/agentes'),
@@ -32,14 +32,14 @@ urlpatterns = [
 
     path('listado/adscriptos$',adscripList),
     
-    path('listado/base_vieja/medicavieja$', medicavieja),
-    path('listado/base_vieja/licenciaanualvieja$', licenciaanualvieja),
-    path('listado/base_vieja/juntamedicavieja$', juntamedicavieja),
+    path('listado/base_vieja/medicavieja$', medicavieja,name="listado/base_vieja/medicavieja"),
+    path('listado/base_vieja/licenciaanualvieja$', licenciaanualvieja,name="listado/base_vieja/licenciaanualvieja"),
+    path('listado/base_vieja/juntamedicavieja$', juntamedicavieja,name="listado/base_vieja/juntamedicavieja"),
     
     path('buscadoragenlic$',buscarAgenLic,name="buscadoragenlic"),
     path('cargaausent$',buscarAgenAusent,name="cargaausent"),
-    path('generarlicencia/todos$',generarLicT),
-    path('generarlicencia/individual$',generarLicI),
+    path('generarlicencia/todos$',generarLicT,name="generarlicencia/todos"),
+    path('generarlicencia/individual$',generarLicI,name="generarlicencia/individual"),
     
     #path('estadisticas/ausentismoEs.html',ausentismoEs),
     path('ausent/$',ausent,name="ausent"),
@@ -49,10 +49,10 @@ urlpatterns = [
     path('ausRepMes/$',ausRepMes,name="ausRepMes"),
     path('ausRepCMO/$',ausRepCMO,name="ausRepCMO"),
     path('presentRep',presentRep,name="presentRep"),
-    path('presentReport/$',presentismoReport),
+    path('presentReport/$',presentismoReport,name="presentReport"),
     path('cantclase/$',cantClases,name="cantclase"),
     path('cantagrupindex/$',cantagrupindex,name="cantagrupindex"),
-    path('cantagrup/$',cantAgrupamiento),
+    path('cantagrup/$',cantAgrupamiento,name="cantagrup"),
     path('medicasinalta/$',medicasinalta,name="medicasinalta"),
     path('licanualacum$',vacacionesAcum,name="licanualacum"),
     path('registration/logged_out.html$',logout),

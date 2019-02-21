@@ -1,11 +1,5 @@
- 
-{% extends "appPersonal/estadisticas/estadisticas_base.html" %}
+ {% extends "appPersonal/estadisticas/estadisticas_base.html" %}
 {% load i18n %}
-
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-	
-{% endblock%}
 
 
 {% block branding %}
@@ -31,7 +25,7 @@
 
 	function reporteAgrup(){
 		agrup = document.getElementById('agrup').value ;
-		open("/appPersonal/cantagrup?agrup="+agrup,"_self");
+		open("{% url 'cantagrup' %}?agrup="+agrup,"_self");
 		return false;
 	}
 	

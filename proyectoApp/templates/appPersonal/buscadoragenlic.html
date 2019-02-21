@@ -18,7 +18,8 @@
 		
 		{% block busqueda %}
 			<input id="busqueda" name="busqueda" class="element text" size="50" maxlength="50" value="" type="text">
-			<input class="btn btn-inverse" type="button" name="busqueda" value="buscar" Onclick="return buscaragentes('/appPersonal/buscadoragenlic')">
+			<input class="btn btn-inverse" type="button" name="busqueda" value="Buscar" onclick="return buscaragentes('{% url 'buscadoragenlic' %}')">
+
 		{%endblock%}
 		{% block main-list %}
 		
@@ -36,7 +37,7 @@
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-								<td><a href= "{% url 'generarlicencia/individual?idagente={{list.idagente}}' %}">{{list.apellido}}</a>, {{list.nombres}} </td>
+								<td><a href= "{% url 'generarlicencia/individual' %}?idagente={{list.idagente}} %}">{{list.apellido}}</a>, {{list.nombres}} </td>
 								<td>{{list.nrolegajo}}</td>
 								<td>{{list.tipodoc}}</td>
 								<td>{{list.nrodocumento}}</td>

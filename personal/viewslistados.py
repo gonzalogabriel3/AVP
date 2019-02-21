@@ -453,7 +453,7 @@ def estudioscursadosxagente(peticion):
     lista = paginar(estudioscursados,peticion)
     return render_to_response('appPersonal/listado/listadoxagente/estudioscursadosxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
-    
+@csrf_exempt    
 @login_required(login_url='login')   
 def medicaxagente(peticion):
     user = peticion.user
@@ -591,7 +591,7 @@ def licenciaanualvieja(peticion):
         error = "no posee permiso para listar"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     
-    licav = Licenciaanualvieja.objects.filter(id_agente__exact = idagente)
+    licav = Licenciaanualvieja.objects.filter(id_agente= idagente)
 
     lista = paginar(licav,peticion)
     return render_to_response('appPersonal/listado/base_vieja/licenciaanualvieja.html',{'lista':lista,'user':user,'grupos':grupos,'licav':licav, 'idagente':idagente, 'agente':agente},)
@@ -609,7 +609,7 @@ def juntamedicavieja(peticion):
         error = "no posee permiso para listar"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
     
-    juntamedicas = Juntamedicavieja.objects.filter(idagente__exact = idagente)
+    juntamedicas = Juntamedicavieja.objects.filter(idagente= idagente)
 
     lista = paginar(juntamedicas,peticion)
     return render_to_response('appPersonal/listado/base_vieja/juntamedicavieja.html',{'lista':lista,'user':user,'grupos':grupos, 'idagente':idagente, 'agente':agente},)

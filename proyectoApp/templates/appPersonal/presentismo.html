@@ -1,10 +1,6 @@
 {% extends "appPersonal/estadisticas/estadisticas_base.html" %}
 {% load i18n %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-	
-{% endblock%}
 
 {% block extrahead %}
 <script>
@@ -17,7 +13,7 @@
 	    mes = parseInt(mesaux);
 	    anio = parseInt(anioaux);
 	    
-	    open("presentReport/?mes="+mes+"&anio="+anio+"&excel="+0,"_self");	
+	    open("{% url 'presentReport' %}?mes="+mes+"&anio="+anio+"&excel="+0,"_self");	
 	    return false;
 	}
 		  

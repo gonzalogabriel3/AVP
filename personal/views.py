@@ -193,7 +193,7 @@ def ausRepCMO(peticion):
     return render_to_response('appPersonal/ausRepMensualCMO.html',{'user':user,'grupos':get_grupos(user)},)
 
 @csrf_exempt
-@login_required(login_url='/appPersonal/accounts/login')
+@login_required(login_url='login')
 def presentRep(peticion):
     user = peticion.user
     if permisoEstadistica(user):
@@ -221,14 +221,14 @@ def cantClases(peticion):
                 pass
     return render_to_response('appPersonal/cantclase.html',{'lista':lis,'user':user,'grupos':grupos},)
 
-@login_required(login_url='/appPersonal/accounts/login')   
+@login_required(login_url='login')   
 def cantagrupindex(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     agrup = Agrupamiento.objects.all()
     return render_to_response('appPersonal/cantagrupindex.html',{'agrup':agrup,'user':user,'grupos':grupos},)
     
-@login_required(login_url='/appPersonal/accounts/login')   
+@login_required(login_url='login')   
 def cantAgrupamiento(peticion):
     user = peticion.user
     agrup = int(peticion.GET.get('agrup'))
@@ -246,7 +246,7 @@ def cantAgrupamiento(peticion):
     lista = paginar(lista,peticion)
     return render_to_response('appPersonal/cantagrup.html',{'lista':lista,'user':user,'grupos':grupos,'cantidad':cantidad,'agrup':agrup,'descrip':agrupaux.descripcion},)
 
-@login_required(login_url='/appPersonal/accounts/login')   
+@login_required(login_url='login')   
 def medicasinalta(peticion):
     user = peticion.user
     if permisoEstadistica(user):
@@ -320,7 +320,7 @@ def fechaEnRango(anio,mes,fi,ff):
     return cant
 
 
-@login_required(login_url='/appPersonal/accounts/login')
+@login_required(login_url='login')
 def ausReportMensual(peticion):
     """
     Metodo que retorna los ausentes que hubieron en un mes dado. Discriminados en la siguiente forma:
@@ -400,74 +400,74 @@ def procesaPresen(listaPre):
         mesAnte= diasTom - diasMes # La cantidad de dias del mes anterior
 	#--------------------------------------------------------------------------------------------------------------
         #articulo 101 -------------------------------------------------------------------------------------------------
-    if articulo.idarticulo == 101:
-    #if diasTom > 30:
-        if mesAnte >= 30:
-        #a partir de 30 dias se decuenta el 100% de haberes sumado el 50% de los diez dias anterirores
-        #5 = 10/2
-        #lis[3] = "Descuenta "+ str(diasTom - 5) + " dias "
-            lis[3] = "Descuenta "+str(diasMes) +" dias"
-    #elif diasTom > 20:
-        elif mesAnte >= 20 and diasTom > 30:
-            descuento100 = diasTom - 30
-            descuento50 = float((diasMes - descuento100)/2)
-            lis[3] = "Descuenta "+str(descuento100+descuento50) +" dias"
-        else:
-            if mesAnte >= 20:
-    		#a partir de 20 dias se descuenta el 50% de haberes
-                lis[3] = "Descuenta "+str((float(diasMes)) / 2) +" dias"
-    		#lis[3] = "Descuenta "+str((float(diasTom - 20)) / 2) +" dias"
+        if articulo.idarticulo == 101:
+        #if diasTom > 30:
+            if mesAnte >= 30:
+            #a partir de 30 dias se decuenta el 100% de haberes sumado el 50% de los diez dias anterirores
+            #5 = 10/2
+            #lis[3] = "Descuenta "+ str(diasTom - 5) + " dias "
+                lis[3] = "Descuenta "+str(diasMes) +" dias"
+        #elif diasTom > 20:
+            elif mesAnte >= 20 and diasTom > 30:
+                descuento100 = diasTom - 30
+                descuento50 = float((diasMes - descuento100)/2)
+                lis[3] = "Descuenta "+str(descuento100+descuento50) +" dias"
             else:
-               if diasTom-20 > 0:
-    	            lis[3] = "Descuenta "+str((float(diasTom-20)) / 2) +" dias"
-	#--------------------------------------------------------------------------------------------------------------	
-	#articulo 18 --------------------------------------------------------------------------------------------------
-    elif articulo.idarticulo == 18:
-        if mesAnte >= 12:
-	        lis[3] = "Descuenta "+str(diasMes)+" dias"
-        elif mesAnte < 12:
-            if diasTom - 12 > 0:
-                lis[3] = "Descuenta "+str(diasTom - 12)+" dias"
-	#--------------------------------------------------------------------------------------------------------------
-	#Inasistencias injustificadas ---------------------------------------------------------------------------------
-    elif articulo.idarticulo == 2:
-        if diasMes >= 3:
-	        lis[3] = "Descuenta "+ str(diasTom) + " dias y 100%  de presentismo"
-        elif diasMes == 2:
-	        lis[3] = "Descuenta 2 dias y 66%  de presentismo"
-        elif diasMes == 1:
-	        lis[3] = "Descuenta 1 dias y 33%  de presentismo"
-    #-------------------------------------------------------------------------------------------------------------- 
-    #LLegadas tarde ------------------------------------------------------------------------------------------------
-    elif articulo.idarticulo == 3:
-        if diasMes >= 5:
-	        lis[3] = "Descuenta 100% presentismo "
-        elif diasMes == 4:
-	        lis[3] = "Descuenta 66% presentismo "
-        elif diasMes == 3:
-	        lis[3] = "Descuenta 33% presentismo "
-        ausent = Ausent.objects.filter(idagente__pk=agent.pk,fechainicio__year=lis[6],fechainicio__month=lis[7],idarticulo__pk=3)
-        acum = 0
-        acum2 = time(0,0,0)
+                if mesAnte >= 20:
+        		#a partir de 20 dias se descuenta el 50% de haberes
+                    lis[3] = "Descuenta "+str((float(diasMes)) / 2) +" dias"
+        		#lis[3] = "Descuenta "+str((float(diasTom - 20)) / 2) +" dias"
+                else:
+                   if diasTom-20 > 0:
+        	            lis[3] = "Descuenta "+str((float(diasTom-20)) / 2) +" dias"
+    	#--------------------------------------------------------------------------------------------------------------	
+    	#articulo 18 --------------------------------------------------------------------------------------------------
+        elif articulo.idarticulo == 18:
+            if mesAnte >= 12:
+    	        lis[3] = "Descuenta "+str(diasMes)+" dias"
+            elif mesAnte < 12:
+                if diasTom - 12 > 0:
+                    lis[3] = "Descuenta "+str(diasTom - 12)+" dias"
+    	#--------------------------------------------------------------------------------------------------------------
+    	#Inasistencias injustificadas ---------------------------------------------------------------------------------
+        elif articulo.idarticulo == 2:
+            if diasMes >= 3:
+    	        lis[3] = "Descuenta "+ str(diasTom) + " dias y 100%  de presentismo"
+            elif diasMes == 2:
+    	        lis[3] = "Descuenta 2 dias y 66%  de presentismo"
+            elif diasMes == 1:
+    	        lis[3] = "Descuenta 1 dias y 33%  de presentismo"
+        #-------------------------------------------------------------------------------------------------------------- 
+        #LLegadas tarde ------------------------------------------------------------------------------------------------
+        elif articulo.idarticulo == 3:
+            if diasMes >= 5:
+    	        lis[3] = "Descuenta 100% presentismo "
+            elif diasMes == 4:
+    	        lis[3] = "Descuenta 66% presentismo "
+            elif diasMes == 3:
+    	        lis[3] = "Descuenta 33% presentismo "
+            ausent = Ausent.objects.filter(idagente__pk=agent.pk,fechainicio__year=lis[6],fechainicio__month=lis[7],idarticulo__pk=3)
+            acum = 0
+            acum2 = time(0,0,0)
 
-        for a in ausent:
-            if a.tiempolltarde >= datetime.time(0,50,0):
-                acum = acum + 1
-            elif a.tiempolltarde >= datetime.time(0,30,0):
-                acum = acum + 0.5
-            else:
-                acum2 = datetime.time(acum2.hour + a.tiempolltarde.hour, acum2.minute + a.tiempolltarde.minute, acum2.second + a.tiempolltarde.second)
-                if acum2 >= datetime.time(0,30,0):
+            for a in ausent:
+                if a.tiempolltarde >= datetime.time(0,50,0):
+                    acum = acum + 1
+                elif a.tiempolltarde >= datetime.time(0,30,0):
                     acum = acum + 0.5
-                    dif = datetime.time(0,30,0)
-                    acum2 = datetime.time(acum2.hour - dif.hour, acum2.minute - dif.minute, acum2.second - dif.second)
-        if acum > 0:
-            #NO HABIA CODIGO!!!!!!!!!!!
-            variable=0
-        if acum>1:
-            lis[3] = lis[3]+" Descuenta " + str(acum) + " dias"
-        else:
-            lis[3] = lis[3]+" Descuenta " + str(acum) + " dia"
+                else:
+                    acum2 = datetime.time(acum2.hour + a.tiempolltarde.hour, acum2.minute + a.tiempolltarde.minute, acum2.second + a.tiempolltarde.second)
+                    if acum2 >= datetime.time(0,30,0):
+                        acum = acum + 0.5
+                        dif = datetime.time(0,30,0)
+                        acum2 = datetime.time(acum2.hour - dif.hour, acum2.minute - dif.minute, acum2.second - dif.second)
+            if acum > 0:
+                #NO HABIA CODIGO!!!!!!!!!!!
+                variable=0
+            if acum>1:
+                lis[3] = lis[3]+" Descuenta " + str(acum) + " dias"
+            else:
+                lis[3] = lis[3]+" Descuenta " + str(acum) + " dia"
 	      
     for l in listaPre:
         if l[3]!= "" :
@@ -510,21 +510,21 @@ def presentismoReport(peticion):
             at.diastomados = 0
         #----------------------------------------------------------------------------------------
         
-    if (at.idagente,at.idarticulo) not in listAux:
-        if at.idarticulo.pk == 3 and at.tiempolltarde == datetime.time(0,0,0):
-            pass
+        if (at.idagente,at.idarticulo) not in listAux:
+            if at.idarticulo.pk == 3 and at.tiempolltarde == datetime.time(0,0,0):
+                pass
+            else:
+                try:
+    	    	    #artitomado = ArtiTomados.objects.filter(idagente=at.idagente,anio=year, mes=month, idarticulo = at.idarticulo)
+                    artitomado = ArtiTomados.objects.get(idagente=at.idagente,anio=year, mes=month, idarticulo = at.idarticulo)
+                    listaPre.append([at.idagente,at.idarticulo,at.diastomados,"",artitomado.tiempolltarde,artitomado.diastomados,year,month])
+                except ArtiTomados.DoesNotExist:
+                        pass
+                listAux.append((at.idagente,at.idarticulo))
         else:
-            try:
-	    	    #artitomado = ArtiTomados.objects.filter(idagente=at.idagente,anio=year, mes=month, idarticulo = at.idarticulo)
-                artitomado = ArtiTomados.objects.get(idagente=at.idagente,anio=year, mes=month, idarticulo = at.idarticulo)
-                listaPre.append([at.idagente,at.idarticulo,at.diastomados,"",artitomado.tiempolltarde,artitomado.diastomados,year,month])
-            except ArtiTomados.DoesNotExist:
-                    pass
-            listAux.append((at.idagente,at.idarticulo))
-    else:
-	    for l in listaPre:
-	        if (at.idagente.pk == l[0].idagente) and (at.idarticulo.pk==l[1].idarticulo):    
-	            l[2] = l[2] + at.diastomados
+    	    for l in listaPre:
+    	        if (at.idagente.pk == l[0].idagente) and (at.idarticulo.pk==l[1].idarticulo):    
+    	            l[2] = l[2] + at.diastomados
     
     listaPre = sorted(listaPre, key=lambda pre:pre[0].apellido)
     listaPre = procesaPresen(listaPre)
@@ -704,7 +704,7 @@ def agentesIndex(peticion):
   
     return render(peticion,'appPersonal/listado/agenteIndex.html',{'user':user,'grupos':grupos},)
     
-@login_required(login_url='/appPersonal/accounts/login')
+@login_required(login_url='login')
 def base_vieja_index(peticion):
 
     user = peticion.user
@@ -989,13 +989,13 @@ def buscarAgenLic(peticion):
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
-        return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':grupos},)
+        return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     agentes = Agente.objects.filter( Q(situacion=2), Q(nombres__icontains = busc) | Q(apellido__icontains = busc)| Q(nrodocumento__icontains = busc)| Q(nrolegajo__icontains = busc)).order_by('apellido')
     lista = paginar(agentes,peticion)
     return render_to_response('appPersonal/buscadoragenlic.html',{'lista':lista,'user':user,'grupos':grupos},)
 
     
-@login_required(login_url='/appPersonal/accounts/login')
+@login_required(login_url='login')
 def agentes_base_vieja(peticion):
 
     user = peticion.user

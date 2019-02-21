@@ -6,7 +6,7 @@
 <script>
 		    
 	function callExcel(){
-	    open("/appPersonal/presentReport/?mes="+{{mes}}+"&anio="+{{anio}}+"&excel="+1,"_self");	
+	    open("{% url 'presentReport' %}?mes="+{{mes}}+"&anio="+{{anio}}+"&excel="+1,"_self");	
 	    return false;
 	}
 		  
@@ -15,10 +15,6 @@
 {% endblock %}
 
 
-
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 	{% block botonnuevo %}{%endblock%}
 	
 	{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
@@ -26,7 +22,7 @@
 	
 	{% block botonexcel %}
 		
-	     <input id="backbutton" class="button_text" type="submit" name="submit" value="Excel" style="margin-rigth: 740px;" onclick="javascript:callExcel()" />
+	     <input id="backbutton" class="button_text" type="submit" name="submit" value="Excel" style="margin-rigth: 740px;" onclick="callExcel()" />
 	
 	{%endblock%}
 	

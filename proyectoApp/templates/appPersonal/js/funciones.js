@@ -201,7 +201,7 @@ function auspartediarioexcel(){
   return false;
 }
 
-function listadoAltasBajas(){
+function listadoAltasBajas2(){
   
   if (validaAnio(document.getElementById('anio').value) ==1){
       open("listaltasbajas?periodo="+document.getElementById('anio').value,"_self");   

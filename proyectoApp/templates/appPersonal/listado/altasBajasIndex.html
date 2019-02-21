@@ -15,6 +15,14 @@
 
 {% block main-list %}
 		<form method="post" enctype="text/plain">
+			<script>
+				function listadoAltasBajas(){
+				 if (validaAnio(document.getElementById('anio').value) ==1){
+			      open("{% url 'listado/listaltasbajas' %}?periodo="+document.getElementById('anio').value,"_self");   
+				  }
+				 return false;
+				}
+			</script>
 		      Periodo (ejemplo 2000) <input type="text" id="anio" class="input-medium search-query" name="anio" maxlength=4 size=2 >
 		      <input type="button" id='btnConsulta' class="btn btn-inverse" value="Consulta" onclick="return listadoAltasBajas()"/>
 		</form>
@@ -23,3 +31,4 @@
 
 {% block paginasinf %} 
 {% endblock%}
+

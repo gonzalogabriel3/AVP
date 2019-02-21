@@ -1359,6 +1359,7 @@ def abmJuntaMedicavieja(peticion):
     idagente = str(peticion.GET.get('idagente'))
     idjm = str(peticion.GET.get('idjm'))
     grupos = get_grupos(user)
+    
     if peticion.POST:
       try:
       	if int(idjm) >0:
@@ -1367,25 +1368,25 @@ def abmJuntaMedicavieja(peticion):
       	else:
       		form = formJuntamedicavieja(peticion.POST)
       except ValueError:
-        form = formJuntamedicavieja(peticion.POST)
-        if form.is_valid():
+          form = formJuntamedicavieja(peticion.POST)
+      if form.is_valid():
           form.save()
           url = '/patrimonio/index/'
           return HttpResponseRedirect(url)
-        else:
-          try:
-            if int(idagente) > 0 and int(idjm)> 0:
-              a = Juntamedicavieja.objects.get(pk=idjm)
-              form = formJuntamedicavieja(instance=a)
-            elif int(idagente) > 0:        
-              a = Agente.objects.get(pk=idagente)
-              b = Juntamedicavieja()
-              b.idagente = a
-              form = formJuntamedicavieja(instance=b)
-            else:
-              form = formJuntamedicavieja()
-          except ValueError:
+      else:
+        try:
+          if int(idagente) > 0 and int(idjm)> 0:
+            a = Juntamedicavieja.objects.get(pk=idjm)
+            form = formJuntamedicavieja(instance=a)
+          elif int(idagente) > 0:        
+            a = Agente.objects.get(pk=idagente)
+            b = Juntamedicavieja()
+            b.idagente = a
+            form = formJuntamedicavieja(instance=b)
+          else:
             form = formJuntamedicavieja()
+        except ValueError:
+          form = formJuntamedicavieja()
       	
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
@@ -1406,24 +1407,24 @@ def abmMedicavieja(peticion):
           form = formMedicavieja(peticion.POST)
       except ValueError:
         form = formMedicavieja(peticion.POST)
-        if form.is_valid():
-          form.save()
-          url = '/patrimonio/index/'
-          return HttpResponseRedirect(url)
+      if form.is_valid():
+        form.save()
+        url = '/patrimonio/index/'
+        return HttpResponseRedirect(url)
+    else:
+      try:
+        if int(idagente) > 0 and int(idm)> 0:
+          a = Medicavieja.objects.get(pk=idm)
+          form = formMedicavieja(instance=a)
+        elif int(idagente) > 0:        
+          a = Agente.objects.get(pk=idagente)
+          b = Medicavieja()
+          b.idagente = a
+          form = formMedicavieja(instance=b)
         else:
-          try:
-            if int(idagente) > 0 and int(idm)> 0:
-              a = Medicavieja.objects.get(pk=idm)
-              form = formMedicavieja(instance=a)
-            elif int(idagente) > 0:        
-              a = Agente.objects.get(pk=idagente)
-              b = Medicavieja()
-              b.idagente = a
-              form = formMedicavieja(instance=b)
-            else:
-              form = formMedicavieja()
-          except ValueError:
-            form = formMedicavieja()
+          form = formMedicavieja()
+      except ValueError:
+        form = formMedicavieja()
 	
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
@@ -1448,19 +1449,19 @@ def abmLicenciaanualvieja(peticion):
           form.save()
           url = '/patrimonio/index/'
           return HttpResponseRedirect(url)
+    else:
+      try:
+        if int(idagente) > 0 and int(idlic)> 0:
+          a = Licenciaanualvieja.objects.get(pk=idlic)
+          form = formLicenciaanualvieja(instance=a)
+        elif int(idagente) > 0:        
+          a = Agente.objects.get(pk=idagente)
+          b = Licenciaanualvieja()
+          b.idagente = a
+          form = formLicenciaanualvieja(instance=b)
         else:
-          try:
-            if int(idagente) > 0 and int(idlic)> 0:
-              a = Licenciaanualvieja.objects.get(pk=idlic)
-              form = formLicenciaanualvieja(instance=a)
-            elif int(idagente) > 0:        
-              a = Agente.objects.get(pk=idagente)
-              b = Licenciaanualvieja()
-              b.idagente = a
-              form = formLicenciaanualvieja(instance=b)
-            else:
-              form = formLicenciaanualvieja()
-          except ValueError:
-              form = formLicenciaanualvieja()
+          form = formLicenciaanualvieja()
+      except ValueError:
+          form = formLicenciaanualvieja()
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
