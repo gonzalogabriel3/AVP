@@ -84,7 +84,7 @@
 		posicion2 = document.getElementById("select2").options.selectedIndex;
 		anio = document.getElementById("select2").options[posicion2].text;
 				
-		open("{% url 'reportes/ingopcsalidasmesagentes_excel' %}?mes="+mes+"&anio="+anio+"&nombremes="+nombremes,"_self");	
+		open("{% url 'reportes/salidasmesagentes_excel' %}?mes="+mes+"&anio="+anio+"&nombremes="+nombremes,"_self");	
 		
 		return false;
 	}

@@ -288,7 +288,7 @@ def salidasmesagentes_excel(peticion):
 	    
 	    if (int(numanio) == anio):
 	    	if (int(nummes) == mes): 
-	    		agente = Agente.objects.get(idagente__exact=s.idagente.pk)
+	    		agente = Agente.objects.get(idagente=s.idagente.pk)
 	    		if (s.oficial == "TRUE"):
 	    			tiposalida = "Oficial"
 	    		else:
@@ -310,8 +310,8 @@ def salidasmesagentes_excel(peticion):
 	'''
 		
 	
-	response = HttpResponse(mimetype='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=salidasmes_'+nombremes+str(anio)+'_excel.xls'
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=salidasmes_'+str(nombremes)+str(anio)+'_excel.xls'
 	book.save(response)
 	return response
 
@@ -344,11 +344,11 @@ def salidasanioagente_excel(peticion):
 	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
 	
 		
-	salidasaux = Salida.objects.filter(idagente__exact=agente)
+	salidasaux = Salida.objects.filter(idagente=agente)
 		
 	salidas = list()
 	
-	agente = Agente.objects.get(idagente__exact=agente)
+	agente = Agente.objects.get(idagente=agente)
 	        
 	nombres = agente.nombres
 	sincodnombres = nombres.encode('ascii','ignore')
@@ -356,7 +356,7 @@ def salidasanioagente_excel(peticion):
 	apellido = agente.apellido
 	sincodapellido = apellido.encode('ascii','ignore')
     
-	nombreag = sincodapellido+","+sincodnombres
+	nombreag = str(sincodapellido)+","+str(sincodnombres)
 	
 	i = 0
 	sheet.write(i, 0, 'Agente:', style=default_style)
@@ -391,8 +391,8 @@ def salidasanioagente_excel(peticion):
 	    		sheet.write(i, 3, tiposalida, style=default_style)
 	    		sheet.write(i, 4, s.observaciones, style=default_style)
 	
-	response = HttpResponse(mimetype='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=salidasmes_'+sincodapellido+'_'+str(anio)+'_excel.xls'
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=salidasmes_'+str(sincodapellido)+'_'+str(anio)+'_excel.xls'
 	book.save(response)
 	return response
 
@@ -534,7 +534,7 @@ def partdiarioaus_excel(peticion):
     			sheet.write(i, 5, agente.domicilio, style=default_style)
     			sheet.write(i, 6, agente.codigopostal.descripcion, style=default_style)
 
-    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response = HttpResponse(content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename=partdiarioaus_'+str(dia)+'-'+str(mes)+'-'+str(anio)+'_excel.xls'
     book.save(response)
     return response

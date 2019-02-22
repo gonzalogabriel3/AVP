@@ -121,9 +121,9 @@ urlpatterns = [
     path('reportes/ingfechapartdiarioausent_excel/$',ingfechapartdiarioausent_excel,name="reportes/ingfechapartdiarioausent_excel"),
     path('reportes/partdiarioaus_excel/$',partdiarioaus_excel,name="reportes/partdiarioaus_excel"),
     path('reportes/ingopcsalidasanioagente_excel/$',ingopcsalidasanioagente_excel,name="reportes/ingopcsalidasanioagente_excel"),
-    path('reportes/salidasanioagente_excel/$',salidasanioagente_excel),
+    path('reportes/salidasanioagente_excel/$',salidasanioagente_excel,name="reportes/salidasanioagente_excel"),
     path('reportes/ingopcsalidasmesagentes_excel/$',ingopcsalidasmesagentes_excel,name="reportes/ingopcsalidasmesagentes_excel"),
-    path('reportes/salidasmesagentes_excel/$',salidasmesagentes_excel),
+    path('reportes/salidasmesagentes_excel/$',salidasmesagentes_excel,name="reportes/salidasmesagentes_excel"),
     
 #---------------------------------Plantilla de forms-----------------------
     path('forms/agente',abmAgente,name="forms/agente"),

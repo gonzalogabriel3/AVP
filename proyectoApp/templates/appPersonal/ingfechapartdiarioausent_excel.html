@@ -24,7 +24,7 @@
 		      <input type="text" id="mes" name="mes" maxlength=2 size=2>-
 		      <input type="text" id="anio" name="anio" maxlength=4 size=2></br>
 		      
-		      <input type="button" value="Consulta" onclick="return auspartediarioexcel()"/>
+		      <input type="button" value="Consulta" onclick="return auspartediarioexcel('{% url 'reportes/partdiarioaus_excel' %}')"/>
 		 
 		</form>
 {% endblock %}

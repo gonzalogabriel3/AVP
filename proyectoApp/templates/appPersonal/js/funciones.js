@@ -193,10 +193,10 @@ function reportePartDiario(){
   return false;
 }
 
-function auspartediarioexcel(){
+function auspartediarioexcel(path){
   if (validarFecha(document.getElementById('anio').value, document.getElementById('mes').value, document.getElementById('dia').value) ==1){
       //fechain = $F('anio') + "-" + $F('mes') +"-"+ $F('dia');
-      open("?anio="+document.getElementById('anio').value+"&mes="+document.getElementById('mes').value+"&dia="+document.getElementById('dia').value,"_self");
+      open(path+"?anio="+document.getElementById('anio').value+"&mes="+document.getElementById('mes').value+"&dia="+document.getElementById('dia').value,"_self");
   }
   return false;
 }
