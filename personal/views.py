@@ -166,7 +166,7 @@ def generarLicI(peticion):
     return render_to_response('appPersonal/licenciagenerada.html',{'user':user,},)
     
 @csrf_exempt
-@login_required(login_url='/appPersonal/accounts/login')
+@login_required(login_url='login')
 def ausRepDir(peticion):
     user = peticion.user
     if permisoEstadistica(user):
@@ -176,7 +176,7 @@ def ausRepDir(peticion):
 
     
 @csrf_exempt
-@login_required(login_url='/appPersonal/accounts/login')
+@login_required(login_url='login')
 def ausRepMes(peticion):
     user = peticion.user
     if permisoEstadistica(user):
@@ -272,7 +272,7 @@ def partediario(peticion):
     
 
 @csrf_exempt
-@login_required(login_url='/appPersonal/accounts/login')
+@login_required(login_url='login')
 def ausPartDiario(peticion):
     user = peticion.user
     listaagente = list()
@@ -332,6 +332,7 @@ def ausReportMensual(peticion):
     mes = int(peticion.GET.get('mes'))
     anio = int(peticion.GET.get('anio'))
     listaAus = list()
+    agente=Agente()
     if permisoEstadistica(user):
         return HttpResponseRedirect('/appPersonal/error/')
     aus = Ausent.objects.all()
@@ -346,7 +347,7 @@ def ausReportMensual(peticion):
                 articulo=a.idarticulo.descripcion+" "
         else:
             articulo = a.idarticulo.descripcion
-    listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
+        listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
     lista=sorted(listaAus, key=lambda agen: agen[0])
     lista = paginar(lista,peticion)
     return render_to_response('appPersonal/ausReportMensual.html',{'user':user, 'grupos':grupos, 'lista':lista,'anio':anio,'mes':mes})

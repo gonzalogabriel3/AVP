@@ -13,13 +13,13 @@ admin.autodiscover()
 urlpatterns = [
     path('index/',index,name="indexPersonal"),
 
-    path('ausReportMensual/$',ausReportMensual),
+    path('ausReportMensual/$',ausReportMensual,name="ausReportMensual"),
     path('ausReportMensualCMO/$',ausReportMensualCMO),
     path('searchagente/(-?\d{1})/$', searchagente),
     path('partediario/',partediario,name="partediario"),
     
     path('ausReportDir/(\d{4})/(\d{1,2})/$',ausReportDir),
-    path('ausPartDiario/$',ausPartDiario),
+    path('ausPartDiario/$',ausPartDiario,name="ausPartDiario"),
     #path('forms/traslado.html',traslado),
     path('listado/ausentismos$',ausentismos),
     path('listado/agentesIndex',agentesIndex,name='listado/agentesIndex'),

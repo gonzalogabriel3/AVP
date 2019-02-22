@@ -148,11 +148,11 @@ function reporteAnual(){
 }
 
 
-function reporteMensual(){
+function reporteMensual(path){
   if (validaAnio(document.getElementById('anio').value) ==1){
       if (validaMes(document.getElementById('mes').value) ==1){
       //open("/ausReport/"+$F('anio')+"/","_self");
-	  open("/personal/ausReportMensual/?anio="+document.getElementById('anio').value+"&mes="+document.getElementById('mes').value,"_self");   
+	  open(path+"?anio="+document.getElementById('anio').value+"&mes="+document.getElementById('mes').value,"_self");   
       }
   }
   return false;
@@ -186,9 +186,9 @@ function reporteAnualDir(){
   return false;
 }
 
-function reportePartDiario(){
+function reportePartDiario(path){
   if (validarFecha(document.getElementById('anio').value, document.getElementById('mes').value, document.getElementById('dia').value) ==1){
-      open("/personal/ausPartDiario/?anio="+document.getElementById('anio').value+"&mes="+document.getElementById('mes').value+"&dia="+document.getElementById('dia').value,"_self");
+      open(path+"?anio="+document.getElementById('anio').value+"&mes="+document.getElementById('mes').value+"&dia="+document.getElementById('dia').value,"_self");
   }
   return false;
 }
