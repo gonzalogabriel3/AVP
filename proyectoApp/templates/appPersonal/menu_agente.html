@@ -1,5 +1,9 @@
 {% extends "appPersonal/plantilla_base.html" %}
 
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes</a><a href="#" class="activo">/ {{agente.apellido}} {{agente.nombres}}</a>
+{% endblock %}
+
 {% block content %}
 
 	

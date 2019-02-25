@@ -147,7 +147,7 @@ urlpatterns = [
     path('forms/abmestudioscursados$',abmEstudioscursados,name="forms/abmestudioscursados"),
     path('forms/abmescolaridad/$',abmEscolaridad,name="forms/abmescolaridad"),
     path('forms/abmmedica$',abmMedica,name="forms/abmmedica"),
-    path('forms/abmjuntamedica/(\d+)/(\d+)/(\d+)/$',abmJuntaMedica),
+    path('forms/abmjuntamedica/$',abmJuntaMedica,name="forms/abmjuntamedica"),
     path('forms/abmjuntamedicavieja$', abmJuntaMedicavieja,name="forms/abmjuntamedicavieja"),
     path('forms/abmmedicavieja$', abmMedicavieja,name="forms/abmmedicavieja"),
     path('forms/abmlicenciaanualvieja$', abmLicenciaanualvieja,name="forms/abmlicenciaanualvieja"),

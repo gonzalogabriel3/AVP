@@ -48,7 +48,7 @@
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-								<td><a href= "/personal/forms/abmjuntamedicavieja?idagente={{idagente}}&idjm={{list.pk}}">{{list.fecha}}</a></td>
+								<td><a href= "{% url 'forms/abmjuntamedicavieja' %}?idagente={{idagente}}&idjm={{list.pk}}">{{list.fecha}}</a></td>
 								<td>{{list.idagente}}</td>
 								<td>{{list.resultado}}</td>
 								<td>{{list.medica}}</td>

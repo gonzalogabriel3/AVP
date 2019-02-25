@@ -334,12 +334,14 @@ def abmAgente(peticion):
       if int(idagente) >0:
         #MODIFICACION
         a = Agente.objects.get(pk=idagente)
+        titulo_form="Modificar datos personales"
         form = formAgente(instance=a)
       else:
         # ALTA
         form = formAgente()
+        titulo_form=""
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form,'accion':accion, 'name':name,'grupos':grupos})
+    return render_to_response('appPersonal/forms/abm.html',{'form': form,'accion':accion, 'name':name,'grupos':grupos,'agente':a,'titulo_form':titulo_form})
 
 
     
@@ -358,6 +360,8 @@ def abmFamiliresac(peticion):
     
     idfac = int(peticion.GET.get('idfac'))
     idagen = int(peticion.GET.get('idagente'))
+
+    agente=Agente.objects.get(pk=idagen)
     
     if peticion.POST:
       if int(idfac) >0:
@@ -384,14 +388,18 @@ def abmFamiliresac(peticion):
       if int(idfac) > 0 and int(idagen)> 0:
         a = Asignacionfamiliar.objects.get(pk=idfac)
         form = formFamiliaresac(instance=a)
+        titulo_form="Familiar a cargo"
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Asignacionfamiliar()
           b.idagente = a
           form = formFamiliaresac(instance=b)
+          titulo_form="Familiar a cargo"
       else:
         form = formFamiliaresac()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos})
+        titulo_form="Nuevo familiar a cargo"
+    
+    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos,'titulo_form':titulo_form,'agente':agente})
 
     
     
@@ -1296,8 +1304,11 @@ def abmMedica(peticion):
     
 
 @login_required(login_url='login')
-def abmJuntaMedica(peticion,idjm, idmed, idagen):
+def abmJuntaMedica(peticion):
     
+    idjm=int(peticion.GET.get("idjm"))
+    idmed=int(peticion.GET.get("idmed"))
+    idagen=int(peticion.GET.get("idagen"))
     user = peticion.user
     name = 'Junta Medica'
     form_old = ''
@@ -1373,20 +1384,20 @@ def abmJuntaMedicavieja(peticion):
           form.save()
           url = '/patrimonio/index/'
           return HttpResponseRedirect(url)
-      else:
-        try:
-          if int(idagente) > 0 and int(idjm)> 0:
-            a = Juntamedicavieja.objects.get(pk=idjm)
-            form = formJuntamedicavieja(instance=a)
-          elif int(idagente) > 0:        
-            a = Agente.objects.get(pk=idagente)
-            b = Juntamedicavieja()
-            b.idagente = a
-            form = formJuntamedicavieja(instance=b)
-          else:
-            form = formJuntamedicavieja()
-        except ValueError:
+    else:
+      try:
+        if int(idagente) > 0 and int(idjm)> 0:
+          a = Juntamedicavieja.objects.get(pk=idjm)
+          form = formJuntamedicavieja(instance=a)
+        elif int(idagente) > 0:        
+          a = Agente.objects.get(pk=idagente)
+          b = Juntamedicavieja()
+          b.idagente = a
+          form = formJuntamedicavieja(instance=b)
+        else:
           form = formJuntamedicavieja()
+      except ValueError:
+        form = formJuntamedicavieja()
       	
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 

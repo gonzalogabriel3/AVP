@@ -1,6 +1,8 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 {% load static %}
-
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes</a><a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ Familiares a cargo </a><a href="#"></a>
+{% endblock %}
 {% block extrahead %}  
 <script type="text/javascript">
 function Eliminar(a,b) {
@@ -21,7 +23,7 @@ function Eliminar(a,b) {
 		{% endblock %}
 
 		{% block botonnuevo %}
-			<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/abmfamiliaresac?idfac=0&idagente={{idagente}}');" />
+			<input id="saveForm" class="btn btn-success" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/abmfamiliaresac?idfac=0&idagente={{idagente}}');" />
 		{%endblock%}
 		
 		{% block main-list %}

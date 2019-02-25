@@ -1,6 +1,10 @@
 {% extends "appPersonal/plantilla_base.html" %}
 {% load static %}
 
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal</a>
+{% endblock %}
+
 {% block content %}
 
 <div id="content-main">

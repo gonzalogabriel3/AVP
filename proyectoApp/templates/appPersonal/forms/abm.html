@@ -1,5 +1,9 @@
 {% extends "appPersonal/forms/form_base.html" %}
 
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes</a><a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ {{titulo_form}} </a>
+{% endblock %}
+
 {% block titulo-form %}
 		<td><b><font color="#000000" style="font-size: 13px;">{{name}}</font></b></td> 
 {% endblock %}
