@@ -227,7 +227,7 @@ def abmAusentismo(peticion):
 
     idagen = int(peticion.GET.get('idagente'))
     idausent = int(peticion.GET.get('idausent'))
-    
+    agente = Agente.objects.get(pk=idagen)
     if peticion.POST:
       if int(idausent) >0:
         a = Ausent.objects.get(pk=idausent)
@@ -276,17 +276,19 @@ def abmAusentismo(peticion):
       if int(idausent) >0 and int(idagen)> 0:
         a = Ausent.objects.get(pk=idausent)
         form = formAusentismo(instance=a)
+        titulo_form="Ausentismo / Cargar ausentismo"
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Ausent()
           b.idagente = a
           b.direccion = a.iddireccion 
           form = formAusent(instance=b)
-          
+          titulo_form="Ausentismo / Cargar ausentismo"
       else:
         form = formAusent()
+        titulo_form="Ausentismo / Cargar ausentismo"
        
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos})
+    return render_to_response('appPersonal/forms/abm.html',{'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
 
 @login_required(login_url='login')
 def abmAgente(peticion):
@@ -469,6 +471,7 @@ def abmSalida(peticion):
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     idsalida = int(peticion.GET.get('idsalida'))
     idagen = int(peticion.GET.get('idagente'))
+    agente = Agente.objects.get(idagente=idagen)
     if peticion.POST:
       if int(idsalida) >0:
 	      a = Salida.objects.get(pk=idsalida)
@@ -495,16 +498,17 @@ def abmSalida(peticion):
       if int(idsalida) > 0 and int(idagen)> 0:
         a = Salida.objects.get(pk=idsalida)
         form = formSalida(instance=a)
+        titulo_form=" Salidas / "+str(a.fecha)
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Salida()
           b.idagente = a
           form = formSalida(instance=b)
-          
+          titulo_form=" Salidas / Cargar salida"
       else:
         form = formSalida()
-      
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos})
+        titulo_form=" Salidas / Cargar salida"
+    return render_to_response('appPersonal/forms/abm.html',{'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'grupos':grupos})
 
     
 @login_required(login_url='login')

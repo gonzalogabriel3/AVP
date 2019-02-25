@@ -934,9 +934,10 @@ def detAusentismoxagente(peticion):
     
     #fechaEnRango(anio,mes,fi,ff):
     #aus = Ausent.objects.all().filter(Q(fechainicio__year=anio, fechafin__year=anio)|Q(fechafin__year=anio))
-    aus = Ausent.objects.filter(Q(idagente__exact=idagen)).order_by('-fechainicio')
+    aus = Ausent.objects.filter(Q(idagente=idagen)).order_by('-fechainicio')
     #aus = aus.order_by('-fechainicio')
-    agen = Agente.objects.filter(idagente__exact = idagen)
+    agen = Agente.objects.filter(idagente= idagen)
+    agente=Agente.objects.get(idagente=idagen)
     #En listaagente se guardan los agentes de la direccion
     for a in agen:
       listaagente.append(a.idagente)
@@ -960,7 +961,7 @@ def detAusentismoxagente(peticion):
             indice = indice +1
             cantAnual = cantAnual + per[i]
             	   #cantAnual = ene + feb + mar + abr + may + jun + jul + ago + sep + oct + nov + dic
-    return render_to_response('appPersonal/detalle/detallexagente/detausentismoxagente.html',{'user':user, 'grupos':grupos,'listadoArti':listadoArti,'listado':listadoAus,'anual':cantAnual,'ene':per[0],'feb':per[1],'mar':per[2],'abr':per[3],'may':per[4],'jun':per[5],'jul':per[6],'ago':per[7],'sep':per[8],'oct':per[9],'nov':per[10],'dic':per[11],'aus':aus,'idagen':idagen,'grupos':grupos,'anio':anio, 'tot55':tot55, 'men55':men55, 'tot102':tot102, 'tot101':tot101, 'tot18':tot18})
+    return render_to_response('appPersonal/detalle/detallexagente/detausentismoxagente.html',{'agente':agente,'user':user, 'grupos':grupos,'listadoArti':listadoArti,'listado':listadoAus,'anual':cantAnual,'ene':per[0],'feb':per[1],'mar':per[2],'abr':per[3],'may':per[4],'jun':per[5],'jul':per[6],'ago':per[7],'sep':per[8],'oct':per[9],'nov':per[10],'dic':per[11],'aus':aus,'idagen':idagen,'grupos':grupos,'anio':anio, 'tot55':tot55, 'men55':men55, 'tot102':tot102, 'tot101':tot101, 'tot18':tot18})
 
 
 
