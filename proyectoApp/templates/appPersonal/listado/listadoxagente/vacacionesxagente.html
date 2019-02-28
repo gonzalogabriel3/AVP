@@ -1,7 +1,9 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
-
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes</a><a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ Licencias </a><a href="#" class="activo">/ Detalles </a>
+{% endblock %}
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
 

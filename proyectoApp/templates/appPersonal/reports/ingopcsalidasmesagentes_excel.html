@@ -1,5 +1,9 @@
 {% extends "appPersonal/estadisticas/estadisticas_base.html" %}
 {% load static %}
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="activo" href="#">/ Salidas agente mes </a>
+{% endblock %}
+
 
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/appPersonal/css/base2.css{% endblock %}" />
 

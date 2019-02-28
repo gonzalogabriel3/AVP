@@ -1,9 +1,41 @@
 {% extends "appPersonal/forms/form_base.html" %}
 
+<!--####PAGINATION#######-->
 {% block pagination %}
-	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes</a><a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ {{titulo_form}} </a>
-{% endblock %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a>
+	<!--Si es un formulario de datos de la parte de agentes -->
+	{% if pag_agentes %}
+	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes </a>
+		{% if agente %}
+			<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
+			{{agente.apellido}} {{agente.nombres}} </a>
+		{% endif %}
+	<a href="#" class="activo">/ {{titulo_form}} </a>
+	{% endif %}
 
+	{% if pag_articulos %}
+		<a href="{% url 'listado/articulos' %}" class="pagination">/ Articulos </a><a href="#" class="activo">/ {{titulo_form}} </a>
+	{% endif %}
+
+
+
+	{% if pag_medicavieja %}
+		<a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/medicavieja' %}?idagente={{agente.idagente}}" class="pagination">/ Medica </a><a href="#" class="activo">/ {{idm}}</a>
+	{% endif %}
+
+
+	{% if pag_licenciavieja %}
+		<a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/licenciaanualvieja' %}?idagente={{agente.idagente}}" class="pagination">/ Licencias </a><a href="#" class="activo">/ Modificar licencia</a>
+	{% endif %}
+
+
+
+
+
+
+
+{% endblock %}
+<!--####FIN PAGINATION#######-->
 {% block titulo-form %}
 		<td><b><font color="#000000" style="font-size: 13px;">{{name}}</font></b></td> 
 {% endblock %}

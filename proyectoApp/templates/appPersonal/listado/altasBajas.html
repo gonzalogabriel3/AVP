@@ -1,6 +1,10 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'listado/altasbajasindex' %}">/ Altas-bajas </a><a href="#" class="activo">/ Listado año {{periodo}}</a>
+{% endblock %}
+
 {% block path %}
 		appPersonal/forms/articulos/0
 {% endblock%}

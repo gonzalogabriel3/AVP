@@ -287,13 +287,18 @@ def abmAusentismo(peticion):
       else:
         form = formAusent()
         titulo_form="Ausentismo / Cargar ausentismo"
-       
-    return render_to_response('appPersonal/forms/abm.html',{'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
+    '''
+      ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
+      el mismo template .html
+    '''
+    pag_agentes=True   
+    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
 
 @login_required(login_url='login')
 def abmAgente(peticion):
     
-    
+    pag_agentes=True
+
     user = peticion.user
     grupos = get_grupos(user)
     if permisoZona(user) and permisoABM(user) and permisoDatosAgente(user):
@@ -336,14 +341,16 @@ def abmAgente(peticion):
       if int(idagente) >0:
         #MODIFICACION
         a = Agente.objects.get(pk=idagente)
-        titulo_form="Modificar datos personales"
+        titulo_form=" Modificar datos personales "
         form = formAgente(instance=a)
+        return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'agente':a,'titulo_form':titulo_form})
       else:
         # ALTA
         form = formAgente()
-        titulo_form=""
-      
-    return render_to_response('appPersonal/forms/abm.html',{'form': form,'accion':accion, 'name':name,'grupos':grupos,'agente':a,'titulo_form':titulo_form})
+        titulo_form=" Nuevo agente "
+   
+    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
+    
 
 
     
@@ -401,7 +408,8 @@ def abmFamiliresac(peticion):
         form = formFamiliaresac()
         titulo_form="Nuevo familiar a cargo"
     
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos,'titulo_form':titulo_form,'agente':agente})
+    pag_agentes=True
+    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'form': form, 'name':name,'grupos':grupos,'titulo_form':titulo_form,'agente':agente})
 
     
     
@@ -498,6 +506,7 @@ def abmSalida(peticion):
       if int(idsalida) > 0 and int(idagen)> 0:
         a = Salida.objects.get(pk=idsalida)
         form = formSalida(instance=a)
+        #Variable para paginar
         titulo_form=" Salidas / "+str(a.fecha)
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
@@ -508,7 +517,8 @@ def abmSalida(peticion):
       else:
         form = formSalida()
         titulo_form=" Salidas / Cargar salida"
-    return render_to_response('appPersonal/forms/abm.html',{'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'grupos':grupos})
+    pag_agentes=True
+    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'grupos':grupos})
 
     
 @login_required(login_url='login')
@@ -520,7 +530,7 @@ def abmTraslado(peticion):
     name = 'Traslado'
     form_old = ''
     accion = ''
-    
+    agente=Agente.objects.get(idagente=idagen)
     grupos = get_grupos(user)
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
@@ -552,18 +562,20 @@ def abmTraslado(peticion):
       if int(idtraslado) > 0 and int(idagen)> 0:
         a = Traslado.objects.get(pk=idtraslado)
         form = formTraslado(instance=a)
+        titulo_form=" Traslados / Modificar traslado"
           
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Traslado()
           b.idagente = a
           form = formTraslado(instance=b)
-          
+          titulo_form=" Traslados / Cargar traslado"
           
       else:
         form = formTraslado()
-      
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user},)
+        titulo_form=" Traslados / Cargar traslado"
+    pag_agentes=True  
+    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'grupos':grupos, 'user':user},)
 
     
 @login_required(login_url='login')
@@ -625,7 +637,7 @@ def abmServicioprestado(peticion):
     name = 'Servicio Prestado'
     form_old = ''
     accion = ''
-    
+    agente=Agente.objects.get(idagente=idagen)
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
@@ -657,16 +669,19 @@ def abmServicioprestado(peticion):
       if int(idservprest) > 0 and int(idagen)> 0:
         a = Servicioprestado.objects.get(pk=idservprest)
         form = formServicioprestado(instance=a)
+        titulo_form=" Servicios prestados / Cargar servicio prestado"
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Servicioprestado()
           b.idagente = a
           form = formServicioprestado(instance=b)
+          titulo_form=" Servicios prestados / Cargar servicio prestado"
           
       else:
         form = formSeguro()
-      
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+        titulo_form=" Servicios prestados / Cargar servicio prestado"
+    pag_agentes=True  
+    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
         
 
 
@@ -731,6 +746,12 @@ def abmLicenciaanual(peticion):
     grupos = get_grupos(user)
     form_old = ''
     accion = ''
+    agente=Agente.objects.get(idagente=idagen)
+    '''
+    ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
+      el mismo template .html
+    '''
+    pag_agentes=True
     
     if permisoZona(user) and permisoABM(user):
         error = "no posee permiso para carga de datos"
@@ -873,6 +894,7 @@ def abmLicenciaanual(peticion):
       if int(idlicanual) > 0 and int(idagen)> 0:
         a = Licenciaanual.objects.get(pk=idlicanual)
         form = formLicenciaanual(instance=a)
+        titulo_form=" Licencias / Modificar licencia"+str(anio)
       elif int(idagen) > 0 or int(anio)> 0:          
         a = Agente.objects.get(pk=idagen)
         b = Licenciaanual()
@@ -880,10 +902,12 @@ def abmLicenciaanual(peticion):
         b.anio = anio
 
         form = formLicenciaanual(instance=b)
+        titulo_form=" Licencias / "+str(anio)
       else:
         form = formLicenciaanual()
-
-    return render(peticion,'appPersonal/forms/abm.html',{'form':form,'name':name,'user':user, 'grupos':grupos})
+        titulo_form=" Licencias / Cargar licencia"
+       
+    return render(peticion,'appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
         
         
 @login_required(login_url='login')
@@ -1107,7 +1131,7 @@ def abmEstudioscursados(peticion):
     name = 'Estudios Cursados'
     form_old = ''
     accion = ''
-    
+    agente=Agente.objects.get(idagente=idagen)
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
@@ -1136,15 +1160,22 @@ def abmEstudioscursados(peticion):
       if int(idestcur) > 0 and int(idagen)> 0:
         a = Estudiocursado.objects.get(pk=idestcur)
         form = formEstudiosCursados(instance=a)
+        titulo_form=" Estudios cursados / Modificar estudio cursado"
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Estudiocursado()
           b.idagente = a
           form = formEstudiosCursados(instance=b)
-          
+          titulo_form=" Estudios cursados / Cargar estudio cursado"
       else:
         form = formEstudiosCursados()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form,'name':name,'grupos':grupos, 'user':user}, )
+        titulo_form=" Estudios cursados / Cargar estudio cursado"
+    '''
+    ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
+      el mismo template .html
+    '''
+    pag_agentes=True
+    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form': form,'name':name,'grupos':grupos, 'user':user}, )
 
     
 @login_required(login_url='login')
@@ -1184,10 +1215,12 @@ def abmArticulos(peticion,idarticulo):
       if int(idarticulo) >0:
         a = Articulo.objects.get(pk=idarticulo)
         form = formArticulos(instance=a)
+        titulo_form="Modificar articulo"
       else:
           form = formArticulos()
-
-      return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, )
+          titulo_form="Cargar articulo"
+      pag_articulos=True
+      return render_to_response('appPersonal/forms/abm.html',{'pag_articulos':pag_articulos,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos, 'user':user}, )
 
     
 @login_required(login_url='login')
@@ -1413,6 +1446,8 @@ def abmMedicavieja(peticion):
     idagente = str(peticion.GET.get('idagente'))
     idm = str(peticion.GET.get('idm'))
     grupos = get_grupos(user)
+    agente=Agente.objects.get(idagente=idagente)
+    pag_medicavieja=True
     if peticion.POST:
       try:
         if int(idm) >0:
@@ -1431,17 +1466,19 @@ def abmMedicavieja(peticion):
         if int(idagente) > 0 and int(idm)> 0:
           a = Medicavieja.objects.get(pk=idm)
           form = formMedicavieja(instance=a)
+
         elif int(idagente) > 0:        
           a = Agente.objects.get(pk=idagente)
           b = Medicavieja()
           b.idagente = a
           form = formMedicavieja(instance=b)
+          return render_to_response('appPersonal/forms/abm.html',{'pag_medicavieja':pag_medicavieja,'agente':a,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
         else:
           form = formMedicavieja()
       except ValueError:
         form = formMedicavieja()
-	
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+	  
+    return render_to_response('appPersonal/forms/abm.html',{'idm':idm,'agente':agente,'pag_medicavieja':pag_medicavieja,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
 @login_required(login_url='login')
 def abmLicenciaanualvieja(peticion):
@@ -1449,6 +1486,7 @@ def abmLicenciaanualvieja(peticion):
     user = peticion.user
     name = 'Licencia'
     idagente = str(peticion.GET.get('idagente'))
+    agente=Agente.objects.get(idagente=idagente)
     idlic = str(peticion.GET.get('idlic'))
     grupos = get_grupos(user)
     if peticion.POST:
@@ -1474,9 +1512,12 @@ def abmLicenciaanualvieja(peticion):
           b = Licenciaanualvieja()
           b.idagente = a
           form = formLicenciaanualvieja(instance=b)
+
         else:
           form = formLicenciaanualvieja()
       except ValueError:
           form = formLicenciaanualvieja()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+
+    pag_licenciavieja=True
+    return render_to_response('appPersonal/forms/abm.html',{'pag_licenciavieja':pag_licenciavieja,'agente':agente,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 

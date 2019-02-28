@@ -1,6 +1,10 @@
 {% extends "appPersonal/estadisticas/estadisticas_base.html" %}
 {% load i18n %}
 
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="activo" href="#">/ Ausentismo-parte diario </a>
+{% endblock %}
+
 {% block extrastyle %}
 
 

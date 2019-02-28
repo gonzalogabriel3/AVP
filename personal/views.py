@@ -555,7 +555,7 @@ def presentismoReport(peticion):
         sincodnombres = nombres.encode('ascii','ignore')
         apellido = le[0].apellido
         sincodapellido = apellido.encode('ascii','ignore')
-        nombre = sincodapellido+", "+sincodnombres
+        nombre = str(sincodapellido)+", "+str(sincodnombres)
         i = i + 1
         sheet.write(i, 0, nombre, style=default_style)
         sheet.write(i, 1, le[1].descripcion, style=default_style)
@@ -569,7 +569,7 @@ def presentismoReport(peticion):
     mes = now.month
     anio = now.year
 
-    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response = HttpResponse(content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename=presentismoReport_'+str(dia)+"-"+str(mes)+"-"+str(anio)+'_excel.xls'
     book.save(response)
     return response
@@ -711,8 +711,9 @@ def base_vieja_index(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     idagente = int(peticion.GET.get('idagente'))
+    agente=Agente.objects.get(idagente=idagente)
   
-    return render_to_response('appPersonal/listado/base_vieja/base_vieja_index.html',{'user':user,'grupos':grupos, 'idagente':idagente},)
+    return render_to_response('appPersonal/listado/base_vieja/base_vieja_index.html',{'agente':agente,'user':user,'grupos':grupos, 'idagente':idagente},)
     
 #-----------------------------------------------------------------------------------
 
@@ -786,7 +787,7 @@ def vacacionesAcum(peticion):
     #lista = sorted(listaLic, key=lambda vac:vac.idagente.apellido)
     lista = paginar(listaLic,peticion)
 
-    return render_to_response('appPersonal/vacaciones.html',{'user':user,'grupos':grupos,'lista':listaLic},)
+    return render_to_response('appPersonal/vacaciones.html',{'agente':agente,'user':user,'grupos':grupos,'lista':listaLic},)
     
 
 #@login_required(login_url='login')

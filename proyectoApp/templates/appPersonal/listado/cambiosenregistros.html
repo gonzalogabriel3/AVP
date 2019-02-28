@@ -1,9 +1,6 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-{% endblock%}
 
 		{% block titulo-form %}
 		    <td><b><font color="#000000" style="font-size: 13px;">Cambios en el registro</font></b></td> 
@@ -23,7 +20,8 @@
 		<div class="results">
 			<table class="table table-striped">
 					<thead>
-					<tr>	<th>Campo</th>
+					<tr>	
+						<th>Campo</th>
 						<th>Registro Nuevo</th>
 						<th>Registro Viejo</th>
 					</tr>

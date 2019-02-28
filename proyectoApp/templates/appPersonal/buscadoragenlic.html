@@ -1,7 +1,9 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
 
-
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="activo" href="#">/ Generar licencia individual </a>
+{% endblock %}
 
 		{% block titulo-form %}
 		    <td><b><font color="#000000" style="font-size: 13px;">Listado Agentes</font></b></td> 
@@ -37,7 +39,7 @@
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-								<td><a href= "{% url 'generarlicencia/individual' %}?idagente={{list.idagente}} %}">{{list.apellido}}</a>, {{list.nombres}} </td>
+								<td><a href= "{% url 'generarlicencia/individual' %}?idagente={{list.idagente}}">{{list.apellido}}</a>, {{list.nombres}} </td>
 								<td>{{list.nrolegajo}}</td>
 								<td>{{list.tipodoc}}</td>
 								<td>{{list.nrodocumento}}</td>

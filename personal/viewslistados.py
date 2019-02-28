@@ -342,7 +342,7 @@ def trasladoxagente(peticion):
         except Traslado.DoesNotExist:
             t = None
     agente = Agente.objects.get(idagente=idagente)
-    traslado = Traslado.objects.filter(idagente__exact=idagente).order_by('-fechad')
+    traslado = Traslado.objects.filter(idagente=idagente).order_by('-fechad')
     lista = paginar(traslado,peticion)
     flag= True
     return render_to_response('appPersonal/listado/traslado.html',{'lista':lista,'user':user,'grupos':grupos,'flag':flag,'idagente':idagente,'agente':agente},)
@@ -402,6 +402,7 @@ def vacacionesxagente(peticion):
     idagen = int(peticion.GET.get('idagen'))
     borrado = int(peticion.GET.get('borrado'))
     grupos = get_grupos(user)
+    agente=Agente.objects.get(idagente=idagen)
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
@@ -428,7 +429,7 @@ def vacacionesxagente(peticion):
     
     lista = paginar(licencia,peticion)
     
-    return render_to_response('appPersonal/listado/listadoxagente/vacacionesxagente.html',{'lista':lista,'user':user,'idagente':idagen, 'grupos':grupos},)
+    return render_to_response('appPersonal/listado/listadoxagente/vacacionesxagente.html',{'agente':agente,'lista':lista,'user':user,'idagente':idagen, 'grupos':grupos},)
     
 @login_required(login_url='login')   
 def estudioscursadosxagente(peticion):

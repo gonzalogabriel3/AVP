@@ -1,6 +1,8 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 {% load i18n %}
-
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes</a><a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ Servicios prestados </a>
+{% endblock %}
 {% block titulo-form %}
 	<p style="font-size: 16px;">Listado Servicios Prestados de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
 {% endblock %}
