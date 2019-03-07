@@ -170,7 +170,7 @@ def ausRepMensualCMO_excel(peticion):
 			    sheet.write(i, 5, agente.domicilio, style=default_style)
 			    sheet.write(i, 6, agente.codigopostal.descripcion, style=default_style)
 
-	response = HttpResponse(mimetype='application/vnd.ms-excel')
+	response = HttpResponse(content_type='application/vnd.ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=ausRepMensualCMO_'+str(mes)+"-"+str(anio)+'_excel.xls'
 	book.save(response)
 	return response

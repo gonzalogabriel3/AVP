@@ -1,10 +1,9 @@
 {% extends "appPersonal/estadisticas/estadisticas_base.html" %}
 {% load i18n %}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-	
-{% endblock%}
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'ausent' %}">/ Ausentismo </a><a href="#" class="activo">/ Ausentismo anual por direccion </a>
+{% endblock %}
 
 {% block titulo-form %}
 		<td><b><font color="#000000" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Anual por Direccion</font></b></td> 
@@ -23,6 +22,6 @@
 					
 				{%endfor%}
 		      </select>
-		      <input type="button" value="Consulta" onclick="return reporteAnualDir()"/>
+		      <input type="button" value="Consulta" onclick="return reporteAnualDir('{% url 'ausReportDir' %}')"/>
 		</form>
 {% endblock %}

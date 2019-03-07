@@ -317,10 +317,12 @@ def agentes(peticion,opc):
     agentes = Agente.objects.all()
     if int(opc) == 9:
         agentes = agentes.order_by('apellido')
+       
     else:
         agentes = agentes.filter(situacion=opc).order_by('apellido')
+        
     lista = paginar(agentes,peticion)
-    return render_to_response('appPersonal/listado/agentes.html',{'lista':lista,'user':user,'opc':opc,'grupos':grupos},)
+    return render_to_response('appPersonal/listado/agentes.html',{'pag':pag,'lista':lista,'user':user,'opc':opc,'grupos':grupos},)
 
 #-------------------------------------------------------------------------------------------------------------------    
 

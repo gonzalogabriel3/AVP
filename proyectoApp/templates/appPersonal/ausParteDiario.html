@@ -1,6 +1,10 @@
 {% extends "appPersonal/graficos.html" %}
 {% load i18n %}
 
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'ausent' %}">/ Ausentismo </a><a href="{% url 'partediario' %}" class="pagination">/ Parte diario </a><a href="#" class="activo">/ {{dia}}-{{mes}}-{{anio}}</a>
+{% endblock %}
+
 {% block extrahead %}
 {{ block.super }}
 

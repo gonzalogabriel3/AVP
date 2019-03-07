@@ -1,7 +1,7 @@
 {% extends "appPersonal/listado/listado_base.html" %}
 
 {% block pagination %}
-	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="#" class="activo">/ Listado agentes </a>
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="#" class="activo">/ {{titulo_form}}  </a>
 {% endblock %}
 
 {% block extrahead %}
@@ -33,6 +33,7 @@
 		{% block botonnuevo %}
 			      {%if "ABM" in grupos or user.username == "admin"%}
 			      	<a href="{% url 'forms/agente' %}?idagente=0" class="btn btn-success">Nuevo</a>
+
 			      {% endif %}
 	        {%endblock%}
 	        

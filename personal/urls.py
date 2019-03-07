@@ -18,7 +18,7 @@ urlpatterns = [
     path('searchagente/(-?\d{1})/$', searchagente),
     path('partediario/',partediario,name="partediario"),
     
-    path('ausReportDir/(\d{4})/(\d{1,2})/$',ausReportDir),
+    path('ausReportDir$',ausReportDir,name="ausReportDir"),
     path('ausPartDiario/$',ausPartDiario,name="ausPartDiario"),
     #path('forms/traslado.html',traslado),
     path('listado/ausentismos$',ausentismos),
@@ -112,7 +112,7 @@ urlpatterns = [
     #urlpath('export/$', 'export_to_excel', name='export_to_excel'),
     
     
-    path('reportes/ausRepMensualCMO_excel/$',ausRepMensualCMO_excel),
+    path('reportes/ausRepMensualCMO_excel/$',ausRepMensualCMO_excel,name="reportes/ausRepMensualCMO_excel"),
     path('reportes/ausRepMensual_excel/$',ausRepMensual_excel),
     
     path('reportes/reportelicenciaspendientes/$',ausRepLicenciasPendientes_excel,name="reportes/reportelicenciaspendientes"),

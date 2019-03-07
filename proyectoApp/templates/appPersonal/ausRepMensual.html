@@ -1,6 +1,11 @@
 {% extends "appPersonal/estadisticas/estadisticas_base.html" %}
 {% load i18n %}
 
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'ausent' %}">/ Ausentismo </a><a href="#" class="activo">/ Ausentismo mensual </a>
+
+{% endblock %}
+
 {% block titulo-form %}
 		<td><b><font color="#000000" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Mensual</font></b></td> 
 {% endblock %}

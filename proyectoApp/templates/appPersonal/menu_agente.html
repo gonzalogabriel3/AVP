@@ -1,7 +1,19 @@
 {% extends "appPersonal/plantilla_base.html" %}
 
 {% block pagination %}
-	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes</a><a href="#" class="activo">/ {{agente.apellido}} {{agente.nombres}}</a>
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+	
+	{% if agente.situacion == 0 %}
+		<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+	{% elif agente.situacion == 1 %}
+		<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+	{% elif agente.situacion == 2 %}
+		<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+	{% else %}
+		<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+	{% endif %}
+
+	<a href="#" class="activo">/ {{agente.apellido}} {{agente.nombres}}</a>
 {% endblock %}
 
 {% block content %}
@@ -15,10 +27,10 @@
 		<form id="form_544015" class="appnitro"  method="post" action="">
 		
 		<table width="105%" border="0" cellspacing="0" cellpadding="1"> 
-		<tr bgcolor="#FFC200" align="center" style="border-bottom: 1px solid #eee;"> 
+		<tr bgcolor="#F4C213" align="center" style="border-bottom: 1px solid #eee;"> 
 		
 		{% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Menu Agente</font></b></td> 
+		<td><b><font color="#000000" style="font-size: 14px;color:  #148f77 ">Menu Agente</font></b></td> 
 		{% endblock %}
 		
 		</tr> 
@@ -35,7 +47,7 @@
 		{% block contenido-menuagente %}
 		
 		
-		<h4> {{agente.apellido}}, {{agente.nombres}}   </h4>
+		<h4 style="color:#eb984e;font-family: 'Homer Simpson', cursive;"> {{agente.apellido}}, {{agente.nombres}}   </h4>
 		
 		
 		<center>
@@ -43,21 +55,21 @@
 
 		<ul class="nav nav-tabs nav-stacked">  
 		
-		<li class="nivel1"><a href="{% url 'forms/agente' %}?idagente={{idagente}}" class="nivel1">Modificar datos personales</a></li>
-		<li class="nivel1"><a href="{% url 'listado/listadoxagente/facxagente' %}?idagente={{idagente}}&borrado=-1">Familiares a Cargo</a></li>
+		<li class="nivel1"><a href="{% url 'forms/agente' %}?idagente={{idagente}}" class="nivel1"><i>Modificar datos personales</i></a></li>
+		<li class="nivel1"><a href="{% url 'listado/listadoxagente/facxagente' %}?idagente={{idagente}}&borrado=-1"><i>Familiares a Cargo</i></a></li>
 		{%if "Datos Agente" not in grupos%}
-			<li><a href="{% url 'detalle/detallexagente/ausentismo' %}?idagente={{idagente}}&borrado=-1">Ausentismo</a></li>
-			<li><a href="{% url 'listado/listadoxagente/salidaxagente' %}?idagente={{idagente}}&borrado=-1">Salidas</a></li>
-			<li><a href="{% url 'vacas' %}?idagente={{idagente}}" class="nivel1">Licencia Anual Agente</a></li>
-			<li><a href="{% url 'listado/listadoxagente/medica' %}?idagente={{idagente}}&borrado=-1" class="nivel1">Medica</a></li>
-			<li><a href="{% url 'listado/listadoxagente/adtxagente' %}?idagente={{idagente}}&borrado=-1">Accidente de Trabajo</a></li>
-			<li><a href="{% url 'listado/listadoxagente/sancionxagente' %}?idagente={{idagente}}&borrado=-1">Sanciones</a></li>
+			<li><a href="{% url 'detalle/detallexagente/ausentismo' %}?idagente={{idagente}}&borrado=-1"><i>Ausentismo</i></a></li>
+			<li><a href="{% url 'listado/listadoxagente/salidaxagente' %}?idagente={{idagente}}&borrado=-1"><i>Salidas</i></a></li>
+			<li><a href="{% url 'vacas' %}?idagente={{idagente}}" class="nivel1"><i>Licencia Anual Agente</i></a></li>
+			<li><a href="{% url 'listado/listadoxagente/medica' %}?idagente={{idagente}}&borrado=-1" class="nivel1"><i>Medica</i></a></li>
+			<li><a href="{% url 'listado/listadoxagente/adtxagente' %}?idagente={{idagente}}&borrado=-1"><i>Accidente de Trabajo</i></a></li>
+			<li><a href="{% url 'listado/listadoxagente/sancionxagente' %}?idagente={{idagente}}&borrado=-1"><i>Sanciones</i></a></li>
 <!-- 			<li><a href="/personal/forms/abmadscriptos/0/{{idagente}}/">Adscriptos</a></li> -->
-			<li><a href="{% url 'listado/listadoxagente/traslado' %}?idagente={{idagente}}&borrado=-1">Traslado</a></li>
+			<li><a href="{% url 'listado/listadoxagente/traslado' %}?idagente={{idagente}}&borrado=-1"><i>Traslado</i></a></li>
 <!-- 			<li><a href="/personal/listado/listadoxagente/seguro/{{idagente}}/-1/">Seguro</a></li> -->
-			<li><a href="{% url 'listado/listadoxagente/servprest' %}?idagente={{idagente}}&borrado=-1">Servicios prestados</a></li>
-			<li><a href="{% url 'listado/listadoxagente/estudioscursados' %}?idagente={{idagente}}&borrado=-1">Estudios cursados</a></li>
-			<li><a href="{% url 'licanualacum' %}?idagente={{idagente}}">Licencias acumuladas</a></li>
+			<li><a href="{% url 'listado/listadoxagente/servprest' %}?idagente={{idagente}}&borrado=-1"><i>Servicios prestados</i></a></li>
+			<li><a href="{% url 'listado/listadoxagente/estudioscursados' %}?idagente={{idagente}}&borrado=-1"><i>Estudios cursados</i></a></li>
+			<li><a href="{% url 'licanualacum' %}?idagente={{idagente}}"><i>Licencias acumuladas</i></a></li>
 		{%endif%}
 		
 		</ul>  

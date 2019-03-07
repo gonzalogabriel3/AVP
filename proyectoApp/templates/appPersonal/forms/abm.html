@@ -5,10 +5,20 @@
 	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a>
 	<!--Si es un formulario de datos de la parte de agentes -->
 	{% if pag_agentes %}
-	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a><a href="{% url 'listado/agentes'%}?opc=2&busc=" class="pagination">/ Listado agentes </a>
+	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+		
 		{% if agente %}
 			<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
 			{{agente.apellido}} {{agente.nombres}} </a>
+			{% if agente.situacion == 0 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+			{% elif agente.situacion == 1 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+			{% elif agente.situacion == 2 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+			{% else %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+			{% endif %}
 		{% endif %}
 	<a href="#" class="activo">/ {{titulo_form}} </a>
 	{% endif %}
@@ -16,7 +26,6 @@
 	{% if pag_articulos %}
 		<a href="{% url 'listado/articulos' %}" class="pagination">/ Articulos </a><a href="#" class="activo">/ {{titulo_form}} </a>
 	{% endif %}
-
 
 
 	{% if pag_medicavieja %}
@@ -27,11 +36,6 @@
 	{% if pag_licenciavieja %}
 		<a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/licenciaanualvieja' %}?idagente={{agente.idagente}}" class="pagination">/ Licencias </a><a href="#" class="activo">/ Modificar licencia</a>
 	{% endif %}
-
-
-
-
-
 
 
 {% endblock %}

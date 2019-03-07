@@ -178,10 +178,10 @@ function reportePresentismo(){
   return false;  
 }
 
-function reporteAnualDir(){
+function reporteAnualDir(path){
   
   if (validaAnio(document.getElementById('anio').value) ==1){
-      open("/personal/ausReportDir/"+document.getElementById('anio').value+"/"+document.getElementById('dir').value+"/","_self");   
+      open(path+"?anio="+document.getElementById('anio').value+"&direc"+document.getElementById('dir').value,"_self");   
   }
   return false;
 }

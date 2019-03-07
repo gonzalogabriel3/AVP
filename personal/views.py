@@ -185,7 +185,7 @@ def ausRepMes(peticion):
 
 
 @csrf_exempt
-@login_required(login_url='/appPersonal/accounts/login')
+@login_required(login_url='login')
 def ausRepCMO(peticion):
     user = peticion.user
     if permisoEstadistica(user):
@@ -348,7 +348,7 @@ def ausReportMensual(peticion):
         else:
             articulo = a.idarticulo.descripcion
         listaAus.append((agente,cant,articulo,a.fechainicio,a.fechafin))
-    lista=sorted(listaAus, key=lambda agen: agen[0])
+        lista=sorted(listaAus, key=lambda agen: agen[0])
     lista = paginar(lista,peticion)
     return render_to_response('appPersonal/ausReportMensual.html',{'user':user, 'grupos':grupos, 'lista':lista,'anio':anio,'mes':mes})
 
@@ -642,15 +642,21 @@ def listadoArticulos(aus):
     
     return porcentajesArti(listadoArt)
 
-        
-@login_required(login_url='/appPersonal/accounts/login')
-def ausReportDir(peticion,a,direc):
+@csrf_exempt        
+@login_required(login_url='login')
+def ausReportDir(peticion):
+    a=peticion.GET.get('anio')
+    direc=peticion.GET.get('direc')
     user = peticion.user
     grupos = get_grupos(user)
     if permisoEstadistica(user):
         return HttpResponseRedirect('/appPersonal/error/')
     cantAnual=0
-    direccion = Direccion.objects.get(pk=direc)
+    try:
+        direccion = Direccion.objects.get(pk=direc)
+    except Exception as e:
+        direccion = None
+    
     listaagente = list()
     #aus = Ausent.objects.all().filter(Q(fechainicio__year=a) | Q(fechafin__year=a))
     agen = Agente.objects.all().filter(iddireccion=direc)
@@ -680,7 +686,7 @@ def ausReportDir(peticion,a,direc):
     dic = cantMes[11][1]
     cantAnual = ene + feb + mar + abr + may + jun + jul + ago + sep + oct + nov + dic
 
-    return render_to_response('appPersonal/ausReportDir.html',{'user':user, 'grupos':grupos, 'listadoArti':listadoArti,'listado':listadoAus,'direccion':force_unicode(direccion.descripcion),'anual':cantAnual,'ene':ene,'feb':feb,'mar':mar,'abr':abr,'may':may,'jun':jun,'jul':jul,'ago':ago,'sep':sep,'oct':oct,'nov':nov,'dic':dic})
+    return render_to_response('appPersonal/ausReportDir.html',{'user':user, 'grupos':grupos, 'listadoArti':listadoArti,'listado':listadoAus,'direccion':direccion.descripcion,'anual':cantAnual,'ene':ene,'feb':feb,'mar':mar,'abr':abr,'may':may,'jun':jun,'jul':jul,'ago':ago,'sep':sep,'oct':oct,'nov':nov,'dic':dic})
 
 #--------------------------------------------------------------------------
 
@@ -733,6 +739,7 @@ def agentes(peticion):
     if busc == None:
         busc = ""
     if int(opc) == 9:
+        titulo_form="Todos los agentes"
         if busc == None or busc == "":
             agentes = agentes.order_by('apellido')
         else:
@@ -743,12 +750,20 @@ def agentes(peticion):
                 agentes = agentes.filter(situacion=opc)
             else:
                 agentes = agentes.filter(Q(situacion=opc), Q(nombres__icontains = busc) | Q(apellido__icontains = busc)| Q(nrodocumento__icontains = busc)| Q(nrolegajo__icontains = busc))
+            
         else:
             if busc == None or busc == "":
                 agentes = agentes.filter(situacion=opc).order_by('apellido')
             else:
                 agentes = agentes.filter(Q(situacion=opc), Q(nombres__icontains = busc) | Q(apellido__icontains = busc)| Q(nrodocumento__icontains = busc)| Q(nrolegajo__icontains = busc))
-
+        
+        if int(opc) == 0:
+            titulo_form="Agentes dados de baja"
+        elif int(opc) == 1:
+            titulo_form="Agentes inactivos"
+        elif int(opc) == 2:
+            titulo_form="Agentes activos"
+        
     #**********************************************************************************
     
     #agentes = agentes.filter(situacion=opc).order_by('apellido')
@@ -765,7 +780,7 @@ def agentes(peticion):
         lista = paginator.page(paginator.num_pages)
         
     
-    return render(peticion,'appPersonal/listado/agentes.html',{'lista':lista,'user':user, 'grupos':grupos, 'opc':opc, 'busc':busc},)
+    return render(peticion,'appPersonal/listado/agentes.html',{'titulo_form':titulo_form,'lista':lista,'user':user, 'grupos':grupos, 'opc':opc, 'busc':busc},)
 
 
 #-----------------------------------------------------------------------------------

@@ -153,14 +153,14 @@
 			{% if user.is_active and user.is_staff  %}
 				<div class="nav-collapse collapse">
 					<div class="navbar-text pull-right" >
-					{% trans 'Bienvenido,' %}
+					<i>{% trans 'Bienvenido,' %}</i>
 					<strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>.
 					{% block userlinks %}
 					    {% url 'django-admindocs-docroot' as docsroot %}
 					    {% if docsroot %}
 						<a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
 					    {% endif %}
-					    <a href="{% url 'logout' %}">{% trans 'Salir' %}</a>
+					    <a href="{% url 'logout' %}"><b style="display: inline-block;">Salir</b></a>
 					{% endblock %}
 					</div>
 				</div>
@@ -199,54 +199,54 @@
 							  {%if "Personal-Listados" in grupos  or user.username == "admin"%}
 								<ul class="nav nav-list">
 
-								  <li class="nav-header"><img src="{% static 'appPersonal/img/icons/vcard.png' %}" width="8%" height="8%"></img> Datos</li>
+								  <li class="nav-header"><img src="{% static 'appPersonal/img/icons/vcard.png' %}" width="8%" height="8%"></img> <b>Datos</b></li>
 
-								  <li><a href="{% url 'listado/agentesIndex' %}">Agentes </a></li>
-								  <li><a href="{% url 'listado/articulos' %}">Articulos</a></li>
+								  <li><a href="{% url 'listado/agentesIndex' %}"><b>Agentes</b> </a></li>
+								  <li><a href="{% url 'listado/articulos' %}"><b>Articulos</b></a></li>
 <!-- 								  <li><a href="/personal/listado/adscriptos">Adscriptos</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/listacctrabajo">Accidente de trabajo</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/traslado">Traslados</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/seguro">Seguros</a></li2> -->
-								  <li><a href="{% url 'listado/agentes_base_vieja' %}">Base vieja</a></li>
+								  <li><a href="{% url 'listado/agentes_base_vieja' %}"><b>Base vieja</b></a></li>
 								  <hr>
 								</ul>
 							  {%endif%}
 							  {%if "Reportes" in grupos  or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/report.png' %}" width="8%" height="8%"></img> Reportes en Excel</li>
-								      <li><a href="{% url 'reportes/agentes' %}">Agentes </a></li>
-								      <li><a href="{% url 'reportes/ingfechapartdiarioausent_excel' %}">Ausentismo-Parte Diario </a></li>
-								      <li><a href="{% url 'reportes/ingopcsalidasanioagente_excel' %}">Salidas Agente Año </a></li>
-								      <li><a href="{% url 'reportes/ingopcsalidasmesagentes_excel' %}">Salidas Agentes Mes </a></li>
-								      <li><a href="{% url 'reportes/reportelicenciaspendientes' %}">Licencias Pendientes </a></li>
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/report.png' %}" width="8%" height="8%"></img> <b>Reportes en Excel</b></li>
+								      <li><a href="{% url 'reportes/agentes' %}"><b>Agentes</b> </a></li>
+								      <li><a href="{% url 'reportes/ingfechapartdiarioausent_excel' %}"><b>Ausentismo-Parte Diario</b> </a></li>
+								      <li><a href="{% url 'reportes/ingopcsalidasanioagente_excel' %}"><b>Salidas Agente Año </b></a></li>
+								      <li><a href="{% url 'reportes/ingopcsalidasmesagentes_excel' %}"><b>Salidas Agentes Mes </b></a></li>
+								      <li><a href="{% url 'reportes/reportelicenciaspendientes' %}"><b>Licencias Pendientes </b></a></li>
 								      <hr>
 								    </ul>
 							  {%endif%}
 							  {%if "Estadisticas" in grupos or user.username == "admin" %}
 								    <ul class="nav nav-list">
-									      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/chart_pie.png' %}" width="8%" height="8%"></img> Informes</li>
-									      <li><a href="{% url 'listado/altasbajasindex' %}">Altas-Bajas</a></li2>
-									      <li><a href="{% url 'ausent' %}">Ausentismo</a></li>
-									      <li><a href="{% url 'presentRep' %}">Presentismo</a></li>
-									      <li><a href="{% url 'cantagrupindex' %}">Cantidad Agrupamiento</a></li>
-									      <li><a href="{% url 'cantclase' %}">Cantidad Clase</a></li>
-									      <li><a href="{% url 'medicasinalta' %}">Medicas sin alta</a></li>
-									      <li><a href="#">Calificaciones</a></li>
+									      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/chart_pie.png' %}" width="8%" height="8%"></img> <b>Informes</b></li>
+									      <li><a href="{% url 'listado/altasbajasindex' %}"><b>Altas-Bajas</b></a></li2>
+									      <li><a href="{% url 'ausent' %}"><b>Ausentismo</b></a></li>
+									      <li><a href="{% url 'presentRep' %}"><b>Presentismo</b></a></li>
+									      <li><a href="{% url 'cantagrupindex' %}"><b>Cantidad Agrupamiento</b></a></li>
+									      <li><a href="{% url 'cantclase' %}"><b>Cantidad Clase</b></a></li>
+									      <li><a href="{% url 'medicasinalta' %}"><b>Medicas sin alta</b></a></li>
+									      <li><a href="#"><b>Calificaciones</b></a></li>
 									      <hr>
 								    </ul>
 							  {%endif%}
 							  {%if "Licencia" in grupos or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/user_go.png' %}" width="8%" height="8%"></img> Generar Licencia</li>
-								      <li><a href="#" onclick="doOperation('/appPersonal/generarlicencia/todos');">Generar licencia para todos</a></li>
-								      <li><a href="{% url 'buscadoragenlic' %}">Generar licencia individual</a></li>
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/user_go.png' %}" width="8%" height="8%"></img> <b>Generar Licencia</b></li>
+								      <li><a href="#" onclick="doOperation('/appPersonal/generarlicencia/todos');"><b>Generar licencia para todos</b></a></li>
+								      <li><a href="{% url 'buscadoragenlic' %}"><b>Generar licencia individual</b></a></li>
 								      <hr>
 								    </ul>
 							  {%endif%}
 							  {%if "Cambios" in grupos or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/eye.png' %}" width="8%" height="8%"></img> Informes</li>
-								      <li><a href="{% url 'listado/cambios' %}" >Logs</a></li>
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/eye.png' %}" width="8%" height="8%"></img> <b>Informes</b></li>
+								      <li><a href="{% url 'listado/cambios' %}" ><b>Logs</b></a></li>
 								      <hr>
 								    </ul>
 							  {%endif%}
