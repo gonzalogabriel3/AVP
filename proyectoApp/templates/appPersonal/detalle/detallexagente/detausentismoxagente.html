@@ -13,6 +13,7 @@
 	{% endif %}
 	<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ Ausentismo </a>
 {% endblock %}
+
 {% block extrahead %}
 {{ block.super }}
 <script type="text/javascript"> 
@@ -140,15 +141,17 @@
   });
 </script>
 
-<script type="text/javascript">
-function cargarausent(path){
+	<script type="text/javascript">
+	function cargarausent(path){
 
-	open(path,'_self',false);
+		open(path,'_self',false);
 
-  return false;
-}
-</script>
+	  return false;
+	}
+	</script>
 {% endblock %}
+
+
 
 {% block titulo-form %}
 		<td><b><font color="#000000" style="font-size: 13px;">Grafico - Reporte Anual por Direccion</font></b></td> 
@@ -165,7 +168,7 @@ function cargarausent(path){
 		{%for a in l%}
 		    {{a.fechadesde}}
 		{%endfor%}
-		<thead>
+		<thead >
 		      <th>Total 55</th>
 		      <th>Mensual 55</th>
 		      <th>Total 10-2</th>

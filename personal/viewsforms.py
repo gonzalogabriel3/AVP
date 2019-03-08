@@ -343,13 +343,14 @@ def abmAgente(peticion):
         a = Agente.objects.get(pk=idagente)
         titulo_form=" Modificar datos personales "
         form = formAgente(instance=a)
-        return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'agente':a,'titulo_form':titulo_form})
+        return render(peticion,'appPersonal/forms/abm.html',{'agente':a,'user':user,'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
+      
       else:
         # ALTA
         form = formAgente()
         titulo_form=" Nuevo agente "
    
-    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
+    return render(peticion,'appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
     
 
 

@@ -64,13 +64,19 @@ class formAusent(forms.ModelForm):
      
         
 class formAgente(forms.ModelForm):
-    fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    #fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechaalta = forms.DateField(label="Fecha Alta",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechabaja = forms.DateField(required=False,label="Fecha Baja",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp3','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
-    
+    fechanacimiento=forms.DateField(label="Fecha de nacimiento",widget=forms.DateInput(attrs=
+                                {
+                                    'class':'datepickerAdulto',
+                                    'placeholder':'Fecha de nacimiento'
+
+                                }))
     class Meta:
         model  = Agente
-        fields = ('idagente', 'nrolegajo', 'apellido', 'nombres','tipodoc','nrodocumento','sexo','fechanacimiento','nacionalidad','estadocivil','codigopostal','domicilio','telefono','fechaalta','cargo','clase','categoria','titulo','planta','agrupamiento','iddireccion','iddireccionreal','nrocuenta','nrocontrato','nrolegajosueldos','observaciones', 'total102', 'seccion', 'dexc', 'defun', 'funcion', 'idcargof', 'idzona', 'idzonareal','claseac','antigranios','antigrmeses','antigrvanios','antigrvmeses','antigravpanios','antigravpmeses', 'situacion', 'fechabaja','razonbaja')
+        exclude=['idagente']
+        #fields = ('idagente', 'nrolegajo', 'apellido', 'nombres','tipodoc','nrodocumento','sexo','fechanacimiento','nacionalidad','estadocivil','codigopostal','domicilio','telefono','fechaalta','cargo','clase','categoria','titulo','planta','agrupamiento','iddireccion','iddireccionreal','nrocuenta','nrocontrato','nrolegajosueldos','observaciones', 'total102', 'seccion', 'dexc', 'defun', 'funcion', 'idcargof', 'idzona', 'idzonareal','claseac','antigranios','antigrmeses','antigrvanios','antigrvmeses','antigravpanios','antigravpmeses', 'situacion', 'fechabaja','razonbaja')
     def __init__(self, *args, **kwargs):
         super(formAgente, self).__init__(*args, **kwargs)
         self.fields['tipodoc'].widget = forms.Select(choices=TIPO_DOC)

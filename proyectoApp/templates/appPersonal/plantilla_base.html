@@ -21,6 +21,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/bootstrap.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/datepicker.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/bootstrap-responsive.css' %}"/>
+
 	<style type="text/css">
 	  body {
 	    padding-top: 60px;
@@ -56,6 +57,7 @@
 		}
 
 	</style>
+	
 	<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
 	{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static 'personal/admin/css/rtl.css' %}{% endblock %}" />{% endif %}
 	<script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
@@ -67,7 +69,128 @@
 	<script type="text/javascript" src="{% static 'appPersonal/js/jquery.js' %}" ></script>
 	<script type="text/javascript" src="{% static 'appPersonal/js/bootstrap.js' %}" ></script>
 	<script type="text/javascript" src="{% static 'appPersonal/js/bootstrap-datepicker.js' %}" ></script>
-		
+
+	<!-- Importo jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+	<!--
+	###########################################################################
+	#																		  #
+	#						****DATEPICKER**** 								  #
+	###########################################################################										
+	-->
+	<!--Importo script para utilizar "datepicker" funcion de calendario-->
+  	 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+	<script>
+
+		  //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker',con el atributo maxDate indico que la fecha maxima es pasado 18 años desde el dia actual-->
+		  $( function(){
+		    $( ".datepickerAdulto" ).datepicker({
+		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+		    	prevText:'<',
+		    	nextText:'>',
+		    	dateFormat: 'dd/mm/yy',
+		    	maxDate:-6570
+		    	
+		    });
+		  });
+
+		//Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker'-->
+		  $( function(){
+		    $( ".datepicker" ).datepicker({
+		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+		    	prevText:'<',
+		    	nextText:'>',
+		    	dateFormat: 'dd/mm/yy',
+		    	
+		    	
+		    });
+		  });
+
+	</script>
+
+
+	<!--Estilo para datepicker-->
+		 <style>
+			.ui-datepicker {
+			  		background: #88ee7a;
+				    width: 216px;
+				    height: auto;
+				    margin: 5px auto 0;
+				    font: 12pt Arial, sans-serif;
+				    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+				    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+				    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+				}
+
+				.ui-datepicker a {
+			  		text-decoration: none;
+				}
+
+				.ui-datepicker table {
+			  		width: 100%;
+				}
+				
+				.ui-datepicker-header {
+				  background-color: #b9d6d3;
+				  color: #16a795;
+				  padding: 1px;
+			  
+				}
+				.ui-datepicker-title {
+			  		text-align: center;
+				}
+				.ui-datepicker-prev, .ui-datepicker-next {
+			  		display: inline-block;
+			  		padding: 2px;
+			  
+				}
+				.ui-datepicker-prev {
+				  float: left;
+				  background-position: center -30px;
+				}
+				.ui-datepicker-next {
+				  float: right;
+				  background-position: center 0px;
+				}
+
+				.ui-datepicker th {
+				  text-transform: uppercase;
+				  font-size: 7pt;
+				  padding: 5px 0;
+				  color: #666666;
+				  text-shadow: 1px 0px 0px #fff;
+				  filter: dropshadow(color=#fff, offx=1, offy=0);
+				}
+
+				.ui-datepicker tbody tr {
+			  		border-bottom: 1px solid #bbb;
+				}
+				.ui-datepicker tbody tr:last-child {
+			  		border-bottom: 0px;
+				}
+
+		</style>
+
+	<!--
+	###########################################################################
+	#																		  #
+	#					***	fin DATEPICKER *** 								  #
+	###########################################################################										
+	-->
+
+
+
+
+
+
+
 	<script>
 		$(function(){
 			window.prettyPrint && prettyPrint();

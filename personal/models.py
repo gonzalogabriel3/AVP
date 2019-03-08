@@ -200,7 +200,7 @@ class Agente(models.Model):
     tipodoc = models.CharField(max_length=200, blank=True, choices=TIPO_DOC, verbose_name = "Tipo Documento")
     nrodocumento = models.SmallIntegerField(unique=True, verbose_name = "Nro Documento")
     sexo = models.CharField(max_length=1, choices=TIPO_SEXO)
-    fechanacimiento = models.DateField(verbose_name = "Fecha de Nacimiento")
+    fechanacimiento = models.DateField()
     nacionalidad = models.ForeignKey(Nacionalidad, db_column="nacionalidad", verbose_name="Nacionalidad",on_delete=models.CASCADE)
     estadocivil = models.CharField(max_length=200, choices=TIPO_ECIVIL, verbose_name = "Estado Civil")
     codigopostal = models.ForeignKey(Codigopostal, null=True, db_column='codigopostal', blank=True, verbose_name = "Código Postal",on_delete=models.CASCADE)

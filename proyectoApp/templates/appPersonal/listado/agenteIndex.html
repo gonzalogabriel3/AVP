@@ -8,20 +8,20 @@
 {% endblock %}
 
 {% block titulo-form %}
-	<td><b><font color="#000000" style="font-size: 13px;">Listado Agentes</font></b></td> 
+	<td><b><font color="#000000" style="font-size: 13px;color: grey">Listado Agentes</font></b></td> 
 {% endblock %}
 
 {% block barraherramientas %}  
 {% endblock %}
 
 {% block main-list %}
-		<h4>Seleccione una opción:</h4>
+		<h4 style="color: grey">Seleccione una opción:</h4>
 		<center>
 		<ul class="nav nav-tabs nav-stacked">  
-			<li ><a href="{% url 'listado/agentes'%}?opc=2&busc=">Agentes Activos</a></li>
-			<li ><a href="{% url 'listado/agentes'%}?opc=0&busc=">Agentes dados de Baja</a></li>
-			<li ><a href="{% url 'listado/agentes'%}?opc=1&busc=">Agentes Inactivos</a></li>
-			<li ><a href="{% url 'listado/agentes'%}?opc=9&busc=">Todos los Agentes</a></li>
+			<li ><a href="{% url 'listado/agentes'%}?opc=2&busc="><strong>Agentes Activos</strong></a></li>
+			<li ><a href="{% url 'listado/agentes'%}?opc=0&busc="><strong>Agentes dados de Baja</strong></a></li>
+			<li ><a href="{% url 'listado/agentes'%}?opc=1&busc="><strong>Agentes Inactivos</strong></a></li>
+			<li ><a href="{% url 'listado/agentes'%}?opc=9&busc="><strong>Todos los Agentes</strong></a></li>
 		</ul>
 		</center>
 {% endblock %}
