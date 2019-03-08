@@ -17,7 +17,7 @@
 
 
 {% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Mensual</font></b></td> 
+		<td><b><font color="#1f618d" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Mensual</font></b></td> 
 {% endblock %}
 
 
@@ -33,7 +33,7 @@
 	
 </script>
 
-		<h5>Reporte cantidad agentes por agrupamiento</h5></br>
+		<h5 style="color: #1f618d">Reporte cantidad agentes por agrupamiento</h5></br>
 		<form method="post" enctype="text/plain">
 		      Agrupamiento
 		      <select id='agrup'>
@@ -42,7 +42,7 @@
 				{%endfor%}
 		      </select>
 		      </br>
-		      <input class="btn btn-inverse" type="button" name="filtrar" value="Filtrar" Onclick="return reporteAgrup()">
+		      <input class="btn btn-info" type="button" name="filtrar" value="Filtrar" Onclick="return reporteAgrup()">
 		</form>
 
 {% endblock %}

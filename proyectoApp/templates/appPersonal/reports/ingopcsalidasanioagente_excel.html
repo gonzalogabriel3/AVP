@@ -35,7 +35,7 @@
 
 
 {% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Reporte Salidas Agente Año</font></b></td> 
+		<td><b><font color="#1f618d" style="font-size: 13px;">Reporte Salidas Agente Año</font></b></td> 
 {% endblock %}
 
 {% block contenido-estadisticas %}
@@ -64,7 +64,7 @@
 
 
 
-		<h2>Salidas  -  Agente Año</h2>
+		<h3>Salidas  -  Agente Año</h3>
 		<form method="post" enctype="text/plain">{% csrf_token %}
 		      
 		      </br>
@@ -90,7 +90,7 @@
 		      </select>	    
 		      </p>  
 		   		   
-		      <input type="button" value="Consulta" onclick="javascript:salidasagenteaño()"/>
+		      <input type="button" class="btn btn-info" value="Consulta" onclick="javascript:salidasagenteaño()"/>
 		 
 		</form>
 {% endblock %}

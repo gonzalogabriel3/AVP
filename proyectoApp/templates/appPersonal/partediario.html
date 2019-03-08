@@ -8,7 +8,7 @@
 
 
 {% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Estadisticas Ausentismos -Parte diario</font></b></td> 
+		<td><b><font color="#1f618d" style="font-size: 13px;">Estadisticas Ausentismos -Parte diario</font></b></td> 
 {% endblock %}
 
 {% block contenido-estadisticas %}
@@ -21,6 +21,6 @@
 		      <input type="text" id="mes" name="mes" maxlength=2 size=2>-
 		      <input type="text" id="anio" name="anio" maxlength=4 size=2></br>
 		      
-		      <input type="button" value="Consulta" onclick="return reportePartDiario('{% url 'ausPartDiario' %}')"/>
+		      <input type="button" class="btn btn-info" value="Consulta" onclick="return reportePartDiario('{% url 'ausPartDiario' %}')"/>
 		</form>
 {% endblock %}

@@ -6,12 +6,12 @@
 {% endblock %}
 
 {% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Anual por Direccion</font></b></td> 
+		<td><b><font color="#1f618d" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Anual por Direccion</font></b></td> 
 {% endblock %}
 
 {% block contenido-estadisticas %}
 
-		<h5>Ausentismos - Reporte Anual por Direccion</h5>
+		<h5 style="color: #1f618d">Ausentismos - Reporte Anual por Direccion</h5>
 		<form method="post" enctype="text/plain">{% csrf_token %}
 		      Periodo (ejemplo 2000)
 		      </br>
@@ -22,6 +22,7 @@
 					
 				{%endfor%}
 		      </select>
-		      <input type="button" value="Consulta" onclick="return reporteAnualDir('{% url 'ausReportDir' %}')"/>
+		      <br>
+		      <input type="button" class="btn btn-info" value="Consulta" onclick="return reporteAnualDir('{% url 'ausReportDir' %}')"/>
 		</form>
 {% endblock %}

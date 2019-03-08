@@ -67,17 +67,17 @@
 {% endblock %}
 
 {% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Grafico - Vacaciones</font></b></td> 
+		<td><b><font color="#1f618d" style="font-size: 13px;">Grafico - Vacaciones</font></b></td> 
 {% endblock %}
 
 {% block contenido-graficos%}
 	 <div class="text-center">
-		<h4>{{agente.apellido}}, {{agente.nombres}}</h4>
-		<h5>Licencia por Vacaciones</h5>
+		<h4 style="color:#1f618d">{{agente.apellido}}, {{agente.nombres}}</h4>
+		<h5 style="color:#1f618d">Licencia por Vacaciones</h5>
 		
 		<form action="listado/listadoxagente/vacacionesxagente$?idagen={{idagente}}&borrado=-1" method="POST">{% csrf_token %}
 
-			<input id="saveForm" class="button_text" type="submit" name="submit" value="Detalles" style="margin-left: 250px;" />
+			<input id="saveForm" class="btn btn-info" type="submit" name="submit" value="Detalles" style="margin-left: 250px;" />
 		</form>
 		
 	 </div>  

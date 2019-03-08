@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Mensual</font></b></td> 
+		<td><b><font color="#1f618d" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Mensual</font></b></td> 
 {% endblock %}
 
 
@@ -28,15 +28,15 @@
 	}
 	
 </script>
-		<h5>Ausentismos - Reporte Mensual</h5></br>
+		<h5 style="color: #1f618d">Ausentismos - Reporte Mensual</h5></br>
 		<form method="post" enctype="text/plain">
 		      Periodo (ejemplo 2013) <input type="text" id="anio" name="anio" maxlength=4 size=2 ></br>
 		      Mes (ejemplo 08) <input type="text" id="mes" name="mes" maxlength=2 size=2 >
 		      </br>
 		      </br>
 		      
-		      <input type="button" id='btnConsulta' value="Consulta" onclick="return reporteMensual('{% url 'ausReportMensual' %}')"/>
-		      <input type="button" style="margin-left:10px;" value="Generar Excel" onclick="javascript:generarExcel()"/>
+		      <input type="button" id='btnConsulta' value="Consulta" class="btn btn-info" onclick="return reporteMensual('{% url 'ausReportMensual' %}')"/>
+		      <input type="button" style="margin-left:10px;" class="btn btn-success" value="Generar Excel" onclick="javascript:generarExcel()"/>
 		</form>
 
 {% endblock %}

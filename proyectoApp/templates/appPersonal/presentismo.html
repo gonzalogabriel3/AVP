@@ -23,18 +23,18 @@
 {% endblock%}
 
 {% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Mensual</font></b></td> 
+		<td><b><font color="#1f618d" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Mensual</font></b></td> 
 {% endblock %}
 
 {% block contenido-estadisticas %}
-		<h5>Presentismo</h5></br>
+		<h5 style="color: #1f618d">Presentismo</h5></br>
 		<form method="post" enctype="text/plain">
 		      Periodo (ejemplo 2013) <input type="text" id="anio" name="anio" maxlength=4 size=2 ></br>
 		      Mes (ejemplo 08) <input type="text" id="mes" name="mes" maxlength=2 size=2 >
 		      </br>
 		      </br>
 		      
-		      <input type="button" id='btnConsulta' value="Consulta" onclick="javascript:callreportePresentismo()"/>
+		      <input type="button" id='btnConsulta' class="btn btn-info" value="Consulta" onclick="javascript:callreportePresentismo()"/>
 		      
 		</form>
 

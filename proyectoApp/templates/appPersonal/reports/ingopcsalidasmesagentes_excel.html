@@ -36,7 +36,7 @@
 
 
 {% block titulo-form %}
-		<td><b><font color="#000000" style="font-size: 13px;">Reporte Salidas Agentes Mes</font></b></td> 
+		<td><b><font color="#1f618d" style="font-size: 13px;">Reporte Salidas Agentes Mes</font></b></td> 
 {% endblock %}
 
 {% block contenido-estadisticas %}
@@ -96,7 +96,7 @@
 </script>
 
 
-		<h2>Salidas  -  Agentes Mes</h2>
+		<h3>Salidas  -  Agentes Mes</h3>
 		<form method="post" enctype="text/plain">{% csrf_token %}
 		      
 		      </br>
@@ -131,7 +131,7 @@
 		      </p>  
 		      
 		      </br>
-		      <input type="button" value="Consulta" onclick="javascript:salidasagentesmes()"/>
+		      <input type="button" class="btn btn-info" value="Consulta" onclick="javascript:salidasagentesmes()"/>
 		 
 		</form>
 {% endblock %}
