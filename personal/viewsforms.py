@@ -213,7 +213,7 @@ def abmAusent(peticion):
         form = formAusent()
        
     cache.clear()
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos}, )
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'form': form, 'name':name, 'grupos':grupos}, )
 
 @csrf_exempt
 @login_required(login_url='login')
@@ -292,7 +292,7 @@ def abmAusentismo(peticion):
       el mismo template .html
     '''
     pag_agentes=True   
-    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
 
 @login_required(login_url='login')
 def abmAgente(peticion):
@@ -410,7 +410,7 @@ def abmFamiliresac(peticion):
         titulo_form="Nuevo familiar a cargo"
     
     pag_agentes=True
-    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'form': form, 'name':name,'grupos':grupos,'titulo_form':titulo_form,'agente':agente})
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'form': form, 'name':name,'grupos':grupos,'titulo_form':titulo_form,'agente':agente})
 
     
     
@@ -463,7 +463,7 @@ def abmAccdetrabajo(peticion):
     else:
       form = formAccdetrabajo()
       
-   return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name': name, 'grupos':grupos},)
+   return render_to_response('appPersonal/forms/abm.html',{'user':user,'form': form, 'name': name, 'grupos':grupos},)
 
 
 @login_required(login_url='login')
@@ -519,7 +519,7 @@ def abmSalida(peticion):
         form = formSalida()
         titulo_form=" Salidas / Cargar salida"
     pag_agentes=True
-    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'grupos':grupos})
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'grupos':grupos})
 
     
 @login_required(login_url='login')
@@ -1010,7 +1010,7 @@ def abmLicencia(peticion,idlicencia,idagen):
       else:
         form = formLicencia()
     
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
     
     
@@ -1069,7 +1069,7 @@ def abmCertificadoaccidente(peticion,idcertf, idacc, idagen):
     else:
       form = formCertificadoaccidente()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, ) 
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'form': form, 'name':name, 'user':user, 'grupos':grupos}, ) 
  
 
 @login_required(login_url='login')
@@ -1120,7 +1120,7 @@ def abmAdscriptos(peticion,idads, idagen):
       else:
         form = formAdscriptos()
       
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )  
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )  
  
 @login_required(login_url='login')
 def abmEstudioscursados(peticion):
