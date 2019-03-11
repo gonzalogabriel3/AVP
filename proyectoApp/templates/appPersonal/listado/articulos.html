@@ -23,7 +23,7 @@
 		<div class="results">
 			<table class="table table-striped">
 				<thead>
-					<tr>
+					<tr style="color: #2e4053">
 						<th>Descripcion</th>
 						<th>Maximo anual</th>
 						<th>Maximo mensual</th>
@@ -32,7 +32,7 @@
 				<tbody>
 					{%for arti in articulos%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-								<td><a href="{% url 'forms/abmarticulos' arti.pk %}">{{arti.descripcion}}</a></td>
+								<td><a href="{% url 'forms/abmarticulos' arti.pk %}"><b>{{arti.descripcion}}</b></a></td>
 								<td>{{arti.maxanual}}</td>
 								<td>{{arti.maxmensual}}</td>
 						</tr>
