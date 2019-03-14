@@ -387,7 +387,7 @@ class Ausent(models.Model):
         db_table = u'ausent'
         #unique_together = ("idagente","fecha")
     def __str__(self):
-        return str(self.fechafin)
+        return str(self.idausent)
         
     def save(self, *args, **kwargs):
         inicio = self.fechainicio

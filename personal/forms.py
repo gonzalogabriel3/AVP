@@ -232,8 +232,8 @@ class formEscolaridad(forms.ModelForm):
 class formMedica(forms.ModelForm):
     fechaalta=forms.DateField(widget=forms.DateInput(attrs=
                                 {
-                                    'class':'datepickerFamiliar',
-                                    'placeholder':'Fecha de nacimiento'
+                                    'class':'datepicker',
+                                    
                                 }))
 
     class Meta:

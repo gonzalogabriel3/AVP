@@ -38,7 +38,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from datetime import *
 from personal.permisos import *
 from personal.funciones import *
-
+from pprint import pprint
 
 #--------------------------------------------------------------------------
 #---------------------------------VIEW FORM--------------------------------
@@ -259,24 +259,28 @@ def abmAusentismo(peticion):
         agente = Agente.objects.get(pk = idagen)
         form.instance.idagente = agente
         form.instance.direccion = agente.iddireccion
-        form.save()
-        for i in range(1,cd):
-          a = Ausent()
-          a.fechafin = form.instance.fechafin + timedelta(days=i)
-          a.observaciones = form.instance.observaciones
-          a.idagente = form.instance.idagente
-          a.idarticulo = form.instance.idarticulo
-          a.tiempolltarde = form.instance.tiempolltarde
-          a.direccion = form.instance.direccion
-          a.save()
+        #form.save()
+        
+        #for i in range(1,cd):
+        a = Ausent()
+        a.fechainicio=form.instance.fechainicio
+        #a.fechafin = form.instance.fechafin + timedelta(days=form.instance.cantdias)
+        #pprint(a.fechafin)
+        a.cantdias = form.instance.cantdias
+        a.observaciones = form.instance.observaciones
+        a.idagente = form.instance.idagente
+        a.idarticulo = form.instance.idarticulo
+        a.tiempolltarde = form.instance.tiempolltarde
+        a.direccion = form.instance.direccion
+        a.save()
 
         url = '/personal/detalle/detallexagente/ausentismo?idagente='+str(idagen)+'&borrado=-1'
         return HttpResponseRedirect(url)
     else:
       if int(idausent) >0 and int(idagen)> 0:
         a = Ausent.objects.get(pk=idausent)
-        form = formAusentismo(instance=a)
-        titulo_form="Ausentismo / Cargar ausentismo"
+        form = formAusent(instance=a)
+        titulo_form="Ausentismo / Modificar ausentismo"
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Ausent()
@@ -291,6 +295,9 @@ def abmAusentismo(peticion):
       ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
       el mismo template .html
     '''
+    if titulo_form==False:
+      titulo_form="Ausentismo / Cargar ausentismo"
+    
     pag_agentes=True   
     return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
 

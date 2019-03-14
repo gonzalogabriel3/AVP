@@ -162,13 +162,13 @@
 	<div id="Arti" style="width: 98%; height:70%; margin-left:10px; float:left"></div>
 	<div id="Aus" style="width: 85%; height: 50%; margin-left:10px; float:left"></div>
 <!-- 	<div align="center"><embed src="http://sindisplay.com/creadores/letreros/show.swf?baseURL=http://sindisplay.com/creadores/letreros/&clickURL=http://www.sindisplay.com/creadores/letreros/&clickLABEL=Crear letrero en flash&type=0&delaySpeed=80&transID=0&str=Trabajar_nunca_mato_a_nadie,_pero_para_que_arriesgarse&bgColor=0&symbolX=9&w=7&h=7&pointType=point&glowColor=16777215&designNum=4" quality="high" bgcolor="#ffffff" width="431" height="63" name="show" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" /><br><small></small></div> -->
-	<a href="{% url 'forms/abmausentismo' %}?idausent=0&idagente={{idagen}}" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span> Cargar ausentismo</a>
-
+	<a href="{% url 'forms/abmausentismo' %}?idausent=0&idagente={{idagen}}" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span> <b>Cargar ausentismo</b></a>
+	<br><br>
 	<table class="table table-striped">
 		{%for a in l%}
 		    {{a.fechadesde}}
 		{%endfor%}
-		<thead >
+		<thead style="color:  #d35400 ">
 		      <th>Total 55</th>
 		      <th>Mensual 55</th>
 		      <th>Total 10-2</th>
@@ -184,14 +184,16 @@
 				<td>{{tot18}}</td>
 		      </tr>
 		</tbody>
+		<tr>
+			<td style="background-color: #5499c7"><h5 style="color:  #ffffff;"><b>Articulos tomados</b></h5></td>
+		</tr>
+		<thead style="font-weight: bold">
 		
-		<thead >
-		
-		      <th>Fecha Inicio</th>
-		      <th>Fecha Fin</th>
-		      <th>Cant Dias</th>
-		      <th>Artículo</th>
-		      <th>Art. 10-2 / Acc. T.</th>
+		      <th style="color:  #239b56  " >Fecha Inicio</th>
+		      <th style="color:  #239b56  ">Fecha Fin</th>
+		      <th style="color:  #239b56  ">Cant Dias</th>
+		      <th style="color:  #239b56  ">Artículo</th>
+		      <th style="color:  #239b56  ">Art. 10-2 / Acc. T.</th>
 		      {% if "Ausentismo" in grupos or user.username == "admin" %}
 		      <th></th>
 		      {% endif %}
@@ -202,9 +204,9 @@
 				<td>{{li.fechainicio}}</td>
 				<td>{{li.fechafin}}</td>
 				<td>{{li.cantdias}}</td>
-				<td><a {% if li.idarticulo.pk != 999%}href="/personal/forms/abmausentismo?idausent={{li.idausent}}&idagente={{li.idagente_id}}"{% endif %}>{{li.idarticulo}}</a></td>
+				<td><a {% if li.idarticulo.pk != 999%}href="{% url 'forms/abmausentismo' %}?idausent={{li.idausent}}&idagente={{li.idagente_id}}"{% endif %}>{{li.idarticulo}}</a></td>
 				{% if "18" in li.idarticulo.descripcion  or "10-1" in li.idarticulo.descripcion or "10-2" in li.idarticulo.descripcion %}
-					<td><a href="/personal/listado/listadoxagente/medica?idagente={{li.idagente_id}}&idausent={{li.idausent}}&borrado=-1"> Actualizar</a></td>
+					<td><a href="{% url 'listado/listadoxagente/medica' %}?idagente={{li.idagente_id}}&idausent={{li.idausent}}&borrado=-1"> Actualizar</a></td>
 				{% else %}
 				{% if "11-1" in li.idarticulo.descripcion%}
 					<td><a href="/personal/listado/listadoxagente/adtxagente/{{li.idagente_id}}/-1/"> Actualizar</a></td>
@@ -215,6 +217,8 @@
 				{% endif %}
 				{% if  "Ausentismo" in grupos or user.username == "admin"  and li.idarticulo.pk != 999%}
 					<td><a href="#" onclick="Eliminar('/personal/detalle/detallexagente/ausentismo?idagente={{li.idagente_id}}&borrado={{li.idausent}}');">Eliminar</a></td>
+				{% else %}
+					<td></td>
 				{% endif %}
 		      </tr>
 		      {%endfor%}

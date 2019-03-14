@@ -3,6 +3,8 @@ from django.urls import path,include
 from django.views.generic import TemplateView
 from django.shortcuts import render
 
+import debug_toolbar
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('proyectoApp.urls')),
@@ -13,6 +15,7 @@ urlpatterns = [
     #Agrego autenticacion de usuarios provista por Django a la app "pasajes"
     path('pasajes/', include('django.contrib.auth.urls')),
     path('', include('django.contrib.auth.urls')),
+    
     
 
 ]

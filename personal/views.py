@@ -53,6 +53,8 @@ from personal.viewsforms import *
 from personal.viewscalif import *
 import datetime
 
+from pprint import pprint
+
 '''def get_grupos(user):
     l = ""
     for g in user.groups.all():
@@ -889,20 +891,21 @@ def cantDias(ausent):
     for i in range(1,13):
         listM.append([i,0])#la lista interna es [mes-1,cant dias]
     #aca se recorren los ausentismos
-        for a in ausent:
-            aux = a.fechainicio
-            m = aux.month
-            anio = aux.year
-            if m==a.fechafin.month:
-                listM[m-1][1]=listM[m-1][1]+a.cantdias
-            else:
-                while(aux<=a.fechafin):
-                    if aux.month != m:
-                        m = aux.month
-                        listM[m-1][1]=listM[m-1][1]+1
-                        aux = aux + datetime.timedelta(days=1)
-                    if aux.year> anio:
-                        return listM
+    for a in ausent:
+        aux = a.fechainicio
+        m = aux.month
+        anio = aux.year
+        
+        if m==a.fechafin.month:
+            listM[m-1][1]=listM[m-1][1]+a.cantdias
+        else:
+            while(aux<=a.fechafin):
+                if aux.month != m:
+                    m = aux.month
+                    listM[m-1][1]=listM[m-1][1]+1
+                    aux = aux + datetime.timedelta(days=1)
+                if aux.year> anio:
+                    return listM
     return listM
 
 @csrf_exempt
@@ -910,10 +913,10 @@ def cantDias(ausent):
 def detAusentismoxagente(peticion):
     user = peticion.user
     borrado = str(peticion.GET.get('borrado'))
-    idagen = str(peticion.GET.get('idagente'))
+    idagen = int(peticion.GET.get('idagente'))
     grupos = get_grupos(user)
-    agente = Agente.objects.get(idagente = int(idagen))
-
+    agente = Agente.objects.get(idagente = idagen)
+    print(agente)
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':get_grupos(user)},)
@@ -923,7 +926,7 @@ def detAusentismoxagente(peticion):
             a = Ausent.objects.get(idausent = int(borrado))
             registrar(user,"Ausentismo",'Baja',getTime(),None,modeloLista(Ausent.objects.filter(idausent__exact = int(borrado)).values_list()))
             try:
-                acc = Accidentetrabajo.objects.get(idausent__exact = a.pk)
+                acc = Accidentetrabajo.objects.get(idausent = a.pk)
                 acc.delete()
             except Accidentetrabajo.DoesNotExist:
                 print ("")
@@ -953,6 +956,9 @@ def detAusentismoxagente(peticion):
     #fechaEnRango(anio,mes,fi,ff):
     #aus = Ausent.objects.all().filter(Q(fechainicio__year=anio, fechafin__year=anio)|Q(fechafin__year=anio))
     aus = Ausent.objects.filter(Q(idagente__exact=idagen)).order_by('-fechainicio')
+
+    pprint(idagen)
+    pprint(aus)
     #aus = aus.order_by('-fechainicio')
     agen = Agente.objects.filter(idagente__exact = idagen)
     #En listaagente se guardan los agentes de la direccion
@@ -968,7 +974,7 @@ def detAusentismoxagente(peticion):
     cantAnual = 0
     for i in range(0,12):
         per.append(0)
-    cantMes = cantDias(aus)
+        cantMes = cantDias(aus)
 
     for a in aus:
         indice = 0

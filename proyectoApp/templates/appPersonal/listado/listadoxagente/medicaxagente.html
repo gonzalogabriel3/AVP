@@ -20,7 +20,7 @@
 
 {% block botonnuevo %}
 {% if idausent > 0%}
-	<input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" onclick="return Open('/personal/forms/abmmedica?idmedica=0&idagente={{idagente}}&idausent={{idausent}}');" />
+	<a  href="{% url 'forms/abmmedica' %}?idmedica=0&idagente={{idagente}}&idausent={{idausent}}" class="btn btn-success">Nuevo</a>
 {% endif %}
 {%endblock%}
 

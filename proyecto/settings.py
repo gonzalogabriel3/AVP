@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'pasajes',
     'depoapp',
     'personal',
+    
 
 
 ]
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'proyecto.urls'
@@ -156,4 +158,3 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = '/pasajes'
 
 LOGOUT_REDIRECT_URL = '/'
-
