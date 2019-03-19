@@ -9,7 +9,7 @@ body {
     font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
     color: #333;
     background: #400;
-    background-image: url(/assets/admin/img/avp-bg.png);
+    background-image: url(/admin/img/avp-bg.png);
     /*background-repeat: repeat;*/
 }
 
@@ -849,7 +849,7 @@ table#change-history tbody th {
 }
 
 #content-related .module h2 {
-    background: #eee url(/assets/admin/img/default-bg.gif) bottom left repeat-x;
+    background: #eee url(/admin/img/default-bg.gif) bottom left repeat-x;
     /*color: #666;*/
     color: black;
 }

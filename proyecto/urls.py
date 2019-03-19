@@ -3,7 +3,7 @@ from django.urls import path,include
 from django.views.generic import TemplateView
 from django.shortcuts import render
 
-import debug_toolbar
+#import debug_toolbar
 
 urlpatterns = [
     path('admin/', admin.site.urls),

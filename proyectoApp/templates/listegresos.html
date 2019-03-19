@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}" />
+
+{% endblock %}
+
+{% block branding %}{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block content %}
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Untitled Form</title>
+<link rel="stylesheet" type="text/css" href="/css/view.css" media="all">
+
+<script>
+	function llamapdf(opcion,listopc,opciondepo,destino,fechainit,fechafin){
+	    
+	    open("/deposito/listado/listegresos/?dato="+opcion+"&desde="+fechainit+"&listopc="+listopc+"&opciondepo="+opciondepo+"&destino="+destino+"&hasta="+fechafin+"&pdf="+0 ,"_self");
+	    
+	    return false;
+	}
+</script>
+
+
+</head>
+	<div id="form_container">
+	
+		<h1><a>Egresos</a></h1>
+		<form id="form_597362" class="appnitro"  method="post" action="">
+		<div class="form_description">
+			<u><h2>Egresos</h2></u>
+		
+		</div>						
+		
+		<p>	
+		<b><i>Transferencias Salidas</b></i>
+		<br/>
+				
+		<table id="result_list">
+		      			
+			<thead>
+				<tr>
+					<th>Cta.Patrimonial</th>
+					<th>Articulo</th>
+					<th>Fecha</th>
+					<th>Cantidad</th>
+					
+					<th>OrigDest</th>
+					
+					<th>Entrega</th>
+					<th>Recibe</th>
+					<th>Confirmado</th>
+				</tr>
+			</thead>
+			<tbody>
+			        {%for sal in listfintsalida%}
+										
+						
+					<tr class="{% cycle 'row1' 'row2' %}">
+							<td>{{sal.0.nrocuentapatrimonial}}</td>
+							<td>{{sal.0.descripcionitem}}</td>
+							<td>{{sal.0.fecha}}</td>
+							<td>{{sal.0.cantidad}}</td>
+							
+							<td>{{sal.0.origdest}}</td>
+							
+							<td>{{sal.1.0}}</td>
+							<td>{{sal.1.1}}</td>
+							<td>{{sal.1.2}}</td>
+							
+	 				</tr>
+	 					 				
+	 				
+				{% endfor %}
+			</tbody>
+		</table>
+		</p>
+		
+		
+		<p>
+		<b><i>Salidas</i></b>
+		<br/>
+		<table id="result_list">
+		      
+						
+			<thead>
+				<tr>
+					<th>Cta.Patrimonial</th>
+					<th>Articulo</th>
+					<th>Fecha</th>
+					<th>Cantidad</th>
+					
+					<th>OrigDest</th>
+					
+					<th>Entregado a</th>
+					<th>Observaciones</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+			        {%for sal2 in listfinsalida%}
+										
+						
+					<tr class="{% cycle 'row1' 'row2' %}">
+							<td>{{sal2.0.nrocuentapatrimonial}}</td>
+							<td>{{sal2.0.descripcionitem}}</td>
+							<td>{{sal2.0.fecha}}</td>
+							<td>{{sal2.0.cantidad}}</td>
+							
+							<td>{{sal2.0.origdest}}</td>
+							
+							<td>{{sal2.1.0}}</td>
+							<td>{{sal2.1.1}}</td>
+										
+	 				</tr>
+	 					 				
+	 				
+				{% endfor %}
+			</tbody>
+		</table>
+		</p>
+		
+		</form>	
+		
+		<input type="button" value="Volver Atrás" name="Back2" onclick="history.back()" style="
+		  margin-left: 10px;
+		  margin-bottom: 10px;
+		  width: 80px;
+		  height: 22px;
+		" />
+		
+		
+		<input id="saveForm" class="button_text" type="submit" name="submit" value="Generar PDF" onclick="javascript:llamapdf('{{opcion}}','{{listopc}}','{{opciondepo}}','{{destino}}','{{fechainit}}','{{fechafin}}')" style="
+		  margin-left: 30px;
+		  margin-bottom: 10px;
+		  width: 80px;
+		  height: 22px;
+		" />
+		
+	
+	</div>
+
+{% endblock %}

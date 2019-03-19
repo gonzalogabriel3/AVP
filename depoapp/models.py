@@ -30,6 +30,8 @@ class Barras(models.Model):
     class Meta:
         db_table = u'barras'
         verbose_name_plural = "Código de Barra"
+    def __str__(self):
+        return str(self.codigo) 
 
 #----------------------------------------------------------------------------------------------------
 class Cuentaspatrimoniales(models.Model):
@@ -38,7 +40,8 @@ class Cuentaspatrimoniales(models.Model):
     class Meta:
         db_table = u'cuentasPatrimoniales'
         verbose_name_plural ="Cuentas Patrimoniales"
-
+    def __str__(self):
+        return str(self.descripcioncuenta) 
 #----------------------------------------------------------------------------------------------------
 class Unidadesmedidas(models.Model):
     descripcionunidad = models.CharField(max_length=4, db_column='descripcionUnidad') 
@@ -46,7 +49,8 @@ class Unidadesmedidas(models.Model):
     class Meta:
         db_table = u'unidadesMedidas'
         verbose_name_plural ="Unidad de Medida"        
-
+    def __str__(self):
+        return str(self.descripcionunidad) 
 
 class ArticuloDepositoAd(models.Model):
     idarticulodeposito = models.AutoField(primary_key=True, db_column='idArticuloDeposito')
@@ -67,7 +71,8 @@ class ArticuloDepositoAd(models.Model):
     class Meta:
         db_table = u'depoAdmin'
         verbose_name_plural ="Listado Articulos (Stock depositos)"
-
+    def __str__(self):
+        return str(self.descripcionitem) 
 
 #----------------------------------------------------------------------------------------------------
 
@@ -82,7 +87,8 @@ class ArticuloMov(models.Model):
     class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos"
-
+    def __str__(self):
+        return str(self.descripcionitem) 
 #----------------------------------------------------------------------------------------------------
 
 class MovArt(models.Model):
@@ -99,7 +105,8 @@ class MovArt(models.Model):
     class Meta:
         db_table = u'movArt'
         verbose_name_plural ="Movimiento de Artículos"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovRw(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
@@ -110,7 +117,8 @@ class ArticuloMovRw(models.Model):
     class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Rawson"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 
 class MovArtRw(models.Model):
@@ -122,7 +130,8 @@ class MovArtRw(models.Model):
     class Meta:
         db_table = u'movArtRw'
         verbose_name_plural ="Movimiento de Artículos"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovTrevelin(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
@@ -133,7 +142,8 @@ class ArticuloMovTrevelin(models.Model):
     class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Trevelin"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 
 class MovArtTrevelin(models.Model):
@@ -145,7 +155,8 @@ class MovArtTrevelin(models.Model):
     class Meta:
         db_table = u'movArtTrevelin'
         verbose_name_plural ="Movimiento de Artículos"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 
 class ArticuloMovGaiman(models.Model):
@@ -157,7 +168,8 @@ class ArticuloMovGaiman(models.Model):
     class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Gaiman"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 
 class MovArtGaiman(models.Model):
@@ -169,7 +181,8 @@ class MovArtGaiman(models.Model):
     class Meta:
         db_table = u'movArtGaiman'
         verbose_name_plural ="Movimiento de Artículos"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovEsquel(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
@@ -180,7 +193,8 @@ class ArticuloMovEsquel(models.Model):
     class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Esquel"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 
 class MovArtEsquel(models.Model):
@@ -192,7 +206,8 @@ class MovArtEsquel(models.Model):
     class Meta:
         db_table = u'movArtEsquel'
         verbose_name_plural ="Movimiento de Artículos"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovMadryn(models.Model):
@@ -204,7 +219,8 @@ class ArticuloMovMadryn(models.Model):
     class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Madryn"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 
 class MovArtMadryn(models.Model):
@@ -216,7 +232,8 @@ class MovArtMadryn(models.Model):
     class Meta:
         db_table = u'movArtMadryn'
         verbose_name_plural ="Movimiento de Artículos"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 
 #----------------------------------------------------------------------------------------------------
 class ArticuloMovSarmiento(models.Model):
@@ -228,7 +245,8 @@ class ArticuloMovSarmiento(models.Model):
     class Meta:
         db_table = u'articulo'
         verbose_name_plural ="Movimiento de Artículos Sarmiento"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 #----------------------------------------------------------------------------------------------------
 
 class MovArtSarmiento(models.Model):
@@ -240,7 +258,8 @@ class MovArtSarmiento(models.Model):
     class Meta:
         db_table = u'movArtSarmiento'
         verbose_name_plural ="Movimiento de Artículos"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 
 #----------------------------------------------------------------------------------------------------
 
@@ -258,9 +277,10 @@ class Articulo(models.Model):
     
 
     def get_unidadmedida(self):
-        return '%s'%(self.unidadmedida)
+        return str(self.unidadmedida)
         get_unidadmedida.short_description = 'Unidad Medida'
-
+    def __str__(self):
+        return str(self.descripcionitem)
 class VwArticulos(models.Model):
     idarticulo = models.AutoField(primary_key=True, db_column='idArticulo',verbose_name='Artículo')
     nrocuentapatrimonial = models.ForeignKey(Cuentaspatrimoniales, db_column='nroCuentaPatrimonial',verbose_name='CtaPatrimonial',on_delete=models.CASCADE) 
@@ -272,7 +292,8 @@ class VwArticulos(models.Model):
         db_table = u'VW_articulos'
         verbose_name_plural ="Artículo - (Altas, Bajas, Modificaciones)"
         verbose_name = "Artículo"
-
+    def __str__(self):
+        return str(self.descripcionitem)
 
 #----------------------------------------------------------------------------------------------------
 class Ciudad(models.Model):
@@ -284,7 +305,8 @@ class Ciudad(models.Model):
     class Meta:
         managed = False
         db_table = 'ciudad'
-
+    def __str__(self):
+        return str(self.nombre)
         
 #----------------------------------------------------------------------------------------------------
 class Deposito(models.Model):
@@ -297,7 +319,8 @@ class Deposito(models.Model):
         db_table = u'deposito'
         verbose_name_plural ="Depósito"
 
-        
+    def __str__(self):
+        return str(self.idciudad)
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 class Proveedor(models.Model):
     idproveedor = models.AutoField(primary_key=True, db_column='idProveedor') 
@@ -312,7 +335,8 @@ class Proveedor(models.Model):
 
     def get_fields(self):
         return [(field, field.value_to_string(self)) for field in Order._meta.fields]
-
+    def __str__(self):
+        return str(self.razonsocial)
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 #===TRANSFERENCIAS==============================================================================================================================
@@ -729,7 +753,8 @@ class Compra(models.Model):
         db_table = u'compra'
         verbose_name_plural ="Compra"
         verbose_name='Compra'
-
+    def __str__(self):
+        return str(self.fecha)
 
          
 class VwComprasrw(models.Model):
@@ -747,6 +772,8 @@ class VwComprasrw(models.Model):
         db_table = u'VW_comprasRw'
         verbose_name_plural ="Compras Rawson"
         verbose_name = "Compra"
+    def __str__(self):
+        return str(self.fecha)
 
 class VwComprastrevelin(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
@@ -763,6 +790,8 @@ class VwComprastrevelin(models.Model):
         db_table = u'VW_comprasTrevelin'
         verbose_name_plural ="Compras Trevelin"
         verbose_name = "Compra"
+    def __str__(self):
+        return str(self.fecha)
 
 class VwComprassarmiento(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
@@ -779,6 +808,8 @@ class VwComprassarmiento(models.Model):
         db_table = u'VW_comprasSarmiento'
         verbose_name_plural ="Compra Sarmiento"
         verbose_name = "Compra"
+    def __str__(self):
+        return str(self.fecha)
 
 class VwCompraspmadryn(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
@@ -795,7 +826,8 @@ class VwCompraspmadryn(models.Model):
         db_table = u'VW_comprasMadryn'
         verbose_name_plural ="Compra Madryn"
         verbose_name = "Compra"
-
+    def __str__(self):
+        return str(self.fecha)
 
 class VwComprasesquel(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
@@ -812,7 +844,8 @@ class VwComprasesquel(models.Model):
         db_table = u'VW_comprasEsquel'
         verbose_name_plural ="Compra Esquel"
         verbose_name = "Compra"
-
+    def __str__(self):
+        return str(self.fecha)
 
 class VwComprasgaiman(models.Model):
     idcompra = models.AutoField(primary_key=True, db_column='idCompra',verbose_name='Compra')
@@ -829,7 +862,8 @@ class VwComprasgaiman(models.Model):
         db_table = u'VW_comprasGaiman'
         verbose_name_plural ="Compra Gaiman"
         verbose_name = "Compra"
-
+    def __str__(self):
+        return str(self.fecha)
 
 class Detallecomprarw(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
@@ -842,7 +876,8 @@ class Detallecomprarw(models.Model):
         db_table = u'detalleCompra'
         verbose_name_plural ="Detalle Compra Rawson"
         unique_together = ("idcompra","idarticulo")
-
+    def __str__(self):
+        return str(self.idarticulo)
 
 class Detallecompratrevelin(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
@@ -855,7 +890,8 @@ class Detallecompratrevelin(models.Model):
         db_table = u'detalleCompra'
         verbose_name_plural ="Detalle Compra Trevelin"
         unique_together = ("idcompra","idarticulo")
- 
+    def __str__(self):
+        return str(self.idarticulo)
         
 class Detallecomprasarmiento(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
@@ -868,7 +904,8 @@ class Detallecomprasarmiento(models.Model):
         db_table = u'detalleCompra'
         verbose_name_plural ="Detalle Compra Sarmiento"
         unique_together = ("idcompra","idarticulo")
-
+    def __str__(self):
+        return str(self.idarticulo)
         
 class Detallecompramadryn(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
@@ -882,7 +919,8 @@ class Detallecompramadryn(models.Model):
         db_table = u'detalleCompra'
         verbose_name_plural ="Detalle Compra Madryn"
         unique_together = ("idcompra","idarticulo")
-
+    def __str__(self):
+        return str(self.idarticulo)
         
 class Detallecompragaiman(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
@@ -895,7 +933,8 @@ class Detallecompragaiman(models.Model):
         db_table = u'detalleCompra'
         verbose_name_plural ="Detalle Compra Gaiman"
         unique_together = ("idcompra","idarticulo")
-
+    def __str__(self):
+        return str(self.idarticulo)
          
 class Detallecompraesquel(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
@@ -909,6 +948,8 @@ class Detallecompraesquel(models.Model):
         db_table = u'detalleCompra'
         verbose_name_plural ="Detalle compra Esquel"
         unique_together = ("idcompra","idarticulo")
+    def __str__(self):
+        return str(self.idarticulo)
 
 class Detallecompra(models.Model):
     iddetcompra = models.AutoField(primary_key=True, db_column='idDetCompra',verbose_name='Det.Compra')
@@ -921,7 +962,8 @@ class Detallecompra(models.Model):
         db_table = u'detalleCompra'
         verbose_name_plural ="Detalle Compra"
         unique_together = ("idcompra","idarticulo")
-
+    def __str__(self):
+        return str(self.idarticulo)
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 #==DEVOLUCIONES======================================================================================================================================
@@ -1163,7 +1205,8 @@ class Articulodeposito(models.Model):
         db_table = u'articuloDeposito'
         verbose_name_plural ="Artículo Depósito (Stock)"
         verbose_name = "Artículo Depósito"
-
+    def __str__(self):
+        return str(self.idarticulo)
 
 
 #----------------------------VW Aticulos-----------------------------------------------------------
@@ -1189,6 +1232,8 @@ class ArticuloDepositoRawson(models.Model):
         db_table = u'depositoRw'
         verbose_name_plural ="Artículos Depósito Rawson"
         verbose_name = "Artículo Depósito"
+    def __str__(self):
+        return str(self.idarticulo)
 
 #----------------------------Trevelin----------------------------------------------------------------
 class ArticuloDepositoTrevelin(models.Model):
@@ -1211,6 +1256,8 @@ class ArticuloDepositoTrevelin(models.Model):
         db_table = u'depositoTrevelin'
         verbose_name_plural ="Artículos Depósito Trevelin"
         verbose_name = "Artículo Depósito"
+    def __str__(self):
+        return str(self.idarticulo)
 
 #----------------------------Sarmiento----------------------------------------------------------------
 class ArticuloDepositoSarmiento(models.Model):
@@ -1233,7 +1280,8 @@ class ArticuloDepositoSarmiento(models.Model):
         db_table = u'depositoSarmiento'
         verbose_name_plural ="Artículos Depósito Sarmiento"
         verbose_name = "Artículo Depósito"
-
+    def __str__(self):
+        return str(self.idarticulo)
 
 
 #----------------------------Esquel----------------------------------------------------------------
@@ -1257,7 +1305,8 @@ class ArticuloDepositoEsquel(models.Model):
         db_table = u'depositoEsquel'
         verbose_name_plural ="Artículos Depósito Esquel"
         verbose_name = "Artículo Depósito"
-
+    def __str__(self):
+        return str(self.idarticulo)
 
 #----------------------------Gaiman----------------------------------------------------------------
 class ArticuloDepositoGaiman(models.Model):
@@ -1280,7 +1329,8 @@ class ArticuloDepositoGaiman(models.Model):
         db_table = u'depositoGaiman'
         verbose_name_plural ="Artículos Depósito Gaiman"
         verbose_name = "Artículo Depósito"
-
+    def __str__(self):
+        return str(self.idarticulo)
 
 #----------------------------Madryn----------------------------------------------------------------
 class ArticuloDepositoMadryn(models.Model):
@@ -1303,7 +1353,8 @@ class ArticuloDepositoMadryn(models.Model):
         db_table = u'depositoMadryn'
         verbose_name_plural ="Artículos Depósito Madryn"
         verbose_name = "Artículo Depósito"
-
+    def __str__(self):
+        return str(self.idarticulo)
 
         
 #----------------------------Historial Precio-----------------------------------------------------------
@@ -1438,7 +1489,8 @@ class Salida(models.Model):
         db_table = u'salida'
         verbose_name_plural ="Salida"
         verbose_name='Salida'
-
+    def __str__(self):
+        return str(self.fecha)
 
 class Detallesalida(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
@@ -1468,7 +1520,8 @@ class VwSalidaesquel(models.Model):
         db_table = u'VW_salidaEsquel'
         verbose_name_plural ="Salida Esquel"
         verbose_name = "Salida"
-
+    def __str__(self):
+        return str(self.fecha)
 
 class DetallesalidaEsquel(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
@@ -1496,6 +1549,8 @@ class VwSalidatrevelin(models.Model):
         db_table = u'VW_salidaTrevelin'
         verbose_name_plural ="Salida Trevelin"
         verbose_name = "Salida"
+    def __str__(self):
+        return str(self.fecha)
 
 class DetallesalidaTrevelin(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
@@ -1524,6 +1579,8 @@ class VwSalidagaiman(models.Model):
         db_table = u'VW_salidaGaiman'
         verbose_name_plural ="Salida Gaiman"
         verbose_name = "Salida" 
+    def __str__(self):
+        return str(self.fecha)
 
 class DetallesalidaGaiman(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
@@ -1552,6 +1609,8 @@ class VwSalidasarmiento(models.Model):
         db_table = u'VW_salidaSarmiento'
         verbose_name_plural ="Salida Sarmiento"
         verbose_name = "Salida"
+    def __str__(self):
+        return str(self.fecha)
 
 class DetallesalidaSarmiento(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
@@ -1579,6 +1638,8 @@ class VwSalidamadryn(models.Model):
         db_table = u'VW_salidaMadryn'
         verbose_name_plural ="Salida Madryn"
         verbose_name = "Salida"
+    def __str__(self):
+        return str(self.fecha)
 
 class DetallesalidaMadryn(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
@@ -1606,7 +1667,9 @@ class VwSalidarw(models.Model):
         db_table = u'VW_salidaRw'
         verbose_name_plural ="Salida Rawson"
         verbose_name = "Salida"
-
+    def __str__(self):
+        return str(self.fecha)
+        
 class DetallesalidaRw(models.Model):
     iddetsalida = models.AutoField(primary_key=True, db_column='idDetSalida',verbose_name='Det.Salida')
     idsalida = models.ForeignKey(VwSalidarw, db_column='idSalida',verbose_name='Salida',on_delete=models.CASCADE) 
