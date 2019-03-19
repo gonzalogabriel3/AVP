@@ -115,19 +115,22 @@ def logout(request, next_page=None,
 #sudo apt-get install python-pygresql
 def conexion():
     
-    #cnx = psycopg2.connect("host='200.70.33.249'  dbname='personal' user='postgres' password='sistemasavp' port=3306")
-    cnx = pg.connect(host='200.70.33.249',dbname='personal',user='postgres',passwd='sistemasavp',port=3306)
-    #return cnx.cursor()
+    cnx = psycopg2.connect(host='172.155.0.8',dbname='personal',user='postgres',password='sistemasavp',port=5432)
+    
     return cnx
 
 def generarLicencia(idagente):
     base = conexion()
-    fecha = datetime.now()
-    func = 'SELECT dlicanualoptimizado(%s);' %(str(idagente),)
-    #func = 'SELECT calclicenciaanual(%s,%s);' %(str(idagente),),%(str(fecha.year),)
-    dato = (str(idagente),)
-    rta = base.query(func)
-    print(rta)
+    fecha = datetime.datetime.now()
+    func = 'SELECT dlicanualoptimizado('+str(idagente)+');'
+    
+    cursor=base.cursor()
+    cursor.execute(func)
+    
+    
+    base.commit()
+
+    cursor.close()
     base.close()
     return
 
