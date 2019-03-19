@@ -7,11 +7,6 @@
  
 {% endblock%}
 
-{% block title %} 
-	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
-	
-{% endblock%}
-
 {% block content %}
 
 
@@ -19,7 +14,7 @@
 <div id="content-main">
 		<h5>Se a producido un error {{error}}</h5>
 <!-- 		<input id="saveForm" class="button_text" type="submit" name="submit" value="Cargar ausentismo" onclick="Dajaxice.example.sayhello(my_js_callback);"/> -->
-		<a href="{% url 'appPersonal/index/' %}">Inicio</a>
+		<a href="{% url 'indexPersonal' %}">Inicio</a>
 		<a href="{{url}}">Volver</a>
 
 </div>

@@ -103,7 +103,8 @@ def modeloLista(modelo):
     numero = len(w)
 
     for i in range(0,numero-1):
-        k = (modelo.field_names[i],w[i])
+        #k = (modelo._meta.fields[i],w[i])
+        k = (modelo._meta.fields[i])
         z.append(k)
 
     return z

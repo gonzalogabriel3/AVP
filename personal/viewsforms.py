@@ -39,7 +39,8 @@ from datetime import *
 from personal.permisos import *
 from personal.funciones import *
 from pprint import pprint
-
+from django.shortcuts import redirect
+from personal.viewslistados import *
 #--------------------------------------------------------------------------
 #---------------------------------VIEW FORM--------------------------------
 @csrf_exempt
@@ -754,6 +755,7 @@ def abmLicenciaanual(peticion):
     grupos = get_grupos(user)
     form_old = ''
     accion = ''
+    titulo_form=''
     agente=Agente.objects.get(idagente=idagen)
     '''
     ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
@@ -805,12 +807,12 @@ def abmLicenciaanual(peticion):
             if not analizaLic(idagen, form.instance.fechadesde):
               url = "/personal/vacas?idagente="+str(idagen)
               error = ": No existe licencia"
-              return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
-              if not analizaLicanio(idagen, form.instance.fechadesde, int(anio)):
-                url = "/personal/vacas?idagente="+str(idagen)
-                error = ": Año no correspondiente "
-                error.decode('utf-8')
-                return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+            if not analizaLicanio(idagen, form.instance.fechadesde, int(anio)):
+              url = "/personal/vacas?idagente="+str(idagen)
+              error = ": Año no correspondiente "
+              error.decode('utf-8')
+              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
         except IndexError:
 	          print ("")
 		# fin superposicion de licencias
@@ -826,9 +828,9 @@ def abmLicenciaanual(peticion):
                 cd1 = au.cantdias # Datos en la Base
                 f1 = au.fechainicio # Datos en la Base
                 if f == f1:
-                  url = "/personal/vacas?idagente="+str(idagen)
+                  url = "../vacas?idagente="+str(idagen)
                   error = ": Ya existe un ausentismo con esa fecha"
-                  return render_to_response('personal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+                  return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
                   for i in range(1,cd+1):
                     for j in range(1,cd1+1):
                       f = form.instance.fechadesde + timedelta(days=i)
@@ -869,6 +871,7 @@ def abmLicenciaanual(peticion):
           ausent.fechainicio = form.instance.fechadesde
           ausent.cantdias = form.instance.cantdias
           ausent.save()
+          
         else:
           ausent = Ausent()
           ausent.idagente_id = idagen
@@ -877,6 +880,7 @@ def abmLicenciaanual(peticion):
           ausent.idarticulo_id = 999 
           ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
           ausent.save()
+          
       elif form.instance.tipo == 'INT':
         ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
         ausent.save()
@@ -888,10 +892,12 @@ def abmLicenciaanual(peticion):
         form.fields['idausent'].widget.attrs['enabled'] = 'enabled'
         form.instance.idausent = ausent
         form.save()
+        
         if form.instance.tipo == 'INT':
           ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
           ausent.cantdias = diffFecha(form.instance.fechadesde , ausent.fechainicio)
           ausent.save()
+         
           if accion == 'Alta':
             registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
           elif accion == 'Modificacion':
@@ -914,7 +920,8 @@ def abmLicenciaanual(peticion):
       else:
         form = formLicenciaanual()
         titulo_form=" Licencias / Cargar licencia"
-       
+    if titulo_form=='':
+         titulo_form="HOLA MUNDO"   
     return render(peticion,'appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
         
         
@@ -1285,7 +1292,7 @@ def abmEscolaridad(peticion):
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos, 'user':user}, ) 
     
     
-    
+@csrf_exempt   
 @login_required(login_url='login')
 def abmMedica(peticion):
     
@@ -1293,6 +1300,7 @@ def abmMedica(peticion):
     grupos = get_grupos(user)
     idagen = int(peticion.GET.get('idagente'))
     idmed = int(peticion.GET.get('idmedica'))
+    agente=Agente.objects.get(idagente=idagen)
     try:
       idausent = int(peticion.GET.get('idausent'))
     except ValueError:
@@ -1319,22 +1327,27 @@ def abmMedica(peticion):
 	      accion = 'Alta'
     
       if form.is_valid():
-	      form.fields['agente'].widget.attrs['enabled'] = 'enabled'
-	      form.fields['idausent'].widget.attrs['enabled'] = 'enabled'
-	      form.instance.agente = Agente.objects.get(pk=idagen)
-	      form.instance.idausent = Ausent.objects.get(pk=idausent)
-	      form.save()
-	      if accion == 'Alta':
-	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      elif accion == 'Modificacion':
-	          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      
-	      url = "listado/listadoxagente/medica?idagente='+str(idagen)+'&borrado=-1&idausent='+str(idausent)"
-	      return HttpResponseRedirect(url)
+        form.fields['agente'].widget.attrs['enabled'] = 'enabled'
+        #form.fields['idausent'].widget.attrs['enabled'] = 'enabled'
+        form.instance.agente = Agente.objects.get(pk=idagen)
+        form.instance.idausent = Ausent.objects.get(pk=idausent)
+        form.save()
+        
+        ###Retornar al index de licencias medicas###
+        medica=Medica.objects.filter(agente__exact=idagen)
+        lista=paginar(medica,peticion)
+        return render_to_response('appPersonal/listado/listadoxagente/medicaxagente.html',{'lista':lista,'user':user,'idagente':idagen,'agente':agente,'grupos':grupos, 'idausent':idausent})
+        '''if accion == 'Alta':
+          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.get(pk=form.instance.pk)))
+        elif accion == 'Modificacion':
+          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url = "listado/listadoxagente/medica?idagente='+str(idagen)+'&borrado=-1&idausent='+str(idausent)"
+          return HttpResponseRedirect(url)'''
     else:
       if int(idmed) > 0 and int(idagen)> 0:
         a = Medica.objects.get(pk=idmed)
         form = formMedica(instance=a)
+        titulo_form="Modificar licencia medica"
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           aus = Ausent.objects.get(pk=idausent)
@@ -1342,10 +1355,13 @@ def abmMedica(peticion):
           b.agente = a
           b.idausent = aus
           form = formMedica(instance=b)
+          titulo_form="Modificar licencia medica"
       else:
         form = formMedica()
-      
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos},)
+        titulo_form="Nueva licencia medica"
+    
+    pag_medica=True
+    return render_to_response('appPersonal/forms/abm.html',{'idausent':idausent,'titulo_form':titulo_form,'pag_medica':pag_medica,'agente':agente,'form': form , 'name':name, 'user':user, 'grupos':grupos},)
     
 
 @login_required(login_url='login')
