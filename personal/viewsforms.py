@@ -768,20 +768,22 @@ def abmLicenciaanual(peticion):
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
 
     name = 'Licencia Anual'
-
+    pprint("idlicanual="+str(idlicanual))
     if peticion.POST:
       if int(idlicanual) >0:
-	      a = Licenciaanual.objects.get(pk=idlicanual)
-	      form_old = formLicenciaanual(instance=a)
-	      form_old = modeloLista(form_old.Meta.model.objects.filter(pk=form_old.instance.pk).values_list())
-	      form = formLicenciaanual(peticion.POST, instance=a)   
-	      accion = 'Modificacion'
+        a = Licenciaanual.objects.get(pk=idlicanual)
+        
+        form_old = formLicenciaanual(instance=a)
+        form_old = modeloLista(form_old.Meta.model.objects.filter(pk=form_old.instance.pk).values_list())
+        form = formLicenciaanual(peticion.POST, instance=a)   
+        accion = 'Modificacion'
       else:
 	      form = formLicenciaanual(peticion.POST)
 	      accion = 'Alta'
  
       if form.is_valid():
 	      # superposicion de licencias
+
         jump = False
         modaus = False
         if accion == "Modificacion" and form.instance.tipo == 'INT':
@@ -790,6 +792,7 @@ def abmLicenciaanual(peticion):
           return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
 
         lica = Licenciaanual.objects.filter(idagente__exact=idagen).order_by('fechadesde')
+        pprint(form.instance.tipo)
         ausent = Ausent()
         try:
           if form.instance.tipo == 'LIC':
@@ -863,8 +866,8 @@ def abmLicenciaanual(peticion):
                 return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
 	      # fin supera dias de licencia
 
-	      # Vinculacion con ausent
-        ausent = Ausent()
+	    # Vinculacion con ausent
+      ausent = Ausent()
       if form.instance.tipo == 'LIC':
         if modaus:
           ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
@@ -879,7 +882,18 @@ def abmLicenciaanual(peticion):
           ausent.cantdias = form.instance.cantdias
           ausent.idarticulo_id = 999 
           ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
+          ausent.observaciones=form.instance.observaciones
           ausent.save()
+          licenciaanual=Licenciaanual()
+          licenciaanual.idausent=ausent
+          licenciaanual.idagente=agente
+          licenciaanual.anio=anio
+          licenciaanual.tipo=form.instance.tipo
+          licenciaanual.fechadesde=ausent.fechainicio
+          licenciaanual.cantdias=ausent.cantdias
+          licenciaanual.observaciones=ausent.observaciones
+          licenciaanual.save()
+          pprint("ausent="+str(ausent.idausent))
           
       elif form.instance.tipo == 'INT':
         ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
@@ -920,8 +934,7 @@ def abmLicenciaanual(peticion):
       else:
         form = formLicenciaanual()
         titulo_form=" Licencias / Cargar licencia"
-    if titulo_form=='':
-         titulo_form="HOLA MUNDO"   
+       
     return render(peticion,'appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
         
         
