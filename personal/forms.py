@@ -211,6 +211,7 @@ class formLicenciaanual(forms.ModelForm):
     class Meta:
         model  = Licenciaanual
         fields = ('idagente','anio','fechadesde','idausent','cantdias','tipo','observaciones')
+
     def __init__(self, *args, **kwargs):
         super(formLicenciaanual, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
