@@ -855,7 +855,7 @@ def vacas(peticion):
             i += 1
             nofin = False
 	
-      
+    
     return render_to_response('appPersonal/licenciavacaciones.html',{'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente, 'vacas':vacas, 'anio_lar':anio_lar, 'diaslicencia':diaslicencia, 'diastomados':diastomados,},)
  
  

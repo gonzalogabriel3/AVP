@@ -448,7 +448,7 @@ class Certificadoaccidente(models.Model):
 class Licenciaanual(models.Model):
     idlicanual = models.AutoField(primary_key=True)
     idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True, verbose_name='Agente',on_delete=models.CASCADE)
-    idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True, verbose_name='Fecha Hasta',on_delete=models.CASCADE)
+    idausent = models.ForeignKey(Ausent, null=True, db_column='idausent', blank=True, verbose_name='Id ausentismo',on_delete=models.CASCADE)
     anio = models.IntegerField(null=True, blank=True, verbose_name="Año")
     tipo = models.CharField(max_length=200, blank=True,choices=TIPO_LICANUAL)
     fechadesde = models.DateField(null=True, blank=True)
@@ -456,7 +456,7 @@ class Licenciaanual(models.Model):
     observaciones = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'licenciaanual'
-        unique_together = ("fechadesde", "idagente", "tipo")
+        #unique_together = ("fechadesde", "idagente", "tipo")
     def __str__(self):
        return str(tipo)
         

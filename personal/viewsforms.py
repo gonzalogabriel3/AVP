@@ -757,24 +757,21 @@ def abmLicenciaanual(peticion):
     accion = ''
     titulo_form=''
     agente=Agente.objects.get(idagente=idagen)
-    '''
-    ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
-      el mismo template .html
-    '''
-    pag_agentes=True
+   
+    #pag_agentes=True
     
     if permisoZona(user) and permisoABM(user):
         error = "no posee permiso para carga de datos"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
 
     name = 'Licencia Anual'
-    pprint("idlicanual="+str(idlicanual))
+    
     if peticion.POST:
       if int(idlicanual) >0:
         a = Licenciaanual.objects.get(pk=idlicanual)
         
         form_old = formLicenciaanual(instance=a)
-        form_old = modeloLista(form_old.Meta().model.objects.filter(pk=form_old.instance.pk).values_list())
+        #form_old = modeloLista(form_old.Meta().model.objects.filter(pk=form_old.instance.pk).values_list())
         form = formLicenciaanual(peticion.POST, instance=a)   
         accion = 'Modificacion'
       else:
@@ -792,7 +789,7 @@ def abmLicenciaanual(peticion):
           return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
 
         lica = Licenciaanual.objects.filter(idagente__exact=idagen).order_by('fechadesde')
-        pprint(form.instance.tipo)
+        
         ausent = Ausent()
         try:
           if form.instance.tipo == 'LIC':
@@ -867,67 +864,83 @@ def abmLicenciaanual(peticion):
 	      # fin supera dias de licencia
 
 	    # Vinculacion con ausent
-      ausent = Ausent()
-      if form.instance.tipo == 'LIC':
-        if modaus:
-          ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
-          ausent.fechainicio = form.instance.fechadesde
-          ausent.cantdias = form.instance.cantdias
-          ausent.save()
-          url="../vacas?idagente="+str(idagen)
-          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
+        ausent = Ausent()
+        if form.instance.tipo == 'LIC':
+          if modaus:
+            ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
+            ausent.fechainicio = form.instance.fechadesde
+            ausent.cantdias = form.instance.cantdias
+            ausent.observaciones=form.instance.observaciones
+            ausent.fechadesde=form.instance.fechadesde
+              
+            ausent.save()
+            a = Licenciaanual.objects.get(pk=idlicanual)
+            a.tipo=form.instance.tipo
+            a.fechadesde=ausent.fechadesde
+            a.cantdias=ausent.cantdias
+            a.observaciones=ausent.observaciones
+            a.save()
+            
 
-        else:
-          #Guardo el ausentismo en la tabla "ausent"
-          ausent = Ausent()
-          ausent.idagente_id = idagen
-          ausent.fechainicio = form.instance.fechadesde
-          ausent.cantdias = form.instance.cantdias
-          ausent.idarticulo_id = 999 
-          ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
-          ausent.observaciones=form.instance.observaciones
-          ausent.save()
-          #Guardo la licencia anual en la tabla "licenciaanual"
-          licenciaanual=Licenciaanual()
-          licenciaanual.idausent=ausent
-          licenciaanual.idagente=agente
-          licenciaanual.anio=anio
-          licenciaanual.tipo=form.instance.tipo
-          licenciaanual.fechadesde=ausent.fechainicio
-          licenciaanual.cantdias=ausent.cantdias
-          licenciaanual.observaciones=ausent.observaciones
-          licenciaanual.save()
-          
-          url="../vacas?idagente="+str(idagen)
-          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
-          
-      elif form.instance.tipo == 'INT':
-        ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
-        ausent.save()
-        # vinculacion con ausent
-        form.fields['anio'].widget.attrs['enabled'] = 'enabled'
-        form.instance.anio = anio
-        form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
-        form.instance.idagente_id = idagen
-        form.fields['idausent'].widget.attrs['enabled'] = 'enabled'
-        form.instance.idausent = ausent
-        form.save()
-        
-        if form.instance.tipo == 'INT':
+
+            url="../vacas?idagente="+str(idagen)
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
+
+          else:
+            #Guardo el ausentismo en la tabla "ausent"
+            ausent = Ausent()
+            ausent.idagente_id = idagen
+            ausent.fechainicio = form.instance.fechadesde
+            ausent.cantdias = form.instance.cantdias
+            ausent.idarticulo_id = 999 
+            ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
+            ausent.observaciones=form.instance.observaciones
+            ausent.save()
+            #Guardo la licencia anual en la tabla "licenciaanual"
+            licenciaanual=Licenciaanual()
+            licenciaanual.idausent=ausent
+            licenciaanual.idagente=agente
+            licenciaanual.anio=anio
+            licenciaanual.tipo=form.instance.tipo
+            licenciaanual.fechadesde=ausent.fechainicio
+            licenciaanual.cantdias=ausent.cantdias
+            licenciaanual.observaciones=ausent.observaciones
+            licenciaanual.save()
+            
+            url="../vacas?idagente="+str(idagen)
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
+            
+        elif form.instance.tipo == 'INT':
           ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
-          ausent.cantdias = diffFecha(form.instance.fechadesde , ausent.fechainicio)
           ausent.save()
-         
-          if accion == 'Alta':
-            registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-          elif accion == 'Modificacion':
-            registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-            url = '/personal/vacas?idagente='+str(idagen)
-            return HttpResponseRedirect(url)
+          # vinculacion con ausent
+          form.fields['anio'].widget.attrs['enabled'] = 'enabled'
+          form.instance.anio = anio
+          form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
+          form.instance.idagente_id = idagen
+          form.fields['idausent'].widget.attrs['enabled'] = 'enabled'
+          form.instance.idausent = ausent
+          form.save()
+          
+          if form.instance.tipo == 'INT':
+            ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
+            ausent.cantdias = diffFecha(form.instance.fechadesde , ausent.fechainicio)
+            ausent.save()
+           
+            if accion == 'Alta':
+              registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+            elif accion == 'Modificacion':
+              registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+              url = '/personal/vacas?idagente='+str(idagen)
+              return HttpResponseRedirect(url)
     else:
       if int(idlicanual) > 0 and int(idagen)> 0:
         a = Licenciaanual.objects.get(pk=idlicanual)
-        form = formLicenciaanual(instance=a)
+
+        #Obtengo el ausentismo y extraigo la fecha de fin para setear en el formulario
+        ausentismo=Ausent.objects.get(idausent=a.idausent.idausent)
+       
+        form = formLicenciaanual(initial={'fechahasta': ausentismo.fechafin},instance=a)
         
         titulo_form="Modificar licencia / "+str(a.fechadesde)
       elif int(idagen) > 0 or int(anio)> 0:          
@@ -936,6 +949,7 @@ def abmLicenciaanual(peticion):
         b.idagente = a
         b.anio = anio
 
+
         form = formLicenciaanual(instance=b)
         titulo_form=" "+str(anio)
       else:
@@ -943,8 +957,29 @@ def abmLicenciaanual(peticion):
         titulo_form=" Cargar licencia"
     pag_licenciaanual=True
     return render(peticion,'appPersonal/forms/abm.html',{'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
-        
-        
+
+#Metodo que recibe un id de una licencia,la busca y la elimina de la base de datos,asi como tambien sus referencias a otras tablas en la base de datos       
+def eliminarLicenciaTomada(peticion):
+  user = peticion.user
+  idagente=int(peticion.GET.get('idagente'))
+  agente=Agente.objects.get(idagente=idagente)
+  idlicanual=int(peticion.GET.get('idlicanual'))
+  
+
+  licencia = Licenciaanual.objects.get(pk=idlicanual)
+  
+  ausent=Ausent.objects.get(idausent=licencia.idausent.idausent)
+
+  
+  #Elimino la licencia de la tabla "licenciaanual"
+  licencia.delete()
+  '''A la vez elimino el ausentismo generado a partir de la licencia creada,es decir elimino el ausentismo
+  que hace referencia a la licencia eliminada en la tabla "ausent"'''
+  ausent.delete()
+
+  url="vacas?idagente="+str(idagente)
+  return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado licencia de '+agente.apellido+' '+agente.nombres})
+
 @login_required(login_url='login')
 def abmSancion(peticion):
 

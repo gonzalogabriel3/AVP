@@ -43,7 +43,7 @@
 							<td style="color: #FE9A2E">{{list.idausent.fechafin|date:"d/m/Y"}}</td>
 							<td>{{list.cantdias}}</td>
 							{%if "Eliminar" in grupos or user.username == "admin"%}
-							<td><a style="color: #FE2E2E" href="#" onclick="Eliminar('/personal/listado/listadoxagente/vacacionesxagente/{{list.idagente_id}}/{{list.idlicanual}}/');">Eliminar</a></td>
+							<td><a style="color: #FE2E2E" href="{% url 'eliminarLicencia' %}?idagente={{list.idagente_id}}&idlicanual={{list.idlicanual}}" >Eliminar</a></td>
 							{% endif %}
 						</tr>
 					{% endfor %}

@@ -208,15 +208,19 @@ class formArticulos(forms.ModelForm):
 
 class formLicenciaanual(forms.ModelForm):
     fechadesde = forms.DateField(label="Fecha Desde",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    fechahasta = forms.DateField(required=False,label="Fecha Hasta",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    #fechahasta = forms.DateField(label="Fecha hasta")
     class Meta:
         model  = Licenciaanual
         fields = ('idagente','anio','fechadesde','idausent','cantdias','tipo','observaciones')
+        exclude=['idausent']
 
     def __init__(self, *args, **kwargs):
         super(formLicenciaanual, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
-        self.fields['idausent'].widget.attrs['disabled'] = 'disabled'
+        #self.fields['idausent'].widget.attrs['disabled'] = 'disabled'
+        self.fields['fechahasta'].widget.attrs['disabled'] = 'disabled'
         self.fields['anio'].widget.attrs['disabled'] = 'disabled'
 
 

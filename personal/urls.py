@@ -155,5 +155,7 @@ urlpatterns = [
     path('error/',error),
 #---------------------------------Plantilla de error-----------------------
     path('calif/$',califIndex),
+
+    path('eliminarLicencia$',eliminarLicenciaTomada,name="eliminarLicencia")
 ]
 
