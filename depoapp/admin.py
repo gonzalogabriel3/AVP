@@ -2,6 +2,8 @@
 from depoapp.models import *
 from django.db.models import base
 from django.contrib import admin
+from dynamic_raw_id.admin import *
+
 
 #En este archivo se define como se va a mostrar los datos en la interfaz administrativa, a su vez aqui tambien se definen filtros, y campos por los 
 #cuales se podra
@@ -263,12 +265,15 @@ class ProveedorAdmin(admin.ModelAdmin):
 #==COMPRA===========================================================================================================================================
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 
+#class DetalleCompraInline(DynamicRawIDMixin, admin.TabularInline):
 class DetalleCompraInline(admin.TabularInline):
      model = Detallecompra
      raw_id_fields = ('idarticulo',)
+     #dynamic_raw_id = ('idarticulo',)
 
 class DetallecompraAdmin(admin.ModelAdmin):
-     list_display = ('iddetcompra',)
+     list_display = ['idarticulo','cantidad']
+
      
 
 class CompraAdmin(admin.ModelAdmin):
@@ -277,7 +282,7 @@ class CompraAdmin(admin.ModelAdmin):
      search_fields = ('observaciones','fecha','nroactuacion','nroordencompra','nroexpediente','nroremito',)
      ordering = ('-fecha',)
      inlines = [DetalleCompraInline]
-     raw_id_fields = ('idproveedor',)
+     raw_id_fields = ['idproveedor']
 
 #TREVELIN
 

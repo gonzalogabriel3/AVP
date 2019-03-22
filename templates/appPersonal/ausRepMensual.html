@@ -1,0 +1,42 @@
+{% extends "appPersonal/estadisticas/estadisticas_base.html" %}
+{% load i18n %}
+
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'ausent' %}">/ Ausentismo </a><a href="#" class="activo">/ Ausentismo mensual </a>
+
+{% endblock %}
+
+{% block titulo-form %}
+		<td><b><font color="#1f618d" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Mensual</font></b></td> 
+{% endblock %}
+
+
+{% block contenido-estadisticas %}
+
+
+<script>
+
+	function generarExcel(){
+			
+		anio = document.getElementById("anio").value;
+							
+		mes = document.getElementById("mes").value;
+										
+		open("/appPersonal/reportes/ausRepMensual_excel/?anio="+anio+"&mes="+mes,"_self");	
+		
+		return false;
+	}
+	
+</script>
+		<h5 style="color: #1f618d">Ausentismos - Reporte Mensual</h5></br>
+		<form method="post" enctype="text/plain">
+		      Periodo (ejemplo 2013) <input type="text" id="anio" name="anio" maxlength=4 size=2 ></br>
+		      Mes (ejemplo 08) <input type="text" id="mes" name="mes" maxlength=2 size=2 >
+		      </br>
+		      </br>
+		      
+		      <input type="button" id='btnConsulta' value="Consulta" class="btn btn-info" onclick="return reporteMensual('{% url 'ausReportMensual' %}')"/>
+		      <input type="button" style="margin-left:10px;" class="btn btn-success" value="Generar Excel" onclick="javascript:generarExcel()"/>
+		</form>
+
+{% endblock %}

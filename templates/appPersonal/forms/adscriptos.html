@@ -1,0 +1,105 @@
+{% extends "personal/forms/form_base.html" %}
+{% load i18n %}
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />
+
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Adscriptos'%}
+{% endblock%}
+
+{% block extrahead %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<script type="text/javascript" src='/site_media/personal/js/forms/view.js'></script>
+<script type="text/javascript" src='/site_media/personal/js/forms/calendar.js'></script>
+{% endblock%}
+{% block branding %}
+
+{% endblock %}
+
+{% block breadcrumbs %}
+ {% endblock %}
+            
+{% block nav-global %}
+
+{% endblock %}
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Adscriptos</font></b></td> 
+	{% endblock %}
+
+	{% block contenido-form %}
+		
+		
+		<p>
+		<label class="description" for="element_1">Nombre y Apellido: </label>
+		  
+		      <input id="element_1" name="element_1" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p style="margin-bottom: 0px;" >
+		<label style="margin-bottom: 0px;" class="description" for="element_2">Fecha: </label>
+			<TABLE style="margin-left: 0px;margin-top: 0px;" border="0" cellpadding="0" cellspacing="0" align="center">
+				<TR>
+				
+				    <input id="id_fecha" type="text" class="vDateField" name="fecha" size="10">
+				    
+				    <TD align="center">
+						    <input id="element_2_1" style="width: 40px;" name="element_2_1" class="element text" size="2" maxlength="2" value="" type="text"> 
+						    <label for="element_2_1">/</label>
+				    </TD>
+				    <TD align="center">
+						    <input id="element_2_2" style="width: 40px;" name="element_2_2" class="element text" size="2" maxlength="2" value="" type="text"> 
+						    <label for="element_2_2">/MM</label>
+				    </TD>
+				    <TD align="center">
+						    <input id="element_2_3" style="width: 40px;" name="element_2_3" class="element text" size="4" maxlength="4" value="" type="text">
+						    <label for="element_2_3">/YYYY</label>
+				    </TD>
+				    <TD align="center">
+						    <span id="calendar_2">
+							<img id="cal_img_2" class="datepicker" src='/site_media/personal/img/forms/calendar.gif' alt="Pick a date.">	
+						    </span>	
+				    </TD>
+							
+				</TR>
+			</TABLE>
+			
+			
+		
+		<script type="text/javascript">
+			Calendar.setup({
+			inputField	 : "element_2_3",
+			baseField    : "element_2",
+			displayArea  : "calendar_2",
+			button		 : "cal_img_2",
+			ifFormat	 : "%B %e, %Y",
+			onSelect	 : selectEuropeDate
+			});
+		</script>
+		</p> 
+		
+		<p>
+		<label class="description" for="element_3">Lugar: </label>
+		<input id="element_3" name="element_3" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_4">Número Resolución: </label>
+		<input id="element_4" name="element_4" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_5">Función: </label>
+		<input id="element_5" name="element_5" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_6">Observaciones: </label>
+		<textarea id="element_6" name="element_6" class="element textarea medium"></textarea> 
+		</p>
+		
+		
+{% endblock %}

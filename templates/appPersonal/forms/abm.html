@@ -1,0 +1,112 @@
+{% extends "appPersonal/forms/form_base.html" %}
+
+<!--####PAGINATION#######-->
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a>
+	<!--Si es un formulario de datos de la parte de agentes -->
+	{% if pag_agentes %}
+	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+		
+		{% if agente %}
+			
+			{% if agente.situacion == 0 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+			{% elif agente.situacion == 1 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+			{% elif agente.situacion == 2 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+			{% else %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+			{% endif %}
+			<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
+			{{agente.apellido}} {{agente.nombres}} </a>
+		{% endif %}
+	<a href="#" class="activo">/ {{titulo_form}} </a>
+	{% endif %}
+
+	{% if pag_medica %}
+	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+		
+		{% if agente %}
+			
+			{% if agente.situacion == 0 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+			{% elif agente.situacion == 1 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+			{% elif agente.situacion == 2 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+			{% else %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+			{% endif %}
+			<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
+			{{agente.apellido}} {{agente.nombres}} </a>
+		{% endif %}
+	<a href="{% url 'listado/listadoxagente/medica' %}?idagente={{agente.idagente}}&idausent={{idausent}}&borrado=-1" class="pagination">/ Licencias médicas </a>
+	<a href="#" class="activo">/ {{titulo_form}}</a>
+	{% endif %}
+
+	{% if pag_articulos %}
+		<a href="{% url 'listado/articulos' %}" class="pagination">/ Articulos </a><a href="#" class="activo">/ {{titulo_form}} </a>
+	{% endif %}
+
+
+	{% if pag_medicavieja %}
+		<a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/medicavieja' %}?idagente={{agente.idagente}}" class="pagination">/ Medica </a><a href="#" class="activo">/ {{idm}}</a>
+	{% endif %}
+
+
+	{% if pag_licenciavieja %}
+		<a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/licenciaanualvieja' %}?idagente={{agente.idagente}}" class="pagination">/ Licencias </a><a href="#" class="activo">/ Modificar licencia</a>
+	{% endif %}
+
+
+{% endblock %}
+<!--####FIN PAGINATION#######-->
+
+
+
+{% block titulo-form %}
+		<td><b><font color="#1f618d" style="font-size: 14px;">{{name}}</font></b></td>
+
+{% endblock %}
+	
+	
+	{% block contenido-form %}
+	<table class="table table-hover"  width="100%" border="0" cellspacing="0" cellpadding="4"> 
+		<tbody>
+		<script type="text/javascript">console.log.info("hola")</script>
+			{% if form.errors %}
+			<tr> 
+				<td>
+					<p class="error">Error...</p>
+				</td>
+				{{ error_html }}
+			</tr> 
+			{% endif %}
+			
+			{% csrf_token %}
+			
+			{% for f in form %}
+				<tr>
+				    <th>{{ f.label }}</th> 
+				    {% if "fecha" in f.label %}
+					<td>{{ f.errors }}</td>
+					<td>
+					    <div id="dp3" class="input-append date" data-date-format="yyyy-mm-dd">
+						{{ f }}
+					    </div>
+					</td>
+				    {% else %}
+				        <td>{{ f.errors }}</td>
+					<td>{{ f }}</td>
+				    {% endif %}
+				</tr> 
+			{% endfor %}
+		
+		</tbody>
+	</table>
+
+
+	
+{% endblock %}
+

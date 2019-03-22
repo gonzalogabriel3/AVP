@@ -1,0 +1,49 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="activo" href="#">/ Medica sin alta </a>
+{% endblock %}
+
+{% block botonnuevo %}{%endblock%}
+
+{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
+
+{% block path %}{% endblock%}
+
+{% block titulo-form %}
+		<td><b><font color="#1f618d" style="font-size: 13px;">Agentes con 102 y 102 falta C.M.O sin alta</font></b></td> 
+{% endblock %}
+
+{% block main-list %}
+		<div class="results">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Apellido</th>
+						<th>Nombre</th>
+						<th>Diagnostico</th>
+						<th>Fecha Inicio</th>
+						<th>Fecha Fin</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for li in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td>{{li.0}}</td>
+								<td>{{li.1}}</td>
+								<td>{{li.2}}</td>
+								<td>{{li.3}}</td>
+								<td>{{li.4}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		
+
+{% endblock %}
+</br>
+{% block prevpage%}{% endblock %}
+{% block nextpage%}{% endblock %}
+

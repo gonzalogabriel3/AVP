@@ -1,0 +1,45 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial '%}
+{% endblock%}
+	{% block botonnuevo %}{%endblock%}
+	
+	{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
+	
+	{% block path %}{% endblock%}
+	
+	{% block main-list %}
+		<div class="results">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Agente</th>
+						<th>Nº Expediente</th>
+						<th>Fecha</th>
+						<th>Hora</th>
+						<th>Testigos</th>
+						<th>Lesion</th>
+						<th>Nº Siniest-Art</th>
+						<th>Zona</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+							<td><a href='/appPersonal/forms/abmaccdetrabajo/{{list.idaccidente}}/{{list.idagente.idagente}}/'>{{list.idagente}}</a></td>
+							<td>{{list.nroexpediente}}</td>
+							<td>{{list.fecha|date:"d/m/Y"}}</td>
+							<td>{{list.hora|time:"H:i"}}</td>
+							<td>{{list.testigos}}</td>
+							<td>{{list.detallelesion|upper}}</td>
+							<td>{{list.nrosiniestroart}}</td>
+							<td>{{list.zona|upper}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% endblock %}
+	</br>

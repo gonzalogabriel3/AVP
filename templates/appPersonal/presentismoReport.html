@@ -1,0 +1,70 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'presentRep' %}">/ Presentismo </a><a href="#" class="activo">/ Periodo {{mes}}-{{anio}} </a>
+{% endblock %}
+
+{% block extrahead %}
+
+<script>
+		    
+	function callExcel(){
+	    open("{% url 'presentReport' %}?mes="+{{mes}}+"&anio="+{{anio}}+"&excel="+1,"_self");	
+	    return false;
+	}
+		  
+</script>
+
+{% endblock %}
+
+
+	{% block botonnuevo %}{%endblock%}
+	
+	{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
+		
+	
+	{% block botonexcel %}
+		
+	     <input id="backbutton" class="btn btn-success" type="submit" name="submit" value="Excel" style="margin-rigth: 740px;" onclick="callExcel()" />
+	
+	{%endblock%}
+	
+	
+	
+	<h5>Presentismo</h5>
+	
+	{% block main-list %}
+	
+		<div class="results">
+			<table class="table table-striped">
+				<thead>
+					<th>Agente</th>
+					<th>Articulo</th>
+					<th>Cantidad</th>
+					<th>LL.Tarde</th>
+					<th>Presentismo</th>
+				</thead>
+				<tbody>
+				      {%for l in lista%}
+				      <tr class="{% cycle 'row1' 'row2' %}">
+					{%if l.3 != ''%}
+						<td>{{l.0}}</td>
+						<td>{{l.1}}</td>
+						<td>{{l.5}}</td>
+						{%if l.4 != None%}
+						      <td>{{l.4}}</td>
+						{%else%}
+						      <td></td>
+						{%endif%}
+						<td>{{l.3}}</td>
+					{%endif%}
+				      </tr>
+				      {%endfor%}
+				</tbody>
+			</table>
+		</div>
+	{% endblock %}
+	</br>
+	{% block prevpage%}&anio={{anio}}&mes={{mes}}{% endblock %}
+	{% block nextpage%}&anio={{anio}}&mes={{mes}}{% endblock %}

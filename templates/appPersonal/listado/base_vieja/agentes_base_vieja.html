@@ -1,0 +1,74 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="#" class="activo">/ Base vieja / Listado agentes </a>
+{% endblock %}
+
+{% block extrahead %}
+<script type="text/javascript">
+
+function buscaragentes(path){
+
+	var busc = document.getElementById('busqueda').value ;
+	
+	open(path+"?busc="+busc,"_self");
+
+  return false;
+
+}
+</script>
+{% endblock %}
+
+
+
+		{% block titulo-form %}
+		    <td><b><font color="#1f618d" style="font-size: 13px;">Listado Agentes</font></b></td> 
+	        {% endblock %}
+
+		{% block botonnuevo %}
+	        {%endblock%}
+	        
+	        {% block botonborrar %}{%endblock%}
+		
+		{% block botonatrasaction %}"return Open('/appPersonal/listado/agentesIndex'); " {% endblock %}
+		
+		{% block titulo %}
+		{%endblock%}
+		
+		{% block busqueda %}
+		
+			<input id="busqueda" name="busqueda" class="input-medium search-query" size="50" maxlength="50" value="" type="text">
+			<input class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('{% url 'listado/agentes_base_vieja' %}')">
+
+		{%endblock%}
+				
+		{% block main-list %}
+		<div class="results">
+			<table id="result_list">
+					<thead>
+					<tr>
+						<th>Nombres y Apellidos</th>
+						<th>Número de legajo</th>
+						<th>Tipo Documento</th>
+						<th>Número Documento</th>
+						<th>Zona</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td><a href= "{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{list.idagente}}">{{list.apellido}}</a>, {{list.nombres}} </td>
+								<td>{{list.nrolegajo}}</td>
+								<td>{{list.tipodoc}}</td>
+								<td>{{list.nrodocumento}}</td>
+								<td>{{list.idzona}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>
+		{% block prevpage%}&busc={{busc}}{% endblock %}
+		{% block nextpage%}&busc={{busc}}{% endblock %}
+		

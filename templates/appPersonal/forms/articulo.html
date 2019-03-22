@@ -1,0 +1,53 @@
+{% extends "personal/forms/form_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Agente'%}
+{% endblock%}
+
+{% block extrahead %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<script type="text/javascript" src='/site_media/personal/js/forms/view.js'></script>
+{% endblock%}
+{% block branding %}
+
+{% endblock %}
+
+{% block breadcrumbs %}
+ {% endblock %}
+            
+{% block nav-global %}
+
+{% endblock %}
+
+{% block titulo-form %}
+		<td><b><font color="#1f618d" style="font-size: 13px;">Artículo</font></b></td> 
+	{% endblock %}
+
+	{% block contenido-form %}
+			
+		<p>
+		<label class="description" for="element_1">Descripción: </label>
+		<input id="element_1" name="element_1" class="element text large" type="text" maxlength="255" value=""/> 
+		</p>
+
+		<p>
+		<label class="description" for="element_2">Máximo Anual: </label>
+		<input id="element_2" name="element_2" class="element text small" type="text" maxlength="255" value=""/> 
+		</p> 
+
+		<p>
+		<label class="description" for="element_3">Máximo Mensual: </label>
+		<input id="element_3" name="element_3" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_4"> </label>
+		<input id="element_4_1" name="element_4_1" class="element checkbox" type="checkbox" value="1" />
+		<label class="choice" for="element_4_1">Es licencia</label>
+		</p>
+		
+		
+{% endblock %}

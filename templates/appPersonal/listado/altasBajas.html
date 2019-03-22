@@ -1,0 +1,105 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'listado/altasbajasindex' %}">/ Altas-bajas </a><a href="#" class="activo">/ Listado año {{periodo}}</a>
+{% endblock %}
+
+{% block path %}
+		appPersonal/forms/articulos/0
+{% endblock%}
+
+{% block titulo-form %}
+	<h3 style="color: #1f618d">Listado Altas-Bajas</h3>
+{% endblock %}
+
+{% block barraherramientas %}  
+{%endblock%}
+
+{% block main-list %}
+		<hr>
+			<h4>Totales</h4>
+			<br>
+			<p><strong>Total agentes (al dia de la fecha):</strong> {{cantAgen}}</p>
+			<p><strong>Total altas (en {{periodo}}):</strong> {{cantAlta}}</p>
+			<p><strong>Total bajas (en {{periodo}}):</strong> {{cantBaja}}</p>
+			<br>
+		<hr>
+		<div class="results">
+			<h4 style="color: green">Altas</h4>
+			<br>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Apellido</th>
+						<th>Nombres</th>
+						<th>Fecha alta</th>
+						<th>Zona</th>
+						<th>Direccion</th>
+						<th>Clase</th>
+						<th>Agrup</th>
+						<th>Funcion</th>
+						<th>Matricula</th>
+						<th>Planta</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for a in alta%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td>{{a.apellido}}</td>
+								<td>{{a.nombres}}</td>
+								<td>{{a.fechaalta|date:"d/m/Y"}}</td>
+								<th>{{a.idzona}}</th>
+								<th>{{a.iddireccion}}</th>
+								<td>{{a.clase}}</td>
+								<td>{{a.agrupamiento}}</td>
+								<td>{{a.funcion}}</td>
+								<td>{{a.nrodocumento}}</td>
+								<td>{{a.planta}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<h4 style="color: red">Bajas</h4>
+			<br>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Apellido</th>
+						<th>Nombres</th>
+						<th>Fecha Baja</th>
+						<th>Motivo</th>
+						<th>Zona</th>
+						<th>Direccion</th>
+						<th>Clase</th>
+						<th>Agrup</th>
+						<th>Funcion</th>
+						<th>Matricula</th>
+						<th>Planta</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for b in baja%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td>{{b.apellido}}</td>
+								<td>{{b.nombres}}</td>
+								<td>{{b.fechabaja|date:"d/m/Y"}}</td>
+								<td>{{b.razonbaja}}</td>
+								<th>{{b.idzona}}</th>
+								<th>{{b.iddireccion}}</th>
+								<td>{{b.clase}}</td>
+								<td>{{b.agrupamiento}}</td>
+								<td>{{b.funcion}}</td>
+								<td>{{b.nrodocumento}}</td>
+								<td>{{b.planta}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			
+		</div>
+{% endblock %}
+</br>
+
+{% block paginasinf %} 
+{% endblock%}

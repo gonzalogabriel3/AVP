@@ -1,0 +1,88 @@
+{% extends "personal/forms/form_base.html" %}
+{% load i18n %}
+
+{% block title %} 
+	{{ title }} | {% trans 'Administracion de Vialidad Provincial - Servicios Prestados'%}
+{% endblock%}
+
+{% block extrahead %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<script type="text/javascript" src='/site_media/personal/js/forms/view.js'></script>
+<script type="text/javascript" src='/site_media/personal/js/forms/calendar.js'></script>
+{% endblock%}
+{% block branding %}
+
+{% endblock %}
+
+{% block breadcrumbs %}
+ {% endblock %}
+            
+{% block nav-global %}
+
+{% endblock %}
+
+{% block titulo-form %}
+		<td><b><font color="#000000" style="font-size: 13px;">Licencia</font></b></td> 
+	{% endblock %}
+
+	{% block contenido-form %}
+		
+
+		<p>
+		<label class="description" for="element_1">Año: </label>
+		<input id="element_1" name="element_1" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		<p>
+		<label class="description" for="element_2">Tipo: </label>
+		<input id="element_2" name="element_2" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+		
+		
+		<p>
+		<label class="description" for="element_3">Fecha Desde: </label>
+
+		<span>
+			<input id="element_3_1" name="element_3_1" class="element text" size="2" maxlength="2" value="" type="text"> /
+			<label for="element_3_1">DD</label>
+		</span>
+		<span>
+			<input id="element_3_2" name="element_3_2" class="element text" size="2" maxlength="2" value="" type="text"> /
+			<label for="element_3_2">MM</label>
+		</span>
+		<span>
+	 		<input id="element_3_3" name="element_3_3" class="element text" size="4" maxlength="4" value="" type="text">
+			<label for="element_3_3">YYYY</label>
+		</span>
+	
+		<span id="calendar_3">
+			<img id="cal_img_3" class="datepicker" src='/site_media/personal/img/forms/calendar.gif' alt="Pick a date.">	
+		</span>
+		<script type="text/javascript">
+			Calendar.setup({
+			inputField	 : "element_3_3",
+			baseField    : "element_3",
+			displayArea  : "calendar_3",
+			button		 : "cal_img_3",
+			ifFormat	 : "%B %e, %Y",
+			onSelect	 : selectEuropeDate
+			});
+		</script>
+
+		</p>		
+			
+		<p>
+		<label class="description" for="element_4">Cantidad Dias: </label>
+		<input id="element_4" name="element_4" class="element text medium" type="text" maxlength="255" value=""/> 
+		</p>
+
+		<p>
+		<label class="description" for="element_5">Observaciones: </label>
+		<textarea id="element_5" name="element_5" class="element textarea medium"></textarea> 
+		</p> 
+		
+		
+	
+{% endblock %}

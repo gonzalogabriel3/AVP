@@ -1,0 +1,50 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'cantagrupindex' %}">/ Cantidad agrupamiento </a><a href="#" class="activo">/ {{descrip}}</a>
+{% endblock %}
+
+{% block botonnuevo %}{%endblock%}
+
+{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
+
+{% block path %}{% endblock%}
+
+{% block titulo-form %}
+		<td><b><font color="#1f618d" style="font-size: 13px;">Cantidad de agentes por Agrupamiento</font></b></td> 
+{% endblock %}
+
+{% block main-list %}
+		<div class="results">
+			<p><strong>Cantidad para agrupamiento {{descrip}}: </strong> {{cantidad}}</p>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Apellido</th>
+						<th>Nombre</th>
+						<th>Nº Documento</th>
+						<th>Fecha Alta</th>
+						<th>Zona</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for li in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td>{{li.0}}</td>
+								<td>{{li.1}}</td>
+								<td>{{li.2}}</td>
+								<td>{{li.3}}</td>
+								<td>{{li.4}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		
+
+{% endblock %}
+</br>
+{% block prevpage%}&agrup={{agrup}}{% endblock %}
+{% block nextpage%}&agrup={{agrup}}{% endblock %}
+

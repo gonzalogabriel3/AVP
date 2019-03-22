@@ -1,0 +1,28 @@
+{% extends "appPersonal/estadisticas/estadisticas_base.html" %}
+{% load i18n %}
+
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'ausent' %}">/ Ausentismo </a><a href="#" class="activo">/ Ausentismo anual por direccion </a>
+{% endblock %}
+
+{% block titulo-form %}
+		<td><b><font color="#1f618d" style="font-size: 13px;">Estadisticas Ausentismos - Reporte Anual por Direccion</font></b></td> 
+{% endblock %}
+
+{% block contenido-estadisticas %}
+
+		<h5 style="color: #1f618d">Ausentismos - Reporte Anual por Direccion</h5>
+		<form method="post" enctype="text/plain">{% csrf_token %}
+		      Periodo (ejemplo 2000)
+		      </br>
+		      <input type="text" id="anio" name="anio" maxlength=4 size=2></br>
+		      Direccion <select id="dir" name="dir" >
+				{%for d in dire %}
+					<option value="{{d.iddireccion}}">{{d.descripcion}}</option>
+					
+				{%endfor%}
+		      </select>
+		      <br>
+		      <input type="button" class="btn btn-info" value="Consulta" onclick="return reporteAnualDir('{% url 'ausReportDir' %}')"/>
+		</form>
+{% endblock %}

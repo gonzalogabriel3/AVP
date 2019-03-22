@@ -956,7 +956,7 @@ class Detallecompra(models.Model):
     idcompra = models.ForeignKey(Compra, db_column='idCompra',verbose_name='Compra',on_delete=models.CASCADE) 
     idarticulo = models.ForeignKey(Articulo, db_column='idArticulo',verbose_name='Artículo',on_delete=models.CASCADE)
     cantidad = MinMaxFloat(max_value=1000000000000, min_value=0.0)
-    preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='PrecioUnitario')
+    preciounitario = models.CharField(max_length=200, db_column='precioUnitario',verbose_name='Precio Unitario')
 
     class Meta:
         db_table = u'detalleCompra'

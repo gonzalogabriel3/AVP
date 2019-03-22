@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+{% load static %}
+<!--
+	Road Trip by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Administracion Vialidad Provincial</title>
+		<!-- Css de Bootstrap -Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		
+		<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="{% static 'indexProyecto/assets2/css/main.css' %}" />
+
+	</head>
+	<body>
+	<!--Si el usuario esta registrado,redirecciono a la url de pasajes -->
+	{% if user.is_authenticated is True %}
+		
+		<meta http-equiv="refresh" content="0; url=/pasajes">
+	
+	<!--Si el usuario NO esta registrado,muestro el menu principal del proyecto -->
+	{% else %}
+
+		<!-- Header -->
+			<header id="header">
+				<img src="{% static 'appPasajes/imagenes/logoAVP2.png' %}" style="float: left;width: 150px;height: 120px;opacity: 0.8;" />
+				<a href="#menu"><span>Menu</span></a>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="personal/index"><span class="glyphicon glyphicon-user"></span>  Personal</a></li>
+					<li><a href="deposito/index"><span class="glyphicon glyphicon-oil"></span>  Deposito</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-briefcase"></span>  Taller</a></li>
+					<li><a href="pasajes"><span class="glyphicon glyphicon-plane"></span>  Pasajes</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-home"></span>  Patrimonio</a></li>
+				</ul>
+			</nav>
+
+		<!-- Banner -->
+		<!--
+			Note: To show a background image, set the "data-bg" attribute below
+			to the full filename of your image. This is used in each section to set
+			the background image.
+		-->
+		
+
+			<section id="banner" class="bg-img" data-bg="/static/indexProyecto/imagenes/fondoavp.jpg">
+				<div class="inner">
+					<header>
+						<h1>Administraci&oacuten Vialidad Provincial</h1>
+					</header>
+				</div>
+				<a href="#footer" class="more">Learn More</a>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+
+					<h4>
+						Copyright (c) 2019 Administración Vial Provincial (AVP) Todos los Derechos Reservados.
+						Estas aplicaciones están protegidas por copyright y distribuidas bajo licencias que restringen la copia y la distribución. 
+					</h4>
+				</div>
+			</footer>
+
+	{% endif %}
+		<!-- Scripts -->
+			<script src="{% static 'indexProyecto/assets2/js/jquery.min.js' %}"></script>
+			<script src="{% static 'indexProyecto/assets2/js/jquery.scrolly.min.js' %}"></script>
+			<script src="{% static 'indexProyecto/assets2/js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static 'indexProyecto/assets2/js/skel.min.js' %}"></script>
+			<script src="{% static 'indexProyecto/assets2/js/util.js' %}"></script>
+			<script src="{% static 'indexProyecto/assets2/js/main.js' %}"></script>
+
+	</body>
+</html>
