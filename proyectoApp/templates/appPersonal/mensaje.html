@@ -1,0 +1,12 @@
+{% extends "appPersonal/plantilla_base.html" %}
+{% load static %}
+{% block content %}
+	{% if mensaje %}
+		<div style="background-color: #A9F5BC;border: 2px solid #58FA82">
+			<img src="{% static 'appPersonal/images/ok.png' %}" style="width: 18px;height: 18px;display: inline-block;">
+			<h5 style="display: inline-block;color: #0174DF">{{mensaje}}</h5>
+			<a href="{{url}}" class="btn btn-info">Volver</a>
+		</div>
+	{% endif %}
+
+{% endblock %}

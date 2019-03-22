@@ -12,7 +12,7 @@
 		{% else %}
 			<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
 	{% endif %}
-	<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ Licencias </a><a href="#" class="activo">/ Detalles </a>
+	<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'vacas' %}?idagente={{agente.idagente}}" class="pagination">/ Licencias </a><a href="#" class="activo">/ Detalles </a>
 {% endblock %}
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
@@ -37,13 +37,13 @@
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-							<td><a href="{% url 'forms/abmlicanual' %}?idlicanual={{list.idlicanual}}&idagen={{list.idagente_id}}&anio={{list.anio}}">{{list.anio}}</a></td>
+							<td><a href="{% url 'forms/abmlicanual' %}?idlicanual={{list.idlicanual}}&idagen={{list.idagente_id}}&anio={{list.anio}}"><b>{{list.anio}}</b></a></td>
 							<td>{{list.tipo}}</td>
-							<td>{{list.fechadesde|date:"d/m/Y"}}</td>
-							<td>{{list.idausent.fechafin|date:"d/m/Y"}}</td>
+							<td style="color: #01DF74">{{list.fechadesde|date:"d/m/Y"}}</td>
+							<td style="color: #FE9A2E">{{list.idausent.fechafin|date:"d/m/Y"}}</td>
 							<td>{{list.cantdias}}</td>
 							{%if "Eliminar" in grupos or user.username == "admin"%}
-							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/vacacionesxagente/{{list.idagente_id}}/{{list.idlicanual}}/');">Eliminar</a></td>
+							<td><a style="color: #FE2E2E" href="#" onclick="Eliminar('/personal/listado/listadoxagente/vacacionesxagente/{{list.idagente_id}}/{{list.idlicanual}}/');">Eliminar</a></td>
 							{% endif %}
 						</tr>
 					{% endfor %}
