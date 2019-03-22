@@ -1,0 +1,58 @@
+{% extends "appPersonal/admin/base_site.html" %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/appPersonal/css/base2.css{% endblock %}" />
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/appPersonal/css/dashboard.css" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+
+
+<div id="content-main">
+	<h2>Listado de {{titulo}} </h3>
+	<h3> Breve descripcion del contenido </h2>
+	<p>Molde de un posible reporte</p>
+	<img src="{% static 'appPersonal/img/men_at_work.png' %}" width="200" height="200"></img>
+	<div class="module">
+		<table>
+		<caption><a href="{{ app.app_url }}" class="section">{{titulo}}</a></caption>
+			<thead>
+				<tr>
+					{% for col in columnas %}
+						<th scope="row">{{col|capfirst}}</th>
+					{%endfor%}
+				</tr>
+			</thead>
+			<tbody>
+			{% for lis in list %}
+				<tr class= "{% cycle 'row0' 'row1' %}">
+					{% for l in lis %}
+						<td>{{l}}</td>
+					{%endfor%}
+				</tr>
+			{%endfor%}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>Menu</h2>
+        <h3><img src='/site_media/appPersonal/img/icon/white/PngFiles/Bulb.png' width="20" height="20"></img> Alumnos</h3>
+            <ul class="actionlist">
+		{% for al in alum %}
+			{% for a in al %}
+				<li class=""><a href="">{{a}}</a></li>
+			{%endfor%}
+		{%endfor%}
+            </ul>
+    </div>
+</div>
+{% endblock %}

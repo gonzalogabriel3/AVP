@@ -1,0 +1,64 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+<script type="text/javascript">
+function buscaragentes(path){
+
+	var busc = document.getElementById('busqueda').value ;
+	
+	open(path+"?busc="+busc,"_self");
+
+  return false;
+}
+</script>
+{% endblock %}
+
+
+		{% block titulo-form %}
+		    <h3 style="color: #1f618d">Listado Agentes</h3> 
+	        {% endblock %}
+
+		{% block botonnuevo %}
+
+	        {%endblock%}
+		
+		{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
+		
+		{% block titulo %} 
+		{%endblock%}
+		
+		{% block busqueda %}
+			<input id="busqueda" name="busqueda" class="input-medium search-query" size="50" maxlength="50" value="" type="text">
+			<input class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('cargaausent')">
+		{%endblock%}
+		{% block main-list %}
+		
+		<div class="results">
+			<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>Nombres y Apellidos</th>
+						<th>Número de legajo</th>
+						<th>Tipo Documento</th>
+						<th>Número Documento</th>
+						<th>Zona</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+<!-- 								<td><a href= "/personal/forms/abmausentismo?idausent=0&idagente={{list.idagente}}&code=2">{{list.apellido}}</a>, {{list.nombres}} </td> -->
+								
+								<td><a href= "{% url 'detalle/detallexagente/ausentismo' %}?idagente={{list.idagente}}&borrado=-1">{{list.apellido}}</a>, {{list.nombres}} </td>
+								<td>{{list.nrolegajo}}</td>
+								<td>{{list.tipodoc}}</td>
+								<td>{{list.nrodocumento}}</td>
+								<td>{{list.idzona}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>

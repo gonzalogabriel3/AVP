@@ -1,0 +1,67 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/medicavieja' %}?idagente={{idagente}}" class="pagination">/ Medica </a><a href="#" class="activo">/ Junta medica</a>
+{% endblock %}
+
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/personal/css/base2.css{% endblock %}" />
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="/site_media/personal/css/dashboard.css" />{% endblock %}
+
+
+
+		{% block titulo-form %}
+		    <td><b><font color="#1f618d" style="font-size: 13px;">Listado de Juntas Medicas</font></b></td> 
+		{% endblock %}
+
+		{% block botonnuevo %}
+	        {%endblock%}
+		
+		{% block botonatrasaction %}"return Open('/personal/listado/listadoxagente/medica?idagente={{idagente}}&borrado=-1&idausent={{idausent}}'); " {% endblock %}
+		
+		{% block busqueda %}
+		
+<!-- 		<input id="busqueda" name="busqueda" class="element text" size="50" maxlength="50" value="" type="text"> -->
+<!-- 		<input class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('/personal/listado/base_vieja/medicavieja')"> -->
+		
+		<input class="btn btn-inverse" type="button" name="medica" value="Medica" Onclick="return Open('{% url 'listado/base_vieja/medicavieja' %}?idagente={{idagente}}')">
+		{%endblock%}
+		
+		{% block titulo %}
+		<div align="center">
+		    <h2 style="margin-left: 5px;margin-top: 10px;"> {{agente.apellido}}, {{agente.nombres}}   </h2>
+		</div>
+		{% endblock%}
+		
+		{% block main-list %}
+		
+		
+		<div class="results">
+		
+		
+			<table id="result_list">
+					<thead>
+					<tr>
+						<th>Agente</th>
+						<th>Fecha</th>
+						<th>Resultado</th>
+						<th>Medica</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td><a href= "{% url 'forms/abmjuntamedicavieja' %}?idagente={{idagente}}&idjm={{list.pk}}">{{list.fecha}}</a></td>
+								<td>{{list.idagente}}</td>
+								<td>{{list.resultado}}</td>
+								<td>{{list.medica}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>
+		
+		

@@ -7,6 +7,7 @@ from django.shortcuts import render
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin/dynamic_raw_id/', include('dynamic_raw_id.urls')),
     path('',include('proyectoApp.urls')),
     path('pasajes/', include('pasajes.urls')),
     path('deposito/', include('depoapp.urls')),

@@ -1,0 +1,428 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	
+	<!-- Css de Bootstrap -Latest compiled and minified CSS -->
+	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+	<!-- Importo jQuery library -->
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+
+	<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
+	<title>
+	{% block title %} 
+		Administracion de Vialidad Provincial
+	{% endblock%}
+	</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/bootstrap.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/datepicker.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/bootstrap-responsive.css' %}"/>
+
+	<style type="text/css">
+	  body {
+	    padding-top: 60px;
+	    padding-bottom: 40px;
+	  }
+	  .sidebar-nav {
+	    padding: 20px 20px;
+	  }
+
+	  @media (max-width: 980px) {
+	    /* Enable use of floated navbar text */
+	    .navbar-text.pull-right {
+	      float: none;
+	      padding-left: 5px;
+	      padding-right: 5px;
+	    }
+	  }
+	</style>
+	<!--###############ESTILO PARA PAGINATION#######################-->
+	<style type="text/css">
+		a.pagination{
+			color:  #73c6b6;
+			text-decoration: none;
+			font-family:"serif";
+			font-size: 13px;
+			font-weight: bold;
+		}
+		a.activo{
+			color:   #d0d3d4;
+			text-decoration: none;
+			font-family:"serif";
+			font-size: 13px;
+			font-weight: bold;
+			
+		}
+
+	</style>
+	
+	<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
+	{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static 'personal/admin/css/rtl.css' %}{% endblock %}" />{% endif %}
+	<script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
+	
+	<script type="text/javascript" src="{% static 'appPersonal/js/core.js' %}"></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/funciones.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/forms/view.js' %}"></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/prototype.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/jquery.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/bootstrap.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'appPersonal/js/bootstrap-datepicker.js' %}" ></script>
+
+	<!-- Importo jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+	<!--
+	###########################################################################
+	#																		  #
+	#						****DATEPICKER**** 								  #
+	###########################################################################										
+	-->
+	<!--Importo script para utilizar "datepicker" funcion de calendario-->
+  	 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+	<script>
+
+		  //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker',con el atributo maxDate indico que la fecha maxima es pasado 18 años desde el dia actual-->
+		  $( function(){
+		    $( ".datepickerAdulto" ).datepicker({
+		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+		    	prevText:'<',
+		    	nextText:'>',
+		    	dateFormat: 'dd/mm/yy',
+		    	maxDate:-6570
+		    	
+		    });
+		  });
+
+		//Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker'-->
+		  $( function(){
+		    $( ".datepicker" ).datepicker({
+		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+		    	prevText:'<',
+		    	nextText:'>',
+		    	dateFormat: 'dd/mm/yy',
+		    	
+		    	
+		    });
+		  });
+
+
+	</script>
+
+
+	<!--Estilo para datepicker-->
+		 <style>
+			.ui-datepicker {
+			  		background: #88ee7a;
+				    width: 216px;
+				    height: auto;
+				    margin: 5px auto 0;
+				    font: 12pt Arial, sans-serif;
+				    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+				    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+				    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+				}
+
+				.ui-datepicker a {
+			  		text-decoration: none;
+				}
+
+				.ui-datepicker table {
+			  		width: 100%;
+				}
+				
+				.ui-datepicker-header {
+				  background-color: #b9d6d3;
+				  color: #16a795;
+				  padding: 1px;
+			  
+				}
+				.ui-datepicker-title {
+			  		text-align: center;
+				}
+				.ui-datepicker-prev, .ui-datepicker-next {
+			  		display: inline-block;
+			  		padding: 2px;
+			  
+				}
+				.ui-datepicker-prev {
+				  float: left;
+				  background-position: center -30px;
+				}
+				.ui-datepicker-next {
+				  float: right;
+				  background-position: center 0px;
+				}
+
+				.ui-datepicker th {
+				  text-transform: uppercase;
+				  font-size: 7pt;
+				  padding: 5px 0;
+				  color: #666666;
+				  text-shadow: 1px 0px 0px #fff;
+				  filter: dropshadow(color=#fff, offx=1, offy=0);
+				}
+
+				.ui-datepicker tbody tr {
+			  		border-bottom: 1px solid #bbb;
+				}
+				.ui-datepicker tbody tr:last-child {
+			  		border-bottom: 0px;
+				}
+
+		</style>
+
+	<!--
+	###########################################################################
+	#																		  #
+	#					***	fin DATEPICKER *** 								  #
+	###########################################################################										
+	-->
+
+
+
+
+
+
+
+	<script>
+		$(function(){
+			window.prettyPrint && prettyPrint();
+			$('#dp1').datepicker();
+			$('#dp2').datepicker();
+			$('#dp3').datepicker();
+			$('#dp3').datepicker();
+			$('#dpYears').datepicker();
+			$('#dpMonths').datepicker();
+			
+			
+			var startDate = new Date(2012,1,20);
+			var endDate = new Date(2012,1,25);
+			$('#dp4').datepicker()
+				.on('changeDate', function(ev){
+					if (ev.date.valueOf() > endDate.valueOf()){
+						$('#alert').show().find('strong').text('The start date can not be greater then the end date');
+					} else {
+						$('#alert').hide();
+						startDate = new Date(ev.date);
+						$('#startDate').text($('#dp4').data('date'));
+					}
+					$('#dp4').datepicker('hide');
+				});
+			$('#dp5').datepicker()
+				.on('changeDate', function(ev){
+					if (ev.date.valueOf() < startDate.valueOf()){
+						$('#alert').show().find('strong').text('The end date can not be less then the start date');
+					} else {
+						$('#alert').hide();
+						endDate = new Date(ev.date);
+						$('#endDate').text($('#dp5').data('date'));
+					}
+					$('#dp5').datepicker('hide');
+				});
+
+        // disabling dates
+        var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+        var checkin = $('#dpd1').datepicker({
+          onRender: function(date) {
+            return date.valueOf() < now.valueOf() ? 'disabled' : '';
+          }
+        }).on('changeDate', function(ev) {
+          if (ev.date.valueOf() > checkout.date.valueOf()) {
+            var newDate = new Date(ev.date)
+            newDate.setDate(newDate.getDate() + 1);
+            checkout.setValue(newDate);
+          }
+          checkin.hide();
+          $('#dpd2')[0].focus();
+        }).data('datepicker');
+        var checkout = $('#dpd2').datepicker({
+          onRender: function(date) {
+            return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+          }
+        }).on('changeDate', function(ev) {
+          checkout.hide();
+        }).data('datepicker');
+		});
+	</script>
+   
+   {% block extrahead %}{% endblock %}
+   {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+   {% load i18n %}
+   </head>
+   <body onload="{% block bodyonload%} {%endblock%}" >
+   	
+       <div class="navbar navbar-inverse navbar-fixed-top">
+	  <!-- Container -->
+	      {% if not is_popup %}
+	      <!-- Header -->
+	      <div id="navbar-inner">
+		      <div class="container-fluid">
+			{% block header %}
+			{% endblock %}
+			<a class="brand" href="/personal/index/">
+				{% trans ' AVP' %}
+				<img src="{% static 'appPersonal/img/logo-inicio2.png' %}" width="35" height="35"  onclick="/index.html" ></img>
+				
+				{% block branding %}{% endblock %}
+			</a>
+			{% if user.is_active and user.is_staff  %}
+				<div class="nav-collapse collapse">
+					<div class="navbar-text pull-right" >
+					<i>{% trans 'Bienvenido,' %}</i>
+					<strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>.
+					{% block userlinks %}
+					    {% url 'django-admindocs-docroot' as docsroot %}
+					    {% if docsroot %}
+						<a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+					    {% endif %}
+					    <a href="{% url 'logout' %}"><b style="display: inline-block;">Salir </b></a>
+					{% endblock %}
+					</div>
+				</div>
+			{% endif %}
+		      </div>
+	      </div>
+	      {% endif %}
+       </div>
+       <!-- END Header -->
+   
+      {% block messages %}
+		{% if messages %}
+			  <ul class="messagelist">{% for message in messages %}
+			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			  {% endfor %}</ul>
+		{% endif %}
+      {% endblock messages %}
+      
+      {% block pagination %}
+
+      {% endblock %}
+
+
+       <!-- Content -->
+      {% block estructura %}
+      
+       <div class="container-fluid">
+      <!-- Content -->
+		<div id="content" class="{% block coltype %}colM{% endblock %}">  </div>
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav">
+					{% block sidebar %}
+					      <div id="content-related">
+						      <div class="module" id="recent-actions-module">
+							  {%if "Personal-Listados" in grupos  or user.username == "admin"%}
+								<ul class="nav nav-list">
+
+								  <li class="nav-header"><img src="{% static 'appPersonal/img/icons/vcard.png' %}" width="8%" height="8%"></img> <b>Datos</b></li>
+
+								  <li><a href="{% url 'listado/agentesIndex' %}"><b>Agentes</b> </a></li>
+								  <li><a href="{% url 'listado/articulos' %}"><b>Articulos</b></a></li>
+<!-- 								  <li><a href="/personal/listado/adscriptos">Adscriptos</a></li2> -->
+<!-- 								  <li><a href="/personal/listado/listacctrabajo">Accidente de trabajo</a></li2> -->
+<!-- 								  <li><a href="/personal/listado/traslado">Traslados</a></li2> -->
+<!-- 								  <li><a href="/personal/listado/seguro">Seguros</a></li2> -->
+								  <li><a href="{% url 'listado/agentes_base_vieja' %}"><b>Base vieja</b></a></li>
+								  <hr>
+								</ul>
+							  {%endif%}
+							  {%if "Reportes" in grupos  or user.username == "admin"%}
+								    <ul class="nav nav-list">
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/report.png' %}" width="8%" height="8%"></img> <b>Reportes en Excel</b></li>
+								      <li><a href="{% url 'reportes/agentes' %}"><b>Agentes</b> </a></li>
+								      <li><a href="{% url 'reportes/ingfechapartdiarioausent_excel' %}"><b>Ausentismo-Parte Diario</b> </a></li>
+								      <li><a href="{% url 'reportes/ingopcsalidasanioagente_excel' %}"><b>Salidas Agente Año </b></a></li>
+								      <li><a href="{% url 'reportes/ingopcsalidasmesagentes_excel' %}"><b>Salidas Agentes Mes </b></a></li>
+								      <li><a href="{% url 'reportes/reportelicenciaspendientes' %}"><b>Licencias Pendientes </b></a></li>
+								      <hr>
+								    </ul>
+							  {%endif%}
+							  {%if "Estadisticas" in grupos or user.username == "admin" %}
+								    <ul class="nav nav-list">
+									      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/chart_pie.png' %}" width="8%" height="8%"></img> <b>Informes</b></li>
+									      <li><a href="{% url 'listado/altasbajasindex' %}"><b>Altas-Bajas</b></a></li2>
+									      <li><a href="{% url 'ausent' %}"><b>Ausentismo</b></a></li>
+									      <li><a href="{% url 'presentRep' %}"><b>Presentismo</b></a></li>
+									      <li><a href="{% url 'cantagrupindex' %}"><b>Cantidad Agrupamiento</b></a></li>
+									      <li><a href="{% url 'cantclase' %}"><b>Cantidad Clase</b></a></li>
+									      <li><a href="{% url 'medicasinalta' %}"><b>Medicas sin alta</b></a></li>
+									      <li><a href="#"><b>Calificaciones</b></a></li>
+									      <hr>
+								    </ul>
+							  {%endif%}
+							  {%if "Licencia" in grupos or user.username == "admin"%}
+								    <ul class="nav nav-list">
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/user_go.png' %}" width="8%" height="8%"></img> <b>Generar Licencia</b></li>
+								      <li><a href="#" onclick="doOperation('/appPersonal/generarlicencia/todos');"><b>Generar licencia para todos</b></a></li>
+								      <li><a href="{% url 'buscadoragenlic' %}"><b>Generar licencia individual</b></a></li>
+								      <hr>
+								    </ul>
+							  {%endif%}
+							  {%if "Cambios" in grupos or user.username == "admin"%}
+								    <ul class="nav nav-list">
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/eye.png' %}" width="8%" height="8%"></img> <b>Informes</b></li>
+								      <li><a href="{% url 'listado/cambios' %}" ><b>Logs</b></a></li>
+								      <hr>
+								    </ul>
+							  {%endif%}
+						      </div>
+					      </div>
+					{% endblock %}
+				</div>
+			</div>
+
+			<div class="span9">
+				<div class="panel panel-primary">
+					<div class="panel-heading" style="background-color: #0D1857;">
+					  <h3 class="panel-title" style="color: white;"> 
+					      <center>
+						{% block titulo_barra %}
+						      
+					        {% endblock %}
+					      </center>
+					      
+					  </h3>
+					</div>
+					<div class="panel-body">
+							
+					      {% block content_title %}
+						      {% if title %}
+							      <h1>{{ title }}</h1>
+						      {% endif %}
+					      {% endblock %}
+					      {% block content %}
+						      {% block object-tools %}
+						      {% endblock %}
+						      <div class="hero-unit">
+							      {{ content }}
+						      </div>
+					      {% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+      <!-- END Content -->
+      </div>  
+       
+      {% endblock %}
+     <!-- END Content -->
+   
+     {% block footer %}
+
+     {% endblock %}
+
+     <!-- Javascript de bootstrap Latest compiled JavaScript -->
+	<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+</body>

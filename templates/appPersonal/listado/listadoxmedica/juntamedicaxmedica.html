@@ -1,0 +1,57 @@
+{% extends "appPersonal/listado/listado_base.html" %}
+{% load i18n %}
+
+
+		{% block titulo-form %}
+		    <td><b><font color="#000000" style="font-size: 13px;">Listado de Juntas Medicas</font></b></td> 
+		{% endblock %}
+
+		{% block botonnuevo %}
+			<form action="/personal/forms/abmjuntamedica/0/{{idmedica}}/{{idagente}}/">
+			    <input id="saveForm" class="btn btn-success" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" />
+			</form>	      
+		{%endblock%}
+		
+		{% block botonatrasaction %}"return Open('/personal/listado/listadoxagente/medica?idagente={{idagente}}&borrado=-1&idausent={{idausent}}'); " {% endblock %}
+		
+		{% block titulo %}
+		<div align="center">
+		    <h5 style="margin-left: 5px;margin-top: 10px;"> {{agente.apellido}}, {{agente.nombres}}   </h5>
+		</div>
+		{% endblock%}
+		
+		{% block main-list %}
+		
+		
+		<div class="results">
+		
+		
+			<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>Agente</th>
+						<th>Fecha</th>
+						<th>Resultado</th>
+						<th>Medica</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					{%for list in lista%}
+						<tr class="{% cycle 'row1' 'row2' %}">
+								<td><a href= "{% url 'forms/abmjuntamedica' %}?idjm={{list.idjuntamedica}}&idmed={{list.medica_id}}&idagen={{list.idagente_id}}">{{list.fecha}}</td>
+								<td>{{list.idagente}}</td>
+								<td>{{list.resultado}}</td>
+								<td>{{list.medica}}</td>
+								{%if "Eliminar" in grupos or user.username == "admin"%}
+								<td><a href="#" onclick="Eliminar('/personal/listado/listadoxmedica/juntamedica/{{idagente}}/{{list.medica_id}}/{{list.idjuntamedica}}/');">Eliminar</a></td>
+								{% endif %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		{% endblock %}
+		<br/>
+		
+		

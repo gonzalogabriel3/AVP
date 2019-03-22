@@ -1,0 +1,137 @@
+{% extends "appPersonal/estadisticas/estadisticas_base.html" %}
+{% load static %}
+{% block pagination %}
+	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="activo" href="#">/ Salidas agente mes </a>
+{% endblock %}
+
+
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}/site_media/appPersonal/css/base2.css{% endblock %}" />
+
+{% block extrastyle %}
+
+
+{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static 'appPersonal/css/dashboard.css' %}"/>
+
+<script type="text/javascript" src="{% static 'appPersonal/js/view.js' %}"></script>
+<script type="text/javascript" src="{% static 'appPersonal/js/calendar/calendar.js' %}"></script>
+<script type="text/javascript" src="{% static 'appPersonal/js/funciones.js' %}"></script>
+
+{% endblock %}
+
+
+{% block branding %}
+
+{% endblock %}
+        
+{% block breadcrumbs %}
+ {% endblock %}
+            
+{% block nav-global %}
+
+{% endblock %}
+
+
+
+
+{% block titulo-form %}
+		<td><b><font color="#1f618d" style="font-size: 13px;">Reporte Salidas Agentes Mes</font></b></td> 
+{% endblock %}
+
+{% block contenido-estadisticas %}
+
+<script>
+
+	function salidasagentesmes(){
+			
+		posicion1 = document.getElementById("select1").options.selectedIndex;
+		nombremes = document.getElementById("select1").options[posicion1].text;
+		
+		if (nombremes == 'Enero')
+		    mes = 01;
+		
+		if (nombremes == 'Febrero')
+		    mes = 02;
+		 
+		if (nombremes == 'Marzo')
+		    mes = 03;
+		    
+		if (nombremes == 'Abril')
+		    mes = 04;
+		    
+		if (nombremes == 'Mayo')
+		    mes = 05;
+		    
+		if (nombremes == 'Junio')
+		    mes = 06;    
+		
+		if (nombremes == 'Julio')
+		    mes = 07;
+		
+		if (nombremes == 'Agosto')
+		    mes = 08;
+		    
+		if (nombremes == 'Septiembre')
+		    mes = 09;    
+		
+		if (nombremes == 'Octubre')
+		    mes = 10;
+		    
+		if (nombremes == 'Noviembre')
+		    mes = 11;    
+		
+		if (nombremes == 'Diciembre')
+		    mes = 12;
+		
+		
+		posicion2 = document.getElementById("select2").options.selectedIndex;
+		anio = document.getElementById("select2").options[posicion2].text;
+				
+		open("{% url 'reportes/salidasmesagentes_excel' %}?mes="+mes+"&anio="+anio+"&nombremes="+nombremes,"_self");	
+		
+		return false;
+	}
+	
+</script>
+
+
+		<h3>Salidas  -  Agentes Mes</h3>
+		<form method="post" enctype="text/plain">{% csrf_token %}
+		      
+		      </br>
+		      
+		      <select id="select1" name="select1">
+			    <option>Enero</option>
+			    <option>Febrero</option>
+			    <option>Marzo</option> 
+			    <option>Abril</option> 
+			    <option>Mayo</option> 
+			    <option>Junio</option>
+			    <option>Julio</option>
+			    <option>Agosto</option> 
+			    <option>Septiembre</option>
+			    <option>Octubre</option> 
+			    <option>Noviembre</option>
+			    <option>Diciembre</option>
+		      </select>	    
+		      </br>
+		      <p>
+		      Año:
+		      <select id="select2" name="select2">
+			    <script>
+			    //Obtener fecha
+			    var myDate = new Date();
+			    var year = myDate.getFullYear();
+			    for(var i = 1930; i < year+1; i++){
+				    document.write('<option value="'+i+'">'+i+'</option>');
+			    }
+			    </script>
+		      </select>	    
+		      </p>  
+		      
+		      </br>
+		      <input type="button" class="btn btn-info" value="Consulta" onclick="javascript:salidasagentesmes()"/>
+		 
+		</form>
+{% endblock %}
