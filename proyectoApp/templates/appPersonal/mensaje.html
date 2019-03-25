@@ -2,10 +2,17 @@
 {% load static %}
 {% block content %}
 	{% if mensaje %}
-		<div style="background-color: #A9F5BC;border: 2px solid #58FA82">
+		<div style="background-color:  #76d7c4;border: 2px solid  #76d7c4">
 			<img src="{% static 'appPersonal/images/ok.png' %}" style="width: 18px;height: 18px;display: inline-block;">
-			<h5 style="display: inline-block;color: #0174DF">{{mensaje}}</h5>
-			<a href="{{url}}" class="btn btn-info">Volver</a>
+			<h5 style="display: inline-block;color: #0174DF">{{mensaje}}</h5><br>
+			<center><a href="{{url}}" class="btn btn-info">Volver</a></center>
+		</div>
+	{% endif %}
+	{% if mensajeError %}
+		<div style="background-color:  #ec7063 ;border: 2px solid  #ec7063 ">
+			<img src="{% static 'appPersonal/images/error.png' %}" style="width: 18px;height: 18px;display: inline-block;">
+			<h5 style="display: inline-block;color:   #f4f6f7 ">{{mensajeError}}</h5><br>
+			<center><a href="{{url}}" class="btn btn-info">Volver</a></center>
 		</div>
 	{% endif %}
 

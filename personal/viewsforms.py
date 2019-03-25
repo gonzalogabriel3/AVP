@@ -844,7 +844,7 @@ def abmLicenciaanual(peticion):
 	      # fin superposicion ausentismo
 	      
 	      # supera dias de licencia
-        if not jump and form.instance.tipo == 'LIC':
+        '''if not jump and form.instance.tipo == 'LIC':
           if modaus:
             lic = Licenciaanual.objects.get(pk = form.instance.pk)
             diastomados = Licenciaanualagente.objects.get(idagente__exact = idagen, anio__exact = anio).diastomados
@@ -861,55 +861,66 @@ def abmLicenciaanual(peticion):
                 url = "/personal/vacas?idagente="+str(idagen)
                 error = ": Supera la cantidad de dias permitidos"
                 return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
-	      # fin supera dias de licencia
+	      # fin supera dias de licencia'''
 
 	    # Vinculacion con ausent
         ausent = Ausent()
         if form.instance.tipo == 'LIC':
           if modaus:
             ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
-            ausent.fechainicio = form.instance.fechadesde
-            ausent.cantdias = form.instance.cantdias
-            ausent.observaciones=form.instance.observaciones
-            ausent.fechadesde=form.instance.fechadesde
+            licanualagente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
+            if (((licanualagente.diastomados-ausent.cantdias)+form.instance.cantdias)<=licanualagente.cantidaddias):
+              ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
+              ausent.fechainicio = form.instance.fechadesde
+              ausent.cantdias = form.instance.cantdias
+              ausent.observaciones=form.instance.observaciones
+              ausent.fechadesde=form.instance.fechadesde
+                
+              ausent.save()
               
-            ausent.save()
-            a = Licenciaanual.objects.get(pk=idlicanual)
-            a.tipo=form.instance.tipo
-            a.fechadesde=ausent.fechadesde
-            a.cantdias=ausent.cantdias
-            a.observaciones=ausent.observaciones
-            a.save()
-            
+              a = Licenciaanual.objects.get(pk=idlicanual)
+              a.tipo=form.instance.tipo
+              a.fechadesde=ausent.fechadesde
+              a.cantdias=ausent.cantdias
+              a.observaciones=ausent.observaciones
+              a.save()
+              
+              url="../vacas?idagente="+str(idagen)
+              return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
 
-
-            url="../vacas?idagente="+str(idagen)
-            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
-
+            else:
+              url="../vacas?idagente="+str(idagen)
+              return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'ERROR: Se ha excedido en cantidad de dias disponibles para el agente '+agente.apellido+' '+agente.nombres})
+          
           else:
-            #Guardo el ausentismo en la tabla "ausent"
-            ausent = Ausent()
-            ausent.idagente_id = idagen
-            ausent.fechainicio = form.instance.fechadesde
-            ausent.cantdias = form.instance.cantdias
-            ausent.idarticulo_id = 999 
-            ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
-            ausent.observaciones=form.instance.observaciones
-            ausent.save()
-            #Guardo la licencia anual en la tabla "licenciaanual"
-            licenciaanual=Licenciaanual()
-            licenciaanual.idausent=ausent
-            licenciaanual.idagente=agente
-            licenciaanual.anio=anio
-            licenciaanual.tipo=form.instance.tipo
-            licenciaanual.fechadesde=ausent.fechainicio
-            licenciaanual.cantdias=ausent.cantdias
-            licenciaanual.observaciones=ausent.observaciones
-            licenciaanual.save()
-            
-            url="../vacas?idagente="+str(idagen)
-            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
-            
+            licanualagente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
+            if ((licanualagente.diastomados+form.instance.cantdias)<=licanualagente.cantidaddias):
+              #Guardo el ausentismo en la tabla "ausent"
+              ausent = Ausent()
+              ausent.idagente_id = idagen
+              ausent.fechainicio = form.instance.fechadesde
+              ausent.cantdias = form.instance.cantdias
+              ausent.idarticulo_id = 999 
+              ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
+              ausent.observaciones=form.instance.observaciones
+              ausent.save()
+              #Guardo la licencia anual en la tabla "licenciaanual"
+              licenciaanual=Licenciaanual()
+              licenciaanual.idausent=ausent
+              licenciaanual.idagente=agente
+              licenciaanual.anio=anio
+              licenciaanual.tipo=form.instance.tipo
+              licenciaanual.fechadesde=ausent.fechainicio
+              licenciaanual.cantdias=ausent.cantdias
+              licenciaanual.observaciones=ausent.observaciones
+              licenciaanual.save()
+              
+              url="../vacas?idagente="+str(idagen)
+              return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
+            else:
+              url="../vacas?idagente="+str(idagen)
+              return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'ERROR: Se ha excedido en cantidad de dias disponibles para el agente '+agente.apellido+' '+agente.nombres})
+
         elif form.instance.tipo == 'INT':
           ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
           ausent.save()
