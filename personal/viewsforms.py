@@ -973,8 +973,10 @@ def eliminarLicenciaTomada(peticion):
   
   #Elimino la licencia de la tabla "licenciaanual"
   licencia.delete()
-  '''A la vez elimino el ausentismo generado a partir de la licencia creada,es decir elimino el ausentismo
-  que hace referencia a la licencia eliminada en la tabla "ausent"'''
+  '''
+  A su vez elimino el ausentismo generado a partir de la licencia creada,es decir elimino el ausentismo
+  que hace referencia a la licencia eliminada en la tabla "ausent" 
+  '''
   ausent.delete()
 
   url="vacas?idagente="+str(idagente)
