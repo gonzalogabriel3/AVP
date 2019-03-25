@@ -43,8 +43,10 @@ from django.shortcuts import redirect
 from personal.viewslistados import *
 #--------------------------------------------------------------------------
 #---------------------------------VIEW FORM--------------------------------
+
 @csrf_exempt
 @login_required(login_url='login')
+######NO SE USA,SE UTILIZA EL METODO 'abmAusentismo'##########
 def abmAusent(peticion):
 
     user = peticion.user
@@ -212,9 +214,9 @@ def abmAusent(peticion):
           
       else:
         form = formAusent()
-       
+    pag_ausentismo=True
     cache.clear()
-    return render_to_response('appPersonal/forms/abm.html',{'user':user,'form': form, 'name':name, 'grupos':grupos}, )
+    return render_to_response('appPersonal/forms/abm.html',{'pag_ausentismo':pag_ausentismo,'user':user,'form': form, 'name':name, 'grupos':grupos}, )
 
 @csrf_exempt
 @login_required(login_url='login')
@@ -243,13 +245,13 @@ def abmAusentismo(peticion):
         if len(licencia) > 0:
           cdl = licencia[0].cantdias
           fd = licencia[0].fechadesde
-          f = form.instance.fecha
+          f = form.instance.fechainicio
           if f == fd:
             error = ": El agente se encuentra de vacaciones"
             return render_to_response('error.html',{'user':user,'error':error, 'grupos':grupos},)
           for i in range(1,cd):
             for j in range(1,cdl):
-              f = form.instance.fecha + timedelta(days=i)
+              f = form.instance.fechainicio + timedelta(days=i)
               fd = licencia[0].fechadesde + timedelta(days=j)
               if f == fd:
                 error = ": El agente se encuentra de vacaciones"
@@ -281,26 +283,37 @@ def abmAusentismo(peticion):
       if int(idausent) >0 and int(idagen)> 0:
         a = Ausent.objects.get(pk=idausent)
         form = formAusent(instance=a)
-        titulo_form="Ausentismo / Modificar ausentismo"
+        titulo_form="/ Modificar ausentismo"
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Ausent()
           b.idagente = a
           b.direccion = a.iddireccion 
           form = formAusent(instance=b)
-          titulo_form="Ausentismo / Cargar ausentismo"
+          titulo_form=" Cargar ausentismo"
       else:
         form = formAusent()
-        titulo_form="Ausentismo / Cargar ausentismo"
+        titulo_form=" Cargar ausentismo"
     '''
       ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
       el mismo template .html
     '''
     if titulo_form==False:
-      titulo_form="Ausentismo / Cargar ausentismo"
+      titulo_form=" Cargar ausentismo"
     
-    pag_agentes=True   
-    return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
+    pag_ausentismo=True   
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_ausentismo':pag_ausentismo,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
+
+def eliminarAusent(peticion):
+  idausent=peticion.GET.get('idausent')
+  idagente=peticion.GET.get('idagente')
+  user = peticion.user
+  agente=Agente.objects.get(idagente=idagente)
+  ausent=Ausent.objects.get(idausent=idausent)
+  ausent.delete()
+
+  url="detalle/detallexagente/ausentismo?idagente="+str(idagente)+"&borrado=-1"
+  return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado ausentismo de '+agente.apellido+' '+agente.nombres})
 
 @login_required(login_url='login')
 def abmAgente(peticion):
@@ -869,6 +882,7 @@ def abmLicenciaanual(peticion):
           if modaus:
             ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
             licanualagente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
+            #Verifico que no se superen los dias a tomarse
             if (((licanualagente.diastomados-ausent.cantdias)+form.instance.cantdias)<=licanualagente.cantidaddias):
               ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
               ausent.fechainicio = form.instance.fechadesde
@@ -894,6 +908,7 @@ def abmLicenciaanual(peticion):
           
           else:
             licanualagente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
+            #Verifico que no se superen los dias a tomarse
             if ((licanualagente.diastomados+form.instance.cantdias)<=licanualagente.cantidaddias):
               #Guardo el ausentismo en la tabla "ausent"
               ausent = Ausent()
@@ -953,7 +968,7 @@ def abmLicenciaanual(peticion):
        
         form = formLicenciaanual(initial={'fechahasta': ausentismo.fechafin},instance=a)
         
-        titulo_form="Modificar licencia / "+str(a.fechadesde)
+        titulo_form="Detalles / Modificar licencia / "+str(a.fechadesde)
       elif int(idagen) > 0 or int(anio)> 0:          
         a = Agente.objects.get(pk=idagen)
         b = Licenciaanual()
