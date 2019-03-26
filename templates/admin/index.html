@@ -1,40 +1,34 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_static %}
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static 'admin/css/dashboard.css' %}" />{% endblock %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}">{% endblock %}
 
 {% block coltype %}colMS{% endblock %}
 
-{% block bodyclass %}dashboard{% endblock %}
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
 
 {% block breadcrumbs %}{% endblock %}
 
-{% block footer %}{% endblock %}
-
 {% block content %}
-
 <script>
-	function callstockcero(){
-	
-	
-		pdf = 1;
-				
-		open("/deposito/listado/stockcero/?pdf="+pdf,"_self");	
-		
-		return false;
-	}
-		
+    function callstockcero(){
+        pdf = 1;
+        open("/deposito/listado/stockcero/?pdf="+pdf,"_self");  
+        return false;
+    }
 </script>
-
 
 <div id="content-main">
 
 {% if app_list %}
     {% for app in app_list %}
-        <div class="module">
-        <table summary="{% blocktrans with name=app.name %}Models available in the {{ name }} application.{% endblocktrans %}">
-        <caption><a href="{{ app.app_url }}" class="section">{% blocktrans with name=app.name %}{{ name }}{% endblocktrans %}</a></caption>
+        <div class="app-{{ app.app_label }} module">
+        <table>
+        <caption>
+            <a href="{{ app.app_url }}" class="section" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
+        </caption>
         {% for model in app.models %}
-            <tr>
+            <tr class="model-{{ model.object_name|lower }}">
             {% if model.admin_url %}
                 <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
             {% else %}
@@ -48,7 +42,11 @@
             {% endif %}
 
             {% if model.admin_url %}
+                {% if model.view_only %}
+                <td><a href="{{ model.admin_url }}" class="viewlink">{% trans 'View' %}</a></td>
+                {% else %}
                 <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+                {% endif %}
             {% else %}
                 <td>&nbsp;</td>
             {% endif %}
@@ -58,7 +56,7 @@
         </div>
     {% endfor %}
 {% else %}
-    <p>{% trans "You don't have permission to edit anything." %}</p>
+    <p>{% trans "You don't have permission to view or edit anything." %}</p>
 {% endif %}
 </div>
 {% endblock %}
@@ -66,8 +64,8 @@
 {% block sidebar %}
 <div id="content-related">
     <div class="module" id="recent-actions-module">
-        <h2>{% trans 'Recent Actions' %}</h2>
-        <h3>{% trans 'My Actions' %}</h3>
+        <h2>{% trans 'Recent actions' %}</h2>
+        <h3>{% trans 'My actions' %}</h3>
             {% load log %}
             {% get_admin_log 10 as admin_log for_user user %}
             {% if not admin_log %}
@@ -81,9 +79,9 @@
                 {% else %}
                     <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
                 {% endif %}
-                <br/>
+                <br>
                 {% if entry.content_type %}
-                    <span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}</span>
+                    <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
                 {% else %}
                     <span class="mini quiet">{% trans 'Unknown content' %}</span>
                 {% endif %}
@@ -92,7 +90,6 @@
             </ul>
             {% endif %}
     </div>
-    
     <div class="module" id="recent-actions-module">
         <h2>Listados</h2>
         
@@ -102,8 +99,8 @@
                 <a href="/deposito/listado/ingstockactual/" > - Stock Actual Artículos </a><br/>
                 <a href="/deposito/listado/ingopclistegresos/" > - Egresos </a><br/>
                 <a href="/deposito/listado/ingopclistingresos/" > - Ingresos </a><br/>
-                <a href="/deposito/listado/ingopccombustibles/" > - Combustibles/Lubricantez </a><br/>
-    		    <a href="/deposito/combustockindex/" > - Consumo Combustibles </a><br/>         
+                <a href="/deposito/listado/ingopccombustibles/" > - Combustibles/Lubricantes </a><br/>
+                <a href="/deposito/combustockindex/" > - Consumo Combustibles </a><br/>         
                 <br/>
             </li>
          </ul>
