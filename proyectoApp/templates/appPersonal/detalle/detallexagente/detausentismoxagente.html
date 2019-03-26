@@ -217,7 +217,7 @@
 				
 				{% endif %}
 				{% if  "Ausentismo" in grupos or user.username == "admin"  and li.idarticulo.pk != 999%}
-					<td><a href="#" onclick="Eliminar('/personal/detalle/detallexagente/ausentismo?idagente={{li.idagente_id}}&borrado={{li.idausent}}');" style="color:  #cb4335 ">Eliminar</a><span class="glyphicon glyphicon-search"></span></td>
+					<td><a href="{% url 'eliminarAusent' %}?idagente={{li.idagente_id}}&idausent={{li.idausent}}" onclick="return confirm('¿Desea elimina el ausentismo del dia {{li.fechainicio}}?')" style="color:  #cb4335 ">Eliminar</a><span class="glyphicon glyphicon-search"></span></td>
 				{% else %}
 					<td></td>
 				{% endif %}

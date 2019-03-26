@@ -709,7 +709,7 @@ def index(peticion):
     inicio = Inicio.objects.get(idinicio=1)
     #titulo = str(i.titulo)
     #mensaje = i.mensaje
-
+    
     return render_to_response('appPersonal/index.html',{'user':user, 'grupos':grupos,'inicio':inicio},)
 
 
@@ -855,7 +855,7 @@ def vacas(peticion):
             i += 1
             nofin = False
 	
-      
+    
     return render_to_response('appPersonal/licenciavacaciones.html',{'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente, 'vacas':vacas, 'anio_lar':anio_lar, 'diaslicencia':diaslicencia, 'diastomados':diastomados,},)
  
  
