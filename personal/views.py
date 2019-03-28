@@ -814,8 +814,8 @@ def vacacionesAcum(peticion):
 
     return render_to_response('appPersonal/vacaciones.html',{'agente':agente,'user':user,'grupos':grupos,'lista':listaLic},)
     
-
-#@login_required(login_url='login')
+@csrf_exempt
+@login_required(login_url='login')
 def vacas(peticion):
     user = peticion.user
     grupos = get_grupos(user)

@@ -759,7 +759,7 @@ def abmLicenciaanualagente(peticion,idlicanualagen,idagen):
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
 @csrf_exempt
-@login_required(login_url='login')
+#@login_required(login_url='login')
 def abmLicenciaanual(peticion):
     idlicanual=int(peticion.GET.get('idlicanual'))
     idagen=int(peticion.GET.get('idagen'))
@@ -770,7 +770,10 @@ def abmLicenciaanual(peticion):
     accion = ''
     titulo_form=''
     agente=Agente.objects.get(idagente=idagen)
-   
+    #Calculo los dias que le quedan en la licenciaAnual para poner un 'max' en cantidad de dias
+    lic_anual_agente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
+    diasRestantes=(lic_anual_agente.cantidaddias-lic_anual_agente.diastomados)
+    pprint(diasRestantes)
     #pag_agentes=True
     
     if permisoZona(user) and permisoABM(user):
@@ -785,7 +788,7 @@ def abmLicenciaanual(peticion):
         
         form_old = formLicenciaanual(instance=a)
         #form_old = modeloLista(form_old.Meta().model.objects.filter(pk=form_old.instance.pk).values_list())
-        form = formLicenciaanual(peticion.POST, instance=a)   
+        form = formLicenciaanual(peticion.POST, instance=a)
         accion = 'Modificacion'
       else:
 	      form = formLicenciaanual(peticion.POST)
@@ -816,7 +819,8 @@ def abmLicenciaanual(peticion):
                 jump = True
               elif (f != f1 or cd != cd1) and form.instance.pk == l.pk and accion == 'Modificacion':
                 modaus = True
-          elif form.instance.tipo == 'INT':
+          #CARGAR UNA INTERRUPCION
+          '''elif form.instance.tipo == 'INT':
             if not analizaLic(idagen, form.instance.fechadesde):
               url = "/personal/vacas?idagente="+str(idagen)
               error = ": No existe licencia"
@@ -825,7 +829,7 @@ def abmLicenciaanual(peticion):
               url = "/personal/vacas?idagente="+str(idagen)
               error = ": Año no correspondiente "
               error.decode('utf-8')
-              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+              return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)'''
         except IndexError:
 	          print ("")
 		# fin superposicion de licencias
@@ -842,16 +846,16 @@ def abmLicenciaanual(peticion):
                 f1 = au.fechainicio # Datos en la Base
                 if f == f1:
                   url = "../vacas?idagente="+str(idagen)
-                  error = ": Ya existe un ausentismo con esa fecha"
-                  return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
+                  mensajeError = "ERROR: Ya existe un ausentismo con esa fecha para el agente "+str(agente.apellido)+" "+str(agente.nombres)
+                  return render_to_response('appPersonal/mensaje.html',{'agente':agente,'mensajeError':mensajeError,'user':user,'grupos':grupos, 'url':url},)
                   for i in range(1,cd+1):
                     for j in range(1,cd1+1):
                       f = form.instance.fechadesde + timedelta(days=i)
                       f1 = au.fechainicio + timedelta(days=j)
                       if f == f1:
-                        url = "/personal/vacas?idagente="+str(idagen)
-                        error = ": Ya existe un ausentismo con esa fecha"
-                        return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos,'url':url},)
+                        url = "../vacas?idagente="+str(idagen)
+                        mensajeError = ": Ya existe un ausentismo con esa fecha"
+                        return render_to_response('appPersonal/mensaje.html',{'agente':agente,'mensajeError':mensajeError,'user':user,'error':error, 'grupos':grupos,'url':url},)
           except IndexError:
             print ("")
 	      # fin superposicion ausentismo
@@ -935,9 +939,73 @@ def abmLicenciaanual(peticion):
             else:
               url="../vacas?idagente="+str(idagen)
               return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'ERROR: Se ha excedido en cantidad de dias disponibles para el agente '+agente.apellido+' '+agente.nombres})
-
+        ###CARGA DE UNA INTERRUPCION###
         elif form.instance.tipo == 'INT':
-          ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
+          #Obtengo todos los ausentismos de un agente
+          ausentismos=Ausent.objects.filter(idagente=idagen)
+          
+          #Recorro todos los ausentismos
+          for ausent in ausentismos:
+            try:
+              #Obtengo una licencia asociada a un ausentismo
+              licenciaanual=Licenciaanual.objects.get(idagente=idagen,idausent=ausent.idausent,tipo="LIC")
+              
+              #Verifico que la fecha ingresada este entre la fecha de inicio/fin de la licencia y el tipo de licencia que se desea interrumpir sea 'LIC'
+              if((ausent.fechainicio<= form.instance.fechadesde <= ausent.fechafin) and licenciaanual.tipo=="LIC"):
+                
+                #Modifico el ausentismo diciendo que la nueva fecha de fin es la ingresada
+                #UPDATE del ausentismo
+                ausent.fechafin=form.instance.fechadesde
+                diferencia=ausent.fechafin-ausent.fechainicio
+                ausent.cantdias=diferencia.days+1
+                ausent.save()
+                
+                #Actualizo la tabla "licenciaanual"
+                licenciaanual.cantdias=ausent.cantdias
+                licenciaanual.save()
+
+                #Actualizo la tabla "licenciaanualagente"
+                licenciaanualagente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
+                #licenciaanualagente.diastomados=licenciaanualagente.diastomados+1
+
+                licenciaanualagente.save()
+
+                #Cargo la interrupcion en la tabla "licenciaanual"
+                interrupcion=Licenciaanual()
+                interrupcion.idagente=agente
+                interrupcion.anio=anio
+                interrupcion.tipo=form.instance.tipo
+                interrupcion.fechadesde=form.instance.fechadesde
+                interrupcion.observaciones=form.instance.observaciones
+                interrupcion.idausent=ausent
+                interrupcion.save()
+
+                url="../vacas?idagente="+str(idagen)
+                return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha generado interrupcion de licencia del dia '+str(interrupcion.fechadesde)+' para el agente '+agente.apellido+' '+agente.nombres})
+                
+            except Licenciaanual.DoesNotExist as e:
+              pprint("licencia no encontrada")
+          
+          url="../vacas?idagente="+str(idagen)
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'No se encontro una licencia tomada el dia '+str(form.instance.fechadesde)+' por el agente '+agente.apellido+' '+agente.nombres}) 
+          #Recorro todos los ausentismos del agente
+         
+          #Si algun ausentismo coincide con una licencia tomada
+            
+          #Si la interrupcion que se quiere cargar esta entre las fechas de inicio y fin de la licencia tomada
+          '''if(ausent.fechainicio<= form.instance.fechadesde <= ausent.fechafin):
+              fechainicio=ausent.fechainicio
+              fechafin=ausent.fechafin
+              pprint("fechainicio: "+str(fechainicio))
+              pprint("fechafin: "+str(fechafin))
+              #Si no se encuentra una licencia tomada entre las fechas de inicio/fin se retorna un mensaje de error
+            else:
+              return'''
+          
+          #url="../vacas?idagente="+str(idagen)
+          #return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'ERROR: No hay una licencia tomada el dia '+str(form.instance.fechadesde)+' por el agente '+agente.apellido+' '+agente.nombres})    
+
+          '''ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
           ausent.save()
           # vinculacion con ausent
           form.fields['anio'].widget.attrs['enabled'] = 'enabled'
@@ -958,7 +1026,7 @@ def abmLicenciaanual(peticion):
             elif accion == 'Modificacion':
               registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
               url = '/personal/vacas?idagente='+str(idagen)
-              return HttpResponseRedirect(url)
+              return HttpResponseRedirect(url)'''
     else:
       if int(idlicanual) > 0 and int(idagen)> 0:
         a = Licenciaanual.objects.get(pk=idlicanual)
@@ -967,6 +1035,7 @@ def abmLicenciaanual(peticion):
         ausentismo=Ausent.objects.get(idausent=a.idausent.idausent)
        
         form = formLicenciaanual(initial={'fechahasta': ausentismo.fechafin},instance=a)
+        form.fields['cantdias'].widget.attrs['max']=diasRestantes+a.cantdias
         
         titulo_form="Detalles / Modificar licencia / "+str(a.fechadesde)
       elif int(idagen) > 0 or int(anio)> 0:          
@@ -977,9 +1046,12 @@ def abmLicenciaanual(peticion):
 
 
         form = formLicenciaanual(instance=b)
+        form.fields['cantdias'].widget.attrs['max']=diasRestantes
+        
         titulo_form=" "+str(anio)
       else:
         form = formLicenciaanual()
+        form.fields['cantdias'].widget.attrs['max']=diasRestantes
         titulo_form=" Cargar licencia"
     pag_licenciaanual=True
     return render(peticion,'appPersonal/forms/abm.html',{'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
