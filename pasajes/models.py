@@ -52,6 +52,7 @@ class Pasaje(models.Model):
     fecha_emision=models.DateTimeField(default=datetime.datetime.now()-datetime.timedelta(hours=3))
     origen=models.CharField(max_length=200)
     destino=models.CharField(max_length=200)
+    zona_emision=models.CharField(max_length=200,null=False)
 
     def __str__(self):
     	return str(self.id)+"/"+self.origen+"-"+self.destino+"/"+self.id_empresa.nombre

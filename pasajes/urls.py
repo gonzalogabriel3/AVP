@@ -42,9 +42,9 @@ urlpatterns = [
     path('modificacionPasaje/<int:idPasaje>/', views.modificacionPasaje, name='modificacionPasaje'),
 
     #Url para formulario de un nuevo pasaje
-    path('altaPasaje/<int:idPasajero>', views.altaPasaje, name='altaPasaje'),
+    path('altaPasaje/<int:idPasajero>/<int:idUser>', views.altaPasaje, name='altaPasaje'),
     #Url para generar el reporte en pdf de un pasaje
-    path('reportePasaje/<int:idPasaje>/', views.reportePasaje, name='reportePasaje'),
+    path('reportePasaje/<int:idPasaje>', views.reportePasaje, name='reportePasaje'),
 
 ]
 

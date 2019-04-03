@@ -41,7 +41,7 @@
 						<tr class="{% cycle 'row1' 'row2' %}">
 							<td>
 								{% ifnotequal list.tipo "INT" %}
-									<a href="{% url 'forms/abmlicanual' %}?idlicanual={{list.idlicanual}}&idagen={{list.idagente_id}}&anio={{list.anio}}"><b>{{list.anio}}</b>
+									<a href="{% url 'forms/abmlicanual' %}?idlicanual={{list.idlicanual}}&idagen={{list.idagente_id}}&anio={{list.anio}}&modificacion=True"><b>{{list.anio}}</b>
 									</a>
 								{% else %}
 									<a href="#"><b>{{list.anio}}</b></a>

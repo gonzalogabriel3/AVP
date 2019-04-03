@@ -427,7 +427,7 @@ def vacacionesxagente(peticion):
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
-    licencia = Licenciaanual.objects.filter(idagente=idagen).order_by('anio')
+    licencia = Licenciaanual.objects.filter(idagente=idagen).order_by('-fechadesde')
     
     lista = paginar(licencia,peticion)
     

@@ -12,6 +12,7 @@ from weasyprint import HTML
 import tempfile
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # Create your views here
 #Con "@login_required" indico que el usuario debe estar autenticado para acceder a la view,en 'login_url' indico hacia donde debe
@@ -67,6 +68,7 @@ def indexEmpresaView(request):
 
 @login_required(login_url='login')
 def indexPasajeView(request):
+	
 	pasajes=Pasaje.objects.all().order_by('-id')
 	
 	context={
@@ -77,6 +79,7 @@ def indexPasajeView(request):
 
 @login_required(login_url='login')
 def indexPasajeroView(request):
+
 	pasajeros=Pasajero.objects.all().order_by('-id')
 	
 	context={
@@ -336,7 +339,7 @@ def modificacionEmpresa(request,idEmpresa):
 
 
 #********ABM PASAJE***********#
-@login_required(login_url='login')
+'''@login_required(login_url='login')
 def altaPasaje(request):
 
 	
@@ -360,7 +363,7 @@ def altaPasaje(request):
 		form=formularioPasaje()
 		
 	titulo="Agregar nuevo pasaje"	
-	return render(request,'appPasajes/formularios/pasaje.html',{'form':form,'titulo':titulo})
+	return render(request,'appPasajes/formularios/pasaje.html',{'form':form,'titulo':titulo})'''
 
 @login_required(login_url='login')
 def bajaPasaje(request,idPasaje):
@@ -401,11 +404,22 @@ def modificacionPasaje(request,idPasaje):
 
 #********FIN ABM PASAJE***********#
 
+#Metodo que retorna el nombre del grupo al que pertenecer un user
+def obtenerGrupo(idUser):
+	user=User.objects.get(id=idUser)
+	grupos=user.groups.all()
+	for grup in grupos:
+		nombre_grupo=grup
+	
+	return(str(nombre_grupo).partition('-')[2])
+
+
 #********REPORTES********************#
 @login_required(login_url='login')
 def reportePasaje(request,idPasaje):
+	
 	pasaje=Pasaje.objects.get(id=idPasaje)
-
+	
 	#Obtengo la fecha actual para asignarla al nombre del pdf
 	fecha=datetime.datetime.now()
 	fecha=fecha.strftime("%d/%m/%Y")
@@ -432,14 +446,20 @@ def reportePasaje(request,idPasaje):
 
 ##########Formulario pasajes######################
 @login_required(login_url='login')
-def altaPasaje(request,idPasajero):
+def altaPasaje(request,idPasajero,idUser):
 	pasajero=Pasajero.objects.get(id=idPasajero)
 	#form=formularioPasaje()
+	us=request.user
+	print(us.id)
 	#Si se recibe por POST creo una nueva instancia de Pasaje()
 	if(request.method == 'POST'):
 		form=formularioPasaje(request.POST)
 		
+		grupoUsuario=obtenerGrupo(idUser)
+
 		pasaje=Pasaje()
+
+		pasaje.zona_emision=grupoUsuario
 		
 		#Obtengo la fecha del formulario y le cambio el formato para poder guardarlo en el campor "fecha_viaje"
 		fecha=request.POST.get('fecha_viaje')

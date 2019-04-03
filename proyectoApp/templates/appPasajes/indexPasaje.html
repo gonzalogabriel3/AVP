@@ -28,6 +28,7 @@
 				<th>Fecha de emision</th>
 				<th>Origen</th>
 				<th>Destino</th>
+				<th>Zona de emision</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
@@ -48,6 +49,11 @@
 	        	<td><b>{{ pasaje.fecha_emision }}</b></td>
 	        	<td><b>{{ pasaje.origen }}</b></td>
 				<td><b>{{ pasaje.destino }}</b></td>
+				{% if pasaje.zona_emision %}
+					<td><b>{{ pasaje.zona_emision }}</b></td>
+				{% else %}
+					<td><b>-</b></td>
+				{% endif %}
 				<td>
 	        		<a href="{% url 'bajaPasaje' pasaje.id %}" class="btn btn-danger" style="display: inline-block;"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
 	        		<a href="{% url 'reportePasaje' pasaje.id %}" target="_blank" class="btn btn-info" style="display: inline-block;"><span class="glyphicon glyphicon glyphicon-file"></span> Generar reporte</a>

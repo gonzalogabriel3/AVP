@@ -40,7 +40,7 @@
 	        		<td><b>{{ pasajero.id_familiar.fecha_nacimiento }}</b></td>
 	        		<td><b>{{ pasajero.id_familiar.id_localidad.nombre }}</b></td>
 	        		<td><b>{{ pasajero.id_agente.apellido }} {{ pasajero.id_agente.nombre }}</td>
-	        		<td><a href="{% url 'altaPasaje' pasajero.id %}" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Generar Pasaje</a></td>
+	        		<td><a href="{% url 'altaPasaje' pasajero.id user.id %}" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Generar Pasaje</a></td>
 	        	{% else %}
 		        	<td><b>{{ pasajero.id_agente.apellido }}</b></td>
 		        	<td><b>{{ pasajero.id_agente.nombre }}</b></td>
@@ -48,7 +48,7 @@
 		        	<td><b>{{ pasajero.id_agente.fecha_nacimiento }}</b></td>
 		        	<td><b>{{ pasajero.id_agente.id_localidad.nombre }}</b></td>
 		        	<td><b>-</b></td>
-		        	<td><a href="{% url 'altaPasaje' pasajero.id %}" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Generar Pasaje</a></td>
+		        	<td><a href="{% url 'altaPasaje' pasajero.id user.id %}" class="btn btn-info"><span class="glyphicon glyphicon-file"></span> Generar Pasaje</a></td>
 		       {% endif %}  	
 	    	</tr>
 	    {% endfor %}

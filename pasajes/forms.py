@@ -111,4 +111,4 @@ class formularioPasaje(forms.ModelForm):
 
 	class Meta:
 		model=Pasaje
-		exclude=['id','fecha_emision','id_agente','id_familiar'] 
+		exclude=['id','fecha_emision','id_agente','id_familiar','zona_emision'] 

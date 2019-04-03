@@ -337,7 +337,7 @@ class Licenciaanualagente(models.Model):
         db_table = u'licenciaanualagente'
     
     def __str__(self):
-        return str(self.idagente)      
+        return str("idlicanualagen: "+str(self.idlicanualagen)+"/n idagente :"+str(self.idagente)+"/n anio: "+str(self.anio)+"/n cantidaddias: "+str(self.cantidaddias)+"/n diastomados: "+str(self.diastomados))      
 #··························································································································································
 class Sancion(models.Model):
     idsancion = models.AutoField(primary_key=True)
@@ -458,7 +458,7 @@ class Licenciaanual(models.Model):
         db_table = u'licenciaanual'
         #unique_together = ("fechadesde", "idagente", "tipo")
     def __str__(self):
-       return str(tipo)
+       return str(self.tipo)
         
 #··························································································································································        
 TIPO_MEDICA = (
