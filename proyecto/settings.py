@@ -65,8 +65,7 @@ ROOT_URLCONF = 'proyecto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/proyectoApp/templates/'],
-        #os.path.join(BASE_DIR, 'templates')
+        'DIRS': ['templates', '/proyectoApp/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,11 +150,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 #Agrego conf para poder agregar imagenes
 
-ADMIN_MEDIA_PREFIX = "proyectoApp/templates/admin"
-
 STATIC_URL = '/static/'
 
-#STATIC_ROOT = 'proyectoApp/templates/'
+STATIC_ROOT = 'templates/'
 #STATIC_ROOT = os.path.join(BASE_DIR, "allstaticfiles")
 
 STATICFILES_DIRS = [

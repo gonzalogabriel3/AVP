@@ -272,7 +272,7 @@ class DetalleCompraInline(admin.TabularInline):
      #dynamic_raw_id = ('idarticulo',)
 
 class DetallecompraAdmin(admin.ModelAdmin):
-     list_display = ['idarticulo','cantidad']
+     list_display = ('iddetcompra',)
 
      
 
@@ -283,6 +283,7 @@ class CompraAdmin(admin.ModelAdmin):
      ordering = ('-fecha',)
      inlines = [DetalleCompraInline]
      raw_id_fields = ['idproveedor']
+     #dynamic_raw_id = ['idproveedor']
 
 #TREVELIN
 

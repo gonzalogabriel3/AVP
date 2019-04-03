@@ -100,8 +100,8 @@ def generar_pdf_fecha(html,nomb,fecha):
 @login_required
 def graficocombustibles(peticion):
 	
-	c={}
-	c.update(csrf(peticion))
+	#c={}
+	#c.update(csrf(peticion))
 	
 	global fechainit
 	fechainit = peticion.GET.get('desde')
@@ -440,8 +440,8 @@ def stockactual(peticion):
 
 @login_required
 def stockcero(peticion):
-	c={}
-	c.update(csrf(peticion))
+	#c={}
+	#c.update(csrf(peticion))
 
 	pdfon = int(peticion.GET.get('pdf'))
 
@@ -535,7 +535,7 @@ def stockcero(peticion):
 		return render_to_response('liststockcero.html',{'aux':aux,'listdtransf':listdtransf,'listdsalidas':listdsalidas,'user':user,},)
 	else:
 		# Creamos el objeto HttpResponse con los headers apropiados para PDF.
-		response = HttpResponse(mimetype='application/pdf')
+		response = HttpResponse(content_type='application/pdf')
 
 		# Fecha para nombre archivo.
 		fecha = date.today()
@@ -694,8 +694,8 @@ def ingopclistegresos(peticion):
 
 @login_required
 def listegresos(peticion):
-	c={}
-	c.update(csrf(peticion))
+	#c={}
+	#c.update(csrf(peticion))
 	destino = peticion.GET.get('destino')
 	listopc = str(peticion.GET.get('listopc'))
 	opciondepo = str(peticion.GET.get('opciondepo'))
@@ -827,7 +827,7 @@ def listegresos(peticion):
 		return render_to_response('listegresos.html',{'aux':aux,'listopc':listopc,'opciondepo':opciondepo,'destino':destino,'listfintsalida':listfintsalida,'opcion':cta,'listfinsalida':listfinsalida,'user':user, 'fechainit':peticion.GET.get('desde'), 'fechafin':peticion.GET.get('hasta'),},)
 	else: 
 		# Creamos el objeto HttpResponse con los headers apropiados para PDF.
-		response = HttpResponse(mimetype='application/pdf')
+		response = HttpResponse(content_type='application/pdf')
 		fecha = date.today()
 		fechastring = str(fecha.day)+"-"+str(fecha.month)+"-"+str(fecha.year)
 		styleSheet = getSampleStyleSheet()  
@@ -958,8 +958,8 @@ def ingopclistingresos(peticion):
 	
 @login_required
 def listingresos(peticion):
-	c={}
-	c.update(csrf(peticion))
+	#c={}
+	#c.update(csrf(peticion))
 	listopc = str(peticion.GET.get('listopc'))
 	opciondepo = str(peticion.GET.get('opciondepo'))
 	fechainit = peticion.GET.get('desde')
@@ -1045,7 +1045,7 @@ def listingresos(peticion):
 		return render_to_response('listingresos.html',{'aux':aux,'listopc':listopc,'opciondepo':opciondepo,'listfintentrada':listfintentrada,'opcion':cta,'listfincompra':listfincompra,'user':user, 'fechainit':peticion.GET.get('desde'), 'fechafin':peticion.GET.get('hasta'),},)
 	else: 
 		# Creamos el objeto HttpResponse con los headers apropiados para PDF.
-		response = HttpResponse(mimetype='application/pdf')
+		response = HttpResponse(content_type='application/pdf')
 		
 		fecha = date.today()
 		fechastring = str(fecha.day)+"-"+str(fecha.month)+"-"+str(fecha.year)
@@ -1274,8 +1274,8 @@ def chunk_split(body,chunklen=76,end="\r\n"):
 	
 @login_required
 def listcombustibles(peticion):
-	c={}
-	c.update(csrf(peticion))
+	#c={}
+	#c.update(csrf(peticion))
 	global fechainit
 	fechainit = peticion.GET.get('desde')
 	global fechafin
@@ -1440,7 +1440,7 @@ def listcombustibles(peticion):
 			return response    
 		else: 
 			# Creamos el objeto HttpResponse con los headers apropiados para PDF.
-			response = HttpResponse(mimetype='application/pdf')
+			response = HttpResponse(content_type='application/pdf')
 			styleSheet = getSampleStyleSheet()  
 			response['Content-Disposition'] = 'attachment; filename= listcombustibles-'+fechastring+'.pdf'
 			#Creamos una lista que contendrá todos los elementos que se dibujaran en el PDF y le damos un formato predeterminado utilizando la clase <code>SimpleDocTemplate</code>
@@ -1593,8 +1593,8 @@ def listcombustibles(peticion):
 
 @login_required
 def listaSalida(peticion):
-	c={}
-	c.update(csrf(peticion))
+	#c={}
+	#c.update(csrf(peticion))
 	start_date = date(2005, 1, 1)
 	end_date = date(2012, 10, 26)
 	listasalida = list(Salida.objects.all())
@@ -1623,8 +1623,8 @@ def listaSalida(peticion):
     
 @login_required
 def listaTransf(peticion):
-	c={}
-	c.update(csrf(peticion))
+	#c={}
+	#c.update(csrf(peticion))
 	start_date = date(2005, 1, 1)
 	end_date = date(2012, 10, 26)
 	#listatransf = list(Transferencia.objects.filter(fechaentrada__range=(start_date, end_date)))    
