@@ -40,12 +40,8 @@
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
 							<td>
-								{% ifnotequal list.tipo "INT" %}
 									<a href="{% url 'forms/abmlicanual' %}?idlicanual={{list.idlicanual}}&idagen={{list.idagente_id}}&anio={{list.anio}}&modificacion=True"><b>{{list.anio}}</b>
 									</a>
-								{% else %}
-									<a href="#"><b>{{list.anio}}</b></a>
-								{%endifnotequal%}
 							</td>
 							<td>{{list.tipo}}</td>
 							<td style="color: green">{{list.fechadesde|date:"d/m/Y"}}</td>
@@ -56,9 +52,8 @@
 								<td>{{list.cantdias}}</td>
 							{%endif%}
 							{%if "Eliminar" in grupos or user.username == "admin"%}
-								{% ifnotequal list.tipo "INT" %}
-								<td><a style="color: #FE2E2E" onclick="return confirm('¿Esta seguro que desea eliminar la licencia del dia {{list.fechadesde|date:'d/m/Y'}}?')" href="{% url 'eliminarLicencia' %}?idagente={{list.idagente_id}}&idlicanual={{list.idlicanual}}" ><b>Eliminar</b></a></td>
-								{% endifnotequal %}
+								<td><a style="color: #FE2E2E" onclick="return confirm('¿Esta seguro que desea eliminar la licencia del dia {{list.fechadesde|date:'d/m/Y'}}?')" href="{% url 'eliminarLicencia' %}?idagente={{list.idagente_id}}&idlicanual={{list.idlicanual}}&anio={{list.anio}}"><b>Eliminar</b></a></td>
+								
 								<td></td>
 							{% endif %}
 						</tr>

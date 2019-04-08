@@ -207,7 +207,7 @@ class formArticulos(forms.ModelForm):
         fields = ('descripcion', 'eslicencia', 'maxanual', 'maxmensual')
 
 class formLicenciaanual(forms.ModelForm):
-    fechadesde = forms.DateField(label="Fecha Desde",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    fechadesde = forms.DateField(required=True,label="Fecha Desde",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechahasta = forms.DateField(required=False,label="Fecha Hasta",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     
     class Meta:
@@ -223,7 +223,8 @@ class formLicenciaanual(forms.ModelForm):
         #self.fields['idausent'].widget.attrs['disabled'] = 'disabled'
         self.fields['fechahasta'].widget.attrs['disabled'] = 'disabled'
         self.fields['anio'].widget.attrs['disabled'] = 'disabled'
-        self.fields['cantdias'].widget.attrs['min']=0
+        self.fields['cantdias'].widget.attrs['min']=1
+        self.fields['tipo'].required=True
         
         
 

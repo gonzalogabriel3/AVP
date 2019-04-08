@@ -271,7 +271,8 @@ def adscripList(peticion):
     adscriptos = Adscripcion.objects.all()
     
     return render_to_response('appPersonal/listado/adscriptos.html',{'user':user,'adscriptos':adscriptos,'grupos':grupos},)
-    
+
+@csrf_exempt
 @login_required(login_url='login')
 def ausentismos(peticion):
     user = peticion.user
@@ -297,7 +298,7 @@ def menuagente(peticion):
     
     return render_to_response('appPersonal/menu_agente.html',{'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
-    
+@csrf_exempt    
 @login_required(login_url='login')   
 def agentesIndex(peticion):
     user = peticion.user
