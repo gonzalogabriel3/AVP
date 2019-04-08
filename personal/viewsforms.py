@@ -880,7 +880,7 @@ def abmLicenciaanual(peticion):
 
       #Vinculacion con ausent
       ausent = Ausent()
-      form.instance.fechadesde
+
       if form.instance.tipo == 'LIC':
         if modaus:
           ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
