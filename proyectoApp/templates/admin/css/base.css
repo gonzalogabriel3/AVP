@@ -520,7 +520,7 @@ input[type=button][disabled].default {
     font-weight: 400;
     font-size: 13px;
     text-align: left;
-    background: #45616f;
+    background: #79aec8;
     color: #fff;
 }
 
@@ -829,7 +829,7 @@ table#change-history tbody th {
     width: auto;
     height: 40px;
     padding: 10px 40px;
-    background: #242d31;
+    background: #417690;
     line-height: 40px;
     color: #ffc;
     overflow: hidden;
