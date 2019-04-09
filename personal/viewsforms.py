@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 #===================================================
 
-
+import math
 from urllib.parse import urljoin
 from django.conf import settings
 from django.urls import reverse
@@ -878,6 +878,10 @@ def abmLicenciaanual(peticion):
             return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
       #fin supera dias de licencia
 
+      #Obtengo la fecha de termino de una licencia
+      fechafinal=contarDiasHabiles(form.instance.fechadesde,int(form.instance.cantdias),idagen)
+      pprint("Fechafinal: "+str(fechafinal))
+      
       #Vinculacion con ausent
       ausent = Ausent()
 
@@ -886,13 +890,13 @@ def abmLicenciaanual(peticion):
           ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
           ausent.fechainicio = form.instance.fechadesde
           ausent.cantdias = form.instance.cantdias
+          ausent.fechafin=fechafinal
           ausent.save()
 
           licenciaanual=Licenciaanual.objects.filter(idausent=ausent.idausent,tipo="LIC").first()
           licenciaanual.fechadesde=ausent.fechainicio
           licenciaanual.cantdias=ausent.cantdias
           licenciaanual.save()
-
 
         else:
           ausent = Ausent()
@@ -901,7 +905,9 @@ def abmLicenciaanual(peticion):
           ausent.cantdias = form.instance.cantdias
           ausent.idarticulo_id = 999
           ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
+          ausent.fechafin=fechafinal
           ausent.save()
+          
           #NOTA: Si se guarda una licenciaanual,un trigger se encarga de reflejaron en la tabla "licenciaanualagente"
           licenciaanual=Licenciaanual()
           licenciaanual.idausent=ausent
@@ -912,6 +918,7 @@ def abmLicenciaanual(peticion):
           licenciaanual.cantdias=ausent.cantdias
           licenciaanual.observaciones=ausent.observaciones
           licenciaanual.save()
+          
       elif form.instance.tipo == 'INT':
         ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
         #ausent.cantdias = diffFecha(form.instance.fechadesde , ausent.fechainicio)
@@ -966,6 +973,55 @@ def abmLicenciaanual(peticion):
     pag_licenciaanual=True
     return render(peticion,'appPersonal/forms/abm.html',{'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
     #FIN RENDERIZACION DE FORMULARIO
+
+#Adapto la funcion "contardiashabiles" de la base de datos,a codigo python
+def contarDiasHabiles(fechainicio,cantdias,idagente):
+  fechafinal=fechainicio
+  i=0
+  while i<cantdias:
+    print("Fechafinal: "+str(fechafinal)+" iteracion N° "+str(i))
+    #Si la fecha es sabado o domingo
+    if(fechafinal.strftime("%A") == "Sunday" or fechafinal.strftime("%A") == "Saturday"):
+      #Se incrementa en uno la fecha final
+      pprint("Es un fin de semana")
+      fechafinal=fechafinal+timedelta(days=1)
+      i+=1
+    else:
+      #Si es un feriado se incrementa un dia
+      if(esFeriado(idagente,fechafinal)):
+        pprint("Es un feriado")
+        fechafinal=fechafinal+timedelta(days=1)
+        i+=1
+      else:
+        i+=1
+        if (i==cantdias):
+          pprint("Ultimo bloque")
+          fechafinal=fechafinal+timedelta(days=1)
+
+  #Por ultimo a esa fecha final,le incremento la cantidad de dias pedidos por la licencia
+  fechafinal=fechafinal+timedelta(days=cantdias)
+  pprint("FechafinalSalida: "+str(fechafinal))
+  return fechafinal
+
+#Adapto la funcion "esferiado" de la base de datos,a codigo python
+def esFeriado(idagente,fechadada):
+  zona=Agente.objects.get(idagente=idagente).idzonareal.idzona
+  try:
+    regferiado=Feriado.objects.get(Fecha=fechadada)
+  except Exception as e:
+    regferiado = None
+
+  if(regferiado==None):
+    return False
+  else:
+    if(regferiado.lugar == 0):
+      return True
+    else:
+      if(regferiado.lugar == zona):
+        return True
+      else:
+        return False
+
 
 #Metodo que valida si una licencia nueva o a modificar,se superpone sobre alguna tomada
 def validarFechaLicencia(idagente,fecha,cantdias,idausentismo):

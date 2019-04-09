@@ -389,11 +389,11 @@ class Ausent(models.Model):
     def __str__(self):
         return str(self.idausent)
         
-    def save(self, *args, **kwargs):
+    '''def save(self, *args, **kwargs):
         inicio = self.fechainicio
         dias = self.cantdias -1
         self.fechafin = inicio+timedelta(days=dias)
-        super(Ausent, self).save(*args, **kwargs)
+        super(Ausent, self).save(*args, **kwargs)'''
 
 #··························································································································································        
 class Accidentetrabajo(models.Model):
@@ -796,3 +796,14 @@ class Medicavieja(models.Model):
     
     def __str__(self):
         return str(self.expediente)
+
+class Feriado(models.Model):
+    idferiado= models.AutoField(primary_key=True)
+    Fecha=models.DateField()
+    descripcion=models.CharField(max_length=200)
+    lugar=models.IntegerField()
+
+    class Meta:
+        db_table = u'Feriados'
+    def __str__(self):
+        return str(self.descripcion)
