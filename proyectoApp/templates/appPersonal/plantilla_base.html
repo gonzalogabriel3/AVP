@@ -105,13 +105,13 @@
 		//Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker'-->
 		  $( function(){
 		    $( ".datepicker" ).datepicker({
+		    	beforeShowDay: $.datepicker.noWeekends,
 		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 		    	prevText:'<',
 		    	nextText:'>',
 		    	dateFormat: 'dd/mm/yy',
-		    	
-		    	
+		    	    	
 		    });
 		  });
 
@@ -122,7 +122,7 @@
 	<!--Estilo para datepicker-->
 		 <style>
 			.ui-datepicker {
-			  		background: #88ee7a;
+			  		background: #f9d03b;
 				    width: 216px;
 				    height: auto;
 				    margin: 5px auto 0;
@@ -134,15 +134,22 @@
 
 				.ui-datepicker a {
 			  		text-decoration: none;
+			  		font-weight: bold;
 				}
 
 				.ui-datepicker table {
 			  		width: 100%;
 				}
-				
+
+				.ui-datepicker-week-end{
+					font-weight: bold;
+					color:#677465;
+				}
+
 				.ui-datepicker-header {
-				  background-color: #b9d6d3;
-				  color: #16a795;
+				  background-color: #68655a;
+				  color: #41aa9c;
+				  font-weight: bold;
 				  padding: 1px;
 			  
 				}
@@ -152,6 +159,7 @@
 				.ui-datepicker-prev, .ui-datepicker-next {
 			  		display: inline-block;
 			  		padding: 2px;
+			  		color: #41aa9c;
 			  
 				}
 				.ui-datepicker-prev {
@@ -161,11 +169,12 @@
 				.ui-datepicker-next {
 				  float: right;
 				  background-position: center 0px;
+				  color: #41aa9c;
 				}
 
 				.ui-datepicker th {
 				  text-transform: uppercase;
-				  font-size: 7pt;
+				  font-size: 8pt;
 				  padding: 5px 0;
 				  color: #666666;
 				  text-shadow: 1px 0px 0px #fff;
@@ -187,11 +196,6 @@
 	#					***	fin DATEPICKER *** 								  #
 	###########################################################################										
 	-->
-
-
-
-
-
 
 
 	<script>

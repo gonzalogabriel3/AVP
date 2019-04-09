@@ -771,8 +771,8 @@ def abmLicenciaanual(peticion):
     titulo_form=''
     agente=Agente.objects.get(idagente=idagen)
     #Calculo los dias que le quedan en la licenciaAnualaGENTE para poner un 'max' en cantidad de dias en el formulario
-    #lic_anual_agente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
-    #diasRestantes=(lic_anual_agente.cantidaddias-lic_anual_agente.diastomados)
+    lic_anual_agente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
+    diasRestantes=(lic_anual_agente.cantidaddias-lic_anual_agente.diastomados)
     
     if permisoZona(user) and permisoABM(user):
         error = "no posee permiso para carga de datos"
@@ -952,7 +952,7 @@ def abmLicenciaanual(peticion):
         ausentismo=Ausent.objects.get(idausent=a.idausent.idausent)
        
         form = formLicenciaanual(initial={'fechahasta': ausentismo.fechafin},instance=a)
-        #form.fields['cantdias'].widget.attrs['max']=diasRestantes+a.cantdias
+        form.fields['cantdias'].widget.attrs['max']=diasRestantes+a.cantdias
         
         titulo_form="Detalles / Modificar licencia / "+str(a.fechadesde)
       elif int(idagen) > 0 or int(anio)> 0:          
@@ -961,14 +961,13 @@ def abmLicenciaanual(peticion):
         b.idagente = a
         b.anio = anio
 
-
         form = formLicenciaanual(instance=b)
-        #form.fields['cantdias'].widget.attrs['max']=diasRestantes
+        form.fields['cantdias'].widget.attrs['max']=diasRestantes
         
         titulo_form=" "+str(anio)
       else:
         form = formLicenciaanual()
-        #form.fields['cantdias'].widget.attrs['max']=diasRestantes
+        form.fields['cantdias'].widget.attrs['max']=diasRestantes
         titulo_form=" Cargar licencia"
     pag_licenciaanual=True
     return render(peticion,'appPersonal/forms/abm.html',{'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
@@ -997,6 +996,8 @@ def contarDiasHabiles(fechainicio,cantdias,idagente):
         if (i==cantdias):
           pprint("Ultimo bloque")
           fechafinal=fechafinal+timedelta(days=1)
+          
+    fechafinal=fechafinal+timedelta(days=1)
 
   #Por ultimo a esa fecha final,le incremento la cantidad de dias pedidos por la licencia
   fechafinal=fechafinal+timedelta(days=cantdias)
