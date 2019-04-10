@@ -880,7 +880,6 @@ def abmLicenciaanual(peticion):
 
       #Obtengo la fecha de termino de una licencia
       fechafinal=contarDiasHabiles(form.instance.fechadesde,int(form.instance.cantdias),idagen)
-      pprint("Fechafinal: "+str(fechafinal))
       
       #Vinculacion con ausent
       ausent = Ausent()
@@ -897,6 +896,9 @@ def abmLicenciaanual(peticion):
           licenciaanual.fechadesde=ausent.fechainicio
           licenciaanual.cantdias=ausent.cantdias
           licenciaanual.save()
+
+          url="../vacas?idagente="+str(idagen)
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
 
         else:
           ausent = Ausent()
@@ -975,34 +977,39 @@ def abmLicenciaanual(peticion):
 
 #Adapto la funcion "contardiashabiles" de la base de datos,a codigo python
 def contarDiasHabiles(fechainicio,cantdias,idagente):
+  
   fechafinal=fechainicio
   i=0
-  while i<cantdias:
-    print("Fechafinal: "+str(fechafinal)+" iteracion N° "+str(i))
-    #Si la fecha es sabado o domingo
-    if(fechafinal.strftime("%A") == "Sunday" or fechafinal.strftime("%A") == "Saturday"):
-      #Se incrementa en uno la fecha final
-      pprint("Es un fin de semana")
-      fechafinal=fechafinal+timedelta(days=1)
-      i+=1
-    else:
-      #Si es un feriado se incrementa un dia
-      if(esFeriado(idagente,fechafinal)):
-        pprint("Es un feriado")
-        fechafinal=fechafinal+timedelta(days=1)
-        i+=1
-      else:
-        i+=1
-        if (i==cantdias):
-          pprint("Ultimo bloque")
-          fechafinal=fechafinal+timedelta(days=1)
-          
-    fechafinal=fechafinal+timedelta(days=1)
+  #Contadores de sabados/domingos y feriados
+  sabados_y_domingos=0
+  feriados=0
 
-  #Por ultimo a esa fecha final,le incremento la cantidad de dias pedidos por la licencia
-  fechafinal=fechafinal+timedelta(days=cantdias)
-  pprint("FechafinalSalida: "+str(fechafinal))
+  while i<=cantdias:
+    if(i==cantdias):
+      fechafinal=fechafinal-timedelta(days=1)
+      break
+
+    print("Fecha: "+str(fechafinal)+" iteracion N° "+str(i)+" dia:"+str(fechafinal.strftime("%A")))
+    
+    #Si la fecha es sabado o domingo incremento en uno la fecha final
+    if(fechafinal.strftime("%A") == "Sunday" or fechafinal.strftime("%A") == "Saturday"):
+      sabados_y_domingos+=1
+      pprint("Incremento por fin de semana")
+      fechafinal=fechafinal+timedelta(days=1)
+    elif(esFeriado(idagente,fecha)):
+    #Si es un feriado incremento en uno la fecha final
+      feriados+=1
+      fechafinal=fechafinal+timedelta(days=1)
+    else:
+        fechafinal=fechafinal+timedelta(days=1)
+        i+=1 
+
+  pprint("*Cantdias="+str(cantdias)+" *sabados_y_domingos="+str(sabados_y_domingos)+" *Feriados="+str(feriados)+" *Fecha inicio="+str(fechainicio))
+  pprint("Fecha final="+str(fechafinal))
+
   return fechafinal
+  
+  
 
 #Adapto la funcion "esferiado" de la base de datos,a codigo python
 def esFeriado(idagente,fechadada):
