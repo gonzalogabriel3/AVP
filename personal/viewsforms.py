@@ -878,13 +878,15 @@ def abmLicenciaanual(peticion):
             return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
       #fin supera dias de licencia
 
-      #Obtengo la fecha de termino de una licencia
-      fechafinal=contarDiasHabiles(form.instance.fechadesde,int(form.instance.cantdias),idagen)
+      
       
       #Vinculacion con ausent
       ausent = Ausent()
 
       if form.instance.tipo == 'LIC':
+        #Obtengo la fecha de termino de una licencia
+        fechafinal=contarDiasHabiles(form.instance.fechadesde,int(form.instance.cantdias),idagen)
+        #Modificacion de Licencia
         if modaus:
           ausent = Licenciaanual.objects.get(pk = form.instance.pk).idausent
           ausent.fechainicio = form.instance.fechadesde
@@ -899,7 +901,7 @@ def abmLicenciaanual(peticion):
 
           url="../vacas?idagente="+str(idagen)
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
-
+        #Carga de Licencia
         else:
           ausent = Ausent()
           ausent.idagente_id = idagen
@@ -920,30 +922,70 @@ def abmLicenciaanual(peticion):
           licenciaanual.cantdias=ausent.cantdias
           licenciaanual.observaciones=ausent.observaciones
           licenciaanual.save()
-          
+      
+      #Carga de interrupcion
       elif form.instance.tipo == 'INT':
+        #Se modifica el ausentismo
         ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
-        #ausent.cantdias = diffFecha(form.instance.fechadesde , ausent.fechainicio)
+        dias_originales=ausent.cantdias
+        dif_dias= diffFecha(form.instance.fechadesde , ausent.fechainicio)+1
+        ausent.cantdias=dif_dias
+        #fechafinal=contarDiasHabiles(form.instance.fechadesde,int(dif_dias),idagen)
+        ausent.fechafin=form.instance.fechadesde
         ausent.save()
+        
+        #Obtengo la licenciaanual del agente
+        licenciaanualagente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
+        
+        #Se modifica la licencia anual
+        licenciaanual=Licenciaanual.objects.filter(idausent=ausent.idausent,tipo="LIC").first()
+        licenciaanual.fechainicio=ausent.fechainicio
+        licenciaanual.cantdias=dif_dias
+        licenciaanual.save()
+
+        #Se guarda una interrupccion
+        interrupcion=Licenciaanual()
+        interrupcion.idausent=ausent
+        interrupcion.idagente=agente
+        interrupcion.anio=anio
+        interrupcion.tipo=form.instance.tipo
+        interrupcion.fechadesde=ausent.fechainicio
+        interrupcion.observaciones=ausent.observaciones
+        interrupcion.save()
+
+        #Se modicia la licencianualagente con la nueva cantidad de dias tomados
+        pprint("dias originales="+str(dias_originales))
+        pprint("dif_dias="+str(dif_dias))
+        print("dias de licencias tomados="+str(licenciaanualagente.diastomados))
+        licenciaanualagente.diastomados=licenciaanualagente.diastomados-dias_originales
+        pprint("menos los dias originales="+str(licenciaanualagente.diastomados))
+        licenciaanualagente.diastomados=licenciaanualagente.diastomados+dif_dias
+        pprint("mas la diferencia entre los dias="+str(licenciaanualagente.diastomados))
+        pprint("Dias tomados finales="+str(licenciaanualagente.diastomados))
+        licenciaanualagente.save()
+
+        url="../vacas?idagente="+str(idagen)
+        return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Interrupcion de licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
         #vinculacion con ausent       
-        form.fields['anio'].widget.attrs['enabled'] = 'enabled'
+        '''form.fields['anio'].widget.attrs['enabled'] = 'enabled'
         form.instance.anio = anio
         form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
         form.instance.idagente_id = idagen
         form.fields['idausent'].widget.attrs['enabled'] = 'enabled'
         form.instance.idausent = ausent
-        form.save()
-      if form.instance.tipo == 'INT':
-        ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
-        ausent.cantdias = diffFecha(form.instance.fechadesde , ausent.fechainicio)
-        ausent.save()
+        form.save()'''
+      #if form.instance.tipo == 'INT':
+        #ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
+        #ausent.cantdias = diffFecha(form.instance.fechadesde , ausent.fechainicio)
+        #ausent.save()
+        '''
         if accion == 'Alta':
             registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
         elif accion == 'Modificacion':
             registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
             
         url = '/personal/vacas?idagente='+str(idagen)
-        return HttpResponseRedirect(url)
+        return HttpResponseRedirect(url)'''
     
     #RENDERIZACION DE FORMULARIO    
     else:
