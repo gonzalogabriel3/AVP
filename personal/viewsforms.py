@@ -989,43 +989,44 @@ def contarDiasHabiles(fechainicio,cantdias,idagente):
       fechafinal=fechafinal-timedelta(days=1)
       break
 
-    print("Fecha: "+str(fechafinal)+" iteracion N° "+str(i)+" dia:"+str(fechafinal.strftime("%A")))
-    
     #Si la fecha es sabado o domingo incremento en uno la fecha final
     if(fechafinal.strftime("%A") == "Sunday" or fechafinal.strftime("%A") == "Saturday"):
       sabados_y_domingos+=1
-      pprint("Incremento por fin de semana")
       fechafinal=fechafinal+timedelta(days=1)
-    elif(esFeriado(idagente,fecha)):
+
     #Si es un feriado incremento en uno la fecha final
+    elif(esFeriado(idagente,fechafinal)):
+      pprint("SE ENCONTRO UN FERIADO el dia "+str(fechafinal))
       feriados+=1
       fechafinal=fechafinal+timedelta(days=1)
+
+    #Si es un dia 'normal' ademas de incrementar la fecha incremento el contador "i"
     else:
         fechafinal=fechafinal+timedelta(days=1)
         i+=1 
 
   pprint("*Cantdias="+str(cantdias)+" *sabados_y_domingos="+str(sabados_y_domingos)+" *Feriados="+str(feriados)+" *Fecha inicio="+str(fechainicio))
-  pprint("Fecha final="+str(fechafinal))
+  pprint("Fecha final: "+str(fechafinal))
 
   return fechafinal
-  
   
 
 #Adapto la funcion "esferiado" de la base de datos,a codigo python
 def esFeriado(idagente,fechadada):
   zona=Agente.objects.get(idagente=idagente).idzonareal.idzona
   try:
-    regferiado=Feriado.objects.get(Fecha=fechadada)
+    feriado=Feriado.objects.get(Fecha=fechadada)
+    pprint(feriado)
   except Exception as e:
-    regferiado = None
+    feriado = None
 
-  if(regferiado==None):
+  if(feriado==None):
     return False
   else:
-    if(regferiado.lugar == 0):
+    if(feriado.lugar == 0):
       return True
     else:
-      if(regferiado.lugar == zona):
+      if(feriado.lugar == zona):
         return True
       else:
         return False
