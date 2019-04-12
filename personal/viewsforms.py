@@ -41,8 +41,15 @@ from personal.funciones import *
 from pprint import pprint
 from django.shortcuts import redirect
 from personal.viewslistados import *
+from django.core.cache import cache
 #--------------------------------------------------------------------------
 #---------------------------------VIEW FORM--------------------------------
+
+def borrarCache():
+  cache.delete('forms/abmlicanual')
+
+
+
 
 @csrf_exempt
 @login_required(login_url='login')
@@ -901,6 +908,7 @@ def abmLicenciaanual(peticion):
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
         #Carga de Licencia
         else:
+
           ausent = Ausent()
           ausent.idagente_id = idagen
           ausent.fechainicio = form.instance.fechadesde
@@ -908,7 +916,6 @@ def abmLicenciaanual(peticion):
           ausent.idarticulo_id = 999
           ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
           ausent.fechafin=fechafinal
-          #ausent.save(['idagente_id','fechainicio','cantdias','fechafin','idarticulo_id','direccion'])
           ausent.save()
           
           #NOTA: Si se guarda una licenciaanual,un trigger se encarga de reflejaron en la tabla "licenciaanualagente"
@@ -961,9 +968,6 @@ def abmLicenciaanual(peticion):
         interrupcion.save()
         
         #Se modicia la licencianualagente con la nueva cantidad de dias tomados
-        '''pprint("dias originales="+str(dias_originales_lictomada))
-        pprint("dif_dias="+str(dif_dias))
-        print("dias de licencias tomados="+str(licenciaanualagente.diastomados))'''
         licenciaanualagente.diastomados=licenciaanualagente.diastomados-dias_originales_lictomada
         licenciaanualagente.diastomados=licenciaanualagente.diastomados+dias_habiles
         licenciaanualagente.save()
