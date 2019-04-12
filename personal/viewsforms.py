@@ -878,8 +878,6 @@ def abmLicenciaanual(peticion):
             return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos, 'url':url},)
       #fin supera dias de licencia
 
-      
-      
       #Vinculacion con ausent
       ausent = Ausent()
 
@@ -910,6 +908,7 @@ def abmLicenciaanual(peticion):
           ausent.idarticulo_id = 999
           ausent.direccion = Agente.objects.get(pk=idagen).iddireccion
           ausent.fechafin=fechafinal
+          #ausent.save(['idagente_id','fechainicio','cantdias','fechafin','idarticulo_id','direccion'])
           ausent.save()
           
           #NOTA: Si se guarda una licenciaanual,un trigger se encarga de reflejaron en la tabla "licenciaanualagente"
@@ -925,13 +924,21 @@ def abmLicenciaanual(peticion):
       
       #Carga de interrupcion
       elif form.instance.tipo == 'INT':
-        #Se modifica el ausentismo
+        
         ausent = getLicEnFecha(idagen, form.instance.fechadesde).idausent
-        dias_originales=ausent.cantdias
-        dif_dias= diffFecha(form.instance.fechadesde , ausent.fechainicio)+1
-        ausent.cantdias=dif_dias
-        #fechafinal=contarDiasHabiles(form.instance.fechadesde,int(dif_dias),idagen)
+        
+        dias_originales_lictomada=ausent.cantdias
+
+        #La diferencia de dias entre la nueva fecha de fin(ingresada en el formulario) ,y la fecha de inicio del ausentismo
+        dif_dias=diffFecha(form.instance.fechadesde , ausent.fechainicio)+1
+        
         ausent.fechafin=form.instance.fechadesde
+        #Obtengo la cantidad de dias habiles de la licencia que queda luego de la interrupcion
+        dias_habiles=cantDias(ausent.fechainicio,dif_dias,idagen)
+        
+        pprint("Cant DIAS HABILES: "+str(dias_habiles))
+        ausent.cantdias=dias_habiles
+        
         ausent.save()
         
         #Obtengo la licenciaanual del agente
@@ -940,9 +947,9 @@ def abmLicenciaanual(peticion):
         #Se modifica la licencia anual
         licenciaanual=Licenciaanual.objects.filter(idausent=ausent.idausent,tipo="LIC").first()
         licenciaanual.fechainicio=ausent.fechainicio
-        licenciaanual.cantdias=dif_dias
+        licenciaanual.cantdias=dias_habiles
         licenciaanual.save()
-
+        
         #Se guarda una interrupccion
         interrupcion=Licenciaanual()
         interrupcion.idausent=ausent
@@ -952,18 +959,15 @@ def abmLicenciaanual(peticion):
         interrupcion.fechadesde=ausent.fechainicio
         interrupcion.observaciones=ausent.observaciones
         interrupcion.save()
-
+        
         #Se modicia la licencianualagente con la nueva cantidad de dias tomados
-        pprint("dias originales="+str(dias_originales))
+        '''pprint("dias originales="+str(dias_originales_lictomada))
         pprint("dif_dias="+str(dif_dias))
-        print("dias de licencias tomados="+str(licenciaanualagente.diastomados))
-        licenciaanualagente.diastomados=licenciaanualagente.diastomados-dias_originales
-        pprint("menos los dias originales="+str(licenciaanualagente.diastomados))
-        licenciaanualagente.diastomados=licenciaanualagente.diastomados+dif_dias
-        pprint("mas la diferencia entre los dias="+str(licenciaanualagente.diastomados))
-        pprint("Dias tomados finales="+str(licenciaanualagente.diastomados))
+        print("dias de licencias tomados="+str(licenciaanualagente.diastomados))'''
+        licenciaanualagente.diastomados=licenciaanualagente.diastomados-dias_originales_lictomada
+        licenciaanualagente.diastomados=licenciaanualagente.diastomados+dias_habiles
         licenciaanualagente.save()
-
+        
         url="../vacas?idagente="+str(idagen)
         return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Interrupcion de licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
         #vinculacion con ausent       
@@ -1016,6 +1020,32 @@ def abmLicenciaanual(peticion):
     pag_licenciaanual=True
     return render(peticion,'appPersonal/forms/abm.html',{'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
     #FIN RENDERIZACION DE FORMULARIO
+
+def cantDias(fechainicio,cantdias,idagente):
+  fechafinal=fechainicio
+  i=0
+  cantdias_habiles=0
+
+  while i<=cantdias:
+    if(i==cantdias):
+      fechafinal=fechafinal-timedelta(days=1)
+      break
+    #Si la fecha es sabado o domingo incremento en uno la fecha final
+    if(fechafinal.strftime("%A") == "Sunday" or fechafinal.strftime("%A") == "Saturday"):
+      fechafinal=fechafinal+timedelta(days=1)
+      i+=1 
+
+    #Si es un feriado incremento en uno la fecha final
+    elif(esFeriado(idagente,fechafinal)):
+      fechafinal=fechafinal+timedelta(days=1)
+      i+=1 
+    #Si es un dia 'normal' ademas de incrementar la fecha incremento el contador "i"
+    else:
+        fechafinal=fechafinal+timedelta(days=1)
+        cantdias_habiles+=1
+        i+=1 
+
+  return cantdias_habiles
 
 #Adapto la funcion "contardiashabiles" de la base de datos,a codigo python
 def contarDiasHabiles(fechainicio,cantdias,idagente):
