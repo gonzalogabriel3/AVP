@@ -1143,19 +1143,25 @@ def eliminarLicenciaTomada(peticion):
   idagente=int(peticion.GET.get('idagente'))
   agente=Agente.objects.get(idagente=idagente)
   idlicanual=int(peticion.GET.get('idlicanual'))
+  anio=int(peticion.GET.get('anio'))
   
   licencia = Licenciaanual.objects.get(pk=idlicanual)
+  licenciaanualagente=Licenciaanualagente.objects.get(idagente=idagente,anio=anio)
   #Si la licencia es de tipo "INT" la elimino de la tabla licenciaanual y retorno
   if licencia.tipo=='INT':
+    pprint("Eliminacion de una interrupcion")
+    dias_totales=licenciaanualagente.diastomados
     licencia.delete()
+    licenciaanualagente.diastomados=dias_totales
+    licenciaanualagente.save()
     url="vacas?idagente="+str(idagente)
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado interrupcion de licencia de '+agente.apellido+' '+agente.nombres})
   #Si por el contrario,la licencia es de tipo "LIC" la elimino de la tabla licenciaanual asi como tambien su referencia a las otras tablas
   else:
-    anio=int(peticion.GET.get('anio'))
+    pprint("Eliminacion de una licencia")
+    
     ausent=Ausent.objects.get(idausent=licencia.idausent.idausent)
-    licenciaanualagente=Licenciaanualagente.objects.get(idagente=idagente,anio=anio)
-
+    
     #Elimino la licencia de la tabla "licenciaanual"
     licencia.delete()
     '''
