@@ -316,7 +316,7 @@ def salidasmesagentes_excel(peticion):
 	return response
 
 	
-@login_required
+#@login_required
 def ingopcsalidasanioagente_excel(peticion):
 	
 	user = peticion.user
@@ -326,7 +326,7 @@ def ingopcsalidasanioagente_excel(peticion):
 	return render_to_response('appPersonal/reports/ingopcsalidasanioagente_excel.html',{'agentes':agentes,'user':user,},)	
 
 	
-@login_required
+#@login_required
 def salidasanioagente_excel(peticion):
 	
 	user = peticion.user
@@ -476,7 +476,7 @@ def agentes_excel(request):
     return response
     
     
-@login_required
+#@login_required
 def ingfechapartdiarioausent_excel(peticion):
 	
 	user = peticion.user
