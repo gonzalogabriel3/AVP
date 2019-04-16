@@ -42,6 +42,8 @@ from pprint import pprint
 from django.shortcuts import redirect
 from personal.viewslistados import *
 from django.core.cache import cache
+import json
+from django.core import serializers
 #--------------------------------------------------------------------------
 #---------------------------------VIEW FORM--------------------------------
 
@@ -1027,9 +1029,33 @@ def abmLicenciaanual(peticion):
         form.fields['cantdias'].widget.attrs['max']=diasRestantes
         titulo_form=" Cargar licencia"
     pag_licenciaanual=True
-    return render(peticion,'appPersonal/forms/abm.html',{'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
+    #Obtengo los feriados para cargar en datepicker
+    feriadosArray=feriados()
+    return render(peticion,'appPersonal/forms/abm.html',{'feriados':feriadosArray,'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
     #FIN RENDERIZACION DE FORMULARIO
 
+#Funcion que retorna un array(de strings) con todas las fechas de feriados de la base de datos
+def feriados():
+
+  objectsFeriados=Feriado.objects.all()
+  feriados=[]
+  for objectsF in objectsFeriados:
+      #Obtengo dia,mes,anio
+      dia=datetime.strftime(objectsF.Fecha, '%d')
+      mes=datetime.strftime(objectsF.Fecha, '%m')
+      anio=datetime.strftime(objectsF.Fecha, '%Y')
+      
+      #Quito 0 a la izquierda para que el formato sea reconocido por datepicker
+      feriado_dia=dia.lstrip('+-0')
+      feriado_mes=mes.lstrip('+-0')
+      
+      #Creo la fecha en formato de string
+      fecha_feriado=""+feriado_mes+"-"+feriado_dia+"-"+anio
+      feriados.append(fecha_feriado)
+
+  return feriados
+
+#Funcion que cuenta los dias habiles(lunes a viernes) entre dos fechas(se omiten findes asi como tambien feriados)
 def cantDias(fechainicio,cantdias,idagente):
   fechafinal=fechainicio
   i=0
