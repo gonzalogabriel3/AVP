@@ -43,7 +43,11 @@
 									<a href="{% url 'forms/abmlicanual' %}?idlicanual={{list.idlicanual}}&idagen={{list.idagente_id}}&anio={{list.anio}}&modificacion=True"><b>{{list.anio}}</b>
 									</a>
 							</td>
-							<td>{{list.tipo}}</td>
+							{% if list.tipo == 'LIC' %}
+								<td style="color:green">{{list.tipo}}</td>
+							{% else %}
+								<td style="color:#FE2E2E">{{list.tipo}}</td>
+							{% endif %}
 							<td style="color: green">{{list.fechadesde|date:"d/m/Y"}}</td>
 							<td style="color: #FE9A2E">{{list.idausent.fechafin|date:"d/m/Y"}}</td>
 							{%if not list.cantdias %}

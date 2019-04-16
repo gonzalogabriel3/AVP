@@ -806,4 +806,4 @@ class Feriado(models.Model):
     class Meta:
         db_table = u'Feriados'
     def __str__(self):
-        return str(self.descripcion)
+        return str(self.Fecha)
