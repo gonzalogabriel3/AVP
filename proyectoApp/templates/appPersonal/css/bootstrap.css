@@ -237,7 +237,7 @@ a {
 
 a:hover,
 a:focus {
-  color: #FFC200; /*original: 005580*/
+  color: #005580; /*original: 005580*/
   text-decoration: underline;
 }
 
@@ -1403,6 +1403,7 @@ input.span3,
 textarea.span3,
 .uneditable-input.span3 {
   width: 206px;
+  height: 5px;
 }
 
 input.span2,
@@ -4372,9 +4373,11 @@ input[type="submit"].btn.btn-mini {
   *z-index: 2;
   margin-bottom: 20px;
   overflow: visible;
-  background-color:#F4C213;
+  #background-color:#F4C213;
+  background-color:#679ed2;
   opacity: 0.9;
-  border: 1px solid #999999;
+  #border: 1px solid #999999;
+  border: 1px solid #679ed2;
 }
 
 .navbar-inner {

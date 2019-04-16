@@ -8,81 +8,67 @@
 {% block content %}
 	
 	<div id="content-main" >
-	
-	<div id="form_container">
-	
-		
-		
-		<table class="table table-striped" width="105%" border="0" cellspacing="0" cellpadding="1"> 
-		    <tr bgcolor="#FFC200" align="center" style="border-bottom: 1px solid #eee;"> 
-		    
-		    {% block titulo-form %}
-		    <td><b><font color="#000000" style="font-size: 13px;color:#1f618d">Listado {% block nombrelistado %} {% endblock %}</font></b></td> 
-		    {% endblock %}
-		    
-		    </tr> 
-		    <tr bgcolor="#FFC200"> 
-		    <td> 
-		    <table width="100%" border="0" cellspacing="0" cellpadding="4" style="height: 400px;"> 
-		    <tr bgcolor="#FFFFFF"> 
-		    <td>
-			  {% block barraherramientas %}  
-			  <div class="hero-unit" style="background: #FFC200;padding:10px">
+		<div id="form_container">
+			<table class="table" width="105%" border="0" cellspacing="0" cellpadding="1"> 
+			    <tr  align="center" style="border-bottom: 1px solid #eee;">
+				    {% block titulo-form %}
+				    <td><b><font color="#000000" style="font-size: 13px;color:#1f618d">Listado {% block nombrelistado %} {% endblock %}</font></b></td> 
+				    {% endblock %}
+			    </tr> 
+			    <tr> 
+				    <td> 
+					    <table width="100%" border="0" cellspacing="0" cellpadding="4"> 
+						    <tr bgcolor="#f5f5f5"> 
+							    <td>
+									{% block barraherramientas %}  
+										<div class="hero-unit" style="background: #f5f5f5;padding:10px">
+											{% block botonnuevo %}
+												{%if "ABM" in grupos or user.username == "admin"%}
+												<form action="{% block botonnuevoaction %} {% endblock %}">
+												    <input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" />
+												</form>
+												{% endif %}
+											{%endblock%}
+											{% block botonatras %}
+												<input id="backbutton" class="btn btn-info" type="submit" name="submit" value="Atras" style="margin-rigth: 740px;" onclick="history.back()" />
+											{%endblock%}
+											{% block botonexcel %}
+												
+											{%endblock%}
+											{% block botonborrar %}
+											
+											{%endblock%}
+											{% block titulo %}
+											
+											{%endblock%}
+											{% block busqueda %}
+												
+											{%endblock%}
+										</div>
+									{%endblock%}
+								  
+									{% block main-list %}
+									{% endblock%}
 
-					{% block botonnuevo %}
-						{%if "ABM" in grupos or user.username == "admin"%}
-						<form action="{% block botonnuevoaction %} {% endblock %}">
-						    <input id="saveForm" class="button_text" type="submit" name="submit" value="Nuevo" style="margin-rigth: 740px;" />
-						</form>
-						{% endif %}
-					{%endblock%}
-					{% block botonatras %}
-						<input id="backbutton" class="btn btn-info" type="submit" name="submit" value="Atras" style="margin-rigth: 740px;" onclick="history.back()" />
-					{%endblock%}
-					{% block botonexcel %}
-						
-					{%endblock%}
-					{% block botonborrar %}
-					
-					{%endblock%}
-					{% block titulo %}
-					
-					{%endblock%}
-					{% block busqueda %}
-						
-					{%endblock%}
-			  </div>
-			  {%endblock%}
-			  
-			  {% block main-list %}
-			  
-			  {% endblock%}
-			  
-			  {% block paginasinf %} 
-			  <div class="hero-unit" style="background: #FFC200;padding:1px;font-size: 14px;">
-			  
-				      <div class="text-right">
-					  {% if lista.has_previous %}
-					      <a href="?page={{ lista.previous_page_number }}{% block prevpage%}{% endblock %}"><img src="{% static 'appPersonal/img/icons/resultset_previous.png' %}" width="16px" height="16px" alt="Anterior"></img></a>
-					  {% endif %}
-					 
-					  Pagina {{ lista.number }} of {{ lista.paginator.num_pages }}.
-					  
-					  {% if lista.has_next %}
-					      <a href="?page={{ lista.next_page_number }}{% block nextpage%}{% endblock %}"><img src="{% static 'appPersonal/img/icons/resultset_next.png' %}" width="16px" height="16px" alt="Siguiente"></img></a>
-					  {% endif %}
-				      </div>
-			  </div>
-			  {% endblock%}
-			  
-			  
-			</td>
-			</tr>
+									{% block paginasinf %} 
+										<div class="hero-unit" style="background: #f5f5f5;padding:1px;font-size: 14px;">
+											<div class="text-right">
+												{% if lista.has_previous %}
+													<a href="?page={{ lista.previous_page_number }}{% block prevpage%}{% endblock %}"><img src="{% static 'appPersonal/img/icons/resultset_previous.png' %}" width="16px" height="16px" alt="Anterior"></img></a>
+												{% endif %}
+												Pagina {{ lista.number }} of {{ lista.paginator.num_pages }}.
+												{% if lista.has_next %}
+													<a href="?page={{ lista.next_page_number }}{% block nextpage%}{% endblock %}"><img src="{% static 'appPersonal/img/icons/resultset_next.png' %}" width="16px" height="16px" alt="Siguiente"></img></a>
+												{% endif %}
+											</div>
+										</div>
+									{% endblock%}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
 			</table>
-			</td>
-			</tr>
-		    </table>   
-		 
-	</div>
+		</div>
 	</div>
 {% endblock %}

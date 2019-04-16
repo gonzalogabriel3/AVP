@@ -6,12 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-	
-	<!-- Css de Bootstrap -Latest compiled and minified CSS -->
-	<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-	<!-- Importo jQuery library -->
-	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-
 	<link rel="icon" href="{% static 'favicon.png' %}" type="image/png"/>
 	<title>
 	{% block title %} 
@@ -329,54 +323,58 @@
 							  {%if "Personal-Listados" in grupos  or user.username == "admin"%}
 								<ul class="nav nav-list">
 
-								  <li class="nav-header"><img src="{% static 'appPersonal/img/icons/vcard.png' %}" width="8%" height="8%"></img> <b>Datos</b></li>
+								  <!--<li class="nav-header"><img src="{% static 'appPersonal/img/icons/vcard.png' %}" width="8%" height="8%"></img> <b>Datos</b></li>-->
+								  <li class="nav-header"><img src="{% static 'appPersonal/img/icon/contact.png' %}" width="10%" height="10%"></img> <b>Datos</b></li>
 
-								  <li><a href="{% url 'listado/agentesIndex' %}"><b>Agentes</b> </a></li>
-								  <li><a href="{% url 'listado/articulos' %}"><b>Articulos</b></a></li>
+								  <li><a href="{% url 'listado/agentesIndex' %}">Agentes</a></li>
+								  <li><a href="{% url 'listado/articulos' %}">Articulos</a></li>
+								  <li><a href="#">Feriados</a></li>
 <!-- 								  <li><a href="/personal/listado/adscriptos">Adscriptos</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/listacctrabajo">Accidente de trabajo</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/traslado">Traslados</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/seguro">Seguros</a></li2> -->
-								  <li><a href="{% url 'listado/agentes_base_vieja' %}"><b>Base vieja</b></a></li>
+								  <li><a href="{% url 'listado/agentes_base_vieja' %}">Base vieja</a></li>
 								  <hr>
 								</ul>
 							  {%endif%}
 							  {%if "Reportes" in grupos  or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/report.png' %}" width="8%" height="8%"></img> <b>Reportes en Excel</b></li>
-								      <li><a href="{% url 'reportes/agentes' %}"><b>Agentes</b> </a></li>
-								      <li><a href="{% url 'reportes/ingfechapartdiarioausent_excel' %}"><b>Ausentismo-Parte Diario</b> </a></li>
-								      <li><a href="{% url 'reportes/ingopcsalidasanioagente_excel' %}"><b>Salidas Agente Año </b></a></li>
-								      <li><a href="{% url 'reportes/ingopcsalidasmesagentes_excel' %}"><b>Salidas Agentes Mes </b></a></li>
-								      <li><a href="{% url 'reportes/reportelicenciaspendientes' %}"><b>Licencias Pendientes </b></a></li>
+								      <!--<li class="nav-header"><img src="{% static 'appPersonal/img/icons/report.png' %}" width="8%" height="8%"></img> <b>Reportes en Excel</b></li>-->
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icon/xls.png' %}" width="10%" height="10%"></img> <b>Reportes en Excel</b></li>
+								      <li><a href="{% url 'reportes/agentes' %}">Agentes</a></li>
+								      <li><a href="{% url 'reportes/ingfechapartdiarioausent_excel' %}">Ausentismo-Parte Diario</a></li>
+								      <li><a href="{% url 'reportes/ingopcsalidasanioagente_excel' %}">Salidas Agente Año</a></li>
+								      <li><a href="{% url 'reportes/ingopcsalidasmesagentes_excel' %}">Salidas Agentes Mes</a></li>
+								      <li><a href="{% url 'reportes/reportelicenciaspendientes' %}">Licencias Pendientes</a></li>
 								      <hr>
 								    </ul>
 							  {%endif%}
 							  {%if "Estadisticas" in grupos or user.username == "admin" %}
 								    <ul class="nav nav-list">
-									      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/chart_pie.png' %}" width="8%" height="8%"></img> <b>Informes</b></li>
-									      <li><a href="{% url 'listado/altasbajasindex' %}"><b>Altas-Bajas</b></a></li2>
-									      <li><a href="{% url 'ausent' %}"><b>Ausentismo</b></a></li>
-									      <li><a href="{% url 'presentRep' %}"><b>Presentismo</b></a></li>
-									      <li><a href="{% url 'cantagrupindex' %}"><b>Cantidad Agrupamiento</b></a></li>
-									      <li><a href="{% url 'cantclase' %}"><b>Cantidad Clase</b></a></li>
-									      <li><a href="{% url 'medicasinalta' %}"><b>Medicas sin alta</b></a></li>
-									      <li><a href="#"><b>Calificaciones</b></a></li>
+									      <!--<li class="nav-header"><img src="{% static 'appPersonal/img/icons/chart_pie.png' %}" width="8%" height="8%"></img> <b>Informes</b></li>-->
+									      <li class="nav-header"><img src="{% static 'appPersonal/img/icon/chart.png' %}" width="10%" height="10%"></img> <b>Informes</b></li>
+									      <li><a href="{% url 'listado/altasbajasindex' %}">Altas-Bajas</a></li2>
+									      <li><a href="{% url 'ausent' %}">Ausentismo</a></li>
+									      <li><a href="{% url 'presentRep' %}">Presentismo</a></li>
+									      <li><a href="{% url 'cantagrupindex' %}">Cantidad Agrupamiento</a></li>
+									      <li><a href="{% url 'cantclase' %}">Cantidad Clase</a></li>
+									      <li><a href="{% url 'medicasinalta' %}">Medicas sin alta</a></li>
+									      <li><a href="#">Calificaciones</a></li>
 									      <hr>
 								    </ul>
 							  {%endif%}
 							  {%if "Licencia" in grupos or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/user_go.png' %}" width="8%" height="8%"></img> <b>Generar Licencia</b></li>
-								      <li><a href="#" onclick="doOperation('/appPersonal/generarlicencia/todos');"><b>Generar licencia para todos</b></a></li>
-								      <li><a href="{% url 'buscadoragenlic' %}"><b>Generar licencia individual</b></a></li>
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/user_go.png' %}" width="10%" height="10%"></img>Generar Licencia</li>
+								      <li><a href="#" onclick="doOperation('/appPersonal/generarlicencia/todos');">Generar licencia para todos</a></li>
+								      <li><a href="{% url 'buscadoragenlic' %}">Generar licencia individual</a></li>
 								      <hr>
 								    </ul>
 							  {%endif%}
 							  {%if "Cambios" in grupos or user.username == "admin"%}
 								    <ul class="nav nav-list">
-								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/eye.png' %}" width="8%" height="8%"></img> <b>Informes</b></li>
-								      <li><a href="{% url 'listado/cambios' %}" ><b>Logs</b></a></li>
+								      <li class="nav-header"><img src="{% static 'appPersonal/img/icons/eye.png' %}" width="10%" height="10%"></img> <b>Informes</b></li>
+								      <li><a href="{% url 'listado/cambios' %}" >Logs</a></li>
 								      <hr>
 								    </ul>
 							  {%endif%}
@@ -391,27 +389,24 @@
 					<div class="panel-heading" style="background-color: #0D1857;">
 					  <h3 class="panel-title" style="color: white;"> 
 					      <center>
-						{% block titulo_barra %}
-						      
+							{% block titulo_barra %}
 					        {% endblock %}
 					      </center>
-					      
 					  </h3>
 					</div>
 					<div class="panel-body">
-							
-					      {% block content_title %}
-						      {% if title %}
-							      <h1>{{ title }}</h1>
-						      {% endif %}
-					      {% endblock %}
-					      {% block content %}
-						      {% block object-tools %}
-						      {% endblock %}
-						      <div class="hero-unit">
-							      {{ content }}
-						      </div>
-					      {% endblock %}
+						{% block content_title %}
+							{% if title %}
+								<h1>{{ title }}</h1>
+							{% endif %}
+						{% endblock %}
+						{% block content %}
+							{% block object-tools %}
+							{% endblock %}
+							<div class="hero-unit">
+								{{ content }}
+							</div>
+						{% endblock %}
 					</div>
 				</div>
 			</div>
