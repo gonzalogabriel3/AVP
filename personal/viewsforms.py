@@ -1826,3 +1826,12 @@ def abmLicenciaanualvieja(peticion):
     pag_licenciavieja=True
     return render_to_response('appPersonal/forms/abm.html',{'pag_licenciavieja':pag_licenciavieja,'agente':agente,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
+
+def abmFeriado(peticion):
+  name="Feriado"
+  user=peticion.user
+  grupos = get_grupos(user)
+  form=formFeriado()
+
+  pag_feriado=True
+  return render_to_response('appPersonal/forms/abm.html',{'pag_feriado':pag_feriado,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )

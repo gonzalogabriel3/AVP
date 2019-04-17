@@ -159,5 +159,13 @@ urlpatterns = [
     path('eliminarLicencia$',eliminarLicenciaTomada,name="eliminarLicencia"),
 
     path('eliminarAusent$',eliminarAusent,name="eliminarAusent"),
+
+    #URL's de ABM  de Feriados
+    path('listado/feriados$',feriadosListado,name='listado/feriados'),
+
+    path('forms/abmferiado$',abmFeriado,name="forms/abmferiado")
+
+    #FIN URL's de ABM  de Feriados
+
 ]
 

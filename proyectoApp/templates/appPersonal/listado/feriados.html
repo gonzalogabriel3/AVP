@@ -27,18 +27,22 @@
 
 
 		{% block titulo-form %}
-		    <td><b><font color="#1f618d" style="font-size: 13px;">Listado Agentes</font></b></td> 
-	    {% endblock %}
+		    <td><b><font color="#1f618d" style="font-size: 13px;">Listado Feriados</font></b></td> 
+	        {% endblock %}
 
 		{% block botonnuevo %}
 			      {%if "ABM" in grupos or user.username == "admin"%}
-			      	<a href="{% url 'forms/agente' %}?idagente=0" class="btn btn-success">Nuevo</a>
+			      	<a href="{% url 'forms/abmferiado' %}?idagente=0" class="btn btn-success">Nuevo</a>
 
 			      {% endif %}
-	    {%endblock%}
+	        {%endblock%}
 	        
-	    {% block botonborrar %}{%endblock%}
+	        {% block botonborrar %}{%endblock%}
 		
+		{% block botonatrasaction %}"return Open('/appPersonal/listado/agentesIndex'); " {% endblock %}
+		
+		{% block titulo %}
+		{%endblock%}
 		
 		{% block busqueda %}
 			<input id="busqueda" name="busqueda" class="input-medium search-query" size="50" maxlength="50" value="" type="text">
@@ -51,34 +55,17 @@
 			<table class="table table-striped" id="result_list">
 					<thead>
 					<tr>
-						<th>Nombres y Apellidos</th>
-						<th>Número de legajo</th>
-						<th>Tipo Documento</th>
-						<th>Número Documento</th>
-						<th>Vacaciones</th>
-						<th>Zona</th>
+						<th>Fecha</th>
+						<th>Descripcion</th>
+						<th>Lugar</th>
 					</tr>
 				</thead>
 				<tbody>
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-								<td><a href="{% url 'forms/menuagente' %}?idagente={{list.idagente}}"><b>{{list.apellido}}</b></a>, {{list.nombres}} </td>
-								<td>{{list.nrolegajo}}</td>
-								{%if list.tipodoc == '5'%}
-								    <td>DNI</td>
-								{%endif%}
-								{%if list.tipodoc == '2'%}
-								    <td>LE</td>
-								{%endif%}
-								{%if list.tipodoc == '1'%}
-								    <td>LC</td>
-								{%endif%}
-								{%if list.tipodoc == '4'%}
-								    <td>CI</td>
-								{%endif%}
-								<td>{{list.nrodocumento}}</td>
-								<td><a href= "{% url 'vacas' %}?idagente={{list.idagente}}"><b>ver</b></a></td>
-								<td>{{list.idzona}}</td>
+								<td>{{list.Fecha}} </td>
+								<td>{{list.descripcion}}</td>
+								<td>{{list.lugar}}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -88,4 +75,3 @@
 		<br/>
 		{% block prevpage%}&opc={{opc}}&busc={{busc}}{% endblock %}
 		{% block nextpage%}&opc={{opc}}&busc={{busc}}{% endblock %}
-		

@@ -51,6 +51,9 @@
 			font-weight: bold;
 			
 		}
+		a.pagination:hover {
+  			color: #1cc280;
+		}
 
 	</style>
 	
@@ -80,7 +83,7 @@
 	<!--Importo script para utilizar "datepicker" funcion de calendario-->
   	 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-
+  	<!--DATEPICKER PARA DIAS HÁBILES -->
 	<script>
 		
 		//Funcion que carga los dias feriados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
@@ -91,7 +94,7 @@
 			for (i = 0; i < feriados.length; i++) {
 				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
 					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
-					return [false,'bg-red'];
+					return [false,"ui-state-feriado"];
 				}
 			}
 			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
@@ -131,13 +134,28 @@
 		    });
 		  });
 
+		
+
+	</script>
+	<!--DATEPICKER PARA FERIADOS -->
+	<script >
+		$( function(){
+		    $( ".datepickerFeriado" ).datepicker({
+		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+		    	prevText:'<',
+		    	nextText:'>',
+		    	dateFormat: 'dd/mm/yy',
+		    	
+		    });
+		  });
 	</script>
 
 
 	<!--Estilo para datepicker-->
 		 <style>
 			.ui-datepicker {
-			  		background: #f9d03b;
+			  		background: #F5F5F5;
 				    width: 216px;
 				    height: auto;
 				    margin: 5px auto 0;
@@ -145,6 +163,16 @@
 				    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
 				    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
 				    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+				}
+
+				.ui-state-feriado{
+					color:#d12a27;
+					font-weight: bold;
+				}
+
+				.ui-state-active{
+					color:#1db73b;
+					font-weight: bold;
 				}
 
 				.ui-datepicker a {
@@ -158,12 +186,12 @@
 
 				.ui-datepicker-week-end{
 					font-weight: bold;
-					color:#677465;
+					color:#d12a27;
 				}
 
 				.ui-datepicker-header {
-				  background-color: #68655a;
-				  color: #41aa9c;
+				  background-color: #6192c1;
+				  color: #F5F5F5;
 				  font-weight: bold;
 				  padding: 1px;
 			  
@@ -174,7 +202,7 @@
 				.ui-datepicker-prev, .ui-datepicker-next {
 			  		display: inline-block;
 			  		padding: 2px;
-			  		color: #41aa9c;
+			  		color: #F5F5F5;
 			  
 				}
 				.ui-datepicker-prev {
@@ -184,7 +212,7 @@
 				.ui-datepicker-next {
 				  float: right;
 				  background-position: center 0px;
-				  color: #41aa9c;
+				  color: #F5F5F5;
 				}
 
 				.ui-datepicker th {
@@ -318,7 +346,7 @@
    
       {% block messages %}
 		{% if messages %}
-			  <ul class="messagelist">{% for message in messages %}
+			  	<ul class="messagelist">{% for message in messages %}
 			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
 			  {% endfor %}</ul>
 		{% endif %}
@@ -349,7 +377,7 @@
 
 								  <li><a href="{% url 'listado/agentesIndex' %}">Agentes</a></li>
 								  <li><a href="{% url 'listado/articulos' %}">Articulos</a></li>
-								  <li><a href="#">Feriados</a></li>
+								  <li><a href="{% url 'listado/feriados' %}">Feriados</a></li>
 <!-- 								  <li><a href="/personal/listado/adscriptos">Adscriptos</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/listacctrabajo">Accidente de trabajo</a></li2> -->
 <!-- 								  <li><a href="/personal/listado/traslado">Traslados</a></li2> -->
