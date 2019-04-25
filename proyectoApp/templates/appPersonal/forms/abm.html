@@ -101,6 +101,11 @@
 		<a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/licenciaanualvieja' %}?idagente={{agente.idagente}}" class="pagination">/ Licencias </a><a href="#" class="activo">/ Modificar licencia</a>
 	{% endif %}
 
+	{% if pag_feriado %}
+		<a href="{% url 'listado/feriados' %}" class="pagination">/ Feriados </a><a href="#" class="activo">/ Cargar feriado </a>
+
+	{% endif %}
+
 
 {% endblock %}
 <!--####FIN PAGINATION#######-->

@@ -44,6 +44,7 @@ from personal.viewslistados import *
 from django.core.cache import cache
 import json
 from django.core import serializers
+from django.contrib import messages
 #--------------------------------------------------------------------------
 #---------------------------------VIEW FORM--------------------------------
 
@@ -1826,12 +1827,40 @@ def abmLicenciaanualvieja(peticion):
     pag_licenciavieja=True
     return render_to_response('appPersonal/forms/abm.html',{'pag_licenciavieja':pag_licenciavieja,'agente':agente,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
-
+@csrf_exempt
+@login_required(login_url='login')
 def abmFeriado(peticion):
   name="Feriado"
   user=peticion.user
   grupos = get_grupos(user)
-  form=formFeriado()
+  idferiado=int(peticion.GET.get('idferiado'))
 
-  pag_feriado=True
-  return render_to_response('appPersonal/forms/abm.html',{'pag_feriado':pag_feriado,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+  if(peticion.POST):
+    fecha=datetime.strptime(peticion.POST['Fecha'], '%d/%m/%Y')
+    
+    if(idferiado>0):
+      feriado=Feriado.objects.get(idferiado=idferiado)
+      mensaje="Feriado del dia "+str(feriado.Fecha.strftime('%d/%m/%Y'))+" modificado correctamente"
+    else:
+      feriado=Feriado()
+      mensaje="Feriado creado el dia "+str(fecha.strftime('%d/%m/%Y'))
+    
+    feriado.Fecha=fecha
+    feriado.descripcion=peticion.POST['descripcion']
+    feriado.lugar=int(peticion.POST['lugar'])
+    feriado.save()
+    url="../listado/feriados$"
+    return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':mensaje})
+  else:
+    feriadosArray=feriados()
+    pag_feriado=True
+    if(idferiado>0):
+      feriado=Feriado.objects.get(idferiado=idferiado)
+      form=formFeriado(instance=feriado)
+      return render_to_response('appPersonal/forms/abm.html',{'feriados':feriadosArray,'pag_feriado':pag_feriado,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+    else:
+      form=formFeriado()
+      return render_to_response('appPersonal/forms/abm.html',{'feriados':feriadosArray,'pag_feriado':pag_feriado,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+
+  
+  

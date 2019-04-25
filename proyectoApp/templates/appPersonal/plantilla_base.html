@@ -141,6 +141,7 @@
 	<script >
 		$( function(){
 		    $( ".datepickerFeriado" ).datepicker({
+		    	beforeShowDay:cargaFeriados,
 		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 		    	prevText:'<',
