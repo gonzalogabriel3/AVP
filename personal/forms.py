@@ -225,10 +225,7 @@ class formLicenciaanual(forms.ModelForm):
         self.fields['anio'].widget.attrs['disabled'] = 'disabled'
         self.fields['cantdias'].widget.attrs['min']=1
         self.fields['tipo'].required=True
-        
-        
-
-
+              
 class formEscolaridad(forms.ModelForm):
     class Meta:
         model  = Escolaridad

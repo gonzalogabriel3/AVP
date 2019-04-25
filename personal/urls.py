@@ -162,8 +162,9 @@ urlpatterns = [
 
     #URL's de ABM  de Feriados
     path('listado/feriados$',feriadosListado,name='listado/feriados'),
-
-    path('forms/abmferiado$',abmFeriado,name="forms/abmferiado")
+    path('altaFeriado$',altaFeriado,name="altaFeriado"),
+    path('modificarFeriado$',modificarFeriado,name="modificarFeriado"),
+    path('eliminarFeriado',eliminarFeriado,name="eliminarFeriado"),
 
     #FIN URL's de ABM  de Feriados
 

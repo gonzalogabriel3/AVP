@@ -618,11 +618,11 @@ def juntamedicavieja(peticion):
     lista = paginar(juntamedicas,peticion)
     return render_to_response('appPersonal/listado/base_vieja/juntamedicavieja.html',{'lista':lista,'user':user,'grupos':grupos, 'idagente':idagente, 'agente':agente},)
 
-@login_required(login_url='login')
+
 def feriadosListado(peticion):
     user = peticion.user
     grupos = get_grupos(user)
-
+    mensaje=''
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)

@@ -31,7 +31,7 @@
 	    
 		{% block botonnuevo %}
 			      {%if "ABM" in grupos or user.username == "admin"%}
-			      	<a href="{% url 'forms/abmferiado' %}?idferiado=0" class="btn btn-success">Nuevo</a>
+			      	<a href="{% url 'altaFeriado' %}?idferiado=0" class="btn btn-success">Nuevo</a>
 
 			      {% endif %}
 	        {%endblock%}
@@ -48,7 +48,9 @@
 			<input id="buscar" class="btn btn-inverse" type="button" name="busqueda" value="Buscar" Onclick="return buscaragentes('{% url 'listado/feriados' %}?opc={{opc}}')">
 		{%endblock%}
 				
-		{% block main-list %}	
+		{% block main-list %}
+
+
 		<div class="results">
 			<table class="table table-striped" id="result_list">
 					<thead>
@@ -63,12 +65,12 @@
 					
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}" style="font-weight: bold;">
-								<td>{{list.Fecha}} </td>
-								<td>{{list.descripcion}}</td>
-								<td>{{list.lugar}}</td>
+								<td style="color: #0f63c2">{{list.Fecha}} </td>
+								<td style="color: #c25e0f">{{list.descripcion}}</td>
+								<td style="color: #0bafab">{{list.lugar}}</td>
 								<td>
-									<a href="{% url 'forms/abmferiado' %}?idferiado={{list.idferiado}}" class="btn btn-info">Modificar</a>
-									<a href="#" class="btn btn-danger">Eliminar</a>
+									<a href="{% url 'modificarFeriado' %}?idferiado={{list.idferiado}}" class="btn btn-info">Modificar</a>
+									<a onclick="return confirm('¿Esta seguro que desea eliminar el feriado del dia {{list.Fecha|date:'d/m/Y'}}?')" href="{% url 'eliminarFeriado' %}?idferiado={{list.idferiado}}" class="btn btn-danger">Eliminar</a>
 								</td>
 						</tr>
 					{% endfor %}

@@ -39,7 +39,7 @@ from personal.funciones import *
 from django.db.models import Q
 
 def paginar(objlist,peticion):
-    paginator = Paginator(objlist,40)
+    paginator = Paginator(objlist,20)
     
     try:
         page = int(peticion.GET.get('page', '1'))
