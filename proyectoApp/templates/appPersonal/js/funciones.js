@@ -181,7 +181,7 @@ function reportePresentismo(){
 function reporteAnualDir(path){
   
   if (validaAnio(document.getElementById('anio').value) ==1){
-      open(path+"?anio="+document.getElementById('anio').value+"&direc"+document.getElementById('dir').value,"_self");   
+      open(path+"?anio="+document.getElementById('anio').value+"&direc="+document.getElementById('dir').value,"_self");   
   }
   return false;
 }
