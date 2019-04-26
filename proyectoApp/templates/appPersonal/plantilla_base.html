@@ -92,6 +92,7 @@
 			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
 			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
 			for (i = 0; i < feriados.length; i++) {
+				console.log(i)
 				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
 					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
 					return [false,"ui-state-feriado"];
@@ -433,7 +434,7 @@
 				</div>
 			</div>
 
-			<div class="span9">
+			<div class="span9" style="padding-bottom: 25%">
 				<div class="panel panel-primary">
 					<div class="panel-heading" style="background-color: #0D1857;">
 					  <h3 class="panel-title" style="color: white;"> 

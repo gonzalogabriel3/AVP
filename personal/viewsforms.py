@@ -276,9 +276,10 @@ def abmAusentismo(peticion):
         #form.save()
         
         #for i in range(1,cd):
+        fechafinal=contarDiasHabiles(form.instance.fechainicio,int(form.instance.cantdias),idagen)
         a = Ausent()
         a.fechainicio=form.instance.fechainicio
-        #a.fechafin = form.instance.fechafin + timedelta(days=form.instance.cantdias)
+        a.fechafin = fechafinal
         #pprint(a.fechafin)
         a.cantdias = form.instance.cantdias
         a.observaciones = form.instance.observaciones
@@ -312,8 +313,9 @@ def abmAusentismo(peticion):
     if titulo_form==False:
       titulo_form=" Cargar ausentismo"
     
+    feriadosArray=feriados()
     pag_ausentismo=True   
-    return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_ausentismo':pag_ausentismo,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
+    return render_to_response('appPersonal/forms/abm.html',{'feriados':feriadosArray,'user':user,'pag_ausentismo':pag_ausentismo,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
 
 def eliminarAusent(peticion):
   idausent=peticion.GET.get('idausent')
@@ -1031,8 +1033,10 @@ def abmLicenciaanual(peticion):
         form.fields['cantdias'].widget.attrs['max']=diasRestantes
         titulo_form=" Cargar licencia"
     pag_licenciaanual=True
+    
     #Obtengo los feriados para cargar en datepicker
     feriadosArray=feriados()
+    
     return render(peticion,'appPersonal/forms/abm.html',{'feriados':feriadosArray,'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
     #FIN RENDERIZACION DE FORMULARIO
 
@@ -1041,6 +1045,8 @@ def feriados():
 
   objectsFeriados=Feriado.objects.all()
   feriados=[]
+  nombresFeriados=[]
+  lista=[]
   for objectsF in objectsFeriados:
       #Obtengo dia,mes,anio
       dia=datetime.strftime(objectsF.Fecha, '%d')
@@ -1054,7 +1060,7 @@ def feriados():
       #Creo la fecha en formato de string
       fecha_feriado=""+feriado_mes+"-"+feriado_dia+"-"+anio
       feriados.append(fecha_feriado)
-
+      
   return feriados
 
 #Funcion que cuenta los dias habiles(lunes a viernes) entre dos fechas(se omiten findes asi como tambien feriados)
@@ -1890,7 +1896,7 @@ def eliminarFeriado(peticion):
   feriado.delete()
   
   mensaje="Se ha eliminado el feriado del dia "+str(fecha.strftime('%d/%m/%Y'))
-  url="listado/feriados$?mensaje="+str(mensaje)
+  url="listado/feriados$"
   
   return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':mensaje})
   

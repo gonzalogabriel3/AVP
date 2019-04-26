@@ -60,6 +60,7 @@ class formAusent(forms.ModelForm):
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
         self.fields['direccion'].widget.attrs['disabled'] = 'disabled'
         self.fields['fechafin'].widget.attrs['disabled'] = 'disabled'
+        self.fields['cantdias'].widget.attrs['min']=1
         #self.fields['idarticulo'].queryset = Articulo.objects.filter(~Q(descripcion = 'L. A. R.')).order_by('descripcion')#Articulo.objects.order_by('descripcion')
      
         
