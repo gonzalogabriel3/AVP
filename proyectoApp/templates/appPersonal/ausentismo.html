@@ -8,20 +8,14 @@
 		<td><b><font color="#1f618d" style="font-size: 13px;">Estadisticas Ausentismos</font></b></td> 
 {% endblock %}
 
-
-
 {% block contenido-estadisticas %}
-
-		
-		<h5>Ausentismos</h5>
 		<p style="color: grey">Seleccione una opcion:</p>
-		
 		<center>
-		<ul class="nav nav-pills nav-stacked">
-			<li><a href="{% url 'partediario' %}"><b><i>Parte Diario</i></b></a></li>
-			<li><a href="{% url 'ausRepMes' %}"><b><i>Ausentismo Mensual</i></b></a></li>
-			<li><a href="{% url 'ausRepDir' %}"><b><i>Ausentismo Anual por Direccion</i></b></a></li>
-			<li><a href="{% url 'ausRepCMO' %}"><b><i>Reporte Mensual C.M.O</i></b></a></li>
+		<ul class="nav nav-tabs nav-stacked">
+			<li><a href="{% url 'partediario' %}"><strong>Parte Diario</strong></a></li>
+			<li><a href="{% url 'ausRepMes' %}"><strong>Ausentismo Mensual</strong></a></li>
+			<li><a href="{% url 'ausRepDir' %}"><strong>Ausentismo Anual por Direccion</strong></a></li>
+			<li><a href="{% url 'ausRepCMO' %}"><strong>Reporte Mensual C.M.O</strong></a></li>
 		</ul>
 		</center>
 {% endblock %}

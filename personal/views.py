@@ -313,7 +313,7 @@ def fechaEnRango(anio,mes,fi,ff):
     funciones.py. Luego suma la cantidad de insasitencias que ocurrieron en un mes, en caso de no existir retorna 0.
     """
     rango = list()
-    cant = 0;
+    cant = 0
     if mes !=0:
         for i in range(1,diasMes(anio,mes)+1):
             rango.append(datetime.date(anio, mes, i))
@@ -322,11 +322,9 @@ def fechaEnRango(anio,mes,fi,ff):
         for m in range(1,12+1):
             for dia in range(1,diasMes(anio,m)+1):
                 rango.append(datetime.date(anio,m,dia))
-                
     for r in rango:
         if fi <= r <=ff:
             cant = cant+1
-	   
     return cant
 
 
@@ -562,9 +560,9 @@ def presentismoReport(peticion):
 
     for le in listaPre:
         nombres = le[0].nombres
-        sincodnombres = nombres.encode('ascii','ignore')
+        sincodnombres = nombres#.encode('ascii','ignore')
         apellido = le[0].apellido
-        sincodapellido = apellido.encode('ascii','ignore')
+        sincodapellido = apellido#.encode('ascii','ignore')
         nombre = str(sincodapellido)+", "+str(sincodnombres)
         i = i + 1
         sheet.write(i, 0, nombre, style=default_style)
