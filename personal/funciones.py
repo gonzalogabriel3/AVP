@@ -98,7 +98,7 @@ def modeloLista(modelo):
     Convierte los datos de un modelo dado en una lista bien ordenada
     """
     #modelo=Agente.objects.filter(pk=modelo.pk).values_list()
-    w = list(modelo[0])
+    w = list(modelo)
     z = list()
     numero = len(w)
 

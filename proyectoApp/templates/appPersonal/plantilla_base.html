@@ -86,13 +86,14 @@
   	<!--DATEPICKER PARA DIAS HÁBILES -->
 	<script>
 		
+		
 		//Funcion que carga los dias feriados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
 		function cargaFeriados(date){
 			var feriados={{ feriados|safe }}
 			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
 			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
 			for (i = 0; i < feriados.length; i++) {
-				console.log(i)
+				
 				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
 					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
 					return [false,"ui-state-feriado"];
@@ -102,15 +103,51 @@
 			return [true,'bg-red'];
 		}
 
-		//Funcion que carga los fines de semana y feriados
+		//Funcion que carga los dias feriados y dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
+		function cargaDiasTomadosyFeriados(date){
+			//Cargo dias tomados
+			var diasTomados={{ diasTomados|safe }}
+			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
+			for (i = 0; i < diasTomados.length; i++) {
+				
+				if($.inArray((m+1) + '-' + d + '-' + y,diasTomados) != -1) {
+					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + diasTomados[i]);
+					return [false,"ui-state-diatomado","Ausentismo"];
+				}
+			}
+			
+			//Cargo feriados
+			var feriados={{ feriados|safe }}
+			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
+			for (i = 0; i < feriados.length; i++) {
+				
+				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
+					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
+					return [false,"ui-state-feriado"];
+				}
+			}
+			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
+			return [true,'bg-red'];
+		}
+
+		
+		//Funcion que carga los fines de semana y feriados en un datepicker
 		function cargarFindesyFeriados(date) {
-			//Obtengo los fines de semana mediante una funcion de datepicker,a su vez que llamo a la funcion "cargaFeriados"
 			var noWeekend = jQuery.datepicker.noWeekends(date);
 			return noWeekend[0] ? cargaFeriados(date) : noWeekend;
 		}
 
-     	 //Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepickerAdulto',con el atributo maxDate indico que la fecha maxima es pasado 18 años desde el dia actual-->
-		  $( function(){
+		//Funcion que carga los fines de semana,feriados y dias tomados de un agente a un datepicker
+		function cargarFindesyFeriadosyDiasTomados(date){
+			var diasYferiados=cargaDiasTomadosyFeriados(date)
+			var noWeekend = jQuery.datepicker.noWeekends(date);
+
+			return noWeekend[0] ? diasYferiados : noWeekend;
+		}
+	
+	  	$( function(){
 		    $( ".datepickerAdulto" ).datepicker({
 		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
@@ -121,27 +158,25 @@
 		    	
 		    });
 		  });
-
-		//Agrego la funcion datepicker(calendario) a todos los elementos con la clase 'datepicker'-->
-		   $( function(){
-		    $( ".datepicker" ).datepicker({
-		    	beforeShowDay: cargarFindesyFeriados,//Deshabilito los fines de semana y feriados
+		
+		$( function(){
+	    	$( ".datepickerAusentismo" ).datepicker({
+		    	beforeShowDay: cargarFindesyFeriadosyDiasTomados,//Deshabilito los fines de semana,feriados y diastomados
 		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 		    	prevText:'<',
 		    	nextText:'>',
 		    	dateFormat: 'dd/mm/yy',
-		    	    	
-		    });
-		  });
+	    	    	
+	    	});
+	  });
 
-		
 	</script>
 	<!--DATEPICKER PARA FERIADOS -->
 	<script >
 		$( function(){
 		    $( ".datepickerFeriado" ).datepicker({
-		    	beforeShowDay:cargaFeriados,
+		    	beforeShowDay: cargaFeriados,
 		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 		    	prevText:'<',
@@ -164,6 +199,11 @@
 				    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
 				    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
 				    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+				}
+
+				.ui-state-diatomado{
+					color:#d37102;
+					font-weight: bold;
 				}
 
 				.ui-state-feriado{

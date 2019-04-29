@@ -49,7 +49,7 @@ class formAusentismo(forms.ModelForm):
 class formAusent(forms.ModelForm):
     
     cantdias = forms.IntegerField()
-    fechainicio = forms.DateField(label="Fecha Inicio",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    fechainicio = forms.DateField(label="Fecha Inicio",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerAusentismo','data-date-format':'dd/mm/yyyy'}))
     #fechafin = forms.DateField(label="Fecha Fin",widget=forms.TextInput(attrs={'id':'dp2','class':'datepicker','data-date-format':'yyyy-mm-dd'}))
     class Meta:
         model  = Ausent
@@ -88,8 +88,8 @@ class formAgente(forms.ModelForm):
         
         
 class formFamiliaresac(forms.ModelForm):
-    fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
-    fechaacontecimiento = forms.DateField(label="Fecha Acontecimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepickerAdulto','data-date-format':'dd/mm/yyyy'}))
+    fechaacontecimiento = forms.DateField(label="Fecha Acontecimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerAdulto','data-date-format':'dd/mm/yyyy'}))
     
     class Meta:
         model  = Asignacionfamiliar
@@ -208,8 +208,8 @@ class formArticulos(forms.ModelForm):
         fields = ('descripcion', 'eslicencia', 'maxanual', 'maxmensual')
 
 class formLicenciaanual(forms.ModelForm):
-    fechadesde = forms.DateField(required=True,label="Fecha Desde",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
-    fechahasta = forms.DateField(required=False,label="Fecha Hasta",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    fechadesde = forms.DateField(required=True,label="Fecha Desde",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerAusentismo','data-date-format':'dd/mm/yyyy'}))
+    fechahasta = forms.DateField(required=False,label="Fecha Hasta",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerAusentismo','data-date-format':'dd/mm/yyyy'}))
     
     class Meta:
         model  = Licenciaanual

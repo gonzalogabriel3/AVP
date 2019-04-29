@@ -313,9 +313,11 @@ def abmAusentismo(peticion):
     if titulo_form==False:
       titulo_form=" Cargar ausentismo"
     
+    #Obtengo los feriados y dias de ausentismo para cargar en datepicker
     feriadosArray=feriados()
+    diasTomadosArray=diasTomados(idagen)
     pag_ausentismo=True   
-    return render_to_response('appPersonal/forms/abm.html',{'feriados':feriadosArray,'user':user,'pag_ausentismo':pag_ausentismo,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
+    return render_to_response('appPersonal/forms/abm.html',{'diasTomados':diasTomadosArray,'feriados':feriadosArray,'user':user,'pag_ausentismo':pag_ausentismo,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
 
 def eliminarAusent(peticion):
   idausent=peticion.GET.get('idausent')
@@ -907,6 +909,12 @@ def abmLicenciaanual(peticion):
             licenciaanual.cantdias=ausent.cantdias
             licenciaanual.save()
 
+            #Registro de las acciones en el "log"      
+            if accion == 'Alta':
+              registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+            elif accion == 'Modificacion':
+              registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+
             url="../vacas?idagente="+str(idagen)
             return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
           #Carga de Licencia
@@ -931,7 +939,13 @@ def abmLicenciaanual(peticion):
             licenciaanual.cantdias=ausent.cantdias
             licenciaanual.observaciones=ausent.observaciones
             licenciaanual.save()
-        
+
+            #Registro de las acciones en el "log"      
+            if accion == 'Alta':
+              registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+            elif accion == 'Modificacion':
+              registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))    
+            
         #Carga de interrupcion
         elif form.instance.tipo == 'INT':
           
@@ -982,21 +996,20 @@ def abmLicenciaanual(peticion):
             interrupcion.observaciones=ausent.observaciones
             interrupcion.save()
           
-          #Se modicia la licencianualagente con la nueva cantidad de dias tomados
-          licenciaanualagente.diastomados=licenciaanualagente.diastomados-dias_originales_lictomada
-          licenciaanualagente.diastomados=licenciaanualagente.diastomados+dias_habiles
-          licenciaanualagente.save()
-          
-          url="../vacas?idagente="+str(idagen)
+            #Se modicia la licencianualagente con la nueva cantidad de dias tomados
+            licenciaanualagente.diastomados=licenciaanualagente.diastomados-dias_originales_lictomada
+            licenciaanualagente.diastomados=licenciaanualagente.diastomados+dias_habiles
+            licenciaanualagente.save()
+
+            url="../vacas?idagente="+str(idagen)
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Interrupcion de licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
-        '''
-          if accion == 'Alta':
-              registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-          elif accion == 'Modificacion':
-              registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-              
-          url = '/personal/vacas?idagente='+str(idagen)
-          return HttpResponseRedirect(url)'''
+    
+    #Registro de las acciones en el "log"      
+    if accion == 'Alta':
+      registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+    elif accion == 'Modificacion':
+      registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))    
+        
     
     #RENDERIZACION DE FORMULARIO    
     else:
@@ -1034,19 +1047,58 @@ def abmLicenciaanual(peticion):
         titulo_form=" Cargar licencia"
     pag_licenciaanual=True
     
-    #Obtengo los feriados para cargar en datepicker
+    #Obtengo los feriados y dias de ausentismo para cargar en datepicker
     feriadosArray=feriados()
-    
-    return render(peticion,'appPersonal/forms/abm.html',{'feriados':feriadosArray,'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
+    diasTomadosArray=diasTomados(idagen)
+    return render(peticion,'appPersonal/forms/abm.html',{'diasTomados':diasTomadosArray,'feriados':feriadosArray,'pag_licenciaanual':pag_licenciaanual,'titulo_form':titulo_form,'agente':agente,'form':form,'name':name,'user':user, 'grupos':grupos})
     #FIN RENDERIZACION DE FORMULARIO
+
+def diasTomados(idagente):
+  ausentismos=Ausent.objects.filter(idagente=idagente)
+  diasTomados=[]
+  for ausent in ausentismos:
+    #Si el ausentismo es de una sola fecha lo agrego 
+    if(ausent.cantdias==1):
+        fecha=ausent.fechainicio
+        #Obtengo dia,mes,anio
+        dia=datetime.strftime(fecha, '%d')
+        mes=datetime.strftime(fecha, '%m')
+        anio=datetime.strftime(fecha, '%Y')
+        
+        #Quito 0 a la izquierda para que el formato sea reconocido por datepicker
+        diaTomado_dia=dia.lstrip('+-0')
+        diaTomado_mes=mes.lstrip('+-0')
+        
+        #Creo la fecha en formato de string
+        fecha_diaTomado=""+diaTomado_mes+"-"+diaTomado_dia+"-"+anio
+        diasTomados.append(fecha_diaTomado)
+    #Si son varias fechas recorro desde la fechainicio a fechafin 
+    else:  
+      fecha=ausent.fechainicio
+      i=0
+      while (fecha != ausent.fechafin):
+        fecha=ausent.fechainicio+timedelta(days=i)
+        #Obtengo dia,mes,anio
+        dia=datetime.strftime(fecha, '%d')
+        mes=datetime.strftime(fecha, '%m')
+        anio=datetime.strftime(fecha, '%Y')
+        
+        #Quito 0 a la izquierda para que el formato sea reconocido por datepicker
+        diaTomado_dia=dia.lstrip('+-0')
+        diaTomado_mes=mes.lstrip('+-0')
+        
+        #Creo la fecha en formato de string
+        fecha_diaTomado=""+diaTomado_mes+"-"+diaTomado_dia+"-"+anio
+        diasTomados.append(fecha_diaTomado)
+        i+=1
+
+  return diasTomados
 
 #Funcion que retorna un array(de strings) con todas las fechas de feriados de la base de datos
 def feriados():
 
   objectsFeriados=Feriado.objects.all()
   feriados=[]
-  nombresFeriados=[]
-  lista=[]
   for objectsF in objectsFeriados:
       #Obtengo dia,mes,anio
       dia=datetime.strftime(objectsF.Fecha, '%d')
@@ -1193,11 +1245,14 @@ def eliminarLicenciaTomada(peticion):
     licencia.delete()
     licenciaanualagente.diastomados=dias_totales
     licenciaanualagente.save()
+    
     url="vacas?idagente="+str(idagente)
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado interrupcion de licencia de '+agente.apellido+' '+agente.nombres})
   #Si por el contrario,la licencia es de tipo "LIC" la elimino de la tabla licenciaanual asi como tambien su referencia a las otras tablas
   else:
     pprint("Eliminacion de una licencia")
+
+    name = 'Licencia Anual'
     
     ausent=Ausent.objects.get(idausent=licencia.idausent.idausent)
     
@@ -1211,6 +1266,12 @@ def eliminarLicenciaTomada(peticion):
 
     licenciaanualagente.diastomados=licenciaanualagente.diastomados-ausent.cantdias
     licenciaanualagente.save()
+
+    #Registro de las acciones en el "log"      
+    #registrar(user,name,'Baja',getTime(),None,modeloLista(Licenciaanual.objects.filter(idlicanual=idlicanual).values_list()))
+
+    registrar(user,name,"Baja",getTime(),None,modeloLista(Licenciaanual.objects.filter(pk=idlicanual).values_list()))
+
     url="vacas?idagente="+str(idagente)
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado licencia de '+agente.apellido+' '+agente.nombres})
 
@@ -1849,9 +1910,14 @@ def altaFeriado(peticion):
     feriado.Fecha=fecha
     feriado.descripcion=peticion.POST['descripcion']
     feriado.lugar=int(peticion.POST['lugar'])
-    feriado.save()
-    url="listado/feriados$"
-    return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':mensaje})
+    try:
+      feriado.save()
+      url="listado/feriados$"
+      return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':mensaje})
+    except Exception as e:
+      mensajeError="Se produjo un error al guardar el feriado,vuelva a intentar"
+      url="listado/feriados$"
+      return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':mensajeError})
   else:
     feriadosArray=feriados()
     pag_feriado=True
