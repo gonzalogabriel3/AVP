@@ -1070,7 +1070,7 @@ def diasTomados(idagente):
         diaTomado_mes=mes.lstrip('+-0')
         
         #Creo la fecha en formato de string
-        fecha_diaTomado=""+diaTomado_mes+"-"+diaTomado_dia+"-"+anio
+        fecha_diaTomado=""+diaTomado_dia+"-"+diaTomado_mes+"-"+anio
         diasTomados.append(fecha_diaTomado)
     #Si son varias fechas recorro desde la fechainicio a fechafin 
     else:  
@@ -1088,7 +1088,7 @@ def diasTomados(idagente):
         diaTomado_mes=mes.lstrip('+-0')
         
         #Creo la fecha en formato de string
-        fecha_diaTomado=""+diaTomado_mes+"-"+diaTomado_dia+"-"+anio
+        fecha_diaTomado=""+diaTomado_dia+"-"+diaTomado_mes+"-"+anio
         diasTomados.append(fecha_diaTomado)
         i+=1
 

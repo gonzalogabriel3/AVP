@@ -105,18 +105,21 @@
 
 		//Funcion que carga los dias feriados y dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
 		function cargaDiasTomadosyFeriados(date){
-			//Cargo dias tomados
-			var diasTomados={{ diasTomados|safe }}
-			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
-			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
-			for (i = 0; i < diasTomados.length; i++) {
-				
-				if($.inArray((m+1) + '-' + d + '-' + y,diasTomados) != -1) {
-					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + diasTomados[i]);
-					return [false,"ui-state-diatomado","Ausentismo"];
-				}
-			}
 			
+			//Cargo dias tomados(Ausentismos)
+			var diasTomados={{ diasTomados|safe }}
+			var month = date.getMonth()+1;
+			var year = date.getFullYear();
+			var day = date.getDate();
+
+			//Creo una nueva fecha
+			var newdate = day+"-"+month+'-'+year;
+
+			if(jQuery.inArray(newdate, diasTomados) != -1){
+			  return [true, "highlight", "Ausentismo" ];
+			}
+
+	  
 			//Cargo feriados
 			var feriados={{ feriados|safe }}
 			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
@@ -125,7 +128,7 @@
 				
 				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
 					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
-					return [false,"ui-state-feriado"];
+					return [false,"ui-state-feriado","Feriado"];
 				}
 			}
 			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
@@ -200,9 +203,8 @@
 				    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
 				    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
 				}
-
-				.ui-state-diatomado{
-					color:#d37102;
+				.highlight a{
+					color: #d37102;
 					font-weight: bold;
 				}
 
