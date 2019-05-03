@@ -90,6 +90,7 @@
 		//Funcion que carga los dias feriados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
 		function cargaFeriados(date){
 			var feriados={{ feriados|safe }}
+			console.log(feriados)
 			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
 			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
 			for (i = 0; i < feriados.length; i++) {
@@ -101,6 +102,8 @@
 			}
 			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
 			return [true,'bg-red'];
+
+
 		}
 
 		//Funcion que carga los dias feriados y dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
@@ -119,7 +122,6 @@
 			  return [true, "highlight", "Ausentismo" ];
 			}
 
-	  
 			//Cargo feriados
 			var feriados={{ feriados|safe }}
 			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
@@ -151,7 +153,7 @@
 		}
 	
 	  	$( function(){
-		    $( ".datepickerAdulto" ).datepicker({
+		    $( "#datepickerAdulto" ).datepicker({
 		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 		    	prevText:'<',
@@ -161,36 +163,31 @@
 		    	
 		    });
 		  });
-		
-		$( function(){
-	    	$( ".datepickerAusentismo" ).datepicker({
-		    	beforeShowDay: cargarFindesyFeriadosyDiasTomados,//Deshabilito los fines de semana,feriados y diastomados
-		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-		    	prevText:'<',
-		    	nextText:'>',
-		    	dateFormat: 'dd/mm/yy',
-	    	    	
-	    	});
-	  });
 
+		$(function(){
+			$( ".datepickerAusentismo" ).datepicker({
+			    	beforeShowDay: cargarFindesyFeriadosyDiasTomados,//Deshabilito los fines de semana,feriados y diastomados
+			    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+			    	prevText:'<',
+			    	nextText:'>',
+			    	dateFormat: 'dd/mm/yy',
+		    	    	
+		    	});
+		});
+		$(function(){	
+			$( ".datepickerFeriado" ).datepicker({
+			    	beforeShowDay: cargarFindesyFeriados,//Deshabilito los fines de semana,feriados y diastomados
+			    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+			    	prevText:'<',
+			    	nextText:'>',
+			    	dateFormat: 'dd/mm/yy',
+		    	    	
+		    	});
+		});
 	</script>
-	<!--DATEPICKER PARA FERIADOS -->
-	<script >
-		$( function(){
-		    $( ".datepickerFeriado" ).datepicker({
-		    	beforeShowDay: cargaFeriados,
-		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-		    	prevText:'<',
-		    	nextText:'>',
-		    	dateFormat: 'dd/mm/yy',
-		    	
-		    });
-		  });
-	</script>
-
-
+	
 	<!--Estilo para datepicker-->
 		 <style>
 			.ui-datepicker {

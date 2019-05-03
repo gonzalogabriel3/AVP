@@ -70,6 +70,7 @@ class formAgente(forms.ModelForm):
     fechabaja = forms.DateField(required=False,label="Fecha Baja",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp3','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechanacimiento=forms.DateField(label="Fecha de nacimiento",widget=forms.DateInput(attrs=
                                 {
+                                    'id':'datepickerAdulto',
                                     'class':'datepickerAdulto',
                                     'placeholder':'Fecha de nacimiento'
 
@@ -208,7 +209,7 @@ class formArticulos(forms.ModelForm):
         fields = ('descripcion', 'eslicencia', 'maxanual', 'maxmensual')
 
 class formLicenciaanual(forms.ModelForm):
-    fechadesde = forms.DateField(required=True,label="Fecha Desde",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerAusentismo','data-date-format':'dd/mm/yyyy'}))
+    fechadesde = forms.DateField(required=True,label="Fecha Desde",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepickerAusentismo','data-date-format':'dd/mm/yyyy'}))
     fechahasta = forms.DateField(required=False,label="Fecha Hasta",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerAusentismo','data-date-format':'dd/mm/yyyy'}))
     
     class Meta:
@@ -284,7 +285,7 @@ class formLicenciaanualvieja(forms.ModelForm):
 
 
 class formFeriado(forms.ModelForm):
-    Fecha = forms.DateField(required=True,label="Fecha Desde",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerFeriado','data-date-format':'dd/mm/yyyy'}))
+    Fecha = forms.DateField(required=True,label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepickerFeriado','data-date-format':'dd/mm/yyyy'}))
     lugar=forms.ModelChoiceField(required=True,label="Lugar",queryset=Zona.objects.all().order_by('-idzona'))
     class Meta:
         model = Feriado

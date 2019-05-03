@@ -30,16 +30,14 @@
 	color:#2f5e6f;
 }
 
-#bodyLogin{
-	background-image: url("fondo.png");
-}
-
 
 .imagenInicio:hover{
 	border: solid 3px #F7D403;
 	opacity: 0.7;
 	
 }
+
+
 
 
 
