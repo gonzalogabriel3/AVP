@@ -285,7 +285,8 @@ class formLicenciaanualvieja(forms.ModelForm):
 
 
 class formFeriado(forms.ModelForm):
-    Fecha = forms.DateField(required=True,label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepickerFeriado','data-date-format':'dd/mm/yyyy'}))
+    Fecha=forms.DateField(label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'class':'datepickerFeriado','data-date-format':'dd/mm/yyyy'}))
+    #Fecha = forms.DateField(required=True,label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepickerFeriado','data-date-format':'dd/mm/yyyy'}))
     lugar=forms.ModelChoiceField(required=True,label="Lugar",queryset=Zona.objects.all().order_by('-idzona'))
     class Meta:
         model = Feriado

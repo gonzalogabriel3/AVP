@@ -1,9 +1,19 @@
 {% extends "appPersonal/forms/form_base.html" %}
 
-<!--####PAGINATION#######-->
+
+<!--
+	###########################################################################
+	#																		  #
+	#					***	PAGINATION  *** 								  #
+	###########################################################################										
+-->
+
 {% block pagination %}
 	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a>
-	<!--Si es un formulario de datos de la parte de agentes -->
+	
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################AGENTE###################################-->
 	{% if pag_agentes %}
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 		
@@ -23,10 +33,89 @@
 		{% endif %}
 	<a href="#" class="activo">/ {{titulo_form}} </a>
 	{% endif %}
+<!--#######################################FIN AGENTE###################################-->
 
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################AUSENTISMO###################################-->
 	{% if pag_ausentismo %}
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+	<script>
+	//Funcion que carga los dias feriados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
+		function cargaFeriados(date){
+			var feriados={{ feriados|safe }}
+			console.log(feriados)
+			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
+			for (i = 0; i < feriados.length; i++) {
+				
+				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
+					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
+					return [false,"ui-state-feriado"];
+				}
+			}
+			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
+			return [true,'bg-red'];
+		}
+
+		//Funcion que carga los dias feriados y dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
+		function cargaDiasTomadosyFeriados(date){
+			
+			//Cargo dias tomados(Ausentismos)
+			var diasTomados={{ diasTomados|safe }}
+			var month = date.getMonth()+1;
+			var year = date.getFullYear();
+			var day = date.getDate();
+
+			//Creo una nueva fecha
+			var newdate = day+"-"+month+'-'+year;
+
+			if(jQuery.inArray(newdate, diasTomados) != -1){
+			  return [true, "highlight", "Ausentismo" ];
+			}
+
+			//Cargo feriados
+			var feriados={{ feriados|safe }}
+			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
+			for (i = 0; i < feriados.length; i++) {
+				
+				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
+					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
+					return [false,"ui-state-feriado","Feriado"];
+				}
+			}
+			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
+			return [true,'bg-red'];
+		}
+
 		
+		//Funcion que carga los fines de semana y feriados en un datepicker
+		function cargarFindesyFeriados(date) {
+			var noWeekend = jQuery.datepicker.noWeekends(date);
+			return noWeekend[0] ? cargaFeriados(date) : noWeekend;
+		}
+
+		//Funcion que carga los fines de semana,feriados y dias tomados de un agente a un datepicker
+		function cargarFindesyFeriadosyDiasTomados(date){
+			var diasYferiados=cargaDiasTomadosyFeriados(date)
+			var noWeekend = jQuery.datepicker.noWeekends(date);
+
+			return noWeekend[0] ? diasYferiados : noWeekend;
+		}
+	
+		$(function(){
+			$( ".datepickerAusentismo" ).datepicker({
+			    	beforeShowDay: cargarFindesyFeriadosyDiasTomados,//Deshabilito los fines de semana,feriados y diastomados
+			    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+			    	prevText:'<',
+			    	nextText:'>',
+			    	dateFormat: 'dd/mm/yy',
+		    	    	
+		    	});
+		});
+		</script>
 		{% if agente %}
 			
 			{% if agente.situacion == 0 %}
@@ -44,8 +133,92 @@
 	<a href="{% url 'detalle/detallexagente/ausentismo' %}?idagente={{agente.idagente}}&borrado=-1" class="pagination">/ Ausentismo</a>
 	<a href="#" class="activo">/ {{titulo_form}} </a>
 	{% endif %}
+<!--#######################################FIN AUSENTISMO###################################-->
 
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################LICENCIA ANUAL AGENTE###################################-->
 	{% if pag_licenciaanual %}
+
+	<script>
+	//Se carga calendario 
+
+	//Funcion que carga los dias feriados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
+		function cargaFeriados(date){
+			var feriados={{ feriados|safe }}
+			console.log(feriados)
+			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
+			for (i = 0; i < feriados.length; i++) {
+				
+				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
+					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
+					return [false,"ui-state-feriado"];
+				}
+			}
+			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
+			return [true,'bg-red'];
+		}
+
+		//Funcion que carga los dias feriados y dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
+		function cargaDiasTomadosyFeriados(date){
+			
+			//Cargo dias tomados(Ausentismos)
+			var diasTomados={{ diasTomados|safe }}
+			var month = date.getMonth()+1;
+			var year = date.getFullYear();
+			var day = date.getDate();
+
+			//Creo una nueva fecha
+			var newdate = day+"-"+month+'-'+year;
+
+			if(jQuery.inArray(newdate, diasTomados) != -1){
+			  return [true, "highlight", "Ausentismo" ];
+			}
+
+			//Cargo feriados
+			var feriados={{ feriados|safe }}
+			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
+			for (i = 0; i < feriados.length; i++) {
+				
+				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
+					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
+					return [false,"ui-state-feriado","Feriado"];
+				}
+			}
+			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
+			return [true,'bg-red'];
+		}
+
+		
+		//Funcion que carga los fines de semana y feriados en un datepicker
+		function cargarFindesyFeriados(date) {
+			var noWeekend = jQuery.datepicker.noWeekends(date);
+			return noWeekend[0] ? cargaFeriados(date) : noWeekend;
+		}
+
+		//Funcion que carga los fines de semana,feriados y dias tomados de un agente a un datepicker
+		function cargarFindesyFeriadosyDiasTomados(date){
+			var diasYferiados=cargaDiasTomadosyFeriados(date)
+			var noWeekend = jQuery.datepicker.noWeekends(date);
+
+			return noWeekend[0] ? diasYferiados : noWeekend;
+		}
+	
+		$(function(){
+			$( ".datepickerAusentismo" ).datepicker({
+			    	beforeShowDay: cargarFindesyFeriadosyDiasTomados,//Deshabilito los fines de semana,feriados y diastomados
+			    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+			    	prevText:'<',
+			    	nextText:'>',
+			    	dateFormat: 'dd/mm/yy',
+		    	    	
+		    	});
+		});
+		
+	</script>
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 		{% if agente %}
 			
@@ -64,7 +237,11 @@
 		<a href="{% url 'vacas' %}?idagente={{agente.idagente}}" class="pagination">/ Licencias </a>
 		<a href="#" class="activo">/ {{titulo_form}}</a>
 	{% endif %}
+<!--#######################################FIN LICENCIA ANUAL AGENTE###################################-->
 
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################MEDICA###################################-->
 	{% if pag_medica %}
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 		
@@ -85,30 +262,87 @@
 	<a href="{% url 'listado/listadoxagente/medica' %}?idagente={{agente.idagente}}&idausent={{idausent}}&borrado=-1" class="pagination">/ Licencias médicas </a>
 	<a href="#" class="activo">/ {{titulo_form}}</a>
 	{% endif %}
+<!--#######################################FIN MEDICA###################################-->
 
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################ARTICULOS###################################-->
 	{% if pag_articulos %}
 		<a href="{% url 'listado/articulos' %}" class="pagination">/ Articulos </a><a href="#" class="activo">/ {{titulo_form}} </a>
 	{% endif %}
+<!--#######################################FIN ARTICULOS###################################-->
 
+<!---------------------------------------------------------------------------------------------------------------------->
 
+<!--#######################################MEDICA VIEJA###################################-->
 	{% if pag_medicavieja %}
 		<a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/medicavieja' %}?idagente={{agente.idagente}}" class="pagination">/ Medica </a><a href="#" class="activo">/ {{idm}}</a>
 	{% endif %}
+<!--#######################################FIN MEDICA VIEJA###################################-->
 
+<!---------------------------------------------------------------------------------------------------------------------->
 
+<!--#######################################LICENCIA VIEJA###################################-->
 	{% if pag_licenciavieja %}
 		<a href="{% url 'listado/agentes_base_vieja' %}" class="pagination">/ Base vieja / Listado agentes </a><a href="{% url 'listado/base_vieja/base_vieja_index' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="{% url 'listado/base_vieja/licenciaanualvieja' %}?idagente={{agente.idagente}}" class="pagination">/ Licencias </a><a href="#" class="activo">/ Modificar licencia</a>
 	{% endif %}
+<!--#######################################FIN LICENCIA VIEJA###################################-->
 
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################FERIADO###################################-->
+	
 	{% if pag_feriado %}
+	<!--Cargo el calendario datepicker con las propiedades de un calendario de feriados -->
+	<script>
+		//Funcion que carga los dias feriados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
+		function cargaFeriados(date){
+			var feriados={{ feriados|safe }}
+			console.log(feriados)
+			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
+			for (i = 0; i < feriados.length; i++) {
+				
+				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
+					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
+					return [false,"ui-state-feriado","Feriado"];
+				}
+			}
+			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
+			return [true,'bg-red'];
+
+		}
+		//Funcion que carga los fines de semana y feriados en un datepicker
+		function cargarFindesyFeriados(date) {
+			var noWeekend = jQuery.datepicker.noWeekends(date);
+			return noWeekend[0] ? cargaFeriados(date) : noWeekend;
+		}
+		$( function(){
+		    $( ".datepickerFeriado" ).datepicker({
+		    	beforeShowDay:cargarFindesyFeriados,
+		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+		    	prevText:'<',
+		    	nextText:'>',
+		    	dateFormat: 'dd/mm/yy',
+		    	
+		    });
+		  });
+	</script>
 		<a href="{% url 'listado/feriados' %}" class="pagination">/ Feriados </a><a href="#" class="activo">/ Cargar feriado </a>
 
 	{% endif %}
+<!--#######################################FIN FERIADO###################################-->
 
+<!---------------------------------------------------------------------------------------------------------------------->
 
 {% endblock %}
-<!--####FIN PAGINATION#######-->
-
+<!--
+	###########################################################################
+	#																		  #
+	#					***	fin PAGINATION *** 								  #
+	###########################################################################										
+-->
 
 
 {% block titulo-form %}
