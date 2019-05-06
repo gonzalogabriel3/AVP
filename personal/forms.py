@@ -70,8 +70,7 @@ class formAgente(forms.ModelForm):
     fechabaja = forms.DateField(required=False,label="Fecha Baja",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp3','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechanacimiento=forms.DateField(label="Fecha de nacimiento",widget=forms.DateInput(attrs=
                                 {
-                                    'id':'datepickerAdulto',
-                                    'class':'datepickerAdulto',
+                                    'class':'datepicker',
                                     'placeholder':'Fecha de nacimiento'
 
                                 }))
@@ -89,8 +88,8 @@ class formAgente(forms.ModelForm):
         
         
 class formFamiliaresac(forms.ModelForm):
-    fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepickerAdulto','data-date-format':'dd/mm/yyyy'}))
-    fechaacontecimiento = forms.DateField(label="Fecha Acontecimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerAdulto','data-date-format':'dd/mm/yyyy'}))
+    fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    fechaacontecimiento = forms.DateField(label="Fecha Acontecimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     
     class Meta:
         model  = Asignacionfamiliar

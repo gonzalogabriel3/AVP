@@ -16,7 +16,18 @@
 <!--#######################################AGENTE###################################-->
 	{% if pag_agentes %}
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
-		
+	<script>
+	$(function(){
+			$( ".datepicker" ).datepicker({
+			    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+			    	prevText:'<',
+			    	nextText:'>',
+			    	dateFormat: 'dd/mm/yy',
+		    	    	
+		    	});
+		});
+	</script>	
 		{% if agente %}
 			
 			{% if agente.situacion == 0 %}

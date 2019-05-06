@@ -18,7 +18,10 @@
 }
 
 .boton-ingresar{
-	border-top-right-radius: 20%;
+	border-top-right-radius: 15%;
+	border-bottom-right-radius: 15%;
+	border-top-left-radius: 15%;
+	border-bottom-left-radius: 15%;
 	background-color:rgba(36, 0, 0, 0.5);
 	margin-top: 90px;
 	size: 120px;
@@ -28,10 +31,15 @@
 	opacity: 0.8;
 	padding: 5px;
 	border:solid 2px rgba(42, 127, 180, 0.5);
+	padding-left: 60px;
+	padding-right: 60px;
 }
 
 .boton-ingresar:hover{
-	border-top-right-radius: 20%;
+	border-top-right-radius: 15%;
+	border-bottom-right-radius: 15%;
+	border-top-left-radius: 15%;
+	border-bottom-left-radius: 15%;
 	background-color:rgba(0, 0, 0, 0.5);
 	margin-top: 90px;
 	size: 120px;
@@ -41,4 +49,6 @@
 	opacity: 0.8;
 	padding: 5px;
 	border:solid 2px rgba(42, 127, 180, 0.5);
+	padding-left: 60px;
+	padding-right: 60px;
 }
