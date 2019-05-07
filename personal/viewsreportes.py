@@ -255,7 +255,6 @@ def salidasmesagentes_excel(peticion):
 	anio = int(peticion.GET.get('anio'))
 	nombremes = peticion.GET.get('nombremes')
 	
-	    
 	
 	book = xlwt.Workbook(encoding='utf8')
 	
@@ -351,12 +350,11 @@ def salidasanioagente_excel(peticion):
 	agente = Agente.objects.get(idagente=agente)
 	        
 	nombres = agente.nombres
-	sincodnombres = nombres.encode('ascii','ignore')
-    
+	
 	apellido = agente.apellido
-	sincodapellido = apellido.encode('ascii','ignore')
-    
-	nombreag = str(sincodapellido)+","+str(sincodnombres)
+	
+	
+	nombreag= str(agente.apellido)+","+str(agente.nombres)
 	
 	i = 0
 	sheet.write(i, 0, 'Agente:', style=default_style)
@@ -392,7 +390,7 @@ def salidasanioagente_excel(peticion):
 	    		sheet.write(i, 4, s.observaciones, style=default_style)
 	
 	response = HttpResponse(content_type='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=salidasmes_'+str(sincodapellido)+'_'+str(anio)+'_excel.xls'
+	response['Content-Disposition'] = 'attachment; filename=salidasmes_'+str(apellido)+'_'+str(anio)+'_excel.xls'
 	book.save(response)
 	return response
 

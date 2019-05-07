@@ -83,268 +83,92 @@
 	<!--Importo script para utilizar "datepicker" funcion de calendario-->
   	 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-  	<!--DATEPICKER PARA DIAS HÁBILES -->
-	<script>
-		
-		
-		//Funcion que carga los dias feriados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
-		function cargaFeriados(date){
-			var feriados={{ feriados|safe }}
-			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
-			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
-			for (i = 0; i < feriados.length; i++) {
-				
-				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
-					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
-					return [false,"ui-state-feriado"];
-				}
-			}
-			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
-			return [true,'bg-red'];
+<!--ESTILOS para datepicker-->
+<style>
+	.ui-datepicker {
+	  		background: #F5F5F5;
+		    width: 216px;
+		    height: auto;
+		    margin: 5px auto 0;
+		    font: 12pt Arial, sans-serif;
+		    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+		    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+		    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+		}
+		.highlight a{
+			color: #d37102;
+			font-weight: bold;
 		}
 
-		//Funcion que carga los dias feriados y dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
-		function cargaDiasTomadosyFeriados(date){
-			
-			//Cargo dias tomados(Ausentismos)
-			var diasTomados={{ diasTomados|safe }}
-			var month = date.getMonth()+1;
-			var year = date.getFullYear();
-			var day = date.getDate();
+		.ui-state-feriado{
+			color:#d12a27;
+			font-weight: bold;
+		}
 
-			//Creo una nueva fecha
-			var newdate = day+"-"+month+'-'+year;
+		.ui-state-active{
+			color:#1db73b;
+			font-weight: bold;
+		}
 
-			if(jQuery.inArray(newdate, diasTomados) != -1){
-			  return [true, "highlight", "Ausentismo" ];
-			}
+		.ui-datepicker a {
+	  		text-decoration: none;
+	  		font-weight: bold;
+		}
 
+		.ui-datepicker table {
+	  		width: 100%;
+		}
+
+		.ui-datepicker-week-end{
+			font-weight: bold;
+			color:#d12a27;
+		}
+
+		.ui-datepicker-header {
+		  background-color: #6192c1;
+		  color: #F5F5F5;
+		  font-weight: bold;
+		  padding: 1px;
 	  
-			//Cargo feriados
-			var feriados={{ feriados|safe }}
-			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
-			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
-			for (i = 0; i < feriados.length; i++) {
-				
-				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
-					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
-					return [false,"ui-state-feriado","Feriado"];
-				}
-			}
-			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
-			return [true,'bg-red'];
+		}
+		.ui-datepicker-title {
+	  		text-align: center;
+		}
+		.ui-datepicker-prev, .ui-datepicker-next {
+	  		display: inline-block;
+	  		padding: 2px;
+	  		color: #F5F5F5;
+	  
+		}
+		.ui-datepicker-prev {
+		  float: left;
+		  background-position: center -30px;
+		}
+		.ui-datepicker-next {
+		  float: right;
+		  background-position: center 0px;
+		  color: #F5F5F5;
 		}
 
-		
-		//Funcion que carga los fines de semana y feriados en un datepicker
-		function cargarFindesyFeriados(date) {
-			var noWeekend = jQuery.datepicker.noWeekends(date);
-			return noWeekend[0] ? cargaFeriados(date) : noWeekend;
+		.ui-datepicker th {
+		  text-transform: uppercase;
+		  font-size: 8pt;
+		  padding: 5px 0;
+		  color: #666666;
+		  text-shadow: 1px 0px 0px #fff;
+		  filter: dropshadow(color=#fff, offx=1, offy=0);
 		}
 
-		//Funcion que carga los fines de semana,feriados y dias tomados de un agente a un datepicker
-		function cargarFindesyFeriadosyDiasTomados(date){
-			var diasYferiados=cargaDiasTomadosyFeriados(date)
-			var noWeekend = jQuery.datepicker.noWeekends(date);
-
-			return noWeekend[0] ? diasYferiados : noWeekend;
+		.ui-datepicker tbody tr {
+	  		border-bottom: 1px solid #bbb;
 		}
-	
-	  	$( function(){
-		    $( ".datepickerAdulto" ).datepicker({
-		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-		    	prevText:'<',
-		    	nextText:'>',
-		    	dateFormat: 'dd/mm/yy',
-		    	maxDate:-6570
-		    	
-		    });
-		  });
-		
-		$( function(){
-	    	$( ".datepickerAusentismo" ).datepicker({
-		    	beforeShowDay: cargarFindesyFeriadosyDiasTomados,//Deshabilito los fines de semana,feriados y diastomados
-		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-		    	prevText:'<',
-		    	nextText:'>',
-		    	dateFormat: 'dd/mm/yy',
-	    	    	
-	    	});
-	  });
+		.ui-datepicker tbody tr:last-child {
+	  		border-bottom: 0px;
+		}
 
-	</script>
-	<!--DATEPICKER PARA FERIADOS -->
-	<script >
-		$( function(){
-		    $( ".datepickerFeriado" ).datepicker({
-		    	beforeShowDay: cargaFeriados,
-		    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-		    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-		    	prevText:'<',
-		    	nextText:'>',
-		    	dateFormat: 'dd/mm/yy',
-		    	
-		    });
-		  });
-	</script>
+</style>
 
-
-	<!--Estilo para datepicker-->
-		 <style>
-			.ui-datepicker {
-			  		background: #F5F5F5;
-				    width: 216px;
-				    height: auto;
-				    margin: 5px auto 0;
-				    font: 12pt Arial, sans-serif;
-				    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
-				    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
-				    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
-				}
-				.highlight a{
-					color: #d37102;
-					font-weight: bold;
-				}
-
-				.ui-state-feriado{
-					color:#d12a27;
-					font-weight: bold;
-				}
-
-				.ui-state-active{
-					color:#1db73b;
-					font-weight: bold;
-				}
-
-				.ui-datepicker a {
-			  		text-decoration: none;
-			  		font-weight: bold;
-				}
-
-				.ui-datepicker table {
-			  		width: 100%;
-				}
-
-				.ui-datepicker-week-end{
-					font-weight: bold;
-					color:#d12a27;
-				}
-
-				.ui-datepicker-header {
-				  background-color: #6192c1;
-				  color: #F5F5F5;
-				  font-weight: bold;
-				  padding: 1px;
-			  
-				}
-				.ui-datepicker-title {
-			  		text-align: center;
-				}
-				.ui-datepicker-prev, .ui-datepicker-next {
-			  		display: inline-block;
-			  		padding: 2px;
-			  		color: #F5F5F5;
-			  
-				}
-				.ui-datepicker-prev {
-				  float: left;
-				  background-position: center -30px;
-				}
-				.ui-datepicker-next {
-				  float: right;
-				  background-position: center 0px;
-				  color: #F5F5F5;
-				}
-
-				.ui-datepicker th {
-				  text-transform: uppercase;
-				  font-size: 8pt;
-				  padding: 5px 0;
-				  color: #666666;
-				  text-shadow: 1px 0px 0px #fff;
-				  filter: dropshadow(color=#fff, offx=1, offy=0);
-				}
-
-				.ui-datepicker tbody tr {
-			  		border-bottom: 1px solid #bbb;
-				}
-				.ui-datepicker tbody tr:last-child {
-			  		border-bottom: 0px;
-				}
-
-		</style>
-
-	<!--
-	###########################################################################
-	#																		  #
-	#					***	fin DATEPICKER *** 								  #
-	###########################################################################										
-	-->
-
-	<script>
-		$(function(){
-			window.prettyPrint && prettyPrint();
-			$('#dp1').datepicker();
-			$('#dp2').datepicker();
-			$('#dp3').datepicker();
-			$('#dp3').datepicker();
-			$('#dpYears').datepicker();
-			$('#dpMonths').datepicker();
-			
-			
-			var startDate = new Date(2012,1,20);
-			var endDate = new Date(2012,1,25);
-			$('#dp4').datepicker()
-				.on('changeDate', function(ev){
-					if (ev.date.valueOf() > endDate.valueOf()){
-						$('#alert').show().find('strong').text('The start date can not be greater then the end date');
-					} else {
-						$('#alert').hide();
-						startDate = new Date(ev.date);
-						$('#startDate').text($('#dp4').data('date'));
-					}
-					$('#dp4').datepicker('hide');
-				});
-			$('#dp5').datepicker()
-				.on('changeDate', function(ev){
-					if (ev.date.valueOf() < startDate.valueOf()){
-						$('#alert').show().find('strong').text('The end date can not be less then the start date');
-					} else {
-						$('#alert').hide();
-						endDate = new Date(ev.date);
-						$('#endDate').text($('#dp5').data('date'));
-					}
-					$('#dp5').datepicker('hide');
-				});
-
-        // disabling dates
-        var nowTemp = new Date();
-        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-
-        var checkin = $('#dpd1').datepicker({
-          onRender: function(date) {
-            return date.valueOf() < now.valueOf() ? 'disabled' : '';
-          }
-        }).on('changeDate', function(ev) {
-          if (ev.date.valueOf() > checkout.date.valueOf()) {
-            var newDate = new Date(ev.date)
-            newDate.setDate(newDate.getDate() + 1);
-            checkout.setValue(newDate);
-          }
-          checkin.hide();
-          $('#dpd2')[0].focus();
-        }).data('datepicker');
-        var checkout = $('#dpd2').datepicker({
-          onRender: function(date) {
-            return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
-          }
-        }).on('changeDate', function(ev) {
-          checkout.hide();
-        }).data('datepicker');
-		});
-	</script>
+<!--FIN ESTILOS para datepicker-->
    
    {% block extrahead %}{% endblock %}
    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}

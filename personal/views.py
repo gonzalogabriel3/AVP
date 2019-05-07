@@ -251,7 +251,11 @@ def cantAgrupamiento(peticion):
     agent = Agente.objects.filter(agrupamiento=agrup,situacion=2).order_by('apellido')
     cantidad = agent.count()
     for a in agent:
-        zona = Zona.objects.get(pk=a.idzona.pk)
+        try:
+            zona = Zona.objects.get(descripcion=a.idzona)
+        except Exception as e:
+            print(e)
+        
         lista.append([a.apellido,a.nombres,a.nrodocumento,a.fechaalta,zona.descripcion])
     
     lista = paginar(lista,peticion)
