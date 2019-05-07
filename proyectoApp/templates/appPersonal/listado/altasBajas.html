@@ -5,10 +5,6 @@
 	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'listado/altasbajasindex' %}">/ Altas-bajas </a><a href="#" class="activo">/ Listado año {{periodo}}</a>
 {% endblock %}
 
-{% block path %}
-		appPersonal/forms/articulos/0
-{% endblock%}
-
 {% block titulo-form %}
 	<h3 style="color: #1f618d">Listado Altas-Bajas</h3>
 {% endblock %}
@@ -17,20 +13,20 @@
 {%endblock%}
 
 {% block main-list %}
-		<hr>
+		
 			<h4>Totales</h4>
 			<br>
 			<p><strong>Total agentes (al dia de la fecha):</strong> {{cantAgen}}</p>
 			<p><strong>Total altas (en {{periodo}}):</strong> {{cantAlta}}</p>
 			<p><strong>Total bajas (en {{periodo}}):</strong> {{cantBaja}}</p>
 			<br>
-		<hr>
-		<div class="results">
+		
+		<div class="results" style="width: 250px;">
 			<h4 style="color: green">Altas</h4>
 			<br>
 			<table class="table table-striped">
 				<thead>
-					<tr>
+					<tr style="font-size: 13.8px;">
 						<th>Apellido</th>
 						<th>Nombres</th>
 						<th>Fecha alta</th>
@@ -41,11 +37,12 @@
 						<th>Funcion</th>
 						<th>Matricula</th>
 						<th>Planta</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					{%for a in alta%}
-						<tr class="{% cycle 'row1' 'row2' %}">
+						<tr style="font-size: 13.8px;">
 								<td>{{a.apellido}}</td>
 								<td>{{a.nombres}}</td>
 								<td>{{a.fechaalta|date:"d/m/Y"}}</td>
@@ -53,18 +50,24 @@
 								<th>{{a.iddireccion}}</th>
 								<td>{{a.clase}}</td>
 								<td>{{a.agrupamiento}}</td>
-								<td>{{a.funcion}}</td>
+								{% if a.funcion %}
+									<td>{{a.funcion}}</td>
+								{% else %}
+									<td>-</td>
+								{% endif %}
 								<td>{{a.nrodocumento}}</td>
 								<td>{{a.planta}}</td>
+								<td></td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+
 			<h4 style="color: red">Bajas</h4>
 			<br>
 			<table class="table table-striped">
 				<thead>
-					<tr>
+					<tr style="font-size: 13.8px;">
 						<th>Apellido</th>
 						<th>Nombres</th>
 						<th>Fecha Baja</th>
@@ -80,7 +83,7 @@
 				</thead>
 				<tbody>
 					{%for b in baja%}
-						<tr class="{% cycle 'row1' 'row2' %}">
+						<tr style="font-size: 13.8px;">
 								<td>{{b.apellido}}</td>
 								<td>{{b.nombres}}</td>
 								<td>{{b.fechabaja|date:"d/m/Y"}}</td>
@@ -89,7 +92,11 @@
 								<th>{{b.iddireccion}}</th>
 								<td>{{b.clase}}</td>
 								<td>{{b.agrupamiento}}</td>
-								<td>{{b.funcion}}</td>
+								{% if b.funcion %}
+									<td>{{b.funcion}}</td>
+								{% else %}
+									<td>-</td>
+								{% endif %}
 								<td>{{b.nrodocumento}}</td>
 								<td>{{b.planta}}</td>
 						</tr>

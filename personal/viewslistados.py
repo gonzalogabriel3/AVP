@@ -620,6 +620,7 @@ def juntamedicavieja(peticion):
 
 
 def feriadosListado(peticion):
+
     user = peticion.user
     grupos = get_grupos(user)
     mensaje=''
@@ -628,6 +629,8 @@ def feriadosListado(peticion):
         return render_to_response('appPersonal/error.html',{'user':user,'error':error, 'grupos':grupos},)
 
     feriados = Feriado.objects.all().order_by('-Fecha')
-
+    
+    #import pdb;pdb.set_trace()
+    
     lista = paginar(feriados,peticion)
     return render_to_response('appPersonal/listado/feriados.html',{'lista':lista,'user':user,'grupos':grupos, },)

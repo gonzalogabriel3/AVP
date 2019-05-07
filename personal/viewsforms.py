@@ -53,8 +53,6 @@ def borrarCache():
   cache.delete('forms/abmlicanual')
 
 
-
-
 @csrf_exempt
 @login_required(login_url='login')
 ######NO SE USA,SE UTILIZA EL METODO 'abmAusentismo'##########

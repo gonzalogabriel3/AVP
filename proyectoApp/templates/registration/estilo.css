@@ -18,10 +18,6 @@
 }
 
 .boton-ingresar{
-	border-top-right-radius: 15%;
-	border-bottom-right-radius: 15%;
-	border-top-left-radius: 15%;
-	border-bottom-left-radius: 15%;
 	background-color:rgba(36, 0, 0, 0.5);
 	margin-top: 90px;
 	size: 120px;
@@ -36,10 +32,6 @@
 }
 
 .boton-ingresar:hover{
-	border-top-right-radius: 15%;
-	border-bottom-right-radius: 15%;
-	border-top-left-radius: 15%;
-	border-bottom-left-radius: 15%;
 	background-color:rgba(0, 0, 0, 0.5);
 	margin-top: 90px;
 	size: 120px;
