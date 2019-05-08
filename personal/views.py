@@ -1024,7 +1024,7 @@ def detAusentismoxagente(peticion):
     #fechaEnRango(anio,mes,fi,ff):
     #aus = Ausent.objects.all().filter(Q(fechainicio__year=anio, fechafin__year=anio)|Q(fechafin__year=anio))
     #aus = Ausent.objects.filter(Q(idagente__exact=idagen, fechainicio__year=anio)).order_by('-fechainicio')
-    aus = Ausent.objects.filter(Q(idagente__exact=idagen,fechainicio__year=anio)|Q(idagente__exact=idagen,fechainicio__year=anio-1)).order_by('-fechainicio')
+    aus = Ausent.objects.filter(Q(idagente__exact=idagen,fechainicio__year=anio)|Q(idagente__exact=idagen,fechainicio__year=anio-1,fechafin__year=anio)).order_by('-fechainicio')
     #aus = aus.order_by('-fechainicio')
     agen = Agente.objects.filter(idagente__exact = idagen)
     #En listaagente se guardan los agentes de la direccion
