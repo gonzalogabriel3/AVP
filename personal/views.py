@@ -399,6 +399,7 @@ def ausReportMensual(peticion):
     mes = int(peticion.GET.get('mes'))
     anio = int(peticion.GET.get('anio'))
     listaAus = list()
+    lista = list()
     agente=Agente()
     if permisoEstadistica(user):
         return HttpResponseRedirect('/appPersonal/error/')
