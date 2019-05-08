@@ -963,7 +963,7 @@ def ausentDias(ausent):
         aux = a.fechainicio
         m = aux.month
         anio = aux.year
-        listM[m][1]=ausEnMes(anio,m,a)
+        listM[m-1][1]=ausEnMes(anio,m,a)
         #if m==a.fechafin.month:
         #    listM[m-1][1]=listM[m-1][1]+a.cantdias
         #else:
