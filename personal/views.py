@@ -984,6 +984,7 @@ def detAusentismoxagente(peticion):
     idagen = int(peticion.GET.get('idagente'))
     grupos = get_grupos(user)
     agente = Agente.objects.get(idagente = idagen)
+    anio = date.today().year
 
     if permisoListado(user):
         error = "no posee permiso para listar"
@@ -1006,7 +1007,6 @@ def detAusentismoxagente(peticion):
                     return render_to_response('appPersonal/error.html',{'user':user,'error':error},)
         except Ausent.DoesNotExist:
             a = None
-            anio = date.today().year
             mes = date.today().month
             tot55 = canttotalart(idagen,0, anio, 58)
             try:
@@ -1023,7 +1023,7 @@ def detAusentismoxagente(peticion):
     
     #fechaEnRango(anio,mes,fi,ff):
     #aus = Ausent.objects.all().filter(Q(fechainicio__year=anio, fechafin__year=anio)|Q(fechafin__year=anio))
-    aus = Ausent.objects.filter(Q(idagente__exact=idagen)).order_by('-fechainicio')
+    aus = Ausent.objects.filter(Q(idagente__exact=idagen, fechainicio__year=anio)).order_by('-fechainicio')
     #aus = aus.order_by('-fechainicio')
     agen = Agente.objects.filter(idagente__exact = idagen)
     #En listaagente se guardan los agentes de la direccion
