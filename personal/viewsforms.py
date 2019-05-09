@@ -329,65 +329,67 @@ def eliminarAusent(peticion):
   return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado ausentismo de '+agente.apellido+' '+agente.nombres})
 
 @login_required(login_url='login')
-def abmAgente(peticion):
+def abmAgente(request):
     
-    pag_agentes=True
-
-    user = peticion.user
+    user = request.user
     grupos = get_grupos(user)
+    pag_agentes=True
     if permisoZona(user) and permisoABM(user) and permisoDatosAgente(user):
         error = "no posee permiso para carga de datos"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
-    idagente = int(peticion.GET.get('idagente'))
+    idagente = int(request.GET.get('idagente'))
     name = 'Agente'
     accion = ''
     form_old=''
-    if peticion.POST:
-      a= Agente()
+    
+    if(request.method == 'POST'):
+
       if int(idagente) >0:
-	      a = Agente.objects.get(pk=idagente)
-	      form_old = formAgente(instance=a)
-	      form_old = modeloLista(form_old.Meta.model.objects.filter(pk=form_old.instance.pk).values_list())
-	      form = formAgente(peticion.POST, instance=a)
-	      
+          agente = Agente.objects.get(pk=idagente)
+          form = formAgente(request.POST,instance=agente)
+          accion = "Modificacion"
       else:
-        form = formAgente(peticion.POST)
+        accion = "Alta"
+        form=formAgente(request.POST)
 
-        if form.is_valid():
-          try:
-            aux = Agente.objects.get(nrodocumento=form.instance.nrodocumento)
-            accion = "Modificacion"
-          except Agente.DoesNotExist:
-            accion = "Alta"
-
-          if ("Datos Agente" not in get_grupos(user)):
-  	          form.save()
+      #Valido el formlario
+      if(form.is_valid()):
+        
+        form.save()
+        
         if accion == "Alta":
-              registrar(user, name, "Alta", getTime(), None, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          print("Entro en alta")
+          registrar(user, name, "Alta", getTime(), None, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url = '../listado/agentes$?opc=2&busc='
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Nuevo agente creado '})
+
         elif accion == "Modificacion":
-            registrar(user, name, "Modificacion", getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-            if int(idagente) != 0:
-              url = '/personal/forms/menuagente?idagente='+str(idagente)
-            else:
-              url = 'listado/agentes?opc=2'
-              return HttpResponseRedirect(url)
+          print("Entro en modificacion")
+          registrar(user, name, "Modificacion", getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url = '../listado/agentes$?opc=2&busc='
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Datos del agente modificados '})
+
+      else:
+        url = '../listado/agentes$?opc=2&busc='
+        return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'Hubo un error al guardar los datos del agente '})     
+      #Fin validacion de formulario
     else:
       if int(idagente) >0:
         #MODIFICACION
         a = Agente.objects.get(pk=idagente)
         titulo_form=" Modificar datos personales "
         form = formAgente(instance=a)
-        return render(peticion,'appPersonal/forms/abm.html',{'agente':a,'user':user,'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
+        return render(request,'appPersonal/forms/abm.html',{'agente':a,'user':user,'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
       
       else:
         # ALTA
         form = formAgente()
         titulo_form=" Nuevo agente "
-   
-    return render(peticion,'appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
     
-
-
+    
+    titulo_form=" Nuevo agente "
+    return render(request,'appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
+    
     
 @login_required(login_url='login')
 def abmFamiliresac(peticion):
@@ -783,7 +785,7 @@ def abmLicenciaanual(peticion):
     accion = ''
     titulo_form=''
     agente=Agente.objects.get(idagente=idagen)
-    #Calculo los dias que le quedan en la licenciaAnualaGENTE para poner un 'max' en cantidad de dias en el formulario
+    #Calculo los dias que le quedan en la licenciaAnualaGENTE para poner un 'max' en cantidad de dias en el formlario
     lic_anual_agente=Licenciaanualagente.objects.get(idagente=idagen,anio=anio)
     diasRestantes=(lic_anual_agente.cantidaddias-lic_anual_agente.diastomados)
     

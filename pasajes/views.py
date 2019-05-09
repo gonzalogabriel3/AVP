@@ -99,7 +99,8 @@ def altaAgente(request):
 	#Recibo el request,si es un request de tipo POST lo valido y guardo el nuevo agente
 	if(request.method == 'POST'):
 		
-		form=formularioAgente(request.POST)	
+		form=formularioAgente(request.POST)
+
 		#Valido el formulario
 		if(form.is_valid()):
 				messages.success(request,"Se ha creado un nuevo agente")

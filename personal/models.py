@@ -88,6 +88,8 @@ TIPO_CARGO = (
 	("CG2","Capataz Gral - Central Zonas"),
 	("CG3","Capataz Gral - Diesel y Ajuste equipos pesados central y zonas"),
 )
+
+
 # Create your models here.
 
 
@@ -198,7 +200,7 @@ class Agente(models.Model):
     apellido = models.CharField(max_length=200, blank=True)
     nombres = models.CharField(max_length=200)
     tipodoc = models.CharField(max_length=200, blank=True, choices=TIPO_DOC, verbose_name = "Tipo Documento")
-    nrodocumento = models.SmallIntegerField(unique=True, verbose_name = "Nro Documento")
+    nrodocumento = models.BigIntegerField(unique=True, verbose_name = "Nro Documento")
     sexo = models.CharField(max_length=1, choices=TIPO_SEXO)
     fechanacimiento = models.DateField()
     nacionalidad = models.ForeignKey(Nacionalidad, db_column="nacionalidad", verbose_name="Nacionalidad",on_delete=models.CASCADE)
