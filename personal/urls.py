@@ -168,5 +168,7 @@ urlpatterns = [
 
     #FIN URL's de ABM  de Feriados
 
+    path('eliminarEscolaridad$',eliminarEscolaridad,name="eliminarEscolaridad")
+
 ]
 

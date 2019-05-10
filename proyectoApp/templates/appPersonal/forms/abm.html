@@ -48,6 +48,35 @@
 
 <!---------------------------------------------------------------------------------------------------------------------->
 
+<!--#######################################FAMILIAR###################################-->
+	{% if pag_familiar %}
+		<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+		{% if agente %}
+				
+				{% if agente.situacion == 0 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+				{% elif agente.situacion == 1 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+				{% elif agente.situacion == 2 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+				{% else %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+				{% endif %}
+				<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
+				{{agente.apellido}} {{agente.nombres}} </a>
+		{% endif %}
+		<a href="{% url 'listado/listadoxagente/facxagente' %}?idagente={{agente.idagente}}&&borrado=-1" class="pagination">/ Familiares a cargo </a>
+		{% if titulo_form %}
+			<a href="#" class="activo">/ {{titulo_form}}</a>
+		{% else %}
+			<a href="#" class="activo">/ Nuevo familiar</a>
+		{% endif %}
+	{% endif %}
+<!--#######################################FIN FAMILIAR###################################-->
+
+
+<!---------------------------------------------------------------------------------------------------------------------->
+
 <!--#######################################AUSENTISMO###################################-->
 	{% if pag_ausentismo %}
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
@@ -300,6 +329,7 @@
 <!--#######################################FIN LICENCIA VIEJA###################################-->
 
 <!---------------------------------------------------------------------------------------------------------------------->
+
 
 <!--#######################################FERIADO###################################-->
 	

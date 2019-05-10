@@ -284,7 +284,7 @@ class Asignacionfamiliar(models.Model):
     idasigfam = models.AutoField(primary_key=True)
     idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
     tipodocumento = models.CharField(max_length=200, blank=True, choices = TIPO_DOC,verbose_name='Tipo Documento')
-    nrodocumento = models.IntegerField(null=True, blank=True,verbose_name='Número de Documento')
+    nrodocumento = models.BigIntegerField(null=True, blank=True,verbose_name='Número de Documento')
     apellidoynombre = models.CharField(max_length=200, blank=True,verbose_name='Apellido y Nombre de Familiar')
     sexo = models.CharField(max_length=200, blank=True,choices=TIPO_SEXO)
     vinculo = models.ForeignKey(Vinculo, null=True, db_column='vinculo', blank=True,verbose_name='Vínculo',on_delete=models.CASCADE)
@@ -616,7 +616,7 @@ class Escolaridad(models.Model):
         unique_together = ("idasigfam","anio")
     
     def __str__(self):
-        return str(self.gradocrusado)       
+        return str(self.idasigfam)       
 
 #··························································································································································        
 class ArtiTomados(models.Model):

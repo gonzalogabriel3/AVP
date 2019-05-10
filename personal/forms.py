@@ -261,14 +261,26 @@ class formLicenciaanual(forms.ModelForm):
         self.fields['tipo'].required=True
               
 class formEscolaridad(forms.ModelForm):
+    #idasigfam = forms.CharField(required=False,label="Apellido y Nombres",widget = forms.TextInput(attrs={'readonly':True}))
+    anio = forms.IntegerField(label="Año",min_value=0,)
+    establecimiento = forms.CharField(max_length=100,label="Establecimiento",widget = forms.TextInput())
+    tipoescolaridad = forms.ChoiceField(label="Tipo",choices=TIPO_ESCO)
+    periodoescolar = forms.CharField(max_length=100,label="Periodo escolar",widget = forms.TextInput())
+    gradocrusado = forms.CharField(max_length=100,label="Grado cursado",widget = forms.TextInput())
+
+
     class Meta:
         model  = Escolaridad
-        fields = ('idasigfam', 'anio', 'establecimiento', 'tipoescolaridad', 'periodoescolar','gradocrusado')
+        exclude =['idescolaridad','idasigfam']
 
     def __init__(self, *args, **kwargs):
-        super(formEscolaridad, self).__init__(*args, **kwargs)
+        super(formEscolaridad, self).__init__(*args, **kwargs,)
         instance = getattr(self, 'instance', None)
-        self.fields['idasigfam'].widget.attrs['disabled'] = 'disabled'
+
+        '''self.fields['idasigfam'].widget.attrs['required']=False
+        self.fields['idasigfam'].widget.attrs['disabled']=True
+        self.fields['idasigfam'].queryset=Escolaridad.objects.filter(idescolaridad=idescolaridad)'''
+
 
 class formMedica(forms.ModelForm):
     fechaalta=forms.DateField(widget=forms.DateInput(attrs=

@@ -390,7 +390,7 @@ def abmAgente(request):
     titulo_form=" Nuevo agente "
     return render(request,'appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'form': form,'accion':accion, 'name':name,'grupos':grupos,'titulo_form':titulo_form}) 
     
-    
+@csrf_exempt   
 @login_required(login_url='login')
 def abmFamiliresac(peticion):
   
@@ -421,32 +421,35 @@ def abmFamiliresac(peticion):
 	      form = formFamiliaresac(peticion.POST)
     
       if form.is_valid():
-	      form.instance.idagente_id = idagen
-	      form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
-	      form.save()
-	      if accion == 'Alta':
-	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      elif accion == 'Modificacion':
-	          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      url = '/personal/listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
-	      return HttpResponseRedirect(url)
+        form.instance.idagente_id = idagen
+        form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
+        form.save()
+        if accion == 'Alta':
+          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url = '../listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Nuevo familiar creado '})
+        elif accion == 'Modificacion':
+          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url = '../listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Datos del familiar guardados '})
     else:
       if int(idfac) > 0 and int(idagen)> 0:
         a = Asignacionfamiliar.objects.get(pk=idfac)
         form = formFamiliaresac(instance=a)
-        titulo_form="Familiar a cargo"
+        titulo_form=" "+str(a.apellidoynombre)
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Asignacionfamiliar()
           b.idagente = a
           form = formFamiliaresac(instance=b)
-          titulo_form="Familiar a cargo"
+          titulo_form=""
       else:
         form = formFamiliaresac()
-        titulo_form="Nuevo familiar a cargo"
+        titulo_form=""
     
-    pag_agentes=True
-    return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_agentes':pag_agentes,'form': form, 'name':name,'grupos':grupos,'titulo_form':titulo_form,'agente':agente})
+    pag_familiar=True
+    
+    return render_to_response('appPersonal/forms/abm.html',{'user':user,'pag_familiar':pag_familiar,'form': form, 'name':name,'grupos':grupos,'titulo_form':titulo_form,'agente':agente})
 
     
     
@@ -1002,7 +1005,7 @@ def abmLicenciaanual(peticion):
             licenciaanualagente.save()
 
             url="../vacas?idagente="+str(idagen)
-          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Interrupcion de licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Interrupcion de licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
     
     #Registro de las acciones en el "log"      
     if accion == 'Alta':
@@ -1587,7 +1590,7 @@ def abmArticulos(peticion,idarticulo):
       pag_articulos=True
       return render_to_response('appPersonal/forms/abm.html',{'pag_articulos':pag_articulos,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos, 'user':user}, )
 
-    
+@csrf_exempt    
 @login_required(login_url='login')
 def abmEscolaridad(peticion):
     
@@ -1596,6 +1599,8 @@ def abmEscolaridad(peticion):
     user = peticion.user
     grupos = get_grupos(user)
     name = 'Escolaridad'
+    familiar=Asignacionfamiliar.objects.get(idasigfam=idasigfam)
+    agente=Agente.objects.get(idagente=familiar.idagente)
     form_old = ''
     accion = ''
     
@@ -1604,7 +1609,6 @@ def abmEscolaridad(peticion):
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     
     if peticion.POST:
-      
     
       if int(idescolaridad) >0:
 	      a = Escolaridad.objects.get(pk=idescolaridad)
@@ -1615,18 +1619,18 @@ def abmEscolaridad(peticion):
       else:
 	      form = formEscolaridad(peticion.POST)
 	      accion = 'Alta'
-    
+
       if form.is_valid():
-	      form.instance.idasigfam_id = idasigfam
-	      form.fields['idasigfam'].widget.attrs['enabled'] = 'enabled'
-	      form.save()
-	      if accion == 'Alta':
-	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      elif accion == 'Modificacion':
-	          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	          
-	      url = '/personal/listado/listadoxaf/escolaridadxaf?idfac='+str(form.instance.idasigfam_id)+'&borrado=-1'
-	      return HttpResponseRedirect(url)
+        form.instance.idasigfam= Asignacionfamiliar.objects.get(idasigfam=idasigfam)
+        form.save()
+        if accion == 'Alta':
+          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url="../../listado/listadoxaf/escolaridadxaf$?idfac="+str(idasigfam)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Escolaridad creada'})
+        elif accion == 'Modificacion':
+          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url="../../listado/listadoxaf/escolaridadxaf$?idfac="+str(idasigfam)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Escolaridad modificada correctamente'})  
     else:
       if int(idescolaridad) > 0  and int(idasigfam)> 0:
         a = Escolaridad.objects.get(pk=idescolaridad)
@@ -1639,8 +1643,20 @@ def abmEscolaridad(peticion):
       else:
         form = formEscolaridad()
     
-    return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name,'grupos':grupos, 'user':user}, ) 
-    
+    pag_familiar=True
+    return render_to_response('appPersonal/forms/abm.html',{'agente':agente,'pag_familiar':pag_familiar,'form': form, 'name':name,'grupos':grupos, 'user':user}, ) 
+
+def eliminarEscolaridad(peticion):
+    idescolaridad=peticion.GET.get('idescolaridad')
+    idfamiliar=peticion.GET.get('idfamiliar')
+    try:
+      escolaridad=Escolaridad.objects.get(idescolaridad=idescolaridad)
+      escolaridad.delete()
+      url="../personal/listado/listadoxaf/escolaridadxaf$?idfac="+str(idfamiliar)+"&borrado=-1"
+      return HttpResponseRedirect(url)
+
+    except Exception as e:
+      print("Error al eliminar escolaridad")
     
 @csrf_exempt   
 @login_required(login_url='login')
