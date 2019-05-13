@@ -41,8 +41,22 @@
 			{% endif %}
 			<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
 			{{agente.apellido}} {{agente.nombres}} </a>
+			<a href="#" class="activo">/ Modificar datos personales </a>
+		{% else %}
+			
+			{% if opcion == 0 %}
+				<a href="{% url 'listado/agentes'%}?opc={{opcion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+			{% elif opcion == 1 %}
+				<a href="{% url 'listado/agentes'%}?opc={{opcion}}&busc=" class="pagination">/ Agentes inactivos</a>
+			{% elif opcion == 2 %}
+				<a href="{% url 'listado/agentes'%}?opc={{opcion}}&busc=" class="pagination">/ Agentes activos</a>
+			{% else %}
+				<a href="{% url 'listado/agentes'%}?opc={{opcion}}&busc=" class="pagination">/ Todos los agentes</a>	
+			{% endif %}
+			<a href="#" class="activo">/ Nuevo agente </a>
+		
 		{% endif %}
-	<a href="#" class="activo">/ {{titulo_form}} </a>
+	
 	{% endif %}
 <!--#######################################FIN AGENTE###################################-->
 
@@ -74,6 +88,62 @@
 	{% endif %}
 <!--#######################################FIN FAMILIAR###################################-->
 
+
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################ESCOLARIDAD###################################-->
+	{% if pag_escolaridad %}
+		<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+		{% if agente %}
+				
+				{% if agente.situacion == 0 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+				{% elif agente.situacion == 1 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+				{% elif agente.situacion == 2 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+				{% else %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+				{% endif %}
+				<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
+				{{agente.apellido}} {{agente.nombres}} </a>
+		{% endif %}
+		<a href="{% url 'listado/listadoxagente/facxagente' %}?idagente={{agente.idagente}}&borrado=-1" class="pagination">/ Familiares a cargo </a>
+		<a href="{% url 'listado/listadoxaf/escolaridadxaf' %}?idfac={{familiar.idasigfam}}&borrado=-1" class="pagination">/ {{familiar.apellidoynombre}} / Escolaridad </a>
+		{% if titulo_form %}
+			<a href="#" class="activo">/ {{titulo_form}}</a>
+		{% else %}
+			<a href="#" class="activo">/ Nueva escolaridad</a>
+		{% endif %}
+	{% endif %}
+<!--#######################################FIN ESCOLARIDAD###################################-->
+
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################SALIDAS###################################-->
+	{% if pag_salida %}
+		<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+		{% if agente %}
+				
+				{% if agente.situacion == 0 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+				{% elif agente.situacion == 1 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+				{% elif agente.situacion == 2 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+				{% else %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+				{% endif %}
+				<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
+				{{agente.apellido}} {{agente.nombres}} </a>
+		{% endif %}
+		<a href="{% url 'listado/listadoxagente/salidaxagente' %}?idagente={{agente.idagente}}&borrado=-1" class="pagination">/ Salidas </a>
+		<a href="#" class="activo">/ {{titulo_form}} </a>
+		
+	{% endif %}
+<!--#######################################FIN SALIDAS###################################-->
 
 <!---------------------------------------------------------------------------------------------------------------------->
 
@@ -275,6 +345,9 @@
 			{{agente.apellido}} {{agente.nombres}} </a>
 		{% endif %}
 		<a href="{% url 'vacas' %}?idagente={{agente.idagente}}" class="pagination">/ Licencias </a>
+		{% if detalle %}
+		<a href="{% url 'listado/listadoxagente/vacacionesxagente' %}?idagen={{agente.idagente}}&borrado=-1" class="pagination">/ Detalles </a>
+		{% endif %}
 		<a href="#" class="activo">/ {{titulo_form}}</a>
 	{% endif %}
 <!--#######################################FIN LICENCIA ANUAL AGENTE###################################-->

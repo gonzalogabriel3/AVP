@@ -83,7 +83,7 @@ urlpatterns = [
     path('listado/listadoxagente/seguro/(\d+)/(-?\d+)/$',seguroxagente),
     path('listado/listadoxagente/servprest$',servprestxagente,name="listado/listadoxagente/servprest"),
     #path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
-    path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente),
+    path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
     path('listado/listadoxagente/estudioscursados$',estudioscursadosxagente,name="listado/listadoxagente/estudioscursados"),
     path('listado/listadoxagente/medica$',medicaxagente,name="listado/listadoxagente/medica"),
 
