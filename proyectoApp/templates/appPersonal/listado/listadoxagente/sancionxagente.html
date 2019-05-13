@@ -11,7 +11,8 @@
 		{% else %}
 			<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
 	{% endif %}
-	<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ Sanciones </a>
+	<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a>
+	<a href="#" class="activo">/ Sanciones </a>
 {% endblock %}
 {% block titulo-form %}
 	<p style="font-size: 16px;color: #1f618d">Listado Sanciones de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>

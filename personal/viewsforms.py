@@ -1283,11 +1283,13 @@ def eliminarLicenciaTomada(peticion):
     url="vacas?idagente="+str(idagente)
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado licencia de '+agente.apellido+' '+agente.nombres})
 
+@csrf_exempt
 @login_required(login_url='login')
 def abmSancion(peticion):
 
     idsan=int(peticion.GET.get('idsan'))
     idagen=int(peticion.GET.get('idagen'))
+    agente=Agente.objects.get(idagente=idagen)
     user = peticion.user
     grupos = get_grupos(user)
     name = 'Sanción'
@@ -1300,6 +1302,7 @@ def abmSancion(peticion):
     
     
     if peticion.POST:
+
       if int(idsan) >0:
 	      a = Sancion.objects.get(pk=idsan)
 	      form_old = formSancion(instance=a)
@@ -1322,21 +1325,27 @@ def abmSancion(peticion):
 	      url = 'appPersonal/listado/listadoxagente/sancionxagente/'+str(idagen)+'/-1/'
 	      return HttpResponseRedirect(url)
     else:
-      if int(idsan) > 0 and int(idagen)> 0:
-        a = Sancion.objects.get(pk=idsan)
+      if int(idsan) > 0:
+        a = Sancion.objects.get(idsancion=idsan)
         form = formSancion(instance=a)
-      elif int(idagen) > 0:          
-          a = Agente.objects.get(pk=idagen)
-          b = Sancion()
-          b.idagente = a
-          form = formSancion(instance=b)
+        titulo_form=""+str(a.fecha)
+        pprint("entre al primer bucle")
+      elif int(idagen) > 0:
+        a = Agente.objects.get(pk=idagen)
+        b = Sancion()
+        b.idagente = a
+        form = formSancion(instance=b)
+        titulo_form="Cargar sancion"
+        pprint("entre al segundo bucle")
+          
       else:
         form = formSancion()
-      
-    return render_to_response(peticion,'appPersonal/forms/abm.html',{'form': form, 'name':name, 'user':user, 'grupos':grupos})
+        pprint("entre al tercer bucle")
     
-        
+    pag_sancion=True
+    return render_to_response('appPersonal/forms/abm.html',{'form':form,'titulo_form':titulo_form,'pag_sancion':pag_sancion,'agente':agente,'user':user,'name':name,'grupos':grupos}) 
 
+        
 @login_required(login_url='login')
 def abmLicencia(peticion,idlicencia,idagen):
   

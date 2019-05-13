@@ -140,7 +140,6 @@ urlpatterns = [
     path('forms/abmarticulos/<int:idarticulo>/$',abmArticulos,name="forms/abmarticulos"),
     path('forms/abmausentismo',abmAusentismo,name="forms/abmausentismo"),
     #path('forms/abmausent',abmAusent),
-    path('forms/abmsancion/(\d+)/(\d+)/$',abmSancion),
     path('forms/abmseguro/(\d+)/(\d+)/$', abmSeguro),
     path('forms/abmcertificadoaccdt/(\d+)/(\d+)/(\d+)/$',abmCertificadoaccidente),
     path('forms/abmadscriptos/(\d+)/(\d+)/$',abmAdscriptos),

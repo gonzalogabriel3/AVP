@@ -379,6 +379,33 @@
 
 <!---------------------------------------------------------------------------------------------------------------------->
 
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!--#######################################SANCION###################################-->
+	{% if pag_sancion %}
+	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+		
+		{% if agente %}
+			
+			{% if agente.situacion == 0 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+			{% elif agente.situacion == 1 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+			{% elif agente.situacion == 2 %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+			{% else %}
+				<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+			{% endif %}
+			<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
+			{{agente.apellido}} {{agente.nombres}} </a>
+		{% endif %}
+	<a href="{% url 'listado/listadoxagente/sancionxagente' %}?idagente={{agente.idagente}}&borrado=-1" class="pagination">/ Sanciones </a>
+	<a href="#" class="activo">/ {{titulo_form}}</a>
+	{% endif %}
+<!--#######################################FIN SANCION###################################-->
+
+<!---------------------------------------------------------------------------------------------------------------------->
+
 <!--#######################################ARTICULOS###################################-->
 	{% if pag_articulos %}
 		<a href="{% url 'listado/articulos' %}" class="pagination">/ Articulos </a><a href="#" class="activo">/ {{titulo_form}} </a>

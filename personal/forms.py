@@ -211,14 +211,18 @@ class formLicencia(forms.ModelForm):
 
 class formSancion(forms.ModelForm):
     fecha = forms.DateField(label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    tiposancion = forms.ChoiceField(label="Tipo de sancion",choices=TIPO_SANCION)
+    observaciones = forms.CharField(min_length=3,max_length=100,label="Observaciones",widget = forms.TextInput())
+    cantidaddias = forms.IntegerField(label="Cantidad de dias",min_value=0,widget = forms.NumberInput())
+
     class Meta:
         model  = Sancion
-        fields = ('idagente', 'fecha', 'tiposancion', 'observaciones', 'cantidaddias')
+        exclude = ['idsancion']
+
     def __init__(self, *args, **kwargs):
         super(formSancion, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
-        self.fields['tiposancion'].widget = forms.Select(choices=TIPO_SANCION)
 
 class formAdscriptos(forms.ModelForm):
     fecha = forms.DateField(label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))

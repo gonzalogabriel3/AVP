@@ -352,7 +352,7 @@ class Sancion(models.Model):
         db_table = u'sancion'
  
     def __str__(self):
-        return str(self.idagente.apellido)             
+        return str(self.tiposancion)             
 
 #··························································································································································
 
