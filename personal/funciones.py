@@ -279,5 +279,11 @@ def superamaxausentanio(idagente, ausent, cantbase):
     
     return (diastomados + (ausent.cantdias - cantbase)) > arti.maxanual
 
-    
- 
+#Retorna una lista con los feriados de un mes particular en un año particular
+def feriadosLista(anio,mes,zona):
+    #Retorna los feriados comunes a todas las zonas, y las de la zona en particular del agentes
+    fer = Feriado.objects.filter(Q(Fecha__year=anio,Fecha__month=mes,lugar=0)|Q(Fecha__year=anio,Fecha__month=mes,lugar=zona))
+    list_f=list()
+    for f in fer:
+        list_f.append(f.Fecha.day)
+    return list_f

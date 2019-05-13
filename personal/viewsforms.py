@@ -1181,7 +1181,7 @@ def esFeriado(idagente,fechadada):
   zona=Agente.objects.get(idagente=idagente).idzonareal.idzona
   try:
     feriado=Feriado.objects.get(Fecha=fechadada)
-    pprint(feriado)
+    #pprint(feriado)
   except Exception as e:
     feriado = None
 
