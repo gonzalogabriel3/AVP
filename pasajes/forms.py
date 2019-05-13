@@ -15,7 +15,7 @@ class formularioAgente(forms.ModelForm):
 	apellido = forms.CharField(min_length=3,max_length=100,label="Apellido del agente",
 		widget = forms.TextInput(attrs = {'class': 'form-control','placeholder':'Apellido del nuevo agente','oninput':"this.setCustomValidity('')",'oninvalid':"this.setCustomValidity('Por favor ingrese el apellido/s del nuevo agente')"}))
 
-	documento = forms.IntegerField(label="Documento del agente",min_value=20000000,max_value=999999999,
+	documento = forms.IntegerField(label="Documento del agente",
 		widget = forms.NumberInput(attrs = {'class': 'form-control','placeholder':'N° de documento del nuevo agente','oninput':"this.setCustomValidity('')",'oninvalid':"this.setCustomValidity('Por favor ingrese un N° de documento válido(sin puntos)')"}))
 
 	fecha_nacimiento=forms.DateField(widget=forms.DateInput(attrs=

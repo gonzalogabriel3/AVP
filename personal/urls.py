@@ -83,7 +83,7 @@ urlpatterns = [
     path('listado/listadoxagente/seguro/(\d+)/(-?\d+)/$',seguroxagente),
     path('listado/listadoxagente/servprest$',servprestxagente,name="listado/listadoxagente/servprest"),
     #path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
-    path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente),
+    path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
     path('listado/listadoxagente/estudioscursados$',estudioscursadosxagente,name="listado/listadoxagente/estudioscursados"),
     path('listado/listadoxagente/medica$',medicaxagente,name="listado/listadoxagente/medica"),
 
@@ -140,7 +140,6 @@ urlpatterns = [
     path('forms/abmarticulos/<int:idarticulo>/$',abmArticulos,name="forms/abmarticulos"),
     path('forms/abmausentismo',abmAusentismo,name="forms/abmausentismo"),
     #path('forms/abmausent',abmAusent),
-    path('forms/abmsancion/(\d+)/(\d+)/$',abmSancion),
     path('forms/abmseguro/(\d+)/(\d+)/$', abmSeguro),
     path('forms/abmcertificadoaccdt/(\d+)/(\d+)/(\d+)/$',abmCertificadoaccidente),
     path('forms/abmadscriptos/(\d+)/(\d+)/$',abmAdscriptos),
@@ -167,6 +166,8 @@ urlpatterns = [
     path('eliminarFeriado',eliminarFeriado,name="eliminarFeriado"),
 
     #FIN URL's de ABM  de Feriados
+
+    path('eliminarEscolaridad$',eliminarEscolaridad,name="eliminarEscolaridad")
 
 ]
 

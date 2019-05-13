@@ -32,7 +32,7 @@
 
 		{% block botonnuevo %}
 			      {%if "ABM" in grupos or user.username == "admin"%}
-			      	<a href="{% url 'forms/agente' %}?idagente=0" class="btn btn-success">Nuevo</a>
+			      	<a href="{% url 'forms/agente' %}?idagente=0&opcion={{opc}}" class="btn btn-success">Nuevo</a>
 
 			      {% endif %}
 	    {%endblock%}

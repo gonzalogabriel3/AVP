@@ -187,6 +187,7 @@ def escolaridadxaf(peticion):
     persona = Asignacionfamiliar.objects.get(idasigfam=idaf)
     idagente = persona.idagente_id
     grupos = get_grupos(user)
+    
 
     if permisoListado(user):
         error = "no posee permiso para listar"
@@ -202,8 +203,10 @@ def escolaridadxaf(peticion):
     escolaridad = Escolaridad.objects.filter(idasigfam__exact=idaf).order_by('anio')
 
     lista = paginar(escolaridad,peticion)        
-        
-    return render_to_response('appPersonal/listado/listadoxaf/escolaridadxaf.html',{'lista':lista,'user':user,'idaf':idaf,'persona':persona,'grupos':grupos,'idagente':idagente},)
+    
+    agente=Agente.objects.get(idagente=idagente)
+
+    return render_to_response('appPersonal/listado/listadoxaf/escolaridadxaf.html',{'agente':agente,'lista':lista,'user':user,'idaf':idaf,'persona':persona,'grupos':grupos,'idagente':idagente},)
 
 
 
