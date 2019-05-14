@@ -43,7 +43,7 @@
 							<td>{{list.cantidaddias}}</td>
 							<td>{{list.observaciones}}</td>
 							{%if "Eliminar" in grupos or user.username == "admin"%}
-							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/sancionxagente/{{list.idagente_id}}/{{list.idsancion}}/');">Eliminar</a></td>
+							<td><a href="{% url 'eliminarSancion' %}?idsan={{list.idsancion}}&idagen={{agente.idagente}}" onclick="return confirm('¿Esta seguro que desea eliminar sancion del dia {{list.fecha}}?')" style="color: red">Eliminar</a></td>
 							{% endif %}
 					</tr>
 				{% endfor %}

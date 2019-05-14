@@ -382,6 +382,18 @@
 <!---------------------------------------------------------------------------------------------------------------------->
 
 <!--#######################################SANCION###################################-->
+	<script>
+	$(function(){
+			$( ".datepicker" ).datepicker({
+			    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+			    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+			    	prevText:'<',
+			    	nextText:'>',
+			    	dateFormat: 'dd/mm/yy',
+		    	    	
+		    	});
+		});
+	</script>
 	{% if pag_sancion %}
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 		
