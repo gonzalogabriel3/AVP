@@ -335,12 +335,21 @@ def fechaEnRango(anio,mes,fi,ff):
 def ausEnMes(anio,mes,a):
     #HAY QUE ANANALIZAR EL CASO ESPECIAL DE ENERO Y EL CAMBIO DE AÑO
     #fer = Feriado.objects.filter(Q(Fecha__year=anio,Fecha__month=mes))
-    #print("AUS EN MES")
-    list_f = feriadosLista(anio,mes,a.idagente.idzonareal.pk)
+    #print(a)
+    if a.idagente.idzonareal != None:
+        list_f= feriadosLista(anio,mes,a.idagente.idzonareal.pk)
+    elif a.idagente.idzona != None:
+        list_f= feriadosLista(anio,mes,a.idagente.idzona.pk)
+    else:
+        list_f=[]
     calendar.setfirstweekday(calendar.SUNDAY)
-    cal = calendar.monthcalendar(anio,mes)
-    finmes = max(cal[len(cal)-1])
+    cal= calendar.monthcalendar(anio,mes)
+    finmes= max(cal[len(cal)-1])
     cant=0
+    if a.idarticulo.pk==999:
+        periodo= Licenciaanual.objects.get(Q(idausent=a.pk,tipo="LIC")).anio
+    else:
+        periodo=anio
     #SI LOS MESES DE INICIO/FIN SON LOS MISMOS NO HACE FALTA HACER NADA
     #import pdb; pdb.set_trace()
     if (a.fechainicio.month == mes and a.fechafin.month == mes):
@@ -353,10 +362,9 @@ def ausEnMes(anio,mes,a):
         for sem in cal:
             #SI EL DIA QUE COMIENZA EL AUSENT NO ESTA EN LA SEMANA SIGUE DE LARGO
             if dia.day in sem:
-                #import pdb; pdb.set_trace()
                 while dia <= finmes:
                     #Si es L.A.R no debe sumar fines de semana ni feriados
-                    if a.idarticulo.pk==999:
+                    if a.idarticulo.pk==999 and periodo>=2016:
                         if dia.day == sem[0]: #DOMINGO
                             pass
                         elif dia.day == sem[6]: #SABADO
@@ -374,12 +382,16 @@ def ausEnMes(anio,mes,a):
                     dia = dia + timedelta(days=1)
         return cant
     #DIAS RESTANTES DEL MES SIGUIENTE
-    elif (a.fechainicio.month < mes and a.fechafin.month == mes):
+    cond1 = a.fechainicio.month < mes and a.fechafin.month == mes
+    cond2 = a.fechainicio.month < mes and a.fechafin.month > mes
+    if (cond1 or cond2):
+    #elif (a.fechainicio.month < mes and a.fechafin.month == mes):
         dia = datetime.date(anio,mes,1) #fecha inicial desde donde contar
+        finmes = datetime.date(anio,mes,finmes)
         for sem in cal:
-            while (dia.day <= a.fechafin.day):
-                #Si es L.A.R no debe sumar fines de semana ni feriados
-                if a.idarticulo.pk==999:
+            if a.idarticulo.pk==999 and periodo>=2016:
+                while (dia.day <= a.fechafin.day):
+                    #Si es L.A.R no debe sumar fines de semana ni feriados
                     if dia.day == sem[0]: #DOMINGO
                         pass
                     elif dia.day == sem[6]: #VIERNES
@@ -392,9 +404,11 @@ def ausEnMes(anio,mes,a):
                         break
                     else:
                         cant += 1
-                else:
+                    dia = dia + timedelta(days=1)
+            else:
+                while (dia <= finmes and dia <= a.fechafin):
                     cant += 1
-                dia = dia + timedelta(days=1)
+                    dia = dia + timedelta(days=1)
         return cant
     return 0
 
@@ -416,7 +430,7 @@ def ausReportMensual(peticion):
     if permisoEstadistica(user):
         return HttpResponseRedirect('/appPersonal/error/')
     #aus = Ausent.objects.all()
-    aus = Ausent.objects.filter(Q(fechainicio__year=anio,fechainicio__month=mes)|Q(fechafin__year=anio,fechafin__month=mes))
+    aus = Ausent.objects.filter(Q(fechainicio__year=anio,fechainicio__month=mes)|Q(fechafin__year=anio,fechafin__month=mes)).order_by('idagente__apellido')
     for a in aus:
         #cant = fechaEnRango(anio,int(mes),a.fechainicio,a.fechafin)
         cant = ausEnMes(anio,mes,a)
@@ -668,7 +682,8 @@ def listadoPDAusentes(aux,aus):
         if cantidad != 0:
     	    arti = aus.filter(idagente=a)[0].idarticulo
     	    listado.append((agente,arti))
-    return sorted(listado, key=lambda faltas: faltas[1], reverse=True)
+    #return sorted(listado, key=lambda faltas: faltas[1], reverse=True)
+    return listado
 
 def listadoAusentes(aux,aus):
     """
@@ -740,20 +755,21 @@ def ausReportDir(peticion):
         direccion = None
     
     listaagente = list()
-    #aus = Ausent.objects.all().filter(Q(fechainicio__year=a) | Q(fechafin__year=a))
+    aus = Ausent.objects.all().filter(Q(fechainicio__year=a) | Q(fechafin__year=a))
     agen = Agente.objects.all().filter(iddireccion=direc)
 	
 	#En listaagente se guardan los agentes de la direccion
     for a in agen:
         listaagente.append(a.idagente)
 	#Sobrescribo ausentismo con los ausentes de la direccion
-    aus = Ausent.objects.all().filter(idagente__in=listaagente)
+    aus = aus.filter(idagente__in=listaagente)
     for a in aus:
         cant = fechaEnRango(datetime.date.today().year,0,a.fechainicio,a.fechafin)#el valor 0, es mes en 0 por que me interesa todo el año
         a.cantdias=cant
     listadoAus = listadoAusentes(listaagente,aus)
     listadoArti = listadoArticulos(aus)
-    cantMes = cantDias(aus)
+    cantMes = ausentDias(aus)
+    #cantMes = cantDias(aus)
     ene = cantMes[0][1]
     feb = cantMes[1][1]
     mar = cantMes[2][1]
@@ -998,6 +1014,7 @@ def detAusentismoxagente(peticion):
     grupos = get_grupos(user)
     agente = Agente.objects.get(idagente = idagen)
     anio = datetime.date.today().year
+    periodo = anio
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('personal/error.html',{'user':user,'error':error,'grupos':get_grupos(user)},)
@@ -1056,6 +1073,8 @@ def detAusentismoxagente(peticion):
     #import pdb; pdb.set_trace()
     for a in aus:
         indice = 0
+        if a.idarticulo.pk ==999:
+            periodo= Licenciaanual.objects.get(Q(idausent=a.pk,tipo="LIC")).anio
         for i in range(0,12):
             #import pdb; pdb.set_trace()
             if (a.fechainicio.year < a.fechafin.year):
@@ -1068,7 +1087,10 @@ def detAusentismoxagente(peticion):
                 c_dias = abs(finOld-a.fechainicio).days#dias corridos desde inicio a fin de <anio>
                 dias_dif = cantDias(a.fechainicio,c_dias,a.idagente.pk)# dias habiles hasta fin de anio
                 #******************************************************
-                list_f = feriadosLista(anio,1,a.idagente.idzonareal.pk)
+                try:
+                    list_f = feriadosLista(anio,1,a.idagente.idzonareal.pk)
+                except:
+                    list_f = feriadosLista(anio,1,a.idagente.idzona.pk)
                 for j in range (1,5):
                     #print(cal[0][i])
                     if (cal[0][j] != 0) and (cal[0][j] not in list_f): #revisa que sea dia de semana y no sea feriado
@@ -1077,7 +1099,8 @@ def detAusentismoxagente(peticion):
                         break
                 inicio = datetime.date(anio,1,habil)#primer dia habil
                 c_dias = abs(datetime.date(anio,indice+1,finmes)-inicio).days#cantidad de dias entre fechas
-                if a.idarticulo.pk ==999:
+
+                if (a.idarticulo.pk ==999 and periodo >=2016):
                     #Se sobre escribe por la cantidad de dias habiles
                     c_dias = cantDias(inicio,c_dias,a.idagente.pk)
                 ausAux.fechainicio = inicio
@@ -1087,7 +1110,7 @@ def detAusentismoxagente(peticion):
                 per[i] = per[i] + ausEnMes(anio,indice+1,ausAux)
                 break
             else:
-                #print("*** curso normal***")
+                print("*** AUSENT CON : "+str(indice+1)+" ***")
                 per[i] = per[i] + ausEnMes(anio,indice+1,a)
                 #per[i] = per[i] + fechaEnRango(anio,indice+1,a.fechainicio,a.fechafin)
                 indice = indice +1
