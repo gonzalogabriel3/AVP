@@ -237,8 +237,8 @@ class Agente(models.Model):
     defun = models.BooleanField(blank=True)
     funcion = models.ForeignKey(Funcion, null=True,db_column='funcion', blank=True,on_delete=models.CASCADE)
     idcargof =  models.ForeignKey(CargoFuncion, null=True,db_column='idcargof', blank=True, verbose_name='Cargo Funcion',on_delete=models.CASCADE)
-    idzona = models.ForeignKey(Zona, null=True, db_column='idzona', blank=True, verbose_name = "Zona",on_delete=models.CASCADE)
-    idzonareal = models.ForeignKey(Zona, related_name="idzonareal", null=True, db_column='idzonareal', blank=True, verbose_name = "Zona Real",on_delete=models.CASCADE)
+    idzona = models.ForeignKey(Zona, null=False, db_column='idzona', blank=True, verbose_name = "Zona",on_delete=models.CASCADE)
+    idzonareal = models.ForeignKey(Zona, related_name="idzonareal", null=False, db_column='idzonareal', blank=True, verbose_name = "Zona Real",on_delete=models.CASCADE)
     claseac = models.ForeignKey(Clase, related_name="claseac", null=True, db_column='claseac', blank=True, verbose_name='Clase a Cargo',on_delete=models.CASCADE)
     class Meta:
         db_table = u'agente'
@@ -598,7 +598,7 @@ class Salida(models.Model):
         unique_together = ("idagente","horasalida","fecha")
     
     def __str__(self):
-        return str(self.fecha)       
+        return str(self.horasalida)
 
 #··························································································································································        
 class Escolaridad(models.Model):

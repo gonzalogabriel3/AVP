@@ -122,7 +122,7 @@ def salidaxagente(peticion):
             s = None
     agente = Agente.objects.get(idagente=idagente)
     salidas = Salida.objects.filter(idagente__exact=idagente).order_by('-fecha')
-        
+    
     lista = paginar(salidas,peticion)
     return render_to_response('appPersonal/listado/listadoxagente/salidaxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
   

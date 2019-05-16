@@ -93,6 +93,33 @@
 
 <!---------------------------------------------------------------------------------------------------------------------->
 
+<!--#######################################TRASLADO###################################-->
+	{% if pag_traslado %}
+		<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
+		{% if agente %}
+				
+				{% if agente.situacion == 0 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes dados de baja</a>
+				{% elif agente.situacion == 1 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes inactivos</a>
+				{% elif agente.situacion == 2 %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Agentes activos</a>
+				{% else %}
+					<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
+				{% endif %}
+				<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ 
+				{{agente.apellido}} {{agente.nombres}} </a>
+		{% endif %}
+		<a href="{% url 'listado/listadoxagente/traslado' %}?idagente={{agente.idagente}}&borrado=-1" class="pagination">/ Traslados </a>
+		<a href="#" class="activo">/ {{titulo_form}}</a>
+		
+	{% endif %}
+<!--#######################################FIN TRASLADO###################################-->
+
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------------------------------->
+
 <!--#######################################ESCOLARIDAD###################################-->
 	{% if pag_escolaridad %}
 		<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>

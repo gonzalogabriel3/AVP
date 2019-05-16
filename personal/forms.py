@@ -156,8 +156,8 @@ class formCertificadoaccidente(forms.ModelForm):
         instance = getattr(self, 'instance', None)
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
         self.fields['idaccidentetrabajo'].widget.attrs['disabled'] = 'disabled'
-        
-class formSalida(forms.ModelForm):
+
+'''class formSalida(forms.ModelForm):
     fecha = forms.DateField(label="Fecha ",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     class Meta:
         model  = Salida
@@ -166,6 +166,18 @@ class formSalida(forms.ModelForm):
         super(formSalida, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         #if instance and instance.pk:
+        self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
+'''     
+class formSalida(forms.ModelForm):
+    fecha = forms.DateField(label="Fecha ",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    horasalida = forms.TimeField(required=False,label="Hora de salida(HH:MM)",widget=forms.TimeInput(format='%H:%M:%S'))
+    horaregreso = forms.TimeField(required=False,label="Hora de regreso(HH:MM)",widget=forms.TimeInput(format='%H:%M:%S'))
+    class Meta:
+        model  = Salida
+        fields = ('idagente', 'fecha', 'horasalida', 'horaregreso', 'oficial', 'observaciones')
+    def __init__(self, *args, **kwargs):
+        super(formSalida, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
 
 

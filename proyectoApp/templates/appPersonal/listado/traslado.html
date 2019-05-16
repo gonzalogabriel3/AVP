@@ -55,7 +55,7 @@
 					<td>{{list.fechad}}</td>
 					<td>{{list.fechahasta}}</td>
 					{%if "Eliminar" in grupos or user.username == "admin"%}
-					<td><href="#" onclick="Eliminar('/personal/listado/listadoxagente/traslado/{{list.idagente_id}}/{{list.idtraslado}}/');">Eliminar</a></td>
+					<td><a style="color: red;" href="{% url 'eliminarTraslado' %}?idtraslado={{list.idtraslado}}&idagente={{list.idagente.idagente}}" onclick="return confirm('¿Esta seguro que desea eliminar traslado ?')">Eliminar</a></td>
 					{% endif %}	
 					
 				</tr>

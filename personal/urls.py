@@ -173,5 +173,7 @@ urlpatterns = [
 
     path('eliminarSancion$',eliminarSancion,name="eliminarSancion"),
 
+    path('eliminarTraslado$',eliminarTraslado,name="eliminarTraslado"),
+
 ]
 
