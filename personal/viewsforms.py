@@ -1258,8 +1258,7 @@ def eliminarLicenciaTomada(peticion):
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado interrupcion de licencia de '+agente.apellido+' '+agente.nombres})
   #Si por el contrario,la licencia es de tipo "LIC" la elimino de la tabla licenciaanual asi como tambien su referencia a las otras tablas
   else:
-    pprint("Eliminacion de una licencia")
-
+  
     name = 'Licencia Anual'
     
     ausent=Ausent.objects.get(idausent=licencia.idausent.idausent)
@@ -1282,6 +1281,7 @@ def eliminarLicenciaTomada(peticion):
 
     url="vacas?idagente="+str(idagente)
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado licencia de '+agente.apellido+' '+agente.nombres})
+
 
 @csrf_exempt
 @login_required(login_url='login')
@@ -1315,37 +1315,60 @@ def abmSancion(peticion):
 	      accion = 'Alta'
     
       if form.is_valid():
-	      form.instance.idagente_id = idagen
-	      form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
-	      form.save()
-	      if accion == 'Alta':
-	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      elif accion == 'Modificacion':
-	          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      url = 'appPersonal/listado/listadoxagente/sancionxagente/'+str(idagen)+'/-1/'
-	      return HttpResponseRedirect(url)
+        form.instance.idagente_id = idagen
+        form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
+        form.save()
+        if accion == 'Alta':
+          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url="../listado/listadoxagente/sancionxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado sancion para el '+agente.apellido+' '+agente.nombres})
+        elif accion == 'Modificacion':
+          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url="../listado/listadoxagente/sancionxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado sancion del '+agente.apellido+' '+agente.nombres})
     else:
       if int(idsan) > 0:
         a = Sancion.objects.get(idsancion=idsan)
         form = formSancion(instance=a)
-        titulo_form=""+str(a.fecha)
-        pprint("entre al primer bucle")
+        titulo_form="Modificar sancion del dia "+str(a.fecha)
+        
       elif int(idagen) > 0:
         a = Agente.objects.get(pk=idagen)
         b = Sancion()
         b.idagente = a
         form = formSancion(instance=b)
         titulo_form="Cargar sancion"
-        pprint("entre al segundo bucle")
           
       else:
         form = formSancion()
-        pprint("entre al tercer bucle")
-    
+        
     pag_sancion=True
     return render_to_response('appPersonal/forms/abm.html',{'form':form,'titulo_form':titulo_form,'pag_sancion':pag_sancion,'agente':agente,'user':user,'name':name,'grupos':grupos}) 
 
-        
+@csrf_exempt
+@login_required(login_url='login')
+def eliminarSancion(peticion):
+  idsan=int(peticion.GET.get('idsan'))
+  idagen=int(peticion.GET.get('idagen'))
+  agente=Agente.objects.get(idagente=idagen)
+  user = peticion.user
+  grupos = get_grupos(user)
+  name = 'Sanción'
+
+  try:
+    sancion=Sancion.objects.get(idsancion=idsan)
+    sancion.delete()
+    url="../personal/listado/listadoxagente/sancionxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
+    return HttpResponseRedirect(url)
+
+  except Exception as e:
+    url="listado/listadoxagente/sancionxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
+    return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'No se pudo eliminar sancion del agente '+agente.apellido+' '+agente.nombres})
+    
+
+
+
+
 @login_required(login_url='login')
 def abmLicencia(peticion,idlicencia,idagen):
   
@@ -1374,10 +1397,11 @@ def abmLicencia(peticion,idlicencia,idagen):
         form.save()
         if accion == "Alta":
           registrar(user, name, accion, getTime(), None, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          return render_to_response('appPersonal/mensaje.html',{'form':form,'titulo_form':titulo_form,'pag_sancion':pag_sancion,'agente':agente,'user':user,'name':name,'grupos':grupos}) 
         elif accion == "Modificacion":
           registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
           url = '/personal/index/'
-          return HttpResponseRedirect(url)
+          return render_to_response('appPersonal/mensaje.html',{'form':form,'titulo_form':titulo_form,'pag_sancion':pag_sancion,'agente':agente,'user':user,'name':name,'grupos':grupos}) 
     else:
       if int(idlicencia) > 0 and int(idagen)> 0:
         a = Licencia.objects.get(pk=idservprest)

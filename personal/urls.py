@@ -159,6 +159,8 @@ urlpatterns = [
 
     path('eliminarAusent$',eliminarAusent,name="eliminarAusent"),
 
+
+
     #URL's de ABM  de Feriados
     path('listado/feriados$',feriadosListado,name='listado/feriados'),
     path('altaFeriado$',altaFeriado,name="altaFeriado"),
@@ -167,7 +169,9 @@ urlpatterns = [
 
     #FIN URL's de ABM  de Feriados
 
-    path('eliminarEscolaridad$',eliminarEscolaridad,name="eliminarEscolaridad")
+    path('eliminarEscolaridad$',eliminarEscolaridad,name="eliminarEscolaridad"),
+
+    path('eliminarSancion$',eliminarSancion,name="eliminarSancion"),
 
 ]
 
