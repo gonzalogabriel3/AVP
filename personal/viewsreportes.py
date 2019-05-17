@@ -42,6 +42,37 @@ from personal.views import *
 import datetime
 from datetime import datetime, timedelta, date
 import xlwt
+from weasyprint import HTML
+import tempfile
+
+def repLicenciasAcumuladas(peticion):
+	idagente=peticion.GET.get('idagente')
+	licencias=Licenciaanualagente.objects.filter(idagente=idagente)
+	agente=Agente.objects.get(idagente=idagente)
+	
+	#Obtengo la fecha actual para asignarla al nombre del pdf
+	fecha=datetime.now()
+	fecha=fecha.strftime("%d/%m/%Y")
+	
+	#Renderizo la vista que sera devuelta
+	html_string = render_to_string('appPersonal/reports/licenciasAcumuladas.html', {'licencias': licencias,'agente':agente,'fecha':fecha})
+	#Agrego el 'base_url' para poder cargar imagenes en el pdf
+	html = HTML(string=html_string,base_url=peticion.build_absolute_uri())
+	result = html.write_pdf()
+	#Indico el tipo de contenido en la respuesta,en este caso un PDF
+	response = HttpResponse(content_type='application/pdf;')
+	#Indico el nombre del nuevo pdf
+	response['Content-Disposition'] = 'inline; filename=Licencias acumuladas de '+str(agente.apellido)+' '+str(agente.nombres)+'.pdf'
+	response['Content-Transfer-Encoding'] = 'binary'
+
+	#Creo un archivo temporal que va a contener el PDF generado
+	with tempfile.NamedTemporaryFile(delete=True) as output:
+		output.write(result)
+		output.flush()
+		output = open(output.name, 'rb')
+		response.write(output.read())
+
+	return response
 
 
 def fechaEnRango(anio,mes,fi,ff):

@@ -1,0 +1,58 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Licencias acumuladas</title>
+</head>
+<style>
+td{
+	border:1px solid;
+	padding: 5px;
+}
+
+th{
+	border:1px solid;
+	padding: 5px;
+}
+
+h3{
+	text-decoration: underline;
+}
+</style>
+<body>
+{% load static %}
+<center>
+	<img src="{% static 'appPersonal/images/logoAvp_reportePDF.png' %}" alt="imagenLogo" style="display:inline-block;width:200px;height:90px;" />
+</center>
+<br>
+<h3>Licencias acumuladas</h3>
+<h4>Agente: {{agente.apellido}} {{agente.nombres}}</h4>
+<h4>N° Legajo: {{agente.nrolegajo}}</h4>
+<h4>Reporte generado el dia: {{fecha}}</h4>
+
+{% if licencias %}
+<br><br>
+<table style="border:1px solid;border-collapse: collapse;margin-left: 160px;">
+	<thead>
+		<tr>
+			<th>Año</th>
+			<th>Dias disponibles</th>
+			<th>Dias tomados</th>
+		</tr>
+	</thead>
+	<tbody >
+	{% for licencia in licencias %}
+		<tr>
+			<td>{{licencia.anio}}</td>
+			<td>{{licencia.cantidaddias}}</td>
+			<td>{{licencia.diastomados}}</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+{% else %}
+	<p>No se encontraron datos.</p>
+{% endif %}
+
+</body>
+</html>

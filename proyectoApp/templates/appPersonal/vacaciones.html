@@ -1,5 +1,5 @@
 {% extends "appPersonal/listado/listado_base.html" %}
-{% load i18n %}
+{% load static %}
 {% block pagination %}
 	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 	{% if agente.situacion == 0 %}
@@ -21,7 +21,7 @@
 	{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
 	
 	{% block botonexcel %}
-	     <input id="backbutton" class="btn btn-warning" type="submit" name="submit" value="Excel" style="margin-rigth: 740px;" onclick="callExcel()" />
+	     <a href="{% url 'repLicenciasAcumuladas' %}?idagente={{agente.idagente}}" target="_blank" class="btn btn-success">Generar PDF <img src="{% static 'appPersonal/images/bookmark.png' %}" style="width: 22px;height: 22px;"></a>
 	{%endblock%}
 	
 	<h5>Licencias anuales acumuladas</h5>
@@ -39,10 +39,10 @@
 				<tbody>
 					{%for l in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
-							<td>{{l.idagente}}</td>
-							<td>{{l.anio}}</td>
-							<td>{{l.cantidaddias}}</td>
-							<td>{{l.diastomados}}</td>
+							<td style="color: #2d40c6">{{l.idagente}}</td>
+							<td style="color: #6cc100">{{l.anio}}</td>
+							<td style="color: #6cc100">{{l.cantidaddias}}</td>
+							<td style="color: #c13500">{{l.diastomados}}</td>
 							
 						</tr>
 					{%endfor%}
