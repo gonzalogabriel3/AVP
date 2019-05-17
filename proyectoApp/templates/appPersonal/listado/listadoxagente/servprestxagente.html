@@ -1,5 +1,5 @@
 {% extends "appPersonal/listado/listado_base.html" %}
-{% load i18n %}
+{% load static %}
 {% block pagination %}
 	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 	{% if agente.situacion == 0 %}
@@ -43,15 +43,15 @@
 			<tbody>
 				{%for list in lista%}
 					<tr class="{% cycle 'row1' 'row2' %}">
-							<td><a href= "/personal/forms/abmservprest/{{list.idservprest}}/{{list.idagente_id}}/">{{list.idagente}}</td>
+							<td><a href="{% url 'forms/abmservprest' %}?idservprest={{list.idservprest}}&idagen={{list.idagente_id}}">{{list.idagente}}</td>
 							<td>{{list.fechadesde}}</td>
 							<td>{{list.fechahasta}}</td>
 							<td>{{list.empresa}}</td>
 							<td>
 							    {%if list.estatal%}
-								<img src='/site_media/personal/img/icons/tick.png' ></img>
+									<img style="width: 25px;height: 25px;" src="{% static 'appPersonal/images/ok.png' %}" ></img>
 							    {%else%}
-								<img src='/site_media/personal/img/icons/cross.png'></img>
+									<img style="width: 25px;height: 25px;" src="{% static 'appPersonal/images/error.png' %}" ></img>
 							    {%endif%}
 							</td>
 							<td>{{list.cajaaporte}}</td>
@@ -59,7 +59,7 @@
 							<td>{{list.observaciones}}</td>
 							<td>{{list.tarea}}</td>
 							{%if "Eliminar" in grupos or user.username == "admin"%}
-							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/servprest/{{idagente}}/{{list.idservprest}}/');">Eliminar</a></td>
+							<td><a href="{% url 'eliminarServPrestado' %}?idservprest={{list.idservprest}}&idagente={{agente.idagente}}" onclick="return confirm('¿Esta seguro que desea eliminar servicio prestado?')" style="color: red">Eliminar</a></td>
 							{% endif %}
 					</tr>
 				{% endfor %}

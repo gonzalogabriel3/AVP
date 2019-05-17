@@ -123,14 +123,24 @@ class formAgente(forms.ModelForm):
 class formFamiliaresac(forms.ModelForm):
     fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechaacontecimiento = forms.DateField(label="Fecha Acontecimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
-    
+    nrodocumento=forms.IntegerField(label="Documento",widget = forms.NumberInput())
+    tipodocumento = forms.ChoiceField(choices=TIPO_DOC,label="Tipo documento")
+    apellidoynombre = forms.CharField(min_length=3,max_length=100,label="Apellido y Nombres",widget = forms.TextInput())
+    sexo = forms.ChoiceField(choices=TIPO_SEXO,label="Sexo")
+    vinculo = forms.ModelChoiceField(queryset=Vinculo.objects.all(),label="Vinculo")
+    discapacidad = forms.BooleanField(required=False,label="Discapacidad")
+    codflia = forms.CharField(required=False,min_length=1,max_length=100,label="Codflia",widget = forms.TextInput())
+    pagasalario = forms.BooleanField(required=False,label="Paga salario")
+    pagaflianrosa = forms.BooleanField(required=False,label="Paga familia numerosa")
+
     class Meta:
         model  = Asignacionfamiliar
-        fields = ('idagente', 'tipodocumento', 'nrodocumento', 'apellidoynombre','sexo','vinculo','fechanacimiento','discapacidad','fechaacontecimiento','codflia','observaciones','pagasalario','pagasalario','pagaflianrosa')
+        fields = ('idagente', 'tipodocumento', 'nrodocumento', 'apellidoynombre','sexo','vinculo','fechanacimiento','discapacidad','fechaacontecimiento','codflia','observaciones','pagasalario','pagaflianrosa')
     def __init__(self, *args, **kwargs):
         super(formFamiliaresac, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
+        self.fields['idagente'].widget.attrs['label'] = 'Agente'
         
       
 class formAccdetrabajo(forms.ModelForm):
@@ -157,17 +167,6 @@ class formCertificadoaccidente(forms.ModelForm):
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
         self.fields['idaccidentetrabajo'].widget.attrs['disabled'] = 'disabled'
 
-'''class formSalida(forms.ModelForm):
-    fecha = forms.DateField(label="Fecha ",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
-    class Meta:
-        model  = Salida
-        fields = ('idagente', 'fecha', 'horasalida', 'horaregreso', 'oficial', 'observaciones')
-    def __init__(self, *args, **kwargs):
-        super(formSalida, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        #if instance and instance.pk:
-        self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
-'''     
 class formSalida(forms.ModelForm):
     fecha = forms.DateField(label="Fecha ",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     horasalida = forms.TimeField(required=False,label="Hora de salida(HH:MM)",widget=forms.TimeInput(format='%H:%M:%S'))
@@ -247,9 +246,20 @@ class formAdscriptos(forms.ModelForm):
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
 
 class formEstudiosCursados(forms.ModelForm):
+
+    ciclo=forms.CharField(max_length=100,label="Ciclo",widget = forms.TextInput())
+    establecimiento=forms.CharField(max_length=100,label="Establecimiento",widget = forms.TextInput())
+    titulo=forms.CharField(max_length=100,label="Titulo",widget = forms.TextInput())
+    duracion=forms.CharField(max_length=100,label="Duracion",widget = forms.TextInput())
+    observaciones=forms.CharField(max_length=100,label="Observaciones",widget = forms.TextInput())
+
     class Meta:
         model  = Estudiocursado
         fields = ('idagente', 'ciclo', 'establecimiento', 'titulo','duracion','observaciones')
+    def __init__(self, *args, **kwargs):
+        super(formEstudiosCursados, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        self.fields['idagente'].widget.attrs['disabled'] = 'disabled'  
 
 class formArticulos(forms.ModelForm):
     class Meta:

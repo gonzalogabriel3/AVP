@@ -65,6 +65,11 @@ function Eliminar(a,b) {
 								<td>{{list.sexo}}</td>
 								<td>{{list.vinculo}}</td>
 								<td>{{list.fechanacimiento}}</td>
+								{% if list.discapacidad %}
+									<td><img src="{% static 'appPersonal/img/icon/orig/icon-yes.gif' %}"></img></td>
+								{% else %}
+									<td><img src="{% static 'appPersonal/img/icon/orig/icon-no.gif' %}"></img></td>
+								{% endif %}
 								<td>{{list.discapacidad}}</td>
 								<td><a href= "{% url 'listado/listadoxaf/escolaridadxaf' %}?idfac={{list.idasigfam}}&borrado=-1">Ver</a></td>
 								{%if "Eliminar" in grupos or user.username == "admin"%}

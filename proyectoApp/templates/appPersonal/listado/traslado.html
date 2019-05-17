@@ -44,7 +44,7 @@
 		<tbody>
 			{%for list in lista%}
 				<tr class="{% cycle 'row1' 'row2' %}">
-					<td><a href= "{% url 'forms/abmtraslado' %}?idtraslado={{list.idtraslado}}&idagen={{list.idagente_id}}">{{list.idagente}}</a></td>
+					<td><a href="{% url 'forms/abmtraslado' %}?idtraslado={{list.idtraslado}}&idagen={{list.idagente_id}}">{{list.idagente}}</a></td>
 					<td>{{list.agrupamiento}}</td>
 					<td>{{list.clase}}</td>
 					<td>{{list.categoria}}</td>

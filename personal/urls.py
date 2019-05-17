@@ -175,5 +175,9 @@ urlpatterns = [
 
     path('eliminarTraslado$',eliminarTraslado,name="eliminarTraslado"),
 
+    path('eliminarServPrestado$',eliminarServicioPrestado,name="eliminarServPrestado"),
+
+    path('eliminarEstudioCursado$',eliminarEstudioCursado,name="eliminarEstudioCursado"),
+
 ]
 

@@ -419,19 +419,25 @@ def abmFamiliresac(peticion):
       else:
 	      accion = 'Alta'
 	      form = formFamiliaresac(peticion.POST)
-    
+      
+      pprint(form.errors)
       if form.is_valid():
-        form.instance.idagente_id = idagen
-        form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
-        form.save()
-        if accion == 'Alta':
-          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-          url = '../listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
-          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Nuevo familiar creado '})
-        elif accion == 'Modificacion':
-          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-          url = '../listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
-          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Datos del familiar guardados '})
+        try:
+          form.instance.idagente_id = idagen
+          form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
+          form.save()
+          if accion == 'Alta':
+            registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+            url = '../listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Nuevo familiar creado '})
+          elif accion == 'Modificacion':
+            registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+            url = '../listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Datos del familiar guardados '})
+        except Exception as e:
+          pprint("Error generado: "+str(e))
+          url="../listado/listadoxagente/facxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'No se pudo guardar datos del familiar '})
     else:
       if int(idfac) > 0 and int(idagen)> 0:
         a = Asignacionfamiliar.objects.get(pk=idfac)
@@ -698,7 +704,7 @@ def abmSeguro(peticion,idseguro,idagen):
       
     return render_to_response('appPersonal/forms/abm.html',{'form': form, 'name':name, 'grupos':grupos, 'user':user}, )
 
-
+@csrf_exempt
 @login_required(login_url='login')
 def abmServicioprestado(peticion):
     idservprest=int(peticion.GET.get('idservprest'))
@@ -726,35 +732,50 @@ def abmServicioprestado(peticion):
 	      accion = 'Alta'
     
       if form.is_valid():
-	      form.instance.idagente = Agente.objects.get(pk=idagen)
-	      form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
-	      form.save()
-	      if accion == 'Alta':
-	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      elif accion == 'Modificacion':
-	          registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	          
-	      url = '/personal/listado/listadoxagente/servprest/'+idagen+'/-1/'
-	      return HttpResponseRedirect(url)
+        form.instance.idagente = Agente.objects.get(pk=idagen)
+        form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
+        form.save()
+        if accion == 'Alta':
+          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url="../listado/listadoxagente/servprest$?idagente="+str(agente.idagente)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado servicio prestado para el agente '+agente.apellido+' '+agente.nombres})
+        elif accion == 'Modificacion':
+          registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url="../listado/listadoxagente/servprest$?idagente="+str(agente.idagente)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado servicio prestado del agente '+agente.apellido+' '+agente.nombres})
     else:
       if int(idservprest) > 0 and int(idagen)> 0:
         a = Servicioprestado.objects.get(pk=idservprest)
         form = formServicioprestado(instance=a)
-        titulo_form=" Servicios prestados / Cargar servicio prestado"
+        titulo_form=" Modificar servicio prestado "
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Servicioprestado()
           b.idagente = a
           form = formServicioprestado(instance=b)
-          titulo_form=" Servicios prestados / Cargar servicio prestado"
+          titulo_form=" Cargar servicio prestado "
           
       else:
-        form = formSeguro()
-        titulo_form=" Servicios prestados / Cargar servicio prestado"
-    pag_agentes=True  
-    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
+        form = formServicioprestado()
         
+    pag_serv_prestado=True  
+    return render_to_response('appPersonal/forms/abm.html',{'pag_serv_prestado':pag_serv_prestado,'titulo_form':titulo_form,'agente':agente,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )
 
+@csrf_exempt
+@login_required(login_url='login')
+def eliminarServicioPrestado(peticion):
+  idservprest=peticion.GET.get('idservprest')
+  idagente=peticion.GET.get('idagente')
+
+  servicioPrestado=Servicioprestado.objects.get(idservprest=idservprest)
+  
+  try:
+    servicioPrestado.delete()
+    url="../personal/listado/listadoxagente/servprest$?idagente="+str(idagente)+"&borrado=-1"
+    return HttpResponseRedirect(url)
+  except Exception as e:
+    url="../listado/listadoxagente/traslado$?idagente="+str(agente.idagente)+"&borrado=-1"
+    return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'No se pudo elimiar servicio prestado'})
 
 @login_required(login_url='login')
 def abmLicenciaanualagente(peticion,idlicanualagen,idagen):
@@ -1396,9 +1417,6 @@ def eliminarSancion(peticion):
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'No se pudo eliminar sancion del agente '+agente.apellido+' '+agente.nombres})
     
 
-
-
-
 @login_required(login_url='login')
 def abmLicencia(peticion,idlicencia,idagen):
   
@@ -1556,7 +1574,8 @@ def abmAdscriptos(peticion,idads, idagen):
         form = formAdscriptos()
       
     return render_to_response('appPersonal/forms/abm.html',{'user':user,'form': form, 'name':name, 'user':user, 'grupos':grupos}, )  
- 
+
+@csrf_exempt 
 @login_required(login_url='login')
 def abmEstudioscursados(peticion):
     
@@ -1574,46 +1593,75 @@ def abmEstudioscursados(peticion):
     
     if peticion.POST:
       if int(idestcur) >0:
-	      a = Estudiocursado.objects.get(pk=idestcur)
-	      form_old = formEstudiosCursados(instance=a)
+	      estudioCursado = Estudiocursado.objects.get(pk=idestcur)
+	      form_old = formEstudiosCursados(instance=estudioCursado)
 	      form_old = modeloLista(form_old.Meta.model.objects.filter(pk=form_old.instance.pk).values_list())
-	      form = formEstudiosCursados(peticion.POST, instance=a)   
+	      form = formEstudiosCursados(peticion.POST, instance=estudioCursado)   
 	      accion = 'Modificacion'
-
       else:
-	      form = formEstudiosCursados(peticion.POST)
-	      accion = 'Alta'
-	      
+        form = formEstudiosCursados(peticion.POST)
+        estudioCursado=Estudiocursado()
+        accion = 'Alta'
+
       if form.is_valid():
-	      form.save()
-	      if accion == 'Alta':
-	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      elif accion == 'Modificacion':
-	          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      url = '/personal/listado/listadoxagente/estudioscursados/'+ idagen +'/-1/'
-	      return HttpResponseRedirect(url)
+        estudioCursado.idagente=agente
+        estudioCursado.ciclo=form.instance.ciclo
+        estudioCursado.establecimiento=form.instance.establecimiento
+        estudioCursado.titulo=form.instance.titulo
+        estudioCursado.duracion=form.instance.duracion
+        estudioCursado.observaciones=form.instance.observaciones
+        estudioCursado.save()
+        if accion == 'Alta':
+          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url="../listado/listadoxagente/estudioscursados$?idagente="+str(agente.idagente)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado estudio cursado para el agente '+agente.apellido+' '+agente.nombres})
+        elif accion == 'Modificacion':
+          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          url="../listado/listadoxagente/estudioscursados$?idagente="+str(agente.idagente)+"&borrado=-1"
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado estudio cursado del agente '+agente.apellido+' '+agente.nombres})
     else:
       if int(idestcur) > 0 and int(idagen)> 0:
         a = Estudiocursado.objects.get(pk=idestcur)
         form = formEstudiosCursados(instance=a)
-        titulo_form=" Estudios cursados / Modificar estudio cursado"
+        titulo_form=" Modificar estudio cursado "
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Estudiocursado()
           b.idagente = a
           form = formEstudiosCursados(instance=b)
-          titulo_form=" Estudios cursados / Cargar estudio cursado"
+          titulo_form=" Cargar estudio cursado "
       else:
         form = formEstudiosCursados()
-        titulo_form=" Estudios cursados / Cargar estudio cursado"
     '''
     ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
       el mismo template .html
     '''
-    pag_agentes=True
-    return render_to_response('appPersonal/forms/abm.html',{'pag_agentes':pag_agentes,'titulo_form':titulo_form,'agente':agente,'form': form,'name':name,'grupos':grupos, 'user':user}, )
+    pag_estudio_cursado=True
+    return render_to_response('appPersonal/forms/abm.html',{'pag_estudio_cursado':pag_estudio_cursado,'titulo_form':titulo_form,'agente':agente,'form': form,'name':name,'grupos':grupos, 'user':user}, )
 
-    
+@csrf_exempt
+@login_required(login_url='login')
+def eliminarEstudioCursado(peticion):
+  idestcur=int(peticion.GET.get('idestcur'))
+  idagente=int(peticion.GET.get('idagente'))
+  agente=Agente.objects.get(idagente=idagente)
+  user = peticion.user
+  grupos = get_grupos(user)
+  name = 'Estudio cursado'
+
+  try:
+    estudioCursado=Estudiocursado.objects.get(idestcur=idestcur)
+    estudioCursado.delete()
+    url="../personal/listado/listadoxagente/estudioscursados$?idagente="+str(agente.idagente)+"&borrado=-1"
+    return HttpResponseRedirect(url)
+
+  except Exception as e:
+    pprint("Error generado: "+str(e))
+    url="listado/listadoxagente/estudioscursados$?idagente="+str(agente.idagente)+"&borrado=-1"
+    return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'No se pudo eliminar estudio cursado del agente '+agente.apellido+' '+agente.nombres})
+
+
+
 @login_required(login_url='login')
 def abmArticulos(peticion,idarticulo):
   
