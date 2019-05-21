@@ -1581,6 +1581,8 @@ def abmEstudioscursados(peticion):
     
     idestcur=int(peticion.GET.get('idestcur'))
     idagen=int(peticion.GET.get('idagen'))
+    if (idestcur!=0):
+      estudioCursadoViejo=Estudiocursado.objects.get(idestcur=idestcur)
     user = peticion.user
     grupos = get_grupos(user)
     name = 'Estudios Cursados'
@@ -1612,11 +1614,11 @@ def abmEstudioscursados(peticion):
         estudioCursado.observaciones=form.instance.observaciones
         estudioCursado.save()
         if accion == 'Alta':
-          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,estudioCursado,None,"Alta")
           url="../listado/listadoxagente/estudioscursados$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado estudio cursado para el agente '+agente.apellido+' '+agente.nombres})
         elif accion == 'Modificacion':
-          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,estudioCursado,estudioCursadoViejo,"Modificacion")
           url="../listado/listadoxagente/estudioscursados$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado estudio cursado del agente '+agente.apellido+' '+agente.nombres})
     else:
@@ -1651,6 +1653,7 @@ def eliminarEstudioCursado(peticion):
 
   try:
     estudioCursado=Estudiocursado.objects.get(idestcur=idestcur)
+    registrarLog(peticion,None,estudioCursado,"Baja")
     estudioCursado.delete()
     url="../personal/listado/listadoxagente/estudioscursados$?idagente="+str(agente.idagente)+"&borrado=-1"
     return HttpResponseRedirect(url)
@@ -1670,6 +1673,8 @@ def abmArticulos(peticion,idarticulo):
     name = 'Artículo'
     form_old = ''
     accion = ''
+    if(idarticulo!=0):
+      articuloViejo=Articulo.objects.get(idarticulo=idarticulo)
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
@@ -1688,13 +1693,15 @@ def abmArticulos(peticion,idarticulo):
 	      accion = 'Alta'
     
       if form.is_valid():
-	      form.save()
-	      if accion == 'Alta':
-	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      elif accion == 'Modificacion':
-	          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      url = '/personal/index/'
-	      return HttpResponseRedirect(url)
+        form.save()
+        articulo=Articulo.objects.get(idarticulo=form.instance.idarticulo)
+        if accion == 'Alta':
+          registrarLog(peticion,articulo,None,"Alta")
+        elif accion == 'Modificacion':
+          registrarLog(peticion,articulo,articuloViejo,"Modificacion")
+
+        url = '/personal/index/'
+        return HttpResponseRedirect(url)
     else:
       if int(idarticulo) >0:
         a = Articulo.objects.get(pk=idarticulo)
@@ -1711,6 +1718,8 @@ def abmArticulos(peticion,idarticulo):
 def abmEscolaridad(peticion):
     
     idescolaridad=int(peticion.GET.get('idescolaridad'))
+    if(idescolaridad!=0):
+      escolaridadVieja=Escolaridad.objects.get(idescolaridad=idescolaridad)
     idasigfam=int(peticion.GET.get('idasigfam'))
     user = peticion.user
     grupos = get_grupos(user)
@@ -1739,12 +1748,13 @@ def abmEscolaridad(peticion):
       if form.is_valid():
         form.instance.idasigfam= Asignacionfamiliar.objects.get(idasigfam=idasigfam)
         form.save()
+        escolaridad=Escolaridad.objects.get(idescolaridad=form.instance.idescolaridad)
         if accion == 'Alta':
-          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,escolaridad,None,"Alta")
           url="../../listado/listadoxaf/escolaridadxaf$?idfac="+str(idasigfam)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Escolaridad creada'})
         elif accion == 'Modificacion':
-          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,escolaridad,escolaridadVieja,"Modificacion")
           url="../../listado/listadoxaf/escolaridadxaf$?idfac="+str(idasigfam)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Escolaridad modificada correctamente'})  
     else:
@@ -1771,7 +1781,9 @@ def eliminarEscolaridad(peticion):
     idfamiliar=peticion.GET.get('idfamiliar')
     try:
       escolaridad=Escolaridad.objects.get(idescolaridad=idescolaridad)
+      registrarLog(peticion,None,escolaridad,"Baja")
       escolaridad.delete()
+
       url="../personal/listado/listadoxaf/escolaridadxaf$?idfac="+str(idfamiliar)+"&borrado=-1"
       return HttpResponseRedirect(url)
 
@@ -2036,10 +2048,12 @@ def abmLicenciaanualvieja(peticion):
 def altaFeriado(peticion):
   name="Feriado"
   user=peticion.user
+  accion="Alta"
   grupos = get_grupos(user)
   idferiado=int(peticion.GET.get('idferiado'))
 
   if(peticion.POST):
+    form = formFeriado(peticion.POST)
     fecha=datetime.strptime(peticion.POST['Fecha'], '%d/%m/%Y')
     feriado=Feriado()
     mensaje="Feriado creado el dia "+str(fecha.strftime('%d/%m/%Y'))
@@ -2049,6 +2063,8 @@ def altaFeriado(peticion):
     try:
       feriado.save()
       url="listado/feriados$"
+      registrarLog(peticion,feriado,None,"Alta")
+      #registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=feriado.idferiado).values_list()))
       return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':mensaje})
     except Exception as e:
       mensajeError="Se produjo un error al guardar el feriado,vuelva a intentar"
@@ -2066,6 +2082,8 @@ def modificarFeriado(peticion):
   user=peticion.user
   grupos = get_grupos(user)
   idferiado=int(peticion.GET.get('idferiado'))
+  #Objeto para guardar en el registro de cambios(log)
+  feriadoViejo=Feriado.objects.get(idferiado=idferiado)
 
   if(peticion.POST):
     fecha=datetime.strptime(peticion.POST['Fecha'], '%d/%m/%Y')
@@ -2074,7 +2092,14 @@ def modificarFeriado(peticion):
     feriado.Fecha=fecha
     feriado.descripcion=peticion.POST['descripcion']
     feriado.lugar=int(peticion.POST['lugar'])
-    feriado.save()
+
+    #Registro del log
+    try:
+      feriado.save()
+      registrarLog(peticion,feriado,feriadoViejo,"Modificacion")
+    except Exception as e:
+      pprint(e)
+      
     url="listado/feriados$"
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':mensaje})
   else:
@@ -2095,11 +2120,94 @@ def eliminarFeriado(peticion):
   idferiado=int(peticion.GET.get('idferiado'))
   feriado=Feriado.objects.get(idferiado=idferiado)
   fecha=feriado.Fecha
-  feriado.delete()
+  
+  #Registro del log
+  try:
+    registrarLog(peticion,None,feriado,"Baja")
+    feriado.delete()
+  except Exception as e:
+    pprint(e)
   
   mensaje="Se ha eliminado el feriado del dia "+str(fecha.strftime('%d/%m/%Y'))
   url="listado/feriados$"
   
   return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':mensaje})
   
+def registrarLog(peticion,objetoNuevo,objetoViejo,tipoCambio):
+  user=peticion.user
   
+  #Log de alta
+  if tipoCambio=="Alta":
+    #Armo una lista con los valores del nuevo objeto para guardarlo en el log
+    listaNuevos=list()
+    for campo in objetoNuevo._meta.fields:
+     #Obtengo el nombre/clave del campo
+     clave=campo.name
+     #Obtengo el valor del campo
+     valor=getattr(objetoNuevo,clave)
+     listaNuevos.append((clave,str(valor)))
+
+    #Guardo el log
+    try:
+      log=Cambios()
+      log.usuario=user
+      log.modelo = objetoNuevo.__class__.__name__
+      log.tipocambio = tipoCambio
+      log.valornew=listaNuevos
+      log.save()
+    except Exception as e:
+      pprint(e)
+  #Log de modificacion
+  elif tipoCambio=="Modificacion":
+    #Armo una lista con los valores del nuevo objeto para guardarlo en el log
+    listaNuevos=list()
+    for campo in objetoNuevo._meta.fields:
+      #Obtengo el nombre/clave del campo
+      clave=campo.name
+      #Obtengo el valor del campo
+      valor=getattr(objetoNuevo,clave)
+      listaNuevos.append((clave,str(valor)))
+    
+    #Armo una lista con los valores viejos del objeto para guardarlo en el log
+    listaViejos=list()
+    for campo in objetoViejo._meta.fields:
+      #Obtengo el nombre/clave del campo
+      clave=campo.name
+      #Obtengo el valor del campo
+      valor=getattr(objetoViejo,clave)
+      listaViejos.append((clave,str(valor)))
+    
+    #Guardo el log
+    try:
+      log=Cambios()
+      log.usuario=user
+      log.modelo = objetoNuevo.__class__.__name__
+      log.tipocambio = tipoCambio
+      log.valornew=listaNuevos
+      log.valorold=listaViejos
+      log.save()
+    except Exception as e:
+      pprint(e)
+
+  #Log de eliminacion 
+  elif tipoCambio =="Baja":
+    listaViejos=list()
+    for campo in objetoViejo._meta.fields:
+      #Obtengo el nombre/clave del campo
+      clave=campo.name
+      #Obtengo el valor del campo
+      valor=getattr(objetoViejo,clave)
+      listaViejos.append((clave,str(valor)))
+    
+    #Guardo el log
+    try:
+      log=Cambios()
+      log.usuario=user
+      log.modelo = objetoViejo.__class__.__name__
+      log.tipocambio = tipoCambio
+      log.valorold=listaViejos
+      log.save()
+    except Exception as e:
+      pprint(e)
+
+      
