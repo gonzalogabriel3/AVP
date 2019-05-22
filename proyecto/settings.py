@@ -99,7 +99,6 @@ DATABASES = {
         #'PORT': '5432',
         'HOST': 'sysavp.chubut.gov.ar',
         'PORT': '33060',
-        
     }
 }
 DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito','proyecto.routerPasajes.RouterPasajes','proyecto.routerPersonal.RouterPersonal']
