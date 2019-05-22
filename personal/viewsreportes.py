@@ -45,7 +45,8 @@ import xlwt
 from weasyprint import HTML
 import tempfile
 
-def repLicenciasAcumuladas(peticion):
+#Metodo que devuelve las licencias acumuladas de un agente,en un archivo en formato "pdf"
+def repLicenciasAcumuladasPDF(peticion):
 	idagente=peticion.GET.get('idagente')
 	licencias=Licenciaanualagente.objects.filter(idagente=idagente)
 	agente=Agente.objects.get(idagente=idagente)
@@ -91,7 +92,46 @@ def fechaEnRango(anio,mes,fi,ff):
         	cant = cant+1  
     return cant
 
-    
+
+#Metodo que devuelve las licencias acumuladas de un agente,en un archivo en formato "word"
+@csrf_exempt
+def repLicenciasAcumuladasWord(peticion):
+	idagente=peticion.GET.get('idagente')
+	agente=Agente.objects.get(idagente=idagente)
+	licencias=Licenciaanualagente.objects.filter(idagente=idagente)
+
+	book = xlwt.Workbook(encoding='utf8')
+
+	sheet = book.add_sheet('Licencias acumuladas')
+	
+	default_style = xlwt.Style.default_style
+	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+	
+	#Fila-Columna
+	i = 0
+	sheet.write(0, 0, 'Agente', style=default_style)
+	sheet.write(0, 1, 'N° Legajo', style=default_style)
+	sheet.write(1,0,agente.apellido+" "+agente.nombres, style=default_style)
+	sheet.write(1,1,agente.nrolegajo, style=default_style)
+
+	sheet.write(3,0,"Licencias acumuladas", style=default_style)
+	sheet.write(4,0,"Año", style=default_style)
+	sheet.write(4,1,"Dias disponibles", style=default_style)
+	sheet.write(4,2,"Dias tomados", style=default_style)
+	
+	j=5
+	for licencia in licencias:
+		sheet.write(j,0,licencia.anio, style=default_style)
+		sheet.write(j,1,licencia.cantidaddias, style=default_style)
+		sheet.write(j,2,licencia.diastomados, style=default_style)
+		j+=1
+
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=Licencias_acumuladas_'+str(agente.apellido)+' '+str(agente.nombres)+'.xls'
+	book.save(response)
+	return response
+  
 @login_required
 def ausRepLicenciasPendientes_excel(peticion):
 	

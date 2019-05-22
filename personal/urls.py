@@ -61,8 +61,11 @@ urlpatterns = [
     #path('site_media/(?P<path>.*)$','django.views.static.serve',
      #   {'document_root': './media'}),
 
-    path('repLicenciasAcumuladas$',repLicenciasAcumuladas,name="repLicenciasAcumuladas"),
-
+    #Reportes de licencias acumuladas
+    path('repLicenciasAcumuladasPDF$',repLicenciasAcumuladasPDF,name="repLicenciasAcumuladasPDF"),
+    path('repLicenciasAcumuladasWord$',repLicenciasAcumuladasWord,name="repLicenciasAcumuladasWord"),
+    #Fin reportes de licencias acumuladas
+    
     path('forms/menuagente$',menuagente,name="forms/menuagente"),
     
 #---------------------------------Listado Logs------------------------------
