@@ -1107,6 +1107,7 @@ def detAusentismoxagente(peticion):
                 ausAux.fechafin = a.fechafin
                 ausAux.cantdias = abs(a.cantdias-dias_dif)
                 ausAux.idagente= a.idagente
+                ausAux.idarticulo= a.idarticulo
                 per[i] = per[i] + ausEnMes(anio,indice+1,ausAux)
                 break
             else:
