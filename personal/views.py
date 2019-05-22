@@ -336,11 +336,14 @@ def ausEnMes(anio,mes,a):
     #HAY QUE ANANALIZAR EL CASO ESPECIAL DE ENERO Y EL CAMBIO DE AÑO
     #fer = Feriado.objects.filter(Q(Fecha__year=anio,Fecha__month=mes))
     #print(a)
-    if a.idagente.idzonareal != None:
+    #if a.idagente.idzonareal != None:
+    try:
         list_f= feriadosLista(anio,mes,a.idagente.idzonareal.pk)
-    elif a.idagente.idzona != None:
+    #elif a.idagente.idzona != None:
+    except a.idagente._meta.model.idzonareal.RelatedObjectDoesNotExist:
         list_f= feriadosLista(anio,mes,a.idagente.idzona.pk)
-    else:
+    #else:
+    except a.idagente._meta.model.idzona.RelatedObjectDoesNotExist:
         list_f=[]
     calendar.setfirstweekday(calendar.SUNDAY)
     cal= calendar.monthcalendar(anio,mes)
@@ -1108,6 +1111,7 @@ def detAusentismoxagente(peticion):
                 ausAux.cantdias = abs(a.cantdias-dias_dif)
                 ausAux.idagente= a.idagente
                 ausAux.idarticulo= a.idarticulo
+                ausAux.idausent= a.idausent
                 per[i] = per[i] + ausEnMes(anio,indice+1,ausAux)
                 break
             else:
