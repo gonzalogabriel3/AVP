@@ -1,5 +1,5 @@
 {% extends "appPersonal/listado/listado_base.html" %}
-{% load i18n %}
+{% load static %}
 {% block pagination %}
 	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 	{% if agente.situacion == 0 %}
@@ -11,14 +11,15 @@
 		{% else %}
 			<a href="{% url 'listado/agentes'%}?opc={{agente.situacion}}&busc=" class="pagination">/ Todos los agentes</a>	
 	{% endif %}
-	<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a><a href="#" class="activo">/ Sanciones </a>
+	<a href="{% url 'forms/menuagente' %}?idagente={{agente.idagente}}" class="pagination">/ {{agente.apellido}} {{agente.nombres}} </a>
+	<a href="#" class="activo">/ Sanciones </a>
 {% endblock %}
 {% block titulo-form %}
 	<p style="font-size: 16px;color: #1f618d">Listado Sanciones de <strong>{{agente.apellido}}, {{agente.nombres}}</strong><p>
 {% endblock %}
 
 {% block botonnuevo %}
-	<a href="{% url 'forms/abmsancion' %}?idsan=0&idagen={{idagente}}" class="btn btn-success">Nuevo</a>
+	<a href="{% url 'forms/abmsancion' %}?idsan=0&idagen={{idagente}}" class="btn btn-success">Nuevo </a>
 {%endblock%}
 
 {% block main-list %}
@@ -37,12 +38,12 @@
 			<tbody>
 				{%for list in lista%}
 					<tr class="{% cycle 'row1' 'row2' %}">
-							<td><a href= "{% url 'forms/abmsancion' %}?idsan={{list.idsancion}}&idagen={{list.idagente_id}}">{{list.fecha}}</a> </td>
+							<td><a href= "{% url 'forms/abmsancion' %}?idsan={{list.idsancion}}&idagen={{list.idagente_id}}">{{list.fecha}}</a></td>
 							<td>{{list.tiposancion}}</td>
 							<td>{{list.cantidaddias}}</td>
 							<td>{{list.observaciones}}</td>
 							{%if "Eliminar" in grupos or user.username == "admin"%}
-							<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/sancionxagente/{{list.idagente_id}}/{{list.idsancion}}/');">Eliminar</a></td>
+							<td><a href="{% url 'eliminarSancion' %}?idsan={{list.idsancion}}&idagen={{agente.idagente}}" onclick="return confirm('¿Esta seguro que desea eliminar sancion del dia {{list.fecha}}?')" style="color: red">Eliminar</a></td>
 							{% endif %}
 					</tr>
 				{% endfor %}

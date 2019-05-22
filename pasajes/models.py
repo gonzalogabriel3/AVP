@@ -13,7 +13,7 @@ class Agente(models.Model):
 	id=models.AutoField(unique=True,primary_key=True)
 	nombre=models.CharField(max_length=200)
 	apellido=models.CharField(max_length=200)
-	documento=models.IntegerField(unique=True)
+	documento=models.BigIntegerField(unique=True)
 	fecha_nacimiento=models.DateField()
 	id_localidad=models.ForeignKey(Localidad, on_delete=models.CASCADE,verbose_name="Localidad")
 

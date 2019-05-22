@@ -19,24 +19,32 @@
 		
 		<div class="results">
 			<table class="table table-striped">
-					<thead>
+					<thead style="background-color: #bbc0d1">
 					<tr>	
 						<th>Campo</th>
 						<th>Registro Nuevo</th>
 						<th>Registro Viejo</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody style="font-weight: bold;">
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
 							
 							{%if "Vacio" in list.0.1 %}
-							    <td>{{list.1.0}}</td>
+							    <td style="color: #0d8ac4">{{list.1.0}}</td>
 							{% else %}
-							    <td>{{list.0.0}}</td>							
+							    <td style="color: #0d8ac4">{{list.0.0}}</td>							
 							{% endif %}
-							<td>{{list.0.1}}</td>
-							<td>{{list.1.1}}</td>
+							{% if list.0.1|stringformat:"s" == "Vacio" %}
+								<td style="color: green">-</td>
+							{% else %}
+								<td style="color: green">{{list.0.1}}</td>
+							{% endif %}
+							{% if list.1.1|stringformat:"s" == "Vacio" %}
+								<td style="color: #c45d0d">-</td>
+							{% else %}
+								<td style="color: #c45d0d">{{list.1.1}}</td>
+							{% endif %}
 							
 						</tr>
 					{% endfor %}

@@ -1,5 +1,5 @@
 {% extends "appPersonal/plantilla_base.html" %}
-
+{% load static}
 {% block content %}
 <div id="content-main" >
 	
@@ -34,7 +34,7 @@
 		<input type="hidden" name="form_id" value="544015" />
 		
 		
-		<input id="saveForm" style="margin-left: 280px; width: 140px;" class="btn btn-success" type="submit" name="submit" value="Guardar" />
+		<button id="saveForm" style="margin-left: 280px; width: 140px;" class="btn btn-success" type="submit" name="submit" value="Guardar" >Guardar</button>
 		
 		<input type="button" value="Volver Atrás" class="btn btn-info" style="margin-left: 4px;width: 140px;" name="Back2" onclick="history.back()" 
 		/>

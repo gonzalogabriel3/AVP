@@ -44,7 +44,7 @@
 		<tbody>
 			{%for list in lista%}
 				<tr class="{% cycle 'row1' 'row2' %}">
-					<td><a href= "{% url 'forms/abmtraslado' %}?idtraslado={{list.idtraslado}}&idagen={{list.idagente_id}}">{{list.idagente}}</a></td>
+					<td><a href="{% url 'forms/abmtraslado' %}?idtraslado={{list.idtraslado}}&idagen={{list.idagente_id}}">{{list.idagente}}</a></td>
 					<td>{{list.agrupamiento}}</td>
 					<td>{{list.clase}}</td>
 					<td>{{list.categoria}}</td>
@@ -55,7 +55,7 @@
 					<td>{{list.fechad}}</td>
 					<td>{{list.fechahasta}}</td>
 					{%if "Eliminar" in grupos or user.username == "admin"%}
-					<td><href="#" onclick="Eliminar('/personal/listado/listadoxagente/traslado/{{list.idagente_id}}/{{list.idtraslado}}/');">Eliminar</a></td>
+					<td><a style="color: red;" href="{% url 'eliminarTraslado' %}?idtraslado={{list.idtraslado}}&idagente={{list.idagente.idagente}}" onclick="return confirm('¿Esta seguro que desea eliminar traslado ?')">Eliminar</a></td>
 					{% endif %}	
 					
 				</tr>

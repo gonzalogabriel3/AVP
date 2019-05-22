@@ -83,7 +83,10 @@
 			    //Obtener fecha
 			    var myDate = new Date();
 			    var year = myDate.getFullYear();
-			    for(var i = 1930; i < year+1; i++){
+			    /*for(var i = 1930; i < year+1; i++){
+				    document.write('<option value="'+i+'">'+i+'</option>');
+			    }*/
+			    for(var i = year; i >= 1930 ; i--){
 				    document.write('<option value="'+i+'">'+i+'</option>');
 			    }
 			    </script>

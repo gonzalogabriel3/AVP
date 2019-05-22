@@ -56,7 +56,7 @@
 
 		<ul class="nav nav-tabs nav-stacked">  
 		
-		<li class="nivel1"><a href="{% url 'forms/agente' %}?idagente={{idagente}}" class="nivel1"><b><i>Modificar datos personales</i></b></a></li>
+		<li class="nivel1"><a href="{% url 'forms/agente' %}?idagente={{idagente}}&opcion={{agente.situacion}}" class="nivel1"><b><i>Modificar datos personales</i></b></a></li>
 		<li class="nivel1"><a href="{% url 'listado/listadoxagente/facxagente' %}?idagente={{idagente}}&borrado=-1"><b><i>Familiares a Cargo</i></b></a></li>
 		{%if "Datos Agente" not in grupos%}
 			<li><a href="{% url 'detalle/detallexagente/ausentismo' %}?idagente={{idagente}}&borrado=-1"><b><i>Ausentismo</i></b></a></li>

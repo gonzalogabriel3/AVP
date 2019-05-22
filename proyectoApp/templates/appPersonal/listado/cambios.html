@@ -21,7 +21,7 @@
 		
 		<div class="results">
 			<table class="table table-striped">
-					<thead>
+					<thead style="background-color: #bbc0d1">
 					<tr>
 						<th>Usuario</th>
 						<th>Modelo</th>
@@ -30,14 +30,20 @@
 						<th>Cambios</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody style="font-weight: bold;">
 					{%for list in lista%}
 						<tr class="{% cycle 'row1' 'row2' %}">
 							
 							<td>{{list.usuario}}</td>
-							<td>{{list.modelo}}</td>
-							<td>{{list.tipocambio}}</td>
-							<td>{{list.horario}}</td>
+							<td style="color: #1338b4">{{list.modelo}}</td>
+							{% if list.tipocambio|stringformat:"s" == "Baja" %}
+								<td style="color: #b41313">{{list.tipocambio}}</td>
+							{% elif list.tipocambio|stringformat:"s" == "Alta" %}
+								<td style="color: #21b413">{{list.tipocambio}}</td>
+							{% elif list.tipocambio|stringformat:"s" == "Modificacion" %}
+								<td style="color: #13b47e">{{list.tipocambio}}</td>
+							{% endif %}
+							<td style="font-style: italic;">{{list.horario}}</td>
 							<td><a href= "{% url 'listado/cambiosenreg' %}?camb={{list.idcambio}} ">Ver Cambios</a></td>
 							
 						</tr>

@@ -61,6 +61,8 @@ urlpatterns = [
     #path('site_media/(?P<path>.*)$','django.views.static.serve',
      #   {'document_root': './media'}),
 
+    path('repLicenciasAcumuladas$',repLicenciasAcumuladas,name="repLicenciasAcumuladas"),
+
     path('forms/menuagente$',menuagente,name="forms/menuagente"),
     
 #---------------------------------Listado Logs------------------------------
@@ -83,7 +85,7 @@ urlpatterns = [
     path('listado/listadoxagente/seguro/(\d+)/(-?\d+)/$',seguroxagente),
     path('listado/listadoxagente/servprest$',servprestxagente,name="listado/listadoxagente/servprest"),
     #path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
-    path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente),
+    path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
     path('listado/listadoxagente/estudioscursados$',estudioscursadosxagente,name="listado/listadoxagente/estudioscursados"),
     path('listado/listadoxagente/medica$',medicaxagente,name="listado/listadoxagente/medica"),
 
@@ -140,7 +142,6 @@ urlpatterns = [
     path('forms/abmarticulos/<int:idarticulo>/$',abmArticulos,name="forms/abmarticulos"),
     path('forms/abmausentismo',abmAusentismo,name="forms/abmausentismo"),
     #path('forms/abmausent',abmAusent),
-    path('forms/abmsancion/(\d+)/(\d+)/$',abmSancion),
     path('forms/abmseguro/(\d+)/(\d+)/$', abmSeguro),
     path('forms/abmcertificadoaccdt/(\d+)/(\d+)/(\d+)/$',abmCertificadoaccidente),
     path('forms/abmadscriptos/(\d+)/(\d+)/$',abmAdscriptos),
@@ -160,6 +161,8 @@ urlpatterns = [
 
     path('eliminarAusent$',eliminarAusent,name="eliminarAusent"),
 
+
+
     #URL's de ABM  de Feriados
     path('listado/feriados$',feriadosListado,name='listado/feriados'),
     path('altaFeriado$',altaFeriado,name="altaFeriado"),
@@ -167,6 +170,16 @@ urlpatterns = [
     path('eliminarFeriado',eliminarFeriado,name="eliminarFeriado"),
 
     #FIN URL's de ABM  de Feriados
+
+    path('eliminarEscolaridad$',eliminarEscolaridad,name="eliminarEscolaridad"),
+
+    path('eliminarSancion$',eliminarSancion,name="eliminarSancion"),
+
+    path('eliminarTraslado$',eliminarTraslado,name="eliminarTraslado"),
+
+    path('eliminarServPrestado$',eliminarServicioPrestado,name="eliminarServPrestado"),
+
+    path('eliminarEstudioCursado$',eliminarEstudioCursado,name="eliminarEstudioCursado"),
 
 ]
 

@@ -48,8 +48,10 @@
 								<td>{{list.titulo}}</td>
 								<td>{{list.duracion}}</td>
 								<td>{{list.observaciones}}</td>
-								{%if "Eliminar" in grupos or user.username == "admin"%}
-								<td><a href="#" onclick="Eliminar('/personal/listado/listadoxagente/estudioscursados/{{idagente}}/{{list.idestcur}}/');">Eliminar</a></td>
+								{% if "Eliminar" in grupos or user.username == "admin" %}
+									<td>
+										<a href="{% url 'eliminarEstudioCursado' %}?idestcur={{list.idestcur}}&idagente={{agente.idagente}}" onclick="return confirm('¿Esta seguro que desea eliminar estudio cursado del agente {{agente.apellido}} {{agente.nombres}}?' )" style="color: red;">Eliminar</a>
+									</td>
 								{% endif %}
 						</tr>
 					{% endfor %}

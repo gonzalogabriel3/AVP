@@ -62,10 +62,10 @@ class formAusent(forms.ModelForm):
         self.fields['fechafin'].widget.attrs['disabled'] = 'disabled'
         self.fields['cantdias'].widget.attrs['min']=1
         #self.fields['idarticulo'].queryset = Articulo.objects.filter(~Q(descripcion = 'L. A. R.')).order_by('descripcion')#Articulo.objects.order_by('descripcion')
-     
-        
+
+
+
 class formAgente(forms.ModelForm):
-    #fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechaalta = forms.DateField(label="Fecha Alta",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechabaja = forms.DateField(required=False,label="Fecha Baja",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp3','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechanacimiento=forms.DateField(label="Fecha de nacimiento",widget=forms.DateInput(attrs=
@@ -74,30 +74,73 @@ class formAgente(forms.ModelForm):
                                     'placeholder':'Fecha de nacimiento'
 
                                 }))
+    nrolegajo = forms.IntegerField(label="N° legajo",min_value=0,widget = forms.NumberInput())
+    apellido = forms.CharField(min_length=3,max_length=100,label="Apellido",widget = forms.TextInput())
+    nombres = forms.CharField(min_length=3,max_length=100,label="Nombres",widget = forms.TextInput())
+    tipodoc = forms.ChoiceField(choices=TIPO_DOC,label="Tipo de documento")
+    nrodocumento = forms.IntegerField(label="Documento",widget = forms.NumberInput())
+    sexo = forms.ChoiceField(choices=TIPO_SEXO)
+    nacionalidad = forms.ModelChoiceField(queryset=Nacionalidad.objects.all(),label="Nacionalidad")
+    estadocivil = forms.ChoiceField(required=False,choices=TIPO_ECIVIL)
+    codigopostal = forms.ModelChoiceField(queryset=Codigopostal.objects.all(),label="Codigo postal")
+    domicilio = forms.CharField(required=False,min_length=3,max_length=100,label="Domicilio",widget = forms.TextInput())
+    telefono = forms.CharField(required=False,min_length=3,max_length=100,label="Telefono",widget = forms.TextInput())
+    cargo = forms.ChoiceField(choices=TIPO_CARGO)
+    antigranios = forms.IntegerField(required=False,label="Antigüedad R. en Años",min_value=0,widget = forms.NumberInput())
+    antigrmeses = forms.IntegerField(required=False,label="Antigüedad R. en Meses",min_value=0,widget = forms.NumberInput())
+    antigrvanios = forms.IntegerField(required=False,label="Antigüedad R. V. en Años",min_value=0,widget = forms.NumberInput())
+    antigrvmeses = forms.IntegerField(required=False,label="Antigüedad R. V. en Meses",min_value=0,widget = forms.NumberInput())
+    antigravpanios = forms.IntegerField(required=False,label="Antigüedad R. AVP en Años",min_value=0,widget = forms.NumberInput())
+    antigravpmeses = forms.IntegerField(required=False,label="Antigüedad R. AVP en Meses",min_value=0,widget = forms.NumberInput())
+    situacion = forms.ChoiceField(choices=TIPO_SITUACION)
+    razonbaja = forms.CharField(required=False,min_length=3,max_length=100,label="Razon baja")
+    clase = forms.ModelChoiceField(queryset=Clase.objects.all(),label="Clase")
+    categoria = forms.ChoiceField(choices=TIPO_CATEGORIA)
+    titulo = forms.ChoiceField(required=False,choices=TIPO_TITULO)
+    planta = forms.ChoiceField(required=False,choices=TIPO_PLANTA)
+    agrupamiento = forms.ModelChoiceField(required=False,queryset=Agrupamiento.objects.all(),label="Agrupamiento")
+    iddireccion = forms.ModelChoiceField(queryset=Direccion.objects.all(),label="Direccion")
+    iddireccionreal = forms.ModelChoiceField(queryset=Direccion.objects.all(),label="Direccion real")
+    nrocuenta = forms.CharField(required=False,max_length=100,label="N° cuenta",widget = forms.TextInput())
+    nrocontrato = forms.CharField(required=False,max_length=100,label="N° contrato",widget = forms.TextInput())
+    nrolegajosueldos = forms.CharField(required=False,max_length=100,label="N° Legajos Sueldos",widget = forms.TextInput())
+    observaciones = forms.CharField(required=False,max_length=100,label="Observaciones",widget = forms.TextInput())
+    total102 = forms.IntegerField(required=False,label="Total art. 102",min_value=0,widget = forms.NumberInput(attrs={'readonly':True}))
+    seccion = forms.CharField(required=False,max_length=100,label="Seccion",widget = forms.TextInput())
+    dexc = forms.BooleanField(required=False,label="Dedicacion intesiva")
+    defun = forms.BooleanField(required=False,label="Defun")
+    funcion = forms.ModelChoiceField(required=False,queryset=Funcion.objects.all(),label="Funcion")
+    idcargof = forms.ModelChoiceField(queryset=CargoFuncion.objects.all(),label="Cargo Funcion")
+    idzona = forms.ModelChoiceField(queryset=Zona.objects.all(),label="Zona")
+    idzonareal = forms.ModelChoiceField(queryset=Zona.objects.all(),label="Zona real")
+    claseac = forms.ModelChoiceField(queryset=Clase.objects.all(),label="Clase a cargo")
+
     class Meta:
         model  = Agente
         exclude=['idagente']
-        #fields = ('idagente', 'nrolegajo', 'apellido', 'nombres','tipodoc','nrodocumento','sexo','fechanacimiento','nacionalidad','estadocivil','codigopostal','domicilio','telefono','fechaalta','cargo','clase','categoria','titulo','planta','agrupamiento','iddireccion','iddireccionreal','nrocuenta','nrocontrato','nrolegajosueldos','observaciones', 'total102', 'seccion', 'dexc', 'defun', 'funcion', 'idcargof', 'idzona', 'idzonareal','claseac','antigranios','antigrmeses','antigrvanios','antigrvmeses','antigravpanios','antigravpmeses', 'situacion', 'fechabaja','razonbaja')
-    def __init__(self, *args, **kwargs):
-        super(formAgente, self).__init__(*args, **kwargs)
-        self.fields['tipodoc'].widget = forms.Select(choices=TIPO_DOC)
-        self.fields['estadocivil'].widget = forms.Select(choices=TIPO_ECIVIL)
-        self.fields['cargo'].widget = forms.Select(choices=TIPO_CARGO)
-        self.fields['categoria'].widget = forms.Select(choices=TIPO_CATEGORIA)
-        self.fields['total102'].widget.attrs['disabled'] = 'disabled'
         
         
 class formFamiliaresac(forms.ModelForm):
     fechanacimiento = forms.DateField(label="Fecha Nacimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
     fechaacontecimiento = forms.DateField(label="Fecha Acontecimiento",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
-    
+    nrodocumento=forms.IntegerField(label="Documento",widget = forms.NumberInput())
+    tipodocumento = forms.ChoiceField(choices=TIPO_DOC,label="Tipo documento")
+    apellidoynombre = forms.CharField(min_length=3,max_length=100,label="Apellido y Nombres",widget = forms.TextInput())
+    sexo = forms.ChoiceField(choices=TIPO_SEXO,label="Sexo")
+    vinculo = forms.ModelChoiceField(queryset=Vinculo.objects.all(),label="Vinculo")
+    discapacidad = forms.BooleanField(required=False,label="Discapacidad")
+    codflia = forms.CharField(required=False,min_length=1,max_length=100,label="Codflia",widget = forms.TextInput())
+    pagasalario = forms.BooleanField(required=False,label="Paga salario")
+    pagaflianrosa = forms.BooleanField(required=False,label="Paga familia numerosa")
+
     class Meta:
         model  = Asignacionfamiliar
-        fields = ('idagente', 'tipodocumento', 'nrodocumento', 'apellidoynombre','sexo','vinculo','fechanacimiento','discapacidad','fechaacontecimiento','codflia','observaciones','pagasalario','pagasalario','pagaflianrosa')
+        fields = ('idagente', 'tipodocumento', 'nrodocumento', 'apellidoynombre','sexo','vinculo','fechanacimiento','discapacidad','fechaacontecimiento','codflia','observaciones','pagasalario','pagaflianrosa')
     def __init__(self, *args, **kwargs):
         super(formFamiliaresac, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
+        self.fields['idagente'].widget.attrs['label'] = 'Agente'
         
       
 class formAccdetrabajo(forms.ModelForm):
@@ -123,16 +166,17 @@ class formCertificadoaccidente(forms.ModelForm):
         instance = getattr(self, 'instance', None)
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
         self.fields['idaccidentetrabajo'].widget.attrs['disabled'] = 'disabled'
-        
+
 class formSalida(forms.ModelForm):
     fecha = forms.DateField(label="Fecha ",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    horasalida = forms.TimeField(required=False,label="Hora de salida(HH:MM)",widget=forms.TimeInput(format='%H:%M:%S'))
+    horaregreso = forms.TimeField(required=False,label="Hora de regreso(HH:MM)",widget=forms.TimeInput(format='%H:%M:%S'))
     class Meta:
         model  = Salida
         fields = ('idagente', 'fecha', 'horasalida', 'horaregreso', 'oficial', 'observaciones')
     def __init__(self, *args, **kwargs):
         super(formSalida, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        #if instance and instance.pk:
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
 
 
@@ -162,7 +206,6 @@ class formServicioprestado(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(formServicioprestado, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        #if instance and instance.pk:
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
 
 class formLicenciaanualagente(forms.ModelForm):
@@ -178,14 +221,18 @@ class formLicencia(forms.ModelForm):
 
 class formSancion(forms.ModelForm):
     fecha = forms.DateField(label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp1','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
+    tiposancion = forms.ChoiceField(label="Tipo de sancion",choices=TIPO_SANCION)
+    observaciones = forms.CharField(min_length=3,max_length=100,label="Observaciones",widget = forms.TextInput())
+    cantidaddias = forms.IntegerField(label="Cantidad de dias",min_value=0,widget = forms.NumberInput())
+
     class Meta:
         model  = Sancion
-        fields = ('idagente', 'fecha', 'tiposancion', 'observaciones', 'cantidaddias')
+        exclude = ['idsancion']
+
     def __init__(self, *args, **kwargs):
         super(formSancion, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
-        self.fields['tiposancion'].widget = forms.Select(choices=TIPO_SANCION)
 
 class formAdscriptos(forms.ModelForm):
     fecha = forms.DateField(label="Fecha",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepicker','data-date-format':'dd/mm/yyyy'}))
@@ -198,9 +245,20 @@ class formAdscriptos(forms.ModelForm):
         self.fields['idagente'].widget.attrs['disabled'] = 'disabled'
 
 class formEstudiosCursados(forms.ModelForm):
+
+    ciclo=forms.CharField(max_length=100,label="Ciclo",widget = forms.TextInput())
+    establecimiento=forms.CharField(max_length=100,label="Establecimiento",widget = forms.TextInput())
+    titulo=forms.CharField(max_length=100,label="Titulo",widget = forms.TextInput())
+    duracion=forms.CharField(max_length=100,label="Duracion",widget = forms.TextInput())
+    observaciones=forms.CharField(max_length=100,label="Observaciones",widget = forms.TextInput())
+
     class Meta:
         model  = Estudiocursado
         fields = ('idagente', 'ciclo', 'establecimiento', 'titulo','duracion','observaciones')
+    def __init__(self, *args, **kwargs):
+        super(formEstudiosCursados, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        self.fields['idagente'].widget.attrs['disabled'] = 'disabled'  
 
 class formArticulos(forms.ModelForm):
     class Meta:
@@ -228,14 +286,26 @@ class formLicenciaanual(forms.ModelForm):
         self.fields['tipo'].required=True
               
 class formEscolaridad(forms.ModelForm):
+    #idasigfam = forms.CharField(required=False,label="Apellido y Nombres",widget = forms.TextInput(attrs={'readonly':True}))
+    anio = forms.IntegerField(label="Año",min_value=0,)
+    establecimiento = forms.CharField(max_length=100,label="Establecimiento",widget = forms.TextInput())
+    tipoescolaridad = forms.ChoiceField(label="Tipo",choices=TIPO_ESCO)
+    periodoescolar = forms.CharField(max_length=100,label="Periodo escolar",widget = forms.TextInput())
+    gradocrusado = forms.CharField(max_length=100,label="Grado cursado",widget = forms.TextInput())
+
+
     class Meta:
         model  = Escolaridad
-        fields = ('idasigfam', 'anio', 'establecimiento', 'tipoescolaridad', 'periodoescolar','gradocrusado')
+        exclude =['idescolaridad','idasigfam']
 
     def __init__(self, *args, **kwargs):
-        super(formEscolaridad, self).__init__(*args, **kwargs)
+        super(formEscolaridad, self).__init__(*args, **kwargs,)
         instance = getattr(self, 'instance', None)
-        self.fields['idasigfam'].widget.attrs['disabled'] = 'disabled'
+
+        '''self.fields['idasigfam'].widget.attrs['required']=False
+        self.fields['idasigfam'].widget.attrs['disabled']=True
+        self.fields['idasigfam'].queryset=Escolaridad.objects.filter(idescolaridad=idescolaridad)'''
+
 
 class formMedica(forms.ModelForm):
     fechaalta=forms.DateField(widget=forms.DateInput(attrs=

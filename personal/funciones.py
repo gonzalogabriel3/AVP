@@ -101,10 +101,10 @@ def modeloLista(modelo):
     w = list(modelo)
     z = list()
     numero = len(w)
-
     for i in range(0,numero-1):
         #k = (modelo._meta.fields[i],w[i])
         k = (modelo._meta.fields[i])
+        print(k)
         z.append(k)
 
     return z
@@ -159,18 +159,22 @@ def registrar(user, ntabla, tcambio, hora, v_old, v_new):
     	        val_old.append((v_old[i][0], data_old))
     	        data_new = unicode(v_new[i][1])
     	        val_new.append((v_new[i][0],data_new))
+
     else:
         val_old = v_old
         for i in range(0,len(v_new)-1):
-    	    try:
-    	        val_new.append((v_new[i][0],str(v_new[i][1])))
-    	    except:
-    	        val_new.append((v_new[i][0],v_new[i][1]))  
+            try:
+                val_new.append((v_new[i][0],str(v_new[i][1])))
+                print(str(v_new[i][1]))
+            except:
+                val_new.append((v_new[i][0],v_new[i][1]))  
+    
     registro = Cambios()
     #registro.usuario = UserPerso.objects.using('default').get(pk=user.pk)
     registro.usuario = User.objects.using('default').get(pk=user.pk).username
     registro.modelo = ntabla
     registro.tipocambio = tcambio
+    
     if tcambio == "Baja":
         registro.valorold = val_new
         registro.valornew = val_old
@@ -279,5 +283,11 @@ def superamaxausentanio(idagente, ausent, cantbase):
     
     return (diastomados + (ausent.cantdias - cantbase)) > arti.maxanual
 
-    
- 
+#Retorna una lista con los feriados de un mes particular en un año particular
+def feriadosLista(anio,mes,zona):
+    #Retorna los feriados comunes a todas las zonas, y las de la zona en particular del agentes
+    fer = Feriado.objects.filter(Q(Fecha__year=anio,Fecha__month=mes,lugar=0)|Q(Fecha__year=anio,Fecha__month=mes,lugar=zona))
+    list_f=list()
+    for f in fer:
+        list_f.append(f.Fecha.day)
+    return list_f

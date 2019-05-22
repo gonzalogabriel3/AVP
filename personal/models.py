@@ -88,6 +88,8 @@ TIPO_CARGO = (
 	("CG2","Capataz Gral - Central Zonas"),
 	("CG3","Capataz Gral - Diesel y Ajuste equipos pesados central y zonas"),
 )
+
+
 # Create your models here.
 
 
@@ -198,7 +200,7 @@ class Agente(models.Model):
     apellido = models.CharField(max_length=200, blank=True)
     nombres = models.CharField(max_length=200)
     tipodoc = models.CharField(max_length=200, blank=True, choices=TIPO_DOC, verbose_name = "Tipo Documento")
-    nrodocumento = models.SmallIntegerField(unique=True, verbose_name = "Nro Documento")
+    nrodocumento = models.BigIntegerField(unique=True, verbose_name = "Nro Documento")
     sexo = models.CharField(max_length=1, choices=TIPO_SEXO)
     fechanacimiento = models.DateField()
     nacionalidad = models.ForeignKey(Nacionalidad, db_column="nacionalidad", verbose_name="Nacionalidad",on_delete=models.CASCADE)
@@ -235,8 +237,8 @@ class Agente(models.Model):
     defun = models.BooleanField(blank=True)
     funcion = models.ForeignKey(Funcion, null=True,db_column='funcion', blank=True,on_delete=models.CASCADE)
     idcargof =  models.ForeignKey(CargoFuncion, null=True,db_column='idcargof', blank=True, verbose_name='Cargo Funcion',on_delete=models.CASCADE)
-    idzona = models.ForeignKey(Zona, null=True, db_column='idzona', blank=True, verbose_name = "Zona",on_delete=models.CASCADE)
-    idzonareal = models.ForeignKey(Zona, related_name="idzonareal", null=True, db_column='idzonareal', blank=True, verbose_name = "Zona Real",on_delete=models.CASCADE)
+    idzona = models.ForeignKey(Zona, null=False, db_column='idzona', blank=True, verbose_name = "Zona",on_delete=models.CASCADE)
+    idzonareal = models.ForeignKey(Zona, related_name="idzonareal", null=False, db_column='idzonareal', blank=True, verbose_name = "Zona Real",on_delete=models.CASCADE)
     claseac = models.ForeignKey(Clase, related_name="claseac", null=True, db_column='claseac', blank=True, verbose_name='Clase a Cargo',on_delete=models.CASCADE)
     class Meta:
         db_table = u'agente'
@@ -282,7 +284,7 @@ class Asignacionfamiliar(models.Model):
     idasigfam = models.AutoField(primary_key=True)
     idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True,verbose_name='Apellido y Nombre',on_delete=models.CASCADE)
     tipodocumento = models.CharField(max_length=200, blank=True, choices = TIPO_DOC,verbose_name='Tipo Documento')
-    nrodocumento = models.IntegerField(null=True, blank=True,verbose_name='Número de Documento')
+    nrodocumento = models.BigIntegerField(null=True, blank=True,verbose_name='Número de Documento')
     apellidoynombre = models.CharField(max_length=200, blank=True,verbose_name='Apellido y Nombre de Familiar')
     sexo = models.CharField(max_length=200, blank=True,choices=TIPO_SEXO)
     vinculo = models.ForeignKey(Vinculo, null=True, db_column='vinculo', blank=True,verbose_name='Vínculo',on_delete=models.CASCADE)
@@ -350,7 +352,7 @@ class Sancion(models.Model):
         db_table = u'sancion'
  
     def __str__(self):
-        return str(self.idagente.apellido)             
+        return str(self.tiposancion)             
 
 #··························································································································································
 
@@ -596,7 +598,7 @@ class Salida(models.Model):
         unique_together = ("idagente","horasalida","fecha")
     
     def __str__(self):
-        return str(self.fecha)       
+        return str(self.horasalida)
 
 #··························································································································································        
 class Escolaridad(models.Model):
@@ -614,7 +616,7 @@ class Escolaridad(models.Model):
         unique_together = ("idasigfam","anio")
     
     def __str__(self):
-        return str(self.gradocrusado)       
+        return str(self.idasigfam)       
 
 #··························································································································································        
 class ArtiTomados(models.Model):
