@@ -241,13 +241,20 @@ def abmAusentismo(peticion):
 
     idagen = int(peticion.GET.get('idagente'))
     idausent = int(peticion.GET.get('idausent'))
+    if(idausent!=0):
+      ausentismoViejo=Ausent.objects.get(pk=idausent)
     agente = Agente.objects.get(pk=idagen)
     if peticion.POST:
       if int(idausent) >0:
         a = Ausent.objects.get(pk=idausent)
         form = formAusent(peticion.POST, instance=a)
+        accion="Modificacion"
       else:
         form = formAusent(peticion.POST)
+        accion="Alta"
+
+      pprint(form.is_valid())
+      
       if form.is_valid():
         cd = form.cleaned_data['cantdias']
         #------------------------------------------------
@@ -276,10 +283,12 @@ def abmAusentismo(peticion):
         #form.save()
         
         #for i in range(1,cd):
-        fechafinal=contarDiasHabiles(form.instance.fechainicio,int(form.instance.cantdias),idagen)
-        a = Ausent()
+        #fechafinal=contarDiasHabiles(form.instance.fechainicio,int(form.instance.cantdias),idagen)
+        if(idausent==0):
+          a = Ausent()
+        
         a.fechainicio=form.instance.fechainicio
-        a.fechafin = fechafinal
+        a.fechafin = form.instance.fechainicio+timedelta(days=form.instance.cantdias)
         #pprint(a.fechafin)
         a.cantdias = form.instance.cantdias
         a.observaciones = form.instance.observaciones
@@ -287,15 +296,35 @@ def abmAusentismo(peticion):
         a.idarticulo = form.instance.idarticulo
         a.tiempolltarde = form.instance.tiempolltarde
         a.direccion = form.instance.direccion
-        a.save()
+        try:
+          if(accion=="Alta"):
+            a.save()
+            registrarLog(peticion,a,None,accion)
+            url="../detalle/detallexagente/ausentismo?idagente="+str(idagen)+"&borrado=-1"
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado ausentismo para el agente '+agente.apellido+' '+agente.nombres})
+          elif(accion=="Modificacion"):
+            a.save()
+            registrarLog(peticion,a,ausentismoViejo,accion)
+            url="../detalle/detallexagente/ausentismo?idagente="+str(idagen)+"&borrado=-1"
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado ausentismo del '+agente.apellido+' '+agente.nombres})
+          
+        except Exception as e:
+          pprint("Error:"+str(e))
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'No se pudo cargar ausentismo '})
+      #Si hubo un error en el formulario
+      else:
+        listaErrores=list()
+        #Armo una lista con los errores para mostrar al usuario
+        for field in form:
+          for error in field.errors:
+            listaErrores.append((field.name,error))
 
-        url = '/personal/detalle/detallexagente/ausentismo?idagente='+str(idagen)+'&borrado=-1'
-        return HttpResponseRedirect(url)
+        return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar ausentismo,verifique que se hayan compleatdo los campos correctamente. '})
     else:
       if int(idausent) >0 and int(idagen)> 0:
         a = Ausent.objects.get(pk=idausent)
         form = formAusent(instance=a)
-        titulo_form="/ Modificar ausentismo"
+        titulo_form=" Modificar ausentismo"
       elif int(idagen) > 0:          
           a = Agente.objects.get(pk=idagen)
           b = Ausent()
@@ -305,14 +334,11 @@ def abmAusentismo(peticion):
           titulo_form=" Cargar ausentismo"
       else:
         form = formAusent()
-        titulo_form=" Cargar ausentismo"
+       
     '''
       ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
       el mismo template .html
     '''
-    if titulo_form==False:
-      titulo_form=" Cargar ausentismo"
-    
     #Obtengo los feriados y dias de ausentismo para cargar en datepicker
     feriadosArray=feriados()
     diasTomadosArray=diasTomados(idagen)
@@ -325,7 +351,11 @@ def eliminarAusent(peticion):
   user = peticion.user
   agente=Agente.objects.get(idagente=idagente)
   ausent=Ausent.objects.get(idausent=idausent)
-  ausent.delete()
+  try:
+    registrarLog(peticion,None,ausent,"Baja")
+    ausent.delete()
+  except Exception as e:
+    pprint("Error: "+str(e))
 
   url="detalle/detallexagente/ausentismo?idagente="+str(idagente)+"&borrado=-1"
   return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado ausentismo de '+agente.apellido+' '+agente.nombres})
@@ -371,8 +401,14 @@ def abmAgente(request):
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Datos del agente modificados '})
 
       else:
-        url = '../listado/agentes$?opc=2&busc='
-        return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'Hubo un error al guardar los datos del agente '})     
+        listaErrores=list()
+        #Armo una lista con los errores para mostrar al usuario
+        for field in form:
+          for error in field.errors:
+            listaErrores.append((field.name,error))
+
+        return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar datos del agente,verifique que se hayan compleatdo los campos correctamente. '})
+             
       #Fin validacion de formulario
     else:
       
@@ -420,7 +456,7 @@ def abmFamiliresac(peticion):
 	      accion = 'Alta'
 	      form = formFamiliaresac(peticion.POST)
       
-      pprint(form.errors)
+      
       if form.is_valid():
         try:
           form.instance.idagente_id = idagen
@@ -438,6 +474,14 @@ def abmFamiliresac(peticion):
           pprint("Error generado: "+str(e))
           url="../listado/listadoxagente/facxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensajeError':'No se pudo guardar datos del familiar '})
+      else:
+        listaErrores=list()
+        #Armo una lista con los errores para mostrar al usuario
+        for field in form:
+          for error in field.errors:
+            listaErrores.append((field.name,error))
+
+        return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar asignacion familiar,verifique que se hayan compleatdo los campos correctamente. '})
     else:
       if int(idfac) > 0 and int(idagen)> 0:
         a = Asignacionfamiliar.objects.get(pk=idfac)
