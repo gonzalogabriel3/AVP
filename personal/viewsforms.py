@@ -622,6 +622,14 @@ def abmSalida(peticion):
         elif accion == 'Modificacion':
           url="../listado/listadoxagente/salidaxagente?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado salida del agente '+agente.apellido+' '+agente.nombres})
+      else:
+        listaErrores=list()
+        #Armo una lista con los errores para mostrar al usuario
+        for field in form:
+          for error in field.errors:
+            listaErrores.append((field.name,error))
+
+        return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar salida,verifique que se hayan compleatdo los campos correctamente. '})
     else:
       if int(idsalida) > 0 and int(idagen)> 0:
         a = Salida.objects.get(pk=idsalida)
@@ -654,6 +662,10 @@ def abmTraslado(peticion):
     accion = ''
     agente=Agente.objects.get(idagente=idagen)
     grupos = get_grupos(user)
+    if(idtraslado!=0):
+      trasladoViejo=Traslado.objects.get(pk=idtraslado)
+      trasladoViejo.idagente=agente
+
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
@@ -673,15 +685,23 @@ def abmTraslado(peticion):
         form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
         form.instance.idagente_id = idagen
         form.save()
+        traslado=Traslado.objects.get(pk=form.instance.idtraslado)
         if accion == 'Alta':
-          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,traslado,None,accion)
           url="../listado/listadoxagente/traslado$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado traslado para el agente '+agente.apellido+' '+agente.nombres})
         elif accion == 'Modificacion':
-          registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,traslado,trasladoViejo,accion)
           url="../listado/listadoxagente/traslado$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado traslado del agente '+agente.apellido+' '+agente.nombres})
+      else:
+          listaErrores=list()
+          #Armo una lista con los errores para mostrar al usuario
+          for field in form:
+            for error in field.errors:
+              listaErrores.append((field.name,error))
 
+          return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar traslado,verifique que se hayan compleatdo los campos correctamente. '})
     else:
       if int(idtraslado) > 0 and int(idagen)> 0:
         a = Traslado.objects.get(pk=idtraslado)
@@ -706,9 +726,10 @@ def abmTraslado(peticion):
 def eliminarTraslado(peticion):
   idtraslado=int(peticion.GET.get('idtraslado'))
   idagen=int(peticion.GET.get('idagente'))
-  traslado=Traslado(idtraslado=idtraslado)
   
   try:
+    traslado=Traslado.objects.get(idtraslado=idtraslado)
+    registrarLog(peticion,None,traslado,"Baja")
     traslado.delete()
     url="../personal/listado/listadoxagente/traslado$?idagente="+str(idagen)+"&borrado=-1"
     return HttpResponseRedirect(url)
@@ -751,6 +772,14 @@ def abmSeguro(peticion,idseguro,idagen):
 	          
 	      url = '/personal/listado/listadoxagente/seguro/'+idagen+'/-1/'
 	      return HttpResponseRedirect(url)
+      else:
+          listaErrores=list()
+          #Armo una lista con los errores para mostrar al usuario
+          for field in form:
+            for error in field.errors:
+              listaErrores.append((field.name,error))
+
+          return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar seguro,verifique que se hayan compleatdo los campos correctamente. '})
     else:
       if int(idseguro) > 0 and int(idagen)> 0:
         a = Seguro.objects.get(pk=idseguro)
@@ -776,6 +805,9 @@ def abmServicioprestado(peticion):
     form_old = ''
     accion = ''
     agente=Agente.objects.get(idagente=idagen)
+    if(idservprest!=0):
+      servicioPrestadoViejo=Servicioprestado.objects.get(pk=idservprest)
+      servicioPrestadoViejo.idagente=agente
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
@@ -796,14 +828,23 @@ def abmServicioprestado(peticion):
         form.instance.idagente = Agente.objects.get(pk=idagen)
         form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
         form.save()
+        servicio=Servicioprestado.objects.get(pk=form.instance.pk)
         if accion == 'Alta':
-          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,servicio,None,accion)
           url="../listado/listadoxagente/servprest$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado servicio prestado para el agente '+agente.apellido+' '+agente.nombres})
         elif accion == 'Modificacion':
-          registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,servicio,servicioPrestadoViejo,accion)
           url="../listado/listadoxagente/servprest$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado servicio prestado del agente '+agente.apellido+' '+agente.nombres})
+      else:
+          listaErrores=list()
+          #Armo una lista con los errores para mostrar al usuario
+          for field in form:
+            for error in field.errors:
+              listaErrores.append((field.name,error))
+
+          return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar servicio prestado,verifique que se hayan compleatdo los campos correctamente. '})
     else:
       if int(idservprest) > 0 and int(idagen)> 0:
         a = Servicioprestado.objects.get(pk=idservprest)
@@ -831,6 +872,7 @@ def eliminarServicioPrestado(peticion):
   servicioPrestado=Servicioprestado.objects.get(idservprest=idservprest)
   
   try:
+    registrarLog(peticion,None,servicioPrestado,"Baja")
     servicioPrestado.delete()
     url="../personal/listado/listadoxagente/servprest$?idagente="+str(idagente)+"&borrado=-1"
     return HttpResponseRedirect(url)
@@ -909,7 +951,12 @@ def abmLicenciaanual(peticion):
         error = "no posee permiso para carga de datos"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
     name = 'Licencia Anual'
-    
+    if(idlicanual!=0):
+      licenciaanualVieja=Licenciaanual.objects.get(pk=idlicanual)
+      ausentismoViejo=Ausent.objects.get(idausent=licenciaanualVieja.idausent.idausent)
+      licenciaanualVieja.idagente=agente
+      licenciaanualVieja.idausent=ausentismoViejo
+
     if peticion.POST:
       if int(idlicanual) >0:
         a = Licenciaanual.objects.get(pk=idlicanual)
@@ -1027,9 +1074,9 @@ def abmLicenciaanual(peticion):
 
             #Registro de las acciones en el "log"      
             if accion == 'Alta':
-              registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+              registrarLog(peticion,licenciaanual,None,accion)
             elif accion == 'Modificacion':
-              registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+              registrarLog(peticion,licenciaanual,licenciaanualVieja,accion)
 
             url="../vacas?idagente="+str(idagen)
             return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
@@ -1058,10 +1105,12 @@ def abmLicenciaanual(peticion):
 
             #Registro de las acciones en el "log"      
             if accion == 'Alta':
-              registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+              registrarLog(peticion,licenciaanual,None,accion)
             elif accion == 'Modificacion':
-              registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))    
+              registrarLog(peticion,licenciaanual,licenciaanualVieja,accion)
             
+            url="../vacas?idagente="+str(idagen)
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Licencia cargada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
         #Carga de interrupcion
         elif form.instance.tipo == 'INT':
           
@@ -1092,6 +1141,7 @@ def abmLicenciaanual(peticion):
           licenciaanual.save()
           
           if(accion == 'Modificacion'):
+            interrupcionVieja=Licenciaanual.objects.get(pk=idlicanual)
             #Se modifica una interrupcion
             pprint("Modificacion de una interrupcion")
             interrupcion=Licenciaanual.objects.get(pk=form.instance.pk)
@@ -1099,6 +1149,7 @@ def abmLicenciaanual(peticion):
             interrupcion.observaciones=ausent.observaciones
             interrupcion.save()
 
+            registrarLog(peticion,interrupcion,licenciaanualVieja,accion)
             url="../vacas?idagente="+str(idagen)
             return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Interrupcion de licencia modificada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
           else:
@@ -1111,22 +1162,24 @@ def abmLicenciaanual(peticion):
             interrupcion.fechadesde=ausent.fechainicio
             interrupcion.observaciones=ausent.observaciones
             interrupcion.save()
-          
-            #Se modicia la licencianualagente con la nueva cantidad de dias tomados
+            
+            registrarLog(peticion,interrupcion,None,"Alta")
+            #Se modifica la licencianualagente con la nueva cantidad de dias tomados
             licenciaanualagente.diastomados=licenciaanualagente.diastomados-dias_originales_lictomada
             licenciaanualagente.diastomados=licenciaanualagente.diastomados+dias_habiles
             licenciaanualagente.save()
 
             url="../vacas?idagente="+str(idagen)
             return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Interrupcion de licencia generada exitosamente para el agente '+agente.apellido+' '+agente.nombres})
-    
-    #Registro de las acciones en el "log"      
-    if accion == 'Alta':
-      registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-    elif accion == 'Modificacion':
-      registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))    
+      else:
+          listaErrores=list()
+          #Armo una lista con los errores para mostrar al usuario
+          for field in form:
+            for error in field.errors:
+              listaErrores.append((field.name,error))
+
+          return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar licencia,verifique que se hayan compleatdo los campos correctamente. '})
         
-    
     #RENDERIZACION DE FORMULARIO    
     else:
       if int(idlicanual) > 0 and int(idagen)> 0:
@@ -1362,6 +1415,7 @@ def eliminarLicenciaTomada(peticion):
   if licencia.tipo=='INT':
     pprint("Eliminacion de una interrupcion")
     dias_totales=licenciaanualagente.diastomados
+    registrarLog(peticion,None,licencia,"Baja")
     licencia.delete()
     licenciaanualagente.diastomados=dias_totales
     licenciaanualagente.save()
@@ -1389,7 +1443,7 @@ def eliminarLicenciaTomada(peticion):
     #Registro de las acciones en el "log"      
     #registrar(user,name,'Baja',getTime(),None,modeloLista(Licenciaanual.objects.filter(idlicanual=idlicanual).values_list()))
 
-    registrar(user,name,"Baja",getTime(),None,modeloLista(Licenciaanual.objects.filter(pk=idlicanual).values_list()))
+    registrarLog(peticion,None,licencia,"Baja")
 
     url="vacas?idagente="+str(idagente)
     return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha eliminado licencia de '+agente.apellido+' '+agente.nombres})
