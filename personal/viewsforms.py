@@ -374,6 +374,8 @@ def abmAgente(request):
     accion = ''
     form_old=''
     pag_agentes=True
+    if(idagente!=0):
+      agenteViejo=Agente.objects.get(idagente=idagente)
     
     if(request.method == 'POST'):
 
@@ -389,14 +391,14 @@ def abmAgente(request):
       if(form.is_valid()):
         
         form.save()
-        
+        ag=Agente.objects.get(idagente=form.instance.idagente)
         if accion == "Alta":
-          registrar(user, name, "Alta", getTime(), None, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(request,ag,None,"Alta")
           url = '../listado/agentes$?opc=2&busc='
-          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Nuevo agente creado '})
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Nuevo agente cargado '})
 
         elif accion == "Modificacion":
-          registrar(user, name, "Modificacion", getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(request,ag,agenteViejo,"Modificacion")
           url = '../listado/agentes$?opc=2&busc='
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Datos del agente modificados '})
 
@@ -444,6 +446,9 @@ def abmFamiliresac(peticion):
     idagen = int(peticion.GET.get('idagente'))
 
     agente=Agente.objects.get(pk=idagen)
+    if (idfac!=0):
+      familiarViejo=Asignacionfamiliar.objects.get(pk=idfac)
+      familiarViejo.idagente=agente
     
     if peticion.POST:
       if int(idfac) >0:
@@ -462,12 +467,13 @@ def abmFamiliresac(peticion):
           form.instance.idagente_id = idagen
           form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
           form.save()
+          asignacionFam=Asignacionfamiliar.objects.get(pk=form.instance.pk)
           if accion == 'Alta':
-            registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+            registrarLog(peticion,asignacionFam,None,"Alta")
             url = '../listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
-            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Nuevo familiar creado '})
+            return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Nuevo familiar cargado '})
           elif accion == 'Modificacion':
-            registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+            registrarLog(peticion,asignacionFam,familiarViejo,"Modificacion")
             url = '../listado/listadoxagente/facxagente?idagente='+str(idagen)+'&borrado=-1'
             return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Datos del familiar guardados '})
         except Exception as e:
@@ -513,6 +519,7 @@ def abmAccdetrabajo(peticion):
    form_old = ''
    accion = ''
    grupos = get_grupos(user)
+   agente=Agente.objects.get(idagente=idagen)
    
    if permisoABM(user):
         error = "no posee permiso para carga de datos"
@@ -530,16 +537,26 @@ def abmAccdetrabajo(peticion):
 	      form = formAccdetrabajo(peticion.POST)
     
       if form.is_valid():
-	      form.instance.idagente_id = idagen
-	      form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
-	      form.save()
-	      if accion == 'Alta':
-	          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	      elif accion == 'Modificacion':
-	          registrar(user, name,accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
-	          
-	      url = '/personal/listado/listadoxagente/adtxagente/'+str(form.instance.idagente_id)+'/-1/'
-	      return HttpResponseRedirect(url)
+        form.instance.idagente_id = idagen
+        form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
+        form.save()
+        acc=Accidentetrabajo.objects.get(pk=form.instance.pk)
+        if accion == 'Alta':
+          registrarLog(peticion,acc,None,accion)
+          url = '../listado/listadoxagente/adtxagente?idagente='+str(idagen)+'&borrado=-1'
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado accidente de trabajo para el agente '+str(agente.apellido)+" "+str(agente.nombres)})
+        elif accion == 'Modificacion':
+          registrarLog(peticion,acc,a,accion)
+          url = '../listado/listadoxagente/adtxagente?idagente='+str(idagen)+'&borrado=-1'
+          return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado accidente de trabajo del agente '+str(agente.apellido)+" "+str(agente.nombres)})
+      else:
+          listaErrores=list()
+          #Armo una lista con los errores para mostrar al usuario
+          for field in form:
+            for error in field.errors:
+              listaErrores.append((field.name,error))
+
+          return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar accidente de trabajo,verifique que se hayan compleatdo los campos correctamente. '})
    else:
     if int(idadt) > 0 and int(idagen)> 0:
       a = Accidentetrabajo.objects.get(pk=idadt)
