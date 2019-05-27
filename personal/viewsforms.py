@@ -339,11 +339,10 @@ def abmAusentismo(peticion):
       ###Variable para la paginacion en un formulario,debido a que todos los formularios de la aplicacion comparten
       el mismo template .html
     '''
-    #Obtengo los feriados y dias de ausentismo para cargar en datepicker
-    feriadosArray=feriados()
+    #Obtengo los dias de ausentismo para cargar en datepicker
     diasTomadosArray=diasTomados(idagen)
-    pag_ausentismo=True   
-    return render_to_response('appPersonal/forms/abm.html',{'diasTomados':diasTomadosArray,'feriados':feriadosArray,'user':user,'pag_ausentismo':pag_ausentismo,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
+    pag_ausentismo=True
+    return render_to_response('appPersonal/forms/abm.html',{'diasTomados':diasTomadosArray,'user':user,'pag_ausentismo':pag_ausentismo,'titulo_form':titulo_form,'form': form, 'name':name, 'grupos':grupos,'agente':agente})
 
 def eliminarAusent(peticion):
   idausent=peticion.GET.get('idausent')
@@ -1461,6 +1460,10 @@ def abmSancion(peticion):
     name = 'Sanción'
     form_old = ''
     accion = ''
+
+    if(idsan!=0):
+      sancionVieja=Sancion.objects.get(idsancion=idsan)
+      sancionVieja.idagente=agente
     
     if permisoABM(user):
         error = "no posee permiso para carga de datos"
@@ -1484,14 +1487,23 @@ def abmSancion(peticion):
         form.instance.idagente_id = idagen
         form.fields['idagente'].widget.attrs['enabled'] = 'enabled'
         form.save()
+        san=Sancion.objects.get(pk=form.instance.pk)
         if accion == 'Alta':
-          registrar(user,name,accion,getTime(),None,modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,san,None,accion)
           url="../listado/listadoxagente/sancionxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha cargado sancion para el '+agente.apellido+' '+agente.nombres})
         elif accion == 'Modificacion':
-          registrar(user, name, accion, getTime(), form_old, modeloLista(form.Meta.model.objects.filter(pk=form.instance.pk).values_list()))
+          registrarLog(peticion,san,sancionVieja,accion)
           url="../listado/listadoxagente/sancionxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
           return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':'Se ha modificado sancion del '+agente.apellido+' '+agente.nombres})
+      else:
+          listaErrores=list()
+          #Armo una lista con los errores para mostrar al usuario
+          for field in form:
+            for error in field.errors:
+              listaErrores.append((field.name,error))
+
+          return render_to_response('appPersonal/mensaje.html',{'listaErrores':listaErrores,'user':user,'mensajeError':'No se pudo cargar sancion,verifique que se hayan compleatdo los campos correctamente. '})
     else:
       if int(idsan) > 0:
         a = Sancion.objects.get(idsancion=idsan)
@@ -1523,6 +1535,7 @@ def eliminarSancion(peticion):
 
   try:
     sancion=Sancion.objects.get(idsancion=idsan)
+    registrarLog(peticion,None,sancion,"Baja")
     sancion.delete()
     url="../personal/listado/listadoxagente/sancionxagente$?idagente="+str(agente.idagente)+"&borrado=-1"
     return HttpResponseRedirect(url)
@@ -2236,7 +2249,7 @@ def eliminarFeriado(peticion):
   feriado=Feriado.objects.get(idferiado=idferiado)
   fecha=feriado.Fecha
   
-  #Registro del log
+  #Registro en el log
   try:
     registrarLog(peticion,None,feriado,"Baja")
     feriado.delete()
@@ -2247,7 +2260,8 @@ def eliminarFeriado(peticion):
   url="listado/feriados$"
   
   return render_to_response('appPersonal/mensaje.html',{'url':url,'user':user,'mensaje':mensaje})
-  
+
+#Metodo que guarda en un registro las acciones realizadas por los usuarios,que afecten a la base de datos(modelos) 
 def registrarLog(peticion,objetoNuevo,objetoViejo,tipoCambio):
   user=peticion.user
   

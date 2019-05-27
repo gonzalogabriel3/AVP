@@ -243,8 +243,35 @@
 	{% if pag_ausentismo %}
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 	<script>
+		//Funcion que carga los dias dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
+		function diasTomados(date){
+			
+			//Cargo dias tomados(Ausentismos)
+			var diasTomados={{ diasTomados|safe }}
+			var month = date.getMonth()+1;
+			var year = date.getFullYear();
+			var day = date.getDate();
+
+			//Creo una nueva fecha
+			var newdate = day+"-"+month+'-'+year;
+
+			if(jQuery.inArray(newdate, diasTomados) != -1){
+			  return [true, "highlight", "Ausentismo" ];
+			}
+
+			return [true,'bg-red'];
+		}
+
+		//Funcion que carga los dias tomados de un agente a un datepicker
+		function cargarDiasTomados(date){
+			var dias=diasTomados(date)
+			
+			return dias;
+		}
+
 		$(function(){
 			$( ".datepickerAusentismo" ).datepicker({
+					beforeShowDay:cargarDiasTomados,
 			    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 			    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 			    	prevText:'<',

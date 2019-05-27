@@ -76,7 +76,7 @@ TIPO_ARTICULO = (
 )
 
 TIPO_SANCION = (
-	('S',"Suspencion"),
+	('S',"Suspension"),
 	('A',"Apercivimiento"),
 	('L',"LLamando Atencion"),
 	('Z',"Sumario"),
