@@ -1,0 +1,53 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Licencias acumuladas</title>
+</head>
+<style>
+td{
+	border:1px solid;
+	padding: 5px;
+}
+
+th{
+	border:1px solid;
+	padding: 5px;
+}
+
+h3{
+	text-decoration: underline;
+}
+.fuente {
+	font-size: 10px;
+}
+</style>
+<body>
+{% load static %}
+<h6 style="float: right;">Reporte generado el dia: {{fecha}}</h6>
+<center>
+	<img src="{% static 'appPersonal/images/logoAvp_reportePDF.png' %}" alt="imagenLogo" style="display:inline-block;width:200px;height:90px;float: left;" />
+</center>
+<br><br>
+<h4 style="margin-top: 80px;">Reporte de {{titulo}}</h4>
+
+<br>
+<table style="border:1px solid;border-collapse: collapse;">
+	<thead>
+		<tr>
+		{% for campo in listaCampos %}
+			<th class="fuente">{{campo}}</th>
+		{% endfor %}
+		</tr>
+	</thead>
+	<tbody >
+		<tr>
+		{% for valor in listaValores %}
+			<td class="fuente">{{valor}}</td>
+		{% endfor %}	
+		</tr>
+	
+	</tbody>
+</table>
+
+</body>
+</html>

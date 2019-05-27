@@ -184,5 +184,7 @@ urlpatterns = [
 
     path('eliminarEstudioCursado$',eliminarEstudioCursado,name="eliminarEstudioCursado"),
 
+    path('generarPDF',generarPDF,name="generarPDF"),
+
 ]
 
