@@ -45,7 +45,74 @@ import xlwt
 from weasyprint import HTML
 import tempfile
 
-def repLicenciasAcumuladas(peticion):
+def generarPDF(peticion):
+	idObjeto=int(peticion.GET.get('idObjeto'))
+	nombreModelo=peticion.GET.get('nombreModelo')
+
+	#Obtengo el modelo
+	modelo=getattr(sys.modules[__name__], nombreModelo)
+
+	#Obtengo el "verbose_name" de la clase,para poner titulo al reporte generado
+	titulo=modelo._meta.verbose_name
+
+	#Obtengo la fecha actual para asignarla al nombre del pdf
+	fecha=datetime.now()
+	fecha=fecha.strftime("%d/%m/%Y")
+	
+	#Si el id es 0,significa que se debe obtener todos los objetos de la tabla(sin filtrar)
+	if(idObjeto==0):
+	  print("Son muchos objetos")
+	  objetos=modelo.objects.get.all()
+	
+	#Si el id es !=0,se debe filtrar el objeto por su id
+	else:
+		objeto=modelo.objects.get(pk=idObjeto)
+		
+		print(titulo)
+		listaCampos=list()
+		listaValores=list()
+		for campo in objeto._meta.fields:
+			#Obtengo el nombre del campo
+			name=campo.name
+			nombreCampo=campo.verbose_name
+		
+			#Obtengo el valor del campo
+			valor=getattr(objeto, name)
+
+			#Verifico que no se cargue el id del objeto para mostrar 
+			if(valor!=objeto.pk):
+				listaCampos.append(nombreCampo)
+				if(valor==None or valor==''):
+					listaValores.append("-")
+				else:
+					listaValores.append(valor)
+				
+	
+	print(listaCampos)
+	print(listaValores)
+	#Renderizo la vista que sera devuelta
+	html_string = render_to_string('appPersonal/reports/reportePDF.html', {'listaValores':listaValores,'listaCampos':listaCampos,'titulo':titulo,'fecha':fecha})
+	#Agrego el 'base_url' para poder cargar imagenes en el pdf
+	html = HTML(string=html_string,base_url=peticion.build_absolute_uri())
+	result = html.write_pdf()
+	#Indico el tipo de contenido en la respuesta,en este caso un PDF
+	response = HttpResponse(content_type='application/pdf;')
+	#Indico el nombre del nuevo pdf
+	response['Content-Disposition'] = 'inline; filename=Reporte.pdf'
+	response['Content-Transfer-Encoding'] = 'binary'
+
+	#Creo un archivo temporal que va a contener el PDF generado
+	with tempfile.NamedTemporaryFile(delete=True) as output:
+		output.write(result)
+		output.flush()
+		output = open(output.name, 'rb')
+		response.write(output.read())
+
+	return response
+	
+
+#Metodo que devuelve las licencias acumuladas de un agente,en un archivo en formato "pdf"
+def repLicenciasAcumuladasPDF(peticion):
 	idagente=peticion.GET.get('idagente')
 	licencias=Licenciaanualagente.objects.filter(idagente=idagente)
 	agente=Agente.objects.get(idagente=idagente)
@@ -91,7 +158,46 @@ def fechaEnRango(anio,mes,fi,ff):
         	cant = cant+1  
     return cant
 
-    
+
+#Metodo que devuelve las licencias acumuladas de un agente,en un archivo en formato "word"
+@csrf_exempt
+def repLicenciasAcumuladasWord(peticion):
+	idagente=peticion.GET.get('idagente')
+	agente=Agente.objects.get(idagente=idagente)
+	licencias=Licenciaanualagente.objects.filter(idagente=idagente)
+
+	book = xlwt.Workbook(encoding='utf8')
+
+	sheet = book.add_sheet('Licencias acumuladas')
+	
+	default_style = xlwt.Style.default_style
+	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+	
+	#Fila-Columna
+	i = 0
+	sheet.write(0, 0, 'Agente', style=default_style)
+	sheet.write(0, 1, 'N° Legajo', style=default_style)
+	sheet.write(1,0,agente.apellido+" "+agente.nombres, style=default_style)
+	sheet.write(1,1,agente.nrolegajo, style=default_style)
+
+	sheet.write(3,0,"Licencias acumuladas", style=default_style)
+	sheet.write(4,0,"Año", style=default_style)
+	sheet.write(4,1,"Dias disponibles", style=default_style)
+	sheet.write(4,2,"Dias tomados", style=default_style)
+	
+	j=5
+	for licencia in licencias:
+		sheet.write(j,0,licencia.anio, style=default_style)
+		sheet.write(j,1,licencia.cantidaddias, style=default_style)
+		sheet.write(j,2,licencia.diastomados, style=default_style)
+		j+=1
+
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=Licencias_acumuladas_'+str(agente.apellido)+' '+str(agente.nombres)+'.xls'
+	book.save(response)
+	return response
+  
 @login_required
 def ausRepLicenciasPendientes_excel(peticion):
 	

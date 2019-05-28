@@ -12,7 +12,14 @@
 		<div style="background-color:  #ec7063 ;border: 2px solid  #ec7063 ">
 			<img src="{% static 'appPersonal/images/error.png' %}" style="width: 18px;height: 18px;display: inline-block;">
 			<h5 style="display: inline-block;color:   #f4f6f7 ">{{mensajeError}}</h5><br>
-			<center><a href="{{url}}" class="btn btn-info">Volver</a></center>
+			{% if listaErrores %}
+				<h5 style="display: inline-block;color:   #f4f6f7;text-decoration: underline;">Errores:</h5>
+				<br>
+				{% for error in listaErrores %}
+					<p style="display: inline-block;color: #f4f6f7;font-weight: bold;">{{error.0}}:</p><p style="display: inline-block;color: #f4f6f7">{{error.1}}</p>
+				{% endfor %}
+			{% endif %}
+			<center><input type="button" value="Volver" class="btn btn-info" style="margin-left: 4px;width: 140px;" name="Back2" onclick="history.back()"></center>
 		</div>
 	{% endif %}
 

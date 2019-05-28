@@ -76,7 +76,7 @@ TIPO_ARTICULO = (
 )
 
 TIPO_SANCION = (
-	('S',"Suspencion"),
+	('S',"Suspension"),
 	('A',"Apercivimiento"),
 	('L',"LLamando Atencion"),
 	('Z',"Sumario"),
@@ -378,15 +378,16 @@ class Ausentismo(models.Model):
 class Ausent(models.Model):
     idausent = models.AutoField(primary_key=True)
     idagente = models.ForeignKey(Agente, null=True, db_column='idagente', blank=True, verbose_name= "Agente",on_delete=models.CASCADE)
-    fechainicio = models.DateField(verbose_name= "Fecha Inicio")
-    cantdias = models.SmallIntegerField()
-    fechafin = models.DateField(blank=True, verbose_name= "Fecha Fin")
-    idarticulo = models.ForeignKey(Articulo, db_column='idarticulo', verbose_name= "Artìculo",on_delete=models.CASCADE)
-    observaciones = models.CharField(max_length=200, blank=True)
-    tiempolltarde = models.TimeField(blank=True) # This field type is a guess.
-    direccion = models.ForeignKey(Direccion, null=True, db_column='direccion', blank=True, default = 0,on_delete=models.CASCADE)
+    fechainicio = models.DateField(verbose_name= "Fecha inicio")
+    cantdias = models.SmallIntegerField(verbose_name= "Cantidad de dias")
+    fechafin = models.DateField(blank=True, verbose_name= "Fecha fin")
+    idarticulo = models.ForeignKey(Articulo, db_column='idarticulo', verbose_name= "Articulo",on_delete=models.CASCADE)
+    observaciones = models.CharField(max_length=200, blank=True,verbose_name= "Observaciones")
+    tiempolltarde = models.TimeField(blank=True,verbose_name= "Tiempo de llegada tarde") # This field type is a guess.
+    direccion = models.ForeignKey(Direccion, null=True,verbose_name= "Direccion", db_column='direccion', blank=True, default = 0,on_delete=models.CASCADE)
     class Meta:
         db_table = u'ausent'
+        verbose_name="Ausentismo"
         #unique_together = ("idagente","fecha")
     def __str__(self):
         return str("idausent: "+str(self.idausent)+" fechainicio: "+str(self.fechainicio)+" fechafin: "+str(self.fechafin)+" cantdias: "+str(self.cantdias))

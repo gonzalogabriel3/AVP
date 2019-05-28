@@ -243,25 +243,8 @@
 	{% if pag_ausentismo %}
 	<a href="{% url 'listado/agentesIndex' %}" class="pagination">/ Agentes </a>
 	<script>
-	//Funcion que carga los dias feriados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
-		function cargaFeriados(date){
-			var feriados={{ feriados|safe }}
-			console.log(feriados)
-			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
-			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
-			for (i = 0; i < feriados.length; i++) {
-				
-				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
-					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
-					return [false,"ui-state-feriado"];
-				}
-			}
-			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
-			return [true,'bg-red'];
-		}
-
-		//Funcion que carga los dias feriados y dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
-		function cargaDiasTomadosyFeriados(date){
+		//Funcion que carga los dias dias tomados desde un array recibido de string's con formato de fecha (%m-%d-%Y)
+		function diasTomados(date){
 			
 			//Cargo dias tomados(Ausentismos)
 			var diasTomados={{ diasTomados|safe }}
@@ -276,39 +259,19 @@
 			  return [true, "highlight", "Ausentismo" ];
 			}
 
-			//Cargo feriados
-			var feriados={{ feriados|safe }}
-			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
-			//console.log('Checking (raw): ' + m + '-' + d + '-' + y);
-			for (i = 0; i < feriados.length; i++) {
-				
-				if($.inArray((m+1) + '-' + d + '-' + y,feriados) != -1) {
-					//console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + feriados[i]);
-					return [false,"ui-state-feriado","Feriado"];
-				}
-			}
-			//console.log('good:  ' + (m+1) + '-' + d + '-' + y);
 			return [true,'bg-red'];
 		}
 
-		
-		//Funcion que carga los fines de semana y feriados en un datepicker
-		function cargarFindesyFeriados(date) {
-			var noWeekend = jQuery.datepicker.noWeekends(date);
-			return noWeekend[0] ? cargaFeriados(date) : noWeekend;
+		//Funcion que carga los dias tomados de un agente a un datepicker
+		function cargarDiasTomados(date){
+			var dias=diasTomados(date)
+			
+			return dias;
 		}
 
-		//Funcion que carga los fines de semana,feriados y dias tomados de un agente a un datepicker
-		function cargarFindesyFeriadosyDiasTomados(date){
-			var diasYferiados=cargaDiasTomadosyFeriados(date)
-			var noWeekend = jQuery.datepicker.noWeekends(date);
-
-			return noWeekend[0] ? diasYferiados : noWeekend;
-		}
-	
 		$(function(){
 			$( ".datepickerAusentismo" ).datepicker({
-			    	beforeShowDay: cargarFindesyFeriadosyDiasTomados,//Deshabilito los fines de semana,feriados y diastomados
+					beforeShowDay:cargarDiasTomados,
 			    	dayNamesMin: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
 			    	monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
 			    	prevText:'<',
