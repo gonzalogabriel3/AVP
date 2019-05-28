@@ -1076,8 +1076,10 @@ def detAusentismoxagente(peticion):
     #import pdb; pdb.set_trace()
     for a in aus:
         indice = 0
+        
         if a.idarticulo.pk ==999:
             periodo= Licenciaanual.objects.get(Q(idausent=a.pk,tipo="LIC")).anio
+            
         for i in range(0,12):
             #import pdb; pdb.set_trace()
             if (a.fechainicio.year < a.fechafin.year):

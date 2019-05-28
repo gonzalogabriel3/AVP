@@ -21,7 +21,8 @@
 	{% block botonatrasaction %}"return Open('/appPersonal/index'); " {% endblock %}
 	
 	{% block botonexcel %}
-	     <a href="{% url 'repLicenciasAcumuladas' %}?idagente={{agente.idagente}}" target="_blank" class="btn btn-success">Generar PDF <img src="{% static 'appPersonal/images/bookmark.png' %}" style="width: 22px;height: 22px;"></a>
+	     <a href="{% url 'repLicenciasAcumuladasPDF' %}?idagente={{agente.idagente}}" target="_blank" class="btn btn-warning"><b>Generar PDF </b><img src="{% static 'appPersonal/images/bookmark.png' %}" style="width: 22px;height: 22px;"></a>
+		<a href="{% url 'repLicenciasAcumuladasWord' %}?idagente={{agente.idagente}}" class="btn btn-success"><b>Generar excel</b> <img src="{% static 'appPersonal/images/bookmark.png' %}" style="width: 22px;height: 22px;"></a>
 	{%endblock%}
 	
 	<h5>Licencias anuales acumuladas</h5>

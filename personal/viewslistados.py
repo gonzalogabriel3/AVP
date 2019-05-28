@@ -58,7 +58,7 @@ def familiaresacxagente(peticion):
     if borrado != "":
         try:
             a = Asignacionfamiliar.objects.get(idasigfam=int(borrado))
-            registrar(user,"Asignacion Familiar",'Baja',getTime(),None,modeloLista(Asignacionfamiliar.objects.filter(idasigfam=int(borrado)).values_list()))
+            registrarLog(peticion,None,a,"Baja")
             a.delete()
         except Asignacionfamiliar.DoesNotExist:
             a = None

@@ -50,6 +50,8 @@ class formAusent(forms.ModelForm):
     
     cantdias = forms.IntegerField()
     fechainicio = forms.DateField(label="Fecha Inicio",widget=forms.DateInput(format='%d/%m/%Y',attrs={'id':'dp2','class':'datepickerAusentismo','data-date-format':'dd/mm/yyyy'}))
+    idarticulo = forms.ModelChoiceField(queryset=Articulo.objects.exclude(idarticulo=999),label="Articulo")
+    tiempolltarde = forms.TimeField(required=False,widget=forms.TimeInput(format='%H:%M'),label="Tiempo de llegada tarde('H:M')")
     #fechafin = forms.DateField(label="Fecha Fin",widget=forms.TextInput(attrs={'id':'dp2','class':'datepicker','data-date-format':'yyyy-mm-dd'}))
     class Meta:
         model  = Ausent
