@@ -184,7 +184,9 @@ urlpatterns = [
 
     path('eliminarEstudioCursado$',eliminarEstudioCursado,name="eliminarEstudioCursado"),
 
-    path('generarPDF',generarPDF,name="generarPDF"),
+    path('PDFausentismo$',PDFausentismo,name="PDFausentismo"),
+
+    path('salidasAgenteAñoPDF$',salidasAgenteAñoPDF,name="salidasAgenteAñoPDF"),
 
 ]
 

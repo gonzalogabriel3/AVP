@@ -45,49 +45,91 @@ import xlwt
 from weasyprint import HTML
 import tempfile
 
-def generarPDF(peticion):
-	idObjeto=int(peticion.GET.get('idObjeto'))
-	nombreModelo=peticion.GET.get('nombreModelo')
-
+#Metodo que obtiene los nombres de los campos de un modelo,los retorna en una lista
+def obtenerNombreCampos(nombreModelo):
 	#Obtengo el modelo
 	modelo=getattr(sys.modules[__name__], nombreModelo)
 
-	#Obtengo el "verbose_name" de la clase,para poner titulo al reporte generado
-	titulo=modelo._meta.verbose_name
+	listaCampos=list()
 
+	for campo in modelo._meta.fields:
+		#Valido que no se guarde el campo de primary key del modelo
+		if(campo.verbose_name!=modelo._meta.pk.name):
+			listaCampos.append(campo.verbose_name)
+
+	
+	return listaCampos
+
+#Metodo que obtiene los valores de uno/varios objetos y los devuelve en una lista
+#Se le pasa el nombre del modelo
+#Clave primaria si es un unico objeto
+#Clave foranea si son varios
+#El nombre del campo si hay que filtar
+#El valor por el cual hay que filtrar(ej: ausentismo de un agente del año 2013)
+def obtenerValoresDeObjeto(nombreModelo,pkObjeto,fkObjeto):
+	#Obtengo el modelo
+	modelo=getattr(sys.modules[__name__], nombreModelo)
+
+	listObjetos=list()
+
+	#Si el objeto tiene clave foranea,pueden ser muchos los objetos que se deban mostrar
+	if(fkObjeto!=0):
+
+		objetos=modelo.objects.filter(idagente=fkObjeto)
+		multiple=True
+	#Sino,busco el objeto en concreto
+	else:
+		objeto=modelo.objects.get(pk=pkObjeto)
+		multiple=False
+
+	#Si es una lista de objetos la que se va a renderizar
+	if multiple:
+		for objeto in objetos:
+			listaValores=list()
+			for campo in objeto._meta.fields:
+				#Obtengo el nombre del campo
+				name=campo.name
+				#Obtengo el valor del campo
+				valor=getattr(objeto, name)
+				
+				#Verifico que no se cargue el id del objeto para mostrar 
+				if(valor!=objeto.pk):
+					if(valor==None or valor==''):
+						listaValores.append("-")
+					else:
+						listaValores.append(str(valor))
+			
+			listObjetos.append(listaValores)
+
+	#Si es una un solo objeto el que se va a renderizar
+	else:
+		for campo in objeto._meta.fields:
+				name=campo.name
+				valor=getattr(objeto, name)
+				#Verifico que no se cargue el id del objeto para mostrar 
+				if(valor!=objeto.pk):
+					if(valor==None or valor==''):
+						listValores.append("-")
+					else:
+						listValores.append(str(valor))
+		listObjetos.append(listaValores)
+
+	return listObjetos
+
+def PDFausentismo(peticion):
+	idagente=peticion.GET.get('idagente')
+	listaCampos=obtenerNombreCampos("Ausent")
+	listaValores=obtenerValoresDeObjeto("Ausent",0,idagente)
+
+	return generarPDF(peticion,"Reporte de ausentismo",listaCampos,listaValores)
+
+#Metodo que lista los valores de uno o varios objetos y lo retorna en formato PDF
+def generarPDF(peticion,titulo,listaCampos,listaValores):
 	#Obtengo la fecha actual para asignarla al nombre del pdf
 	fecha=datetime.now()
-	fecha=fecha.strftime("%d/%m/%Y")
-	
-	#Si el id es 0,significa que se debe obtener todos los objetos de la tabla(sin filtrar)
-	if(idObjeto==0):
-	  print("Son muchos objetos")
-	  objetos=modelo.objects.get.all()
-	
-	#Si el id es !=0,se debe filtrar el objeto por su id
-	else:
-		objeto=modelo.objects.get(pk=idObjeto)
-		
-		print(titulo)
-		listaCampos=list()
-		listaValores=list()
-		for campo in objeto._meta.fields:
-			#Obtengo el nombre del campo
-			name=campo.name
-			nombreCampo=campo.verbose_name
-		
-			#Obtengo el valor del campo
-			valor=getattr(objeto, name)
+	fecha=fecha.strftime("%d/%m/%Y")	
 
-			#Verifico que no se cargue el id del objeto para mostrar 
-			if(valor!=objeto.pk):
-				listaCampos.append(nombreCampo)
-				if(valor==None or valor==''):
-					listaValores.append("-")
-				else:
-					listaValores.append(valor)
-				
-	
+	print(titulo)
 	print(listaCampos)
 	print(listaValores)
 	#Renderizo la vista que sera devuelta
@@ -100,7 +142,6 @@ def generarPDF(peticion):
 	#Indico el nombre del nuevo pdf
 	response['Content-Disposition'] = 'inline; filename=Reporte.pdf'
 	response['Content-Transfer-Encoding'] = 'binary'
-
 	#Creo un archivo temporal que va a contener el PDF generado
 	with tempfile.NamedTemporaryFile(delete=True) as output:
 		output.write(result)
@@ -110,6 +151,14 @@ def generarPDF(peticion):
 
 	return response
 	
+def salidasAgenteAñoPDF(peticion):
+	idagente=peticion.GET.get('idagente')
+	anio=peticion.GET.get('anio')
+
+	listaCampos=obtenerNombreCampos("Salida")
+	listaValores=obtenerValoresDeObjeto("Salida",0,idagente)
+
+	return generarPDF(peticion,"Reporte de salidas",listaCampos,listaValores)
 
 #Metodo que devuelve las licencias acumuladas de un agente,en un archivo en formato "pdf"
 def repLicenciasAcumuladasPDF(peticion):

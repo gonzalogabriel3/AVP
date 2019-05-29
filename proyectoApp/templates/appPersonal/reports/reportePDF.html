@@ -28,24 +28,29 @@ h3{
 	<img src="{% static 'appPersonal/images/logoAvp_reportePDF.png' %}" alt="imagenLogo" style="display:inline-block;width:200px;height:90px;float: left;" />
 </center>
 <br><br>
-<h4 style="margin-top: 80px;">Reporte de {{titulo}}</h4>
+<h4 style="margin-top: 80px;">{{titulo}}</h4>
 
 <br>
 <table style="border:1px solid;border-collapse: collapse;">
 	<thead>
 		<tr>
+		<!-- -->
 		{% for campo in listaCampos %}
 			<th class="fuente">{{campo}}</th>
 		{% endfor %}
 		</tr>
 	</thead>
-	<tbody >
+	<tbody>
+		<!--Recorro el/los objetos -->
+		{% for objeto in listaValores %}
 		<tr>
-		{% for valor in listaValores %}
-			<td class="fuente">{{valor}}</td>
-		{% endfor %}	
+			<!--Recorro todos los campos de un objeto -->
+			{% for campo in objeto  %}
+				<td class="fuente">{{campo}}</td>
+			{% endfor %}
 		</tr>
-	
+		{% endfor %}
+		
 	</tbody>
 </table>
 
