@@ -61,30 +61,11 @@ def obtenerNombreCampos(nombreModelo):
 	return listaCampos
 
 #Metodo que obtiene los valores de uno/varios objetos y los devuelve en una lista
-#Se le pasa el nombre del modelo
-#Clave primaria si es un unico objeto
-#Clave foranea si son varios
-#El nombre del campo si hay que filtar
-#El valor por el cual hay que filtrar(ej: ausentismo de un agente del año 2013)
-def obtenerValoresDeObjeto(nombreModelo,pkObjeto,fkObjeto):
-	#Obtengo el modelo
-	modelo=getattr(sys.modules[__name__], nombreModelo)
+def obtenerValoresDeObjeto(objetos):
 
 	listObjetos=list()
 
-	#Si el objeto tiene clave foranea,pueden ser muchos los objetos que se deban mostrar
-	if(fkObjeto!=0):
-
-		objetos=modelo.objects.filter(idagente=fkObjeto)
-		multiple=True
-	#Sino,busco el objeto en concreto
-	else:
-		objeto=modelo.objects.get(pk=pkObjeto)
-		multiple=False
-
-	#Si es una lista de objetos la que se va a renderizar
-	if multiple:
-		for objeto in objetos:
+	for objeto in objetos:
 			listaValores=list()
 			for campo in objeto._meta.fields:
 				#Obtengo el nombre del campo
@@ -101,27 +82,7 @@ def obtenerValoresDeObjeto(nombreModelo,pkObjeto,fkObjeto):
 			
 			listObjetos.append(listaValores)
 
-	#Si es una un solo objeto el que se va a renderizar
-	else:
-		for campo in objeto._meta.fields:
-				name=campo.name
-				valor=getattr(objeto, name)
-				#Verifico que no se cargue el id del objeto para mostrar 
-				if(valor!=objeto.pk):
-					if(valor==None or valor==''):
-						listValores.append("-")
-					else:
-						listValores.append(str(valor))
-		listObjetos.append(listaValores)
-
 	return listObjetos
-
-def PDFausentismo(peticion):
-	idagente=peticion.GET.get('idagente')
-	listaCampos=obtenerNombreCampos("Ausent")
-	listaValores=obtenerValoresDeObjeto("Ausent",0,idagente)
-
-	return generarPDF(peticion,"Reporte de ausentismo",listaCampos,listaValores)
 
 #Metodo que lista los valores de uno o varios objetos y lo retorna en formato PDF
 def generarPDF(peticion,titulo,listaCampos,listaValores):
@@ -150,13 +111,22 @@ def generarPDF(peticion,titulo,listaCampos,listaValores):
 		response.write(output.read())
 
 	return response
-	
+
+def PDFausentismo(peticion):
+	idagente=peticion.GET.get('idagente')
+	ausentismos=Ausent.objects.filter(idagente=idagente).all()
+	listaCampos=obtenerNombreCampos("Ausent")
+	listaValores=obtenerValoresDeObjeto(ausentismos)
+
+	return generarPDF(peticion,"Reporte de ausentismo",listaCampos,listaValores)
+
 def salidasAgenteAñoPDF(peticion):
 	idagente=peticion.GET.get('idagente')
 	anio=peticion.GET.get('anio')
+	salidas=Salida.objects.filter(idagente=idagente).all()
 
 	listaCampos=obtenerNombreCampos("Salida")
-	listaValores=obtenerValoresDeObjeto("Salida",0,idagente)
+	listaValores=obtenerValoresDeObjeto(salidas)
 
 	return generarPDF(peticion,"Reporte de salidas",listaCampos,listaValores)
 
