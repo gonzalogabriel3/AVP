@@ -90,9 +90,6 @@ def generarPDF(peticion,titulo,listaCampos,listaValores):
 	fecha=datetime.now()
 	fecha=fecha.strftime("%d/%m/%Y")	
 
-	print(titulo)
-	print(listaCampos)
-	print(listaValores)
 	#Renderizo la vista que sera devuelta
 	html_string = render_to_string('appPersonal/reports/reportePDF.html', {'listaValores':listaValores,'listaCampos':listaCampos,'titulo':titulo,'fecha':fecha})
 	#Agrego el 'base_url' para poder cargar imagenes en el pdf
@@ -160,6 +157,42 @@ def repLicenciasAcumuladasPDF(peticion):
 
 	return response
 
+def ausentismoExcel(peticion):
+	idagente=peticion.GET.get('idagente')
+	ausentismos=Ausent.objects.filter(idagente=idagente).all()
+	listaCampos=obtenerNombreCampos("Ausent")
+	listaValores=obtenerValoresDeObjeto(ausentismos)
+
+	return generarExcel(peticion,"Reporte de ausentismo",listaCampos,listaValores)
+
+def generarExcel(peticion,titulo,listaCampos,listaValores):
+
+	book = xlwt.Workbook(encoding='utf8')
+
+	sheet = book.add_sheet('Licencias acumuladas')
+	
+	default_style = xlwt.Style.default_style
+	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+
+	#Escribo los nombres de los campos
+	i=0
+	for nomCampo in listaCampos:
+		sheet.write(0, i, nomCampo, style=default_style)
+		i+=1
+
+	j=1
+	for objetos in listaValores:
+		i=0
+		for valor in objetos:
+			sheet.write(j, i, valor, style=default_style)
+			i+=1
+		j+=1
+
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename='+str(titulo)+'.xls'
+	book.save(response)
+	return response
 
 def fechaEnRango(anio,mes,fi,ff):
     """

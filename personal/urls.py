@@ -165,7 +165,6 @@ urlpatterns = [
     path('eliminarAusent$',eliminarAusent,name="eliminarAusent"),
 
 
-
     #URL's de ABM  de Feriados
     path('listado/feriados$',feriadosListado,name='listado/feriados'),
     path('altaFeriado$',altaFeriado,name="altaFeriado"),
@@ -185,6 +184,8 @@ urlpatterns = [
     path('eliminarEstudioCursado$',eliminarEstudioCursado,name="eliminarEstudioCursado"),
 
     path('PDFausentismo$',PDFausentismo,name="PDFausentismo"),
+
+    path('ausentismoExcel',ausentismoExcel,name="ausentismoExcel"),
 
     path('salidasAgenteAñoPDF$',salidasAgenteAñoPDF,name="salidasAgenteAñoPDF"),
 
