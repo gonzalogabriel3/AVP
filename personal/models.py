@@ -189,6 +189,7 @@ class Agrupamiento(models.Model):
     descripcion = models.CharField(max_length=200, blank=True)
     class Meta:
         db_table = u'agrupamiento'
+        
 
     def __str__(self):
         return str(self.descripcion)        

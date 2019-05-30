@@ -45,51 +45,51 @@ import xlwt
 from weasyprint import HTML
 import tempfile
 
-def generarPDF(peticion):
-	idObjeto=int(peticion.GET.get('idObjeto'))
-	nombreModelo=peticion.GET.get('nombreModelo')
-
+#Metodo que obtiene los nombres de los campos de un modelo,los retorna en una lista
+def obtenerNombreCampos(nombreModelo):
 	#Obtengo el modelo
 	modelo=getattr(sys.modules[__name__], nombreModelo)
 
-	#Obtengo el "verbose_name" de la clase,para poner titulo al reporte generado
-	titulo=modelo._meta.verbose_name
+	listaCampos=list()
 
+	for campo in modelo._meta.fields:
+		#Valido que no se guarde el campo de primary key del modelo
+		if(campo.verbose_name!=modelo._meta.pk.name):
+			listaCampos.append(campo.verbose_name)
+
+	
+	return listaCampos
+
+#Metodo que obtiene los valores de uno/varios objetos y los devuelve en una lista
+def obtenerValoresDeObjeto(objetos):
+
+	listObjetos=list()
+
+	for objeto in objetos:
+			listaValores=list()
+			for campo in objeto._meta.fields:
+				#Obtengo el nombre del campo
+				name=campo.name
+				#Obtengo el valor del campo
+				valor=getattr(objeto, name)
+				
+				#Verifico que no se cargue el id del objeto para mostrar 
+				if(valor!=objeto.pk):
+					if(valor==None or valor==''):
+						listaValores.append("-")
+					else:
+						listaValores.append(str(valor))
+			
+			listObjetos.append(listaValores)
+
+	return listObjetos
+
+#Metodo que lista los valores de uno o varios objetos y lo retorna en formato PDF
+def generarPDF(peticion,titulo,listaCampos,listaValores):
 	#Obtengo la fecha actual para asignarla al nombre del pdf
 	fecha=datetime.now()
-	fecha=fecha.strftime("%d/%m/%Y")
-	
-	#Si el id es 0,significa que se debe obtener todos los objetos de la tabla(sin filtrar)
-	if(idObjeto==0):
-	  print("Son muchos objetos")
-	  objetos=modelo.objects.get.all()
-	
-	#Si el id es !=0,se debe filtrar el objeto por su id
-	else:
-		objeto=modelo.objects.get(pk=idObjeto)
-		
-		print(titulo)
-		listaCampos=list()
-		listaValores=list()
-		for campo in objeto._meta.fields:
-			#Obtengo el nombre del campo
-			name=campo.name
-			nombreCampo=campo.verbose_name
-		
-			#Obtengo el valor del campo
-			valor=getattr(objeto, name)
+	fecha=fecha.strftime("%d/%m/%Y")	
 
-			#Verifico que no se cargue el id del objeto para mostrar 
-			if(valor!=objeto.pk):
-				listaCampos.append(nombreCampo)
-				if(valor==None or valor==''):
-					listaValores.append("-")
-				else:
-					listaValores.append(valor)
-				
-	
-	print(listaCampos)
-	print(listaValores)
 	#Renderizo la vista que sera devuelta
 	html_string = render_to_string('appPersonal/reports/reportePDF.html', {'listaValores':listaValores,'listaCampos':listaCampos,'titulo':titulo,'fecha':fecha})
 	#Agrego el 'base_url' para poder cargar imagenes en el pdf
@@ -100,7 +100,6 @@ def generarPDF(peticion):
 	#Indico el nombre del nuevo pdf
 	response['Content-Disposition'] = 'inline; filename=Reporte.pdf'
 	response['Content-Transfer-Encoding'] = 'binary'
-
 	#Creo un archivo temporal que va a contener el PDF generado
 	with tempfile.NamedTemporaryFile(delete=True) as output:
 		output.write(result)
@@ -109,7 +108,24 @@ def generarPDF(peticion):
 		response.write(output.read())
 
 	return response
-	
+
+def PDFausentismo(peticion):
+	idagente=peticion.GET.get('idagente')
+	ausentismos=Ausent.objects.filter(idagente=idagente).all()
+	listaCampos=obtenerNombreCampos("Ausent")
+	listaValores=obtenerValoresDeObjeto(ausentismos)
+
+	return generarPDF(peticion,"Reporte de ausentismo",listaCampos,listaValores)
+
+def salidasAgenteAñoPDF(peticion):
+	idagente=peticion.GET.get('idagente')
+	anio=peticion.GET.get('anio')
+	salidas=Salida.objects.filter(idagente=idagente).all()
+
+	listaCampos=obtenerNombreCampos("Salida")
+	listaValores=obtenerValoresDeObjeto(salidas)
+
+	return generarPDF(peticion,"Reporte de salidas",listaCampos,listaValores)
 
 #Metodo que devuelve las licencias acumuladas de un agente,en un archivo en formato "pdf"
 def repLicenciasAcumuladasPDF(peticion):
@@ -141,6 +157,43 @@ def repLicenciasAcumuladasPDF(peticion):
 
 	return response
 
+def ausentismoExcel(peticion):
+	idagente=peticion.GET.get('idagente')
+	agente=Agente.objects.get(idagente=idagente)
+	ausentismos=Ausent.objects.filter(idagente=idagente).all()
+	listaCampos=obtenerNombreCampos("Ausent")
+	listaValores=obtenerValoresDeObjeto(ausentismos)
+
+	return generarExcel(peticion,"Reporte de ausentismo",listaCampos,listaValores)
+
+def generarExcel(peticion,titulo,listaCampos,listaValores):
+
+	book = xlwt.Workbook(encoding='utf8')
+
+	sheet = book.add_sheet(str(titulo))
+	
+	default_style = xlwt.Style.default_style
+	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+
+	#Escribo los nombres de los campos
+	i=0
+	for nomCampo in listaCampos:
+		sheet.write(0, i, nomCampo, style=default_style)
+		i+=1
+
+	j=1
+	for objetos in listaValores:
+		i=0
+		for valor in objetos:
+			sheet.write(j, i, valor, style=default_style)
+			i+=1
+		j+=1
+
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename='+str(titulo)+'.xls'
+	book.save(response)
+	return response
 
 def fechaEnRango(anio,mes,fi,ff):
     """
@@ -157,6 +210,33 @@ def fechaEnRango(anio,mes,fi,ff):
         if fi <= r <=ff:
         	cant = cant+1  
     return cant
+
+def hojaAus(book,descrip):
+	sheet = book.add_sheet(descrip, cell_overwrite_ok=True)
+	default_style = xlwt.Style.default_style
+	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+	sheet.write(i, 0, 'Apellido y Nombres', style=default_style)
+	sheet.write(i, 1, 'Documento', style=default_style)
+	sheet.write(i, 2, 'Articulo', style=default_style)
+	sheet.write(i, 3, 'Desde', style=date_style)
+	sheet.write(i, 4, 'Hasta', style=default_style)
+	sheet.write(i, 5, 'Domicilio', style=default_style)
+	sheet.write(i, 6, 'Localidad', style=default_style)
+	return sheet
+
+def ausEnMes(a,mes,anio):
+	if a.fechainicio.year == anio:
+		if a.fechainicio.month <= mes <= a.fechafin.month:
+			return True
+		else:
+			return False
+	elif (a.fechainicio.year == anio-1) and (a.fechafin.year==anio):
+		if a.fechafin.month >= mes:
+			return True
+		else:
+			return False
+
 
 
 #Metodo que devuelve las licencias acumuladas de un agente,en un archivo en formato "word"
@@ -256,48 +336,25 @@ def ausRepLicenciasPendientes_excel(peticion):
     
 @login_required
 def ausRepMensualCMO_excel(peticion):
-	
 	user = peticion.user
-	
 	mes = int(peticion.GET.get('mes'))
 	anio = int(peticion.GET.get('anio'))
-	
-	cantMensual = 0
-	
 	book = xlwt.Workbook(encoding='utf8')
-	
-	sheet = book.add_sheet('Ausentismo Mensual Falta CMO')
-	
 	default_style = xlwt.Style.default_style
-	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
 	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
-		
-		
+	cantMensual = 0
 	ausentismos = Ausent.objects.filter(Q(idarticulo__exact=1011) | Q(idarticulo__exact=1021) | Q(idarticulo__exact=1811))
-			
 	i = 0
-	sheet.write(i, 0, 'Apellido y Nombres', style=default_style)
-	sheet.write(i, 1, 'Documento', style=default_style)
-	sheet.write(i, 2, 'Articulo', style=default_style)
-	sheet.write(i, 3, 'Desde', style=date_style)
-	sheet.write(i, 4, 'Hasta', style=default_style)
-	sheet.write(i, 5, 'Domicilio', style=default_style)
-	sheet.write(i, 6, 'Localidad', style=default_style)
-	
+	sheet = hojaAus(book,"Ausentismo Falta CMO")
 	for a in ausentismos:
 	    cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
 	    if cant !=0 :
 	    	agente = Agente.objects.get(idagente__exact=a.idagente.pk)
-
-	    	if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
+	    	#if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
+	    	if ausEnMes(a,mes,anio):
 			    nombres = agente.nombres
-			    sincodnombres = nombres.encode('ascii','ignore')
-			    
 			    apellido = agente.apellido
-			    sincodapellido = apellido.encode('ascii','ignore')
-			    
-			    nombre = sincodapellido+", "+sincodnombres
-			    
+			    nombre = apellido+", "+nombres
 			    i = i + 1
 			    sheet.write(i, 0, nombre, style=default_style)
 			    sheet.write(i, 1, agente.nrodocumento, style=default_style)
@@ -309,6 +366,42 @@ def ausRepMensualCMO_excel(peticion):
 
 	response = HttpResponse(content_type='application/vnd.ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=ausRepMensualCMO_'+str(mes)+"-"+str(anio)+'_excel.xls'
+	book.save(response)
+	return response
+
+@login_required
+def ausRepMensualGrem_excel(peticion):
+	user = peticion.user
+	mes = int(peticion.GET.get('mes'))
+	anio = int(peticion.GET.get('anio'))
+	book = xlwt.Workbook(encoding='utf8')
+	default_style = xlwt.Style.default_style
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+	#ausentismos = Ausent.objects.filter(Q(idarticulo__exact=37))
+	ausentismos = Ausent.objects.filter(Q(idarticulo__exact=37,fechainicio__year=anio)|Q(idarticulo__exact=37,fechainicio__year=anio-1,fechafin__year=anio)).order_by('-fechainicio')
+	cantMensual = 0
+	i = 0
+	sheet = hojaAus(book,"Ausentismo Lic GREMIAL")
+	for a in ausentismos:
+	    cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
+	    if cant !=0 :
+	    	agente = Agente.objects.get(idagente__exact=a.idagente.pk)
+	    	#if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
+	    	if ausEnMes(a,mes,anio):
+			    nombres = agente.nombres
+			    apellido = agente.apellido
+			    nombre = apellido+", "+nombres
+			    i = i + 1
+			    sheet.write(i, 0, nombre, style=default_style)
+			    sheet.write(i, 1, agente.nrodocumento, style=default_style)
+			    sheet.write(i, 2, a.idarticulo.descripcion, style=default_style)
+			    sheet.write(i, 3, a.fechainicio, style=date_style)
+			    sheet.write(i, 4, a.fechafin, style=date_style)
+			    sheet.write(i, 5, agente.domicilio, style=default_style)
+			    sheet.write(i, 6, agente.codigopostal.descripcion, style=default_style)
+
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=ausRepMensualGremial_'+str(mes)+"-"+str(anio)+'_excel.xls'
 	book.save(response)
 	return response
 	

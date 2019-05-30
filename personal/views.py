@@ -203,6 +203,16 @@ def ausRepCMO(peticion):
         return HttpResponseRedirect('/appPersonal/error/')
     return render_to_response('appPersonal/ausRepMensualCMO.html',{'user':user,'grupos':get_grupos(user)},)
 
+
+@csrf_exempt
+@login_required(login_url='login')
+def ausRepLicGrem(peticion):
+    user = peticion.user
+    if permisoEstadistica(user):
+        return HttpResponseRedirect('/appPersonal/error/')
+    return render_to_response('appPersonal/ausRepMensualGrem.html',{'user':user,'grupos':get_grupos(user)},)
+
+
 @csrf_exempt
 @login_required(login_url='login')
 def presentRep(peticion):
@@ -759,8 +769,8 @@ def ausReportDir(peticion):
     
     listaagente = list()
     aus = Ausent.objects.all().filter(Q(fechainicio__year=a) | Q(fechafin__year=a))
-    agen = Agente.objects.all().filter(iddireccion=direc)
-	
+    agen = Agente.objects.all().filter(Q(iddireccion=direc) | Q(iddireccionreal=direc))
+    
 	#En listaagente se guardan los agentes de la direccion
     for a in agen:
         listaagente.append(a.idagente)

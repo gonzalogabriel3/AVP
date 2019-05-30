@@ -95,10 +95,10 @@ DATABASES = {
         'NAME': 'personal',
         'USER': 'postgres',
         'PASSWORD': 'sistemasavp',
-        'HOST': '172.155.0.8',
-        'PORT': '5432',
-        #'HOST': 'sysavp.chubut.gov.ar',
-        #'PORT': '33060',
+        #'HOST': '172.155.0.8',
+        #'PORT': '5432',
+        'HOST': 'sysavp.chubut.gov.ar',
+        'PORT': '33060',
     }
 }
 DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito','proyecto.routerPasajes.RouterPasajes','proyecto.routerPersonal.RouterPersonal']
