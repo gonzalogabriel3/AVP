@@ -158,6 +158,33 @@ def fechaEnRango(anio,mes,fi,ff):
         	cant = cant+1  
     return cant
 
+def hojaAus(book,descrip):
+	sheet = book.add_sheet(descrip, cell_overwrite_ok=True)
+	default_style = xlwt.Style.default_style
+	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+	sheet.write(i, 0, 'Apellido y Nombres', style=default_style)
+	sheet.write(i, 1, 'Documento', style=default_style)
+	sheet.write(i, 2, 'Articulo', style=default_style)
+	sheet.write(i, 3, 'Desde', style=date_style)
+	sheet.write(i, 4, 'Hasta', style=default_style)
+	sheet.write(i, 5, 'Domicilio', style=default_style)
+	sheet.write(i, 6, 'Localidad', style=default_style)
+	return sheet
+
+def ausEnMes(a,mes,anio):
+	if a.fechainicio.year == anio:
+		if a.fechainicio.month <= mes <= a.fechafin.month:
+			return True
+		else:
+			return False
+	elif (a.fechainicio.year == anio-1) and (a.fechafin.year==anio):
+		if a.fechafin.month >= mes:
+			return True
+		else:
+			return False
+
+
 
 #Metodo que devuelve las licencias acumuladas de un agente,en un archivo en formato "word"
 @csrf_exempt
@@ -256,48 +283,25 @@ def ausRepLicenciasPendientes_excel(peticion):
     
 @login_required
 def ausRepMensualCMO_excel(peticion):
-	
 	user = peticion.user
-	
 	mes = int(peticion.GET.get('mes'))
 	anio = int(peticion.GET.get('anio'))
-	
-	cantMensual = 0
-	
 	book = xlwt.Workbook(encoding='utf8')
-	
-	sheet = book.add_sheet('Ausentismo Mensual Falta CMO')
-	
 	default_style = xlwt.Style.default_style
-	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
 	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
-		
-		
+	cantMensual = 0
 	ausentismos = Ausent.objects.filter(Q(idarticulo__exact=1011) | Q(idarticulo__exact=1021) | Q(idarticulo__exact=1811))
-			
 	i = 0
-	sheet.write(i, 0, 'Apellido y Nombres', style=default_style)
-	sheet.write(i, 1, 'Documento', style=default_style)
-	sheet.write(i, 2, 'Articulo', style=default_style)
-	sheet.write(i, 3, 'Desde', style=date_style)
-	sheet.write(i, 4, 'Hasta', style=default_style)
-	sheet.write(i, 5, 'Domicilio', style=default_style)
-	sheet.write(i, 6, 'Localidad', style=default_style)
-	
+	sheet = hojaAus(book,"Ausentismo Falta CMO")
 	for a in ausentismos:
 	    cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
 	    if cant !=0 :
 	    	agente = Agente.objects.get(idagente__exact=a.idagente.pk)
-
-	    	if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
+	    	#if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
+	    	if ausEnMes(a,mes,anio):
 			    nombres = agente.nombres
-			    sincodnombres = nombres.encode('ascii','ignore')
-			    
 			    apellido = agente.apellido
-			    sincodapellido = apellido.encode('ascii','ignore')
-			    
-			    nombre = sincodapellido+", "+sincodnombres
-			    
+			    nombre = apellido+", "+nombres
 			    i = i + 1
 			    sheet.write(i, 0, nombre, style=default_style)
 			    sheet.write(i, 1, agente.nrodocumento, style=default_style)
@@ -309,6 +313,42 @@ def ausRepMensualCMO_excel(peticion):
 
 	response = HttpResponse(content_type='application/vnd.ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=ausRepMensualCMO_'+str(mes)+"-"+str(anio)+'_excel.xls'
+	book.save(response)
+	return response
+
+@login_required
+def ausRepMensualGrem_excel(peticion):
+	user = peticion.user
+	mes = int(peticion.GET.get('mes'))
+	anio = int(peticion.GET.get('anio'))
+	book = xlwt.Workbook(encoding='utf8')
+	default_style = xlwt.Style.default_style
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+	#ausentismos = Ausent.objects.filter(Q(idarticulo__exact=37))
+	ausentismos = Ausent.objects.filter(Q(idarticulo__exact=37,fechainicio__year=anio)|Q(idarticulo__exact=37,fechainicio__year=anio-1,fechafin__year=anio)).order_by('-fechainicio')
+	cantMensual = 0
+	i = 0
+	sheet = hojaAus(book,"Ausentismo Lic GREMIAL")
+	for a in ausentismos:
+	    cant = fechaEnRango(anio,mes,a.fechainicio,a.fechafin)
+	    if cant !=0 :
+	    	agente = Agente.objects.get(idagente__exact=a.idagente.pk)
+	    	#if ((int(agente.codigopostal.idcodpos == 2)) or (int(agente.codigopostal.idcodpos) == 3)):
+	    	if ausEnMes(a,mes,anio):
+			    nombres = agente.nombres
+			    apellido = agente.apellido
+			    nombre = apellido+", "+nombres
+			    i = i + 1
+			    sheet.write(i, 0, nombre, style=default_style)
+			    sheet.write(i, 1, agente.nrodocumento, style=default_style)
+			    sheet.write(i, 2, a.idarticulo.descripcion, style=default_style)
+			    sheet.write(i, 3, a.fechainicio, style=date_style)
+			    sheet.write(i, 4, a.fechafin, style=date_style)
+			    sheet.write(i, 5, agente.domicilio, style=default_style)
+			    sheet.write(i, 6, agente.codigopostal.descripcion, style=default_style)
+
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=ausRepMensualGremial_'+str(mes)+"-"+str(anio)+'_excel.xls'
 	book.save(response)
 	return response
 	

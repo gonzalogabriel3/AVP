@@ -48,6 +48,7 @@ urlpatterns = [
     path('ausRepDir/$',ausRepDir,name="ausRepDir"),
     path('ausRepMes/$',ausRepMes,name="ausRepMes"),
     path('ausRepCMO/$',ausRepCMO,name="ausRepCMO"),
+    path('ausRepLicGrem/$',ausRepLicGrem,name="ausRepLicGrem"),
     path('presentRep',presentRep,name="presentRep"),
     path('presentReport/$',presentismoReport,name="presentReport"),
     path('cantclase/$',cantClases,name="cantclase"),
@@ -118,6 +119,7 @@ urlpatterns = [
     
     
     path('reportes/ausRepMensualCMO_excel/$',ausRepMensualCMO_excel,name="reportes/ausRepMensualCMO_excel"),
+    path('reportes/ausRepMensualGrem_excel/$',ausRepMensualGrem_excel,name="reportes/ausRepMensualGrem_excel"),
     path('reportes/ausRepMensual_excel/$',ausRepMensual_excel),
     
     path('reportes/reportelicenciaspendientes/$',ausRepLicenciasPendientes_excel,name="reportes/reportelicenciaspendientes"),
