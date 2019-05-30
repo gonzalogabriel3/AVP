@@ -159,6 +159,7 @@ def repLicenciasAcumuladasPDF(peticion):
 
 def ausentismoExcel(peticion):
 	idagente=peticion.GET.get('idagente')
+	agente=Agente.objects.get(idagente=idagente)
 	ausentismos=Ausent.objects.filter(idagente=idagente).all()
 	listaCampos=obtenerNombreCampos("Ausent")
 	listaValores=obtenerValoresDeObjeto(ausentismos)
@@ -169,7 +170,7 @@ def generarExcel(peticion,titulo,listaCampos,listaValores):
 
 	book = xlwt.Workbook(encoding='utf8')
 
-	sheet = book.add_sheet('Licencias acumuladas')
+	sheet = book.add_sheet(str(titulo))
 	
 	default_style = xlwt.Style.default_style
 	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')

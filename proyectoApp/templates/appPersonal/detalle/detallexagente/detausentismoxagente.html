@@ -187,9 +187,9 @@
 		</tbody>
 		<tr>
 			<td><h5 style="color:  #2471a3;display: inline-block;"><b>Articulos tomados</b></h5>
-				<a title="Generar PDF" href="{% url 'PDFausentismo' %}?idagente={{agente.pk}}" target="_blank" class="btn btn-danger" style="display: inline-block;"><img src="{% static 'appPersonal/images/4.png' %}" style="width: 27px;height: 35px;"></a>
-				<a title="Generar Excel" href="{% url 'ausentismoExcel' %}?idagente={{agente.pk}}" class="btn btn-success" style="display: inline-block;"><img src="{% static 'appPersonal/images/2.png' %}" style="width: 27px;height: 35px;"></a>
+
 			</td>
+			
 		</tr>
 		<thead style="font-weight: bold;background-color:  #abebc6 ">
 		      <th style="color:  #239b56  " >Fecha Inicio</th>
@@ -200,6 +200,8 @@
 		      {% if "Ausentismo" in grupos or user.username == "admin" %}
 			      <th></th>
 		      {% endif %}
+		      <th><a title="Generar PDF" href="{% url 'PDFausentismo' %}?idagente={{agente.pk}}" target="_blank" class="btn btn-danger" style="display: inline-block;"><img src="{% static 'appPersonal/images/4.png' %}" style="width: 20px;height: 22px;"></a>
+				<a title="Generar Excel" href="{% url 'ausentismoExcel' %}?idagente={{agente.pk}}" class="btn btn-success" style="display: inline-block;"><img src="{% static 'appPersonal/images/2.png' %}" style="width: 20px;height: 22px;"></a></th>
 		</thead>
 		<tbody style="font-weight: bold">
 		      {%for li in aus%}
@@ -223,6 +225,7 @@
 				{% else %}
 					<td></td>
 				{% endif %}
+					<td></td>
 		      </tr>
 		      {%endfor%}
 		</tbody>
