@@ -216,13 +216,13 @@ def hojaAus(book,descrip):
 	default_style = xlwt.Style.default_style
 	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
 	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
-	sheet.write(i, 0, 'Apellido y Nombres', style=default_style)
-	sheet.write(i, 1, 'Documento', style=default_style)
-	sheet.write(i, 2, 'Articulo', style=default_style)
-	sheet.write(i, 3, 'Desde', style=date_style)
-	sheet.write(i, 4, 'Hasta', style=default_style)
-	sheet.write(i, 5, 'Domicilio', style=default_style)
-	sheet.write(i, 6, 'Localidad', style=default_style)
+	sheet.write(0, 0, 'Apellido y Nombres', style=default_style)
+	sheet.write(0, 1, 'Documento', style=default_style)
+	sheet.write(0, 2, 'Articulo', style=default_style)
+	sheet.write(0, 3, 'Desde', style=date_style)
+	sheet.write(0, 4, 'Hasta', style=default_style)
+	sheet.write(0, 5, 'Domicilio', style=default_style)
+	sheet.write(0, 6, 'Localidad', style=default_style)
 	return sheet
 
 def ausEnMes(a,mes,anio):
