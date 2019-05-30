@@ -58,6 +58,21 @@
 		
 		return false;
 	}
+	function salidasagenteañoPDF(){
+			
+		posicion1 = document.getElementById("select1").options.selectedIndex;
+		opcion1 = document.getElementById("select1").options[posicion1].text;
+		n=opcion1.split(" ");
+		
+		idagente = n[0];
+			
+		posicion2 = document.getElementById("select2").options.selectedIndex;
+		anio = document.getElementById("select2").options[posicion2].text;
+								
+		open("{% url 'salidasAgenteAñoPDF' %}?idagente="+idagente+"&anio="+anio);	
+		
+		return false;
+	}
 	
 </script>
 
@@ -94,6 +109,8 @@
 		      </p>  
 		   		   
 		      <input type="button" class="btn btn-info" value="Consulta" onclick="javascript:salidasagenteaño()"/>
+		      <input type="button" class="btn btn-success" value="Consulta PDF" onclick="javascript:salidasagenteañoPDF()"/>
+
 		 
 		</form>
 {% endblock %}
