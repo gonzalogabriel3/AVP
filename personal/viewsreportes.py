@@ -293,7 +293,7 @@ def ausRepLicenciasPendientes_excel(peticion):
 	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
 	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
 		
-	licencias = Licenciaanualagente.objects.filter(resta__exact=True).order_by('idagente__idzona','idagente__iddireccion','idagente__apellido','idagente__nombres','anio')
+	licencias = Licenciaanualagente.objects.filter(Q(resta__exact=True,idagente__situacion=2)).order_by('idagente__idzona','idagente__iddireccion','idagente__apellido','idagente__nombres','anio')
 				
 	i = 0
 	sheet.write(i, 0, 'Nombre y Apellido', style=default_style)
