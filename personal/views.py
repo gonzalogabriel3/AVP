@@ -278,7 +278,7 @@ def medicasinalta(peticion):
         return HttpResponseRedirect('/personal/error/')
     grupos = get_grupos(user)
     lista = []
-    medic = Medica.objects.filter(Q(idausent__idarticulo__pk=102)|Q(idausent__idarticulo__pk=1021))
+    medic = Medica.objects.filter(Q(idausent__idarticulo__pk=102)|Q(idausent__idarticulo__pk=1021)).order_by('-fechaalta')
     for m in medic:
         if m.fechaalta == None:
             lista.append([m.agente.apellido,m.agente.nombres,m.diagnostico,m.idausent.fechainicio,m.idausent.fechafin])
