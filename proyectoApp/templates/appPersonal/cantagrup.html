@@ -1,5 +1,5 @@
 {% extends "appPersonal/listado/listado_base.html" %}
-{% load i18n %}
+{% load static %}
 
 {% block pagination %}
 	<a href="{% url 'indexPersonal' %}" style="margin-left: 20px;" class="pagination">Personal </a><a class="pagination" href="{% url 'cantagrupindex' %}">/ Cantidad agrupamiento </a><a href="#" class="activo">/ {{descrip}}</a>
@@ -17,7 +17,8 @@
 
 {% block main-list %}
 		<div class="results">
-			<p><strong>Cantidad para agrupamiento {{descrip}}: </strong> {{cantidad}}</p>
+			<p><strong>Cantidad para agrupamiento {{descrip}}:  </strong> {{cantidad}}</p>
+			
 			<table class="table table-striped">
 				<thead>
 					<tr>

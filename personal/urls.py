@@ -189,5 +189,13 @@ urlpatterns = [
 
     path('salidasAgenteAñoPDF$',salidasAgenteAñoPDF,name="salidasAgenteAñoPDF"),
 
+    path('altasPDF$',altasPDF,name="altasPDF"),
+
+    path('bajasPDF$',bajasPDF,name="bajasPDF"),
+
+    path('altasExcel$',altasExcel,name="altasExcel"),
+
+    path('bajasExcel$',bajasExcel,name="bajasExcel"),
+
 ]
 

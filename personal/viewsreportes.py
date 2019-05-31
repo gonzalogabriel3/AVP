@@ -53,6 +53,7 @@ def obtenerNombreCampos(nombreModelo):
 	listaCampos=list()
 
 	for campo in modelo._meta.fields:
+		print(campo)
 		#Valido que no se guarde el campo de primary key del modelo
 		if(campo.verbose_name!=modelo._meta.pk.name):
 			listaCampos.append(campo.verbose_name)
@@ -70,25 +71,30 @@ def obtenerValoresDeObjeto(objetos):
 			for campo in objeto._meta.fields:
 				#Obtengo el nombre del campo
 				name=campo.name
-				#Obtengo el valor del campo
-				valor=getattr(objeto, name)
 				
-				#Verifico que no se cargue el id del objeto para mostrar 
-				if(valor!=objeto.pk):
-					if(valor==None or valor==''):
-						listaValores.append("-")
-					else:
-						listaValores.append(str(valor))
-			
+				try:
+					#Obtengo el valor del campo
+					valor=getattr(objeto, name)
+					
+					#Verifico que no se cargue el id del objeto para mostrar 
+					if(valor!=objeto.pk):
+						if(valor==None or valor==''):
+							listaValores.append("-")
+						else:
+							listaValores.append(str(valor))
+				except:
+					print("No se pudo agregar")
 			listObjetos.append(listaValores)
 
 	return listObjetos
+
+##############################################################--REPORTE EN PDF Y EXCEL--####################################################################
 
 #Metodo que lista los valores de uno o varios objetos y lo retorna en formato PDF
 def generarPDF(peticion,titulo,listaCampos,listaValores):
 	#Obtengo la fecha actual para asignarla al nombre del pdf
 	fecha=datetime.now()
-	fecha=fecha.strftime("%d/%m/%Y")	
+	fecha=fecha.strftime("%d/%m/%Y")
 
 	#Renderizo la vista que sera devuelta
 	html_string = render_to_string('appPersonal/reports/reportePDF.html', {'listaValores':listaValores,'listaCampos':listaCampos,'titulo':titulo,'fecha':fecha})
@@ -108,6 +114,255 @@ def generarPDF(peticion,titulo,listaCampos,listaValores):
 		response.write(output.read())
 
 	return response
+
+def generarExcel(peticion,titulo,listaCampos,listaValores):
+
+	book = xlwt.Workbook(encoding='utf8')
+
+	sheet = book.add_sheet(str(titulo))
+	
+	default_style = xlwt.Style.default_style
+	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
+	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
+
+	#Escribo los nombres de los campos
+	i=0
+	for nomCampo in listaCampos:
+		sheet.write(0, i, nomCampo, style=default_style)
+		i+=1
+
+	j=1
+	for objetos in listaValores:
+		i=0
+		for valor in objetos:
+			sheet.write(j, i, valor, style=default_style)
+			i+=1
+		j+=1
+
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename='+str(titulo)+'.xls'
+	book.save(response)
+	
+	return response
+
+##############################################################--FIN REPORTE EN PDF Y EXCEL--####################################################################
+
+
+def altasPDF(peticion):
+	periodo=peticion.GET.get('periodo')
+	agentes=Agente.objects.filter(fechaalta__year=periodo).order_by('apellido')
+	listObjetos=list()
+	
+	for agente in agentes:
+		listaValores=list()
+		listaValores.append(agente.apellido)
+		listaValores.append(agente.nombres)
+		listaValores.append(agente.fechaalta)
+		if(agente.idzona):
+			listaValores.append(agente.idzona.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.iddireccion):
+			listaValores.append(agente.iddireccion.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.clase):
+			listaValores.append(agente.clase.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.agrupamiento):
+			listaValores.append(agente.agrupamiento.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.funcion):
+			listaValores.append(agente.funcion.descripcion)
+		else:
+			listaValores.append("-")
+
+		listaValores.append(agente.nrodocumento)
+		
+		if(agente.planta):
+			listaValores.append(agente.planta)
+		else:
+			listaValores.append("-")
+
+		listObjetos.append(listaValores)
+	
+	listaCampos=list()
+	listaCampos.append('Apellido')
+	listaCampos.append('Nombres')
+	listaCampos.append('Fecha alta')
+	listaCampos.append('Zona')
+	listaCampos.append('Direccion')
+	listaCampos.append('Clase')
+	listaCampos.append('Agrup')
+	listaCampos.append('Funcion')
+	listaCampos.append('Matricula')
+	listaCampos.append('Planta')
+
+	return generarPDF(peticion,"Altas año "+str(periodo),listaCampos,listObjetos)
+
+def altasExcel(peticion):
+	periodo=peticion.GET.get('periodo')
+	agentes=Agente.objects.filter(fechaalta__year=periodo).order_by('apellido')
+	listObjetos=list()
+	
+	for agente in agentes:
+		listaValores=list()
+		listaValores.append(agente.apellido)
+		listaValores.append(agente.nombres)
+		listaValores.append(agente.fechaalta)
+		if(agente.idzona):
+			listaValores.append(agente.idzona.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.iddireccion):
+			listaValores.append(agente.iddireccion.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.clase):
+			listaValores.append(agente.clase.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.agrupamiento):
+			listaValores.append(agente.agrupamiento.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.funcion):
+			listaValores.append(agente.funcion.descripcion)
+		else:
+			listaValores.append("-")
+
+		listaValores.append(agente.nrodocumento)
+		
+		if(agente.planta):
+			listaValores.append(agente.planta)
+		else:
+			listaValores.append("-")
+
+		listObjetos.append(listaValores)
+	
+	listaCampos=list()
+	listaCampos.append('Apellido')
+	listaCampos.append('Nombres')
+	listaCampos.append('Fecha alta')
+	listaCampos.append('Zona')
+	listaCampos.append('Direccion')
+	listaCampos.append('Clase')
+	listaCampos.append('Agrup')
+	listaCampos.append('Funcion')
+	listaCampos.append('Matricula')
+	listaCampos.append('Planta')
+
+	return generarExcel(peticion,"Altas año "+str(periodo),listaCampos,listObjetos)
+
+def bajasPDF(peticion):
+	periodo=peticion.GET.get('periodo')
+	agentes=Agente.objects.filter(fechabaja__year=periodo).order_by('apellido')
+	listObjetos=list()
+	
+	for agente in agentes:
+		listaValores=list()
+		listaValores.append(agente.apellido)
+		listaValores.append(agente.nombres)
+		listaValores.append(agente.fechabaja)
+		if(agente.idzona):
+			listaValores.append(agente.idzona.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.iddireccion):
+			listaValores.append(agente.iddireccion.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.clase):
+			listaValores.append(agente.clase.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.agrupamiento):
+			listaValores.append(agente.agrupamiento.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.funcion):
+			listaValores.append(agente.funcion.descripcion)
+		else:
+			listaValores.append("-")
+
+		listaValores.append(agente.nrodocumento)
+		
+		if(agente.planta):
+			listaValores.append(agente.planta)
+		else:
+			listaValores.append("-")
+
+		listObjetos.append(listaValores)
+	
+	listaCampos=list()
+	listaCampos.append('Apellido')
+	listaCampos.append('Nombres')
+	listaCampos.append('Fecha baja')
+	listaCampos.append('Zona')
+	listaCampos.append('Direccion')
+	listaCampos.append('Clase')
+	listaCampos.append('Agrup')
+	listaCampos.append('Funcion')
+	listaCampos.append('Matricula')
+	listaCampos.append('Planta')
+
+	return generarPDF(peticion,"Bajas año "+str(periodo),listaCampos,listObjetos)
+
+def bajasExcel(peticion):
+	periodo=peticion.GET.get('periodo')
+	agentes=Agente.objects.filter(fechabaja__year=periodo).order_by('apellido')
+	listObjetos=list()
+	
+	for agente in agentes:
+		listaValores=list()
+		listaValores.append(agente.apellido)
+		listaValores.append(agente.nombres)
+		listaValores.append(agente.fechabaja)
+		if(agente.idzona):
+			listaValores.append(agente.idzona.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.iddireccion):
+			listaValores.append(agente.iddireccion.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.clase):
+			listaValores.append(agente.clase.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.agrupamiento):
+			listaValores.append(agente.agrupamiento.descripcion)
+		else:
+			listaValores.append("-")
+		if(agente.funcion):
+			listaValores.append(agente.funcion.descripcion)
+		else:
+			listaValores.append("-")
+
+		listaValores.append(agente.nrodocumento)
+		
+		if(agente.planta):
+			listaValores.append(agente.planta)
+		else:
+			listaValores.append("-")
+
+		listObjetos.append(listaValores)
+	
+	listaCampos=list()
+	listaCampos.append('Apellido')
+	listaCampos.append('Nombres')
+	listaCampos.append('Fecha baja')
+	listaCampos.append('Zona')
+	listaCampos.append('Direccion')
+	listaCampos.append('Clase')
+	listaCampos.append('Agrup')
+	listaCampos.append('Funcion')
+	listaCampos.append('Matricula')
+	listaCampos.append('Planta')
+
+	return generarExcel(peticion,"Bajas año "+str(periodo),listaCampos,listObjetos)
 
 def PDFausentismo(peticion):
 	idagente=peticion.GET.get('idagente')
@@ -166,34 +421,7 @@ def ausentismoExcel(peticion):
 
 	return generarExcel(peticion,"Reporte de ausentismo",listaCampos,listaValores)
 
-def generarExcel(peticion,titulo,listaCampos,listaValores):
 
-	book = xlwt.Workbook(encoding='utf8')
-
-	sheet = book.add_sheet(str(titulo))
-	
-	default_style = xlwt.Style.default_style
-	datetime_style = xlwt.easyxf(num_format_str='dd/mm/yyyy hh:mm')
-	date_style = xlwt.easyxf(num_format_str='dd/mm/yyyy')
-
-	#Escribo los nombres de los campos
-	i=0
-	for nomCampo in listaCampos:
-		sheet.write(0, i, nomCampo, style=default_style)
-		i+=1
-
-	j=1
-	for objetos in listaValores:
-		i=0
-		for valor in objetos:
-			sheet.write(j, i, valor, style=default_style)
-			i+=1
-		j+=1
-
-	response = HttpResponse(content_type='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename='+str(titulo)+'.xls'
-	book.save(response)
-	return response
 
 def fechaEnRango(anio,mes,fi,ff):
     """
