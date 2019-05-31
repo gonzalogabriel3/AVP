@@ -756,7 +756,7 @@ def partdiarioaus_excel(peticion):
     			sincodnombres = nombres.encode('ascii','ignore')
     			apellido = agente.apellido
     			sincodapellido = apellido.encode('ascii','ignore')
-    			nombre = sincodapellido+", "+sincodnombres
+    			nombre = apellido+", "+nombres
     			i = i + 1
     			sheet.write(i, 0, nombre, style=default_style)
     			sheet.write(i, 1, agente.nrodocumento, style=default_style)
