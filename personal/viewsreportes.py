@@ -104,7 +104,7 @@ def generarPDF(peticion,titulo,listaCampos,listaValores):
 	#Indico el tipo de contenido en la respuesta,en este caso un PDF
 	response = HttpResponse(content_type='application/pdf;')
 	#Indico el nombre del nuevo pdf
-	response['Content-Disposition'] = 'inline; filename=Reporte.pdf'
+	response['Content-Disposition'] = 'inline; filename='+str(titulo)+'.pdf'
 	response['Content-Transfer-Encoding'] = 'binary'
 	#Creo un archivo temporal que va a contener el PDF generado
 	with tempfile.NamedTemporaryFile(delete=True) as output:
