@@ -53,7 +53,7 @@ ROOT_URLCONF = 'proyecto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates', '/proyectoApp/templates/'],
+        'DIRS': ['templates', '/proyectoApp/templates/','/var/www/djangoEjemplo/proyectoApp/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,6 +147,7 @@ STATIC_ROOT = 'templates/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'proyectoApp/templates'),
+    #os.path.join(BASE_DIR, '/var/www/djangoEjemplo/proyectoApp/templates'),
 ]
 
 LOGIN_REDIRECT_URL = '/pasajes'
