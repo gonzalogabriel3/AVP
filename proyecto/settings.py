@@ -53,7 +53,7 @@ ROOT_URLCONF = 'proyecto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates', '/proyectoApp/templates/'],
+        'DIRS': ['templates', '/proyectoApp/templates/','/var/www/djangoEjemplo/proyectoApp/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,10 +95,10 @@ DATABASES = {
         'NAME': 'personal',
         'USER': 'postgres',
         'PASSWORD': 'sistemasavp',
-        'HOST': '172.155.0.8',
-        'PORT': '5432',
-        #'HOST': 'sysavp.chubut.gov.ar',
-        #'PORT': '33060',
+        #'HOST': '172.155.0.8',
+        #'PORT': '5432',
+        'HOST': 'sysavp.chubut.gov.ar',
+        'PORT': '33060',
     }
 }
 DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito','proyecto.routerPasajes.RouterPasajes','proyecto.routerPersonal.RouterPersonal']
@@ -147,6 +147,7 @@ STATIC_ROOT = 'templates/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'proyectoApp/templates'),
+    #os.path.join(BASE_DIR, '/var/www/djangoEjemplo/proyectoApp/templates'),
 ]
 
 LOGIN_REDIRECT_URL = '/pasajes'
