@@ -325,7 +325,11 @@ def ausRepLicenciasPendientes_excel(peticion):
 	    	sheet.write(i, 5, a.idagente.idzona.descripcion, style=default_style)
 	    except:
 	    	sheet.write(i, 5, "", style=default_style)
-	    sheet.write(i, 6, a.idagente.iddireccion.descripcion, style=default_style)
+	    try:
+	    	sheet.write(i, 6, a.idagente.iddireccion.descripcion, style=default_style)
+	    except:
+	    	sheet.write(i, 6, "", style=default_style)
+	    
 	    
 
 	response = HttpResponse(content_type='application/vnd.ms-excel')
