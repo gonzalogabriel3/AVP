@@ -1127,7 +1127,7 @@ def detAusentismoxagente(peticion):
                 per[i] = per[i] + ausEnMes(anio,indice+1,ausAux)
                 break
             else:
-                print("*** AUSENT CON : "+str(indice+1)+" ***")
+                #print("*** AUSENT CON : "+str(indice+1)+" ***")
                 per[i] = per[i] + ausEnMes(anio,indice+1,a)
                 #per[i] = per[i] + fechaEnRango(anio,indice+1,a.fechainicio,a.fechafin)
                 indice = indice +1
