@@ -37,7 +37,7 @@ urlpatterns = [
     path('listado/base_vieja/juntamedicavieja$', juntamedicavieja,name="listado/base_vieja/juntamedicavieja"),
     
     path('buscadoragenlic$',buscarAgenLic,name="buscadoragenlic"),
-    path('cargaausent$',buscarAgenAusent,name="cargaausent"),
+    path('cargaausent',buscarAgenAusent,name="cargaausent"),
     path('generarlicencia/todos$',generarLicT,name="generarlicencia/todos"),
     path('generarlicencia/individual$',generarLicI,name="generarlicencia/individual"),
     
