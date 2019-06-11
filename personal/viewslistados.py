@@ -212,6 +212,7 @@ def escolaridadxaf(peticion):
 
 
 #---------------------------------------------LISTADO ALTAS BAJAS AGENTES----------------------
+@csrf_exempt
 @login_required(login_url='login')
 def listAltasBajasIndex(peticion):
     user = peticion.user
@@ -222,6 +223,7 @@ def listAltasBajasIndex(peticion):
     
     return render_to_response('appPersonal/listado/altasBajasIndex.html',{'user':user,'grupos':grupos},)
 
+@csrf_exempt
 @login_required(login_url='login')
 def listAltasBajas(peticion):
     periodo=int(peticion.GET.get('periodo'))
