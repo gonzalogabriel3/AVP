@@ -27,6 +27,7 @@
 
 	function reporteAgrup(){
 		agrup = document.getElementById('agrup').value ;
+		console.log(agrup)
 		open("{% url 'cantagrup' %}?agrup="+agrup,"_self");
 		return false;
 	}
