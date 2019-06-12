@@ -292,16 +292,14 @@ def ausentismos(peticion):
     
 @login_required(login_url='login')
 def menuagente(peticion):
-  
     user = peticion.user
     idagente = int(peticion.GET.get('idagente'))
     grupos = get_grupos(user)
     if permisoListado(user):
         error = "no posee permiso para listar"
         return render_to_response('appPersonal/error.html',{'user':user,'error':error,'grupos':grupos},)
-        
     agente = Agente.objects.get(idagente=idagente)
-    
+
     return render_to_response('appPersonal/menu_agente.html',{'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
 @csrf_exempt    

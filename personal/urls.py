@@ -67,7 +67,7 @@ urlpatterns = [
     path('repLicenciasAcumuladasWord$',repLicenciasAcumuladasWord,name="repLicenciasAcumuladasWord"),
     #Fin reportes de licencias acumuladas
     
-    path('forms/menuagente$',menuagente,name="forms/menuagente"),
+    path('forms/menuagente',menuagente,name="forms/menuagente"),
     
 #---------------------------------Listado Logs------------------------------
 
