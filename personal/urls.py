@@ -82,16 +82,16 @@ urlpatterns = [
 #---------------------------------Listados por agente-----------------------
 
     path('listado/listadoxagente/facxagente',familiaresacxagente,name="listado/listadoxagente/facxagente"),
-    path('listado/listadoxagente/adtxagente$',accdetrabajoxagente,name="listado/listadoxagente/adtxagente"),
+    path('listado/listadoxagente/adtxagente',accdetrabajoxagente,name="listado/listadoxagente/adtxagente"),
     path('listado/listadoxagente/salidaxagente',salidaxagente,name="listado/listadoxagente/salidaxagente"),
-    path('listado/listadoxagente/sancionxagente$',sancionxagente,name="listado/listadoxagente/sancionxagente"),
+    path('listado/listadoxagente/sancionxagente',sancionxagente,name="listado/listadoxagente/sancionxagente"),
     path('listado/listadoxagente/traslado$',trasladoxagente,name="listado/listadoxagente/traslado"),
     path('listado/listadoxagente/seguro/(\d+)/(-?\d+)/$',seguroxagente),
     path('listado/listadoxagente/servprest$',servprestxagente,name="listado/listadoxagente/servprest"),
     #path('listado/listadoxagente/vacacionesxagente/(\d+)/(-?\d+)/$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
     path('listado/listadoxagente/vacacionesxagente$',vacacionesxagente,name="listado/listadoxagente/vacacionesxagente"),
     path('listado/listadoxagente/estudioscursados$',estudioscursadosxagente,name="listado/listadoxagente/estudioscursados"),
-    path('listado/listadoxagente/medica$',medicaxagente,name="listado/listadoxagente/medica"),
+    path('listado/listadoxagente/medica',medicaxagente,name="listado/listadoxagente/medica"),
 
 #---------------------------------Listados por acc de trabajo-----------------------
 
