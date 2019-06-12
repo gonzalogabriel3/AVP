@@ -245,7 +245,7 @@ class Agente(models.Model):
         db_table = u'agente'
 
     def __str__(self):
-        return str(self.apellido)+" " +str(self.nombres)    
+        return str(self.nrolegajo)+ " - " +str(self.apellido)+" " +str(self.nombres)    
 #··························································································································································     
 class Tipolesion(models.Model):
     idtipolesion = models.IntegerField(primary_key=True)
