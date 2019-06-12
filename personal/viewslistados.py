@@ -70,10 +70,11 @@ def familiaresacxagente(peticion):
     return render_to_response('appPersonal/listado/listadoxagente/familiaresacxagente.html',{'lista':lista,'user':user,'idagente':idagente,'agente':agente,'grupos':grupos},)
 
 @login_required(login_url='login')   
-def accdetrabajoxagente(peticion):
+#def accdetrabajoxagente(peticion):
+def accdetrabajoxagente(peticion,idagente, borrado):
     
-    idagente=int(peticion.GET.get('idagente'))
-    borrado=int(peticion.GET.get('borrado'))
+    #idagente=int(peticion.GET.get('idagente'))
+    #borrado=int(peticion.GET.get('borrado'))
     user = peticion.user
     
     grupos = get_grupos(user)

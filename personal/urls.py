@@ -82,7 +82,7 @@ urlpatterns = [
 #---------------------------------Listados por agente-----------------------
 
     path('listado/listadoxagente/facxagente',familiaresacxagente,name="listado/listadoxagente/facxagente"),
-    path('listado/listadoxagente/adtxagente',accdetrabajoxagente,name="listado/listadoxagente/adtxagente"),
+    re_path(r'^listado/listadoxagente/adtxagente/(\d+)/(-?\d+)/$',accdetrabajoxagente,name="listado/listadoxagente/adtxagente"),
     path('listado/listadoxagente/salidaxagente',salidaxagente,name="listado/listadoxagente/salidaxagente"),
     path('listado/listadoxagente/sancionxagente',sancionxagente,name="listado/listadoxagente/sancionxagente"),
     path('listado/listadoxagente/traslado$',trasladoxagente,name="listado/listadoxagente/traslado"),
