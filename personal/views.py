@@ -930,7 +930,7 @@ def vacas(peticion):
     anio_lar = []
     diastomados = [0,0,0,0,0]
     diaslicencia = [0,0,0,0,0]
-    vacas = Licenciaanualagente.objects.filter(idagente__exact=idagente).order_by('anio')
+    vacas = Licenciaanualagente.objects.filter(idagente__exact=idagente).order_by('idlicanualagen')
     
     #fitrar vacaciones para mostrar
     vacas = vacas.reverse()
@@ -946,6 +946,8 @@ def vacas(peticion):
             i += 1
             vacas = vacasaux.reverse()
     #cargar variables
+    #import pdb; pdb.set_trace()
+    vacasaux.sort(key=lambda x: x.anio)
     i = 0
     for v in vacasaux:
         if i <= 4:
