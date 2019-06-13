@@ -41,7 +41,7 @@
 										<li><a href="{% url 'listado/listadoxagente/salidaxagente' %}?idagente={{idagente}}&borrado=-1"><b>Salidas</b></a></li>
 										<li><a href="{% url 'vacas' %}?idagente={{idagente}}" class="nivel1"><b>Licencia Anual Agente</b></a></li>
 										<li><a href="{% url 'listado/listadoxagente/medica' %}?idagente={{idagente}}&borrado=-1" class="nivel1"><b>Medica</b></a></li>
-										<li><a href="{% url 'listado/listadoxagente/adtxagente' %}?idagente={{idagente}}&borrado=-1"><b>Accidente de Trabajo</b></a></li>
+										<li><a href="/personal/listado/listadoxagente/adtxagente/{{idagente}}/-1/"><b>Accidente de Trabajo</b></a></li>
 										<li><a href="{% url 'listado/listadoxagente/sancionxagente' %}?idagente={{idagente}}&borrado=-1"><b>Sanciones</b></a></li>
 							<!-- 			<li><a href="/personal/forms/abmadscriptos/0/{{idagente}}/">Adscriptos</a></li> -->
 										<li><a href="{% url 'listado/listadoxagente/traslado' %}?idagente={{idagente}}&borrado=-1"><b>Traslado</b></a></li>
