@@ -286,10 +286,14 @@ def abmAusentismo(peticion):
         #fechafinal=contarDiasHabiles(form.instance.fechainicio,int(form.instance.cantdias),idagen)
         if(idausent==0):
           a = Ausent()
-        
         a.fechainicio=form.instance.fechainicio
-        a.fechafin = form.instance.fechainicio+timedelta(days=form.instance.cantdias)
-        #pprint(a.fechafin)
+        
+        if (form.instance.idarticulo.pk == 58): #articulo 55
+          a.fechafin = ajustarDias(form.instance.fechainicio, form.instance.fechainicio+timedelta(days=form.instance.cantdias),form.instance.idagente)
+        elif (form.instance.idarticulo.pk == 999):
+          a.fechafin = form.instance.fechainicio+timedelta(days=form.instance.cantdias) #para mantener la coherencia de LAR
+        else:
+          a.fechafin = form.instance.fechainicio+timedelta(days=form.instance.cantdias - 1) #esto porque es hasta el dia inclusive
         a.cantdias = form.instance.cantdias
         a.observaciones = form.instance.observaciones
         a.idagente = form.instance.idagente

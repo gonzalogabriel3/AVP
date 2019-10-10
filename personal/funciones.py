@@ -34,6 +34,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from datetime import *
+import datetime
 import calendar
 from personal.funciones import *
 from django.db.models import Q
@@ -89,6 +90,56 @@ def diasMes(anio,mes):
     """
     """
     return calendar.monthrange(anio,mes)[1]
+
+
+def diasLaborales(anio,mes,idagente):
+    """
+    Retorna todos los dias laborables en un mes.
+    """
+    finde = ['Saturday','Sunday']
+    #agente = Agente.objects.get(pk=idagente)
+    fin = calendar.monthrange(anio,mes)[1]
+    list_f= feriadosLista(anio,mes,idagente.idzonareal.pk)
+    diasLab = list()
+    for i in range(fin):
+        d = datetime.date(anio,mes,i+1)
+        if d.strftime('%A') not in finde:
+            if d.day not in list_f:
+                diasLab.append(d.day)
+    return diasLab
+
+
+def ajustarDias(inicio, finOri, idagente):
+    """
+    Metodo para retornar fechafin-1 ajustandola a que caiga en un dia laborable.
+    """
+    anio = finOri.year
+    mes = finOri.month
+    finde = ['Saturday','Sunday']
+    #LISTA CON LOS DIAS QUE SON FERIADO EN EL MES
+    list_f = feriadosLista(anio,mes,idagente.idzonareal.pk)
+    #DIAS LABORABLES
+    diasLab = diasLaborales(anio,mes,idagente)
+    finOri = finOri - timedelta(days=1)
+    #import pdb; pdb.set_trace()
+    #RE VER
+    #if (inicio.strftime('%A') == 'Friday'):
+        #si el fin de articulo es en el proximo mes
+    if (finOri.month > inicio.month) or (inicio.day == diasLab[-1]): #-1 para obtener el ultimo item de la lista
+        diasLab = diasLaborales(anio,finOri.month,idagente)
+        fin = datetime.date(2019,inicio.month+1,1)
+        if fin.day not in diasLab:
+            fin = finOri
+            while fin.day not in diasLab:
+                fin = fin+timedelta(days=1)
+    elif finOri.day not in diasLab:
+        fin = finOri
+        while fin.day not in diasLab:
+            fin = fin+timedelta(days=1)
+    #else:
+    #    return finOri - timedelta(days=1)
+    return fin
+
 #-------------------------------Registro Logs -----------------------------
 #--------------------------------------------------------------------------
 

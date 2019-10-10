@@ -13,7 +13,7 @@ SECRET_KEY = '-@a%z4jbv_6)4(*&82)$_$_da_9sb)d^qp*x1kgn&=kv5r8)af'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.155.0.7','0.0.0.0','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['172.155.0.7','0.0.0.0','localhost','127.0.0.1','172.155.0.6']
 
 
 # Application definition
@@ -95,10 +95,10 @@ DATABASES = {
         'NAME': 'personal',
         'USER': 'postgres',
         'PASSWORD': 'sistemasavp',
-        #'HOST': '172.155.0.8',
-        #'PORT': '5432',
-        'HOST': 'sysavp.chubut.gov.ar',
-        'PORT': '33060',
+        'HOST': '172.155.0.8',
+        'PORT': '5432',
+        #'HOST': 'sysavp.chubut.gov.ar',
+        #'PORT': '33060',
     }
 }
 DATABASE_ROUTERS = ['proyecto.routerDeposito.RouterDeposito','proyecto.routerPasajes.RouterPasajes','proyecto.routerPersonal.RouterPersonal']
