@@ -934,7 +934,6 @@ def vacas(peticion):
     
     #fitrar vacaciones para mostrar
     vacas = vacas.reverse()
-    
     for v in vacas:
         if i <= 4 and v.resta == False and nofin:
             vacasaux.append(v)
@@ -957,7 +956,6 @@ def vacas(peticion):
             diastomados[i] = v.diastomados
             i += 1
             nofin = False
-	
     
     return render_to_response('appPersonal/licenciavacaciones.html',{'user':user, 'grupos':grupos, 'idagente':idagente,'agente':agente, 'vacas':vacas, 'anio_lar':anio_lar, 'diaslicencia':diaslicencia, 'diastomados':diastomados,},)
  
